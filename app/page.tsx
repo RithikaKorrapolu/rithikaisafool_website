@@ -1,82 +1,87 @@
 "use client";
 
 import { motion } from "framer-motion";
-import AnimatedHero from "@/components/AnimatedHero";
-import FadeIn from "@/components/FadeIn";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-      {/* Hero Section */}
-      <AnimatedHero />
+    <main className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#ff4825' }}>
+      {/* Speech Bubble */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{
+          duration: 0.6,
+          type: "spring" as const,
+          stiffness: 200,
+          damping: 15
+        }}
+        className="relative"
+      >
+        {/* Main speech bubble */}
+        <div className="bg-white rounded-3xl px-12 py-8 md:px-16 md:py-12 shadow-2xl relative">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            className="text-4xl md:text-6xl lg:text-7xl font-bold text-center"
+            style={{ color: '#ff4825' }}
+          >
+            Rithika is a Fool!
+          </motion.h1>
 
-      {/* Feature Cards Section */}
-      <section className="container mx-auto px-6 py-20">
-        <FadeIn>
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-            Animation Showcase
-          </h2>
-        </FadeIn>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            className="text-2xl md:text-3xl text-center mt-4 text-gray-700 font-semibold"
+          >
+            Coming Soon
+          </motion.p>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {[
-            { title: "Smooth Transitions", icon: "✨", delay: 0 },
-            { title: "Micro-interactions", icon: "🎯", delay: 0.2 },
-            { title: "Scroll Animations", icon: "🚀", delay: 0.4 },
-          ].map((feature, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: feature.delay, duration: 0.5 }}
-              whileHover={{
-                scale: 1.05,
-                rotateY: 5,
-                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)"
-              }}
-              className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg cursor-pointer"
-            >
-              <motion.div
-                className="text-6xl mb-4"
-                animate={{
-                  rotate: [0, 10, -10, 0],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  repeatDelay: 1
-                }}
-              >
-                {feature.icon}
-              </motion.div>
-              <h3 className="text-2xl font-bold mb-2">{feature.title}</h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                Experience buttery smooth animations powered by Framer Motion
-              </p>
-            </motion.div>
-          ))}
+          {/* Speech bubble tail */}
+          <div
+            className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-0 h-0"
+            style={{
+              borderLeft: '30px solid transparent',
+              borderRight: '30px solid transparent',
+              borderTop: '40px solid white',
+            }}
+          />
         </div>
-      </section>
 
-      {/* Floating Elements */}
+        {/* Floating animation */}
+        <motion.div
+          animate={{
+            y: [0, -15, 0],
+          }}
+          transition={{
+            duration: 3,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="absolute inset-0 -z-10"
+        />
+      </motion.div>
+
+      {/* Floating dots for decoration */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        {[...Array(5)].map((_, i) => (
+        {[...Array(8)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-20 h-20 rounded-full bg-gradient-to-br from-purple-400 to-blue-400 opacity-20 blur-xl"
+            className="absolute w-4 h-4 rounded-full bg-white opacity-30"
             animate={{
-              x: [0, 100, 0],
-              y: [0, -100, 0],
-              scale: [1, 1.2, 1],
+              x: [0, Math.random() * 100 - 50, 0],
+              y: [0, Math.random() * 100 - 50, 0],
+              scale: [1, 1.5, 1],
             }}
             transition={{
-              duration: 5 + i,
+              duration: 4 + i,
               repeat: Infinity,
-              delay: i * 0.5,
+              delay: i * 0.3,
             }}
             style={{
-              left: `${20 + i * 15}%`,
-              top: `${30 + i * 10}%`,
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
             }}
           />
         ))}
