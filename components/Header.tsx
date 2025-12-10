@@ -18,8 +18,8 @@ export default function Header() {
           <Image
             src="/menu_icon.png"
             alt="Menu"
-            width={50}
-            height={50}
+            width={43}
+            height={43}
             priority
           />
         </motion.button>
@@ -49,8 +49,8 @@ export default function Header() {
           <Image
             src="/cart_icon.png"
             alt="Cart"
-            width={50}
-            height={50}
+            width={43}
+            height={43}
             priority
           />
         </motion.button>
