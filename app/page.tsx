@@ -53,7 +53,7 @@ export default function Home() {
           className="relative w-full max-w-6xl mx-auto"
         >
           {/* Video/Image Container */}
-          <div className="relative w-full rounded-3xl overflow-hidden shadow-2xl border-8 border-gray-800">
+          <div className="relative w-full rounded-3xl overflow-hidden shadow-2xl border-4 border-black">
             {/* Video Placeholder - Replace with actual video player */}
             <AnimatePresence mode="wait">
               <motion.div
