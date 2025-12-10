@@ -92,7 +92,7 @@ export default function Home() {
                       </h1>
                     </div>
                     <div className="bg-black px-6 py-2 w-full">
-                      <p className="text-white text-base md:text-lg font-bold uppercase tracking-wide font-[family-name:var(--font-inter)]">
+                      <p className="text-white text-lg md:text-xl font-bold uppercase tracking-wide font-[family-name:var(--font-inter)]">
                         {currentVideo.tagline}
                       </p>
                     </div>
