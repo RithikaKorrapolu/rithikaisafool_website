@@ -69,9 +69,9 @@ export default function Home() {
             </AnimatePresence>
 
             {/* Breaking News Overlay */}
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-8">
-              <div className="bg-[#F44336] inline-block px-4 py-2 mb-4">
-                <span className="text-white font-bold text-lg">BREAKING NEWS</span>
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/80 to-transparent pt-20 pb-8 px-8">
+              <div className="bg-[#F8330D] inline-block px-6 py-2 mb-4 rounded-sm">
+                <span className="text-white font-black text-base tracking-wide">BREAKING NEWS</span>
               </div>
 
               <AnimatePresence mode="wait">
@@ -82,10 +82,10 @@ export default function Home() {
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <h1 className="text-white text-3xl md:text-5xl font-bold mb-4">
+                  <h1 className="text-white text-2xl md:text-4xl lg:text-5xl font-black mb-6 leading-tight uppercase">
                     {currentVideo.headline}
                   </h1>
-                  <p className="text-white text-xl font-semibold">
+                  <p className="text-white text-lg md:text-xl font-bold uppercase tracking-wide">
                     {currentVideo.tagline}
                   </p>
                 </motion.div>

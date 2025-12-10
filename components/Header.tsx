@@ -15,11 +15,13 @@ export default function Header() {
           transition={{ duration: 0.5 }}
           className="flex items-center gap-2 cursor-pointer"
         >
-          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="20" cy="10" r="3" fill="black"/>
-            <circle cx="20" cy="25" r="3" fill="black"/>
-            <path d="M15 35 L20 30 L25 35" stroke="black" strokeWidth="2" fill="none"/>
-          </svg>
+          <Image
+            src="/menu_icon.png"
+            alt="Menu"
+            width={50}
+            height={50}
+            priority
+          />
           <span className="text-lg font-semibold">Menu</span>
         </motion.button>
 
@@ -45,16 +47,18 @@ export default function Header() {
           transition={{ duration: 0.5 }}
           className="cursor-pointer"
         >
-          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5 10 L10 10 L15 30 L35 30 L38 15 L12 15" stroke="black" strokeWidth="2" fill="none"/>
-            <circle cx="18" cy="35" r="2" fill="black"/>
-            <circle cx="32" cy="35" r="2" fill="black"/>
-          </svg>
+          <Image
+            src="/cart_icon.png"
+            alt="Cart"
+            width={50}
+            height={50}
+            priority
+          />
         </motion.button>
       </div>
 
       {/* Orange Navigation Bar */}
-      <div className="bg-[#F44336] text-white px-6 py-4 flex items-center justify-between">
+      <div className="bg-[#F8330D] text-white px-6 py-4 flex items-center justify-between border-t-2 border-b-2 border-black">
         <div className="flex gap-8">
           <button className="text-lg font-bold hover:underline">Shop!</button>
           <button className="text-lg font-bold hover:underline">Studio!</button>
