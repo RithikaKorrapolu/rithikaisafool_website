@@ -76,28 +76,37 @@ export default function Home() {
                   <span className="text-white font-bold text-xl tracking-wider font-[family-name:var(--font-jaldi)]">BREAKING NEWS</span>
                 </div>
 
-                {/* Gray and Black boxes */}
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={currentVideo.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.5 }}
-                    className="relative z-10 w-full"
-                  >
-                    <div className="bg-[#D9D9D9] px-6 py-4 w-full">
-                      <h1 className="text-black text-xl md:text-xl lg:text-2xl font-bold leading-tight uppercase font-[family-name:var(--font-inter)]">
+                {/* Gray and Black boxes - stay in place */}
+                <div className="relative z-10 w-full">
+                  <div className="bg-[#D9D9D9] px-6 py-4 w-full">
+                    <AnimatePresence mode="wait">
+                      <motion.h1
+                        key={currentVideo.id + '-headline'}
+                        initial={{ opacity: 0, rotateX: -90 }}
+                        animate={{ opacity: 1, rotateX: 0 }}
+                        exit={{ opacity: 0, rotateX: 90 }}
+                        transition={{ duration: 0.5 }}
+                        className="text-black text-xl md:text-xl lg:text-2xl font-bold leading-tight uppercase font-[family-name:var(--font-inter)]"
+                      >
                         {currentVideo.headline}
-                      </h1>
-                    </div>
-                    <div className="bg-black px-6 py-2 w-full">
-                      <p className="text-white text-lg md:text-xl font-bold uppercase tracking-wide font-[family-name:var(--font-inter)]">
+                      </motion.h1>
+                    </AnimatePresence>
+                  </div>
+                  <div className="bg-black px-6 py-2 w-full">
+                    <AnimatePresence mode="wait">
+                      <motion.p
+                        key={currentVideo.id + '-tagline'}
+                        initial={{ opacity: 0, rotateX: -90 }}
+                        animate={{ opacity: 1, rotateX: 0 }}
+                        exit={{ opacity: 0, rotateX: 90 }}
+                        transition={{ duration: 0.5 }}
+                        className="text-white text-lg md:text-xl font-bold uppercase tracking-wide font-[family-name:var(--font-inter)]"
+                      >
                         {currentVideo.tagline}
-                      </p>
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
+                      </motion.p>
+                    </AnimatePresence>
+                  </div>
+                </div>
               </div>
             </div>
 
