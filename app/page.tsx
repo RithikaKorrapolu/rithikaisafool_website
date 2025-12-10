@@ -43,9 +43,9 @@ export default function Home() {
   const currentVideo = videos[currentIndex];
 
   return (
-    <main className="min-h-screen pt-[180px]" style={{ backgroundColor: '#F2F2F2' }}>
+    <main className="min-h-screen pt-[160px]" style={{ backgroundColor: '#F2F2F2' }}>
       {/* Hero Section */}
-      <div className="container mx-auto px-6 py-8">
+      <div className="container mx-auto px-6 py-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
