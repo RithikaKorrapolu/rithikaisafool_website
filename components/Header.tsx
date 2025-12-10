@@ -58,7 +58,7 @@ export default function Header() {
       </div>
 
       {/* Orange Navigation Bar */}
-      <div className="bg-[#F8330D] text-white px-6 py-4 flex items-center justify-between border-t-2 border-b-2 border-black">
+      <div className="bg-[#F8330D] text-white px-6 py-3 flex items-center justify-between border-t-2 border-b-2 border-black">
         <div className="flex gap-8">
           <button className="text-lg font-bold hover:underline">Shop!</button>
           <button className="text-lg font-bold hover:underline">Studio!</button>
