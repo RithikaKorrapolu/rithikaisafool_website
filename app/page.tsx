@@ -78,7 +78,7 @@ export default function Home() {
                     <span className="text-white font-bold text-xl tracking-wider font-[family-name:var(--font-jaldi)]">BREAKING NEWS</span>
                   </div>
 
-                  <div className="bg-[#D9D9D9] px-6 py-4 ml-[3%] w-[97%]">
+                  <div className="bg-[#D9D9D9] px-6 py-4 ml-[3%] w-[97%] relative z-20">
                     <AnimatePresence mode="wait">
                       <motion.h1
                         key={currentVideo.id + '-headline'}
