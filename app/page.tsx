@@ -15,15 +15,15 @@ const videos = [
   {
     id: 2,
     videoUrl: "/videos/video2.mp4",
-    headline: "BREAKING: NEW COMEDY SKETCH GOES VIRAL OVERNIGHT",
-    tagline: "LAUGHTER IS THE BEST MEDICINE",
+    headline: "FOOTAGE: CRYSTAL DESAI IS LEARNING HOW TO JUGGLE AT 28 YEARS OLD",
+    tagline: "LIFE IS BETTER WHEN YOU PLAY THE FOOL",
     placeholder: "Video 2 - Comedy Sketch"
   },
   {
     id: 3,
     videoUrl: "/videos/video3.mp4",
-    headline: "EXCLUSIVE: BEHIND THE SCENES OF LATEST STUDIO SESSION",
-    tagline: "CREATIVITY KNOWS NO BOUNDS",
+    headline: "FOOTAGE: CRYSTAL DESAI IS LEARNING HOW TO JUGGLE AT 28 YEARS OLD",
+    tagline: "LIFE IS BETTER WHEN YOU PLAY THE FOOL",
     placeholder: "Video 3 - Studio Session"
   },
 ];
@@ -75,10 +75,10 @@ export default function Home() {
                 <div className="relative z-10 w-full">
                   {/* Red box positioned to the left, extends to top of black box */}
                   <div className="bg-[#AC0C0E] absolute -top-12 left-0 bottom-[2.25rem] px-8 pt-3 z-0">
-                    <span className="text-white font-bold text-xl tracking-wider font-[family-name:var(--font-jaldi)]">BREAKING NEWS</span>
+                    <span className="text-white font-bold text-2xl md:text-3xl tracking-wider font-[family-name:var(--font-jaldi)]">BREAKING NEWS</span>
                   </div>
 
-                  <div className="bg-[#D9D9D9] px-6 py-4 ml-[3%] w-[97%] relative z-20">
+                  <div className="bg-[#D9D9D9] px-6 py-4 ml-[1%] w-[99%] relative z-20">
                     <AnimatePresence mode="wait">
                       <motion.h1
                         key={currentVideo.id + '-headline'}
