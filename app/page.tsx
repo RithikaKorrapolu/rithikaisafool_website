@@ -74,7 +74,7 @@ export default function Home() {
                 {/* Gray and Black boxes - stay in place */}
                 <div className="relative z-10 w-full">
                   {/* Red box positioned to the left, extends to top of black box */}
-                  <div className="bg-[#AC0C0E] absolute -top-12 left-0 bottom-[2.25rem] pl-[1%] pr-8 pt-3 z-0">
+                  <div className="bg-[#AC0C0E] absolute -top-12 left-0 bottom-[2.25rem] pl-[1%] pr-8 pt-1 z-0 inline-block">
                     <span className="text-white font-bold text-2xl md:text-3xl tracking-wider font-[family-name:var(--font-jaldi)]">BREAKING NEWS</span>
                   </div>
 
