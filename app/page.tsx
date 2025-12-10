@@ -93,18 +93,9 @@ export default function Home() {
                     </AnimatePresence>
                   </div>
                   <div className="bg-black px-6 py-2 w-full">
-                    <AnimatePresence mode="wait">
-                      <motion.p
-                        key={currentVideo.id + '-tagline'}
-                        initial={{ opacity: 0, rotateX: -90 }}
-                        animate={{ opacity: 1, rotateX: 0 }}
-                        exit={{ opacity: 0, rotateX: 90 }}
-                        transition={{ duration: 0.5 }}
-                        className="text-white text-lg md:text-xl font-bold uppercase tracking-wide font-[family-name:var(--font-inter)]"
-                      >
-                        {currentVideo.tagline}
-                      </motion.p>
-                    </AnimatePresence>
+                    <p className="text-white text-lg md:text-xl font-bold uppercase tracking-wide font-[family-name:var(--font-inter)]">
+                      LIFE IS BETTER WHEN YOU PLAY THE FOOL
+                    </p>
                   </div>
                 </div>
               </div>
