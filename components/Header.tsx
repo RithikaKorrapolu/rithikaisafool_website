@@ -13,7 +13,7 @@ export default function Header() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
-          className="flex items-center gap-2 cursor-pointer"
+          className="cursor-pointer"
         >
           <Image
             src="/menu_icon.png"
@@ -22,7 +22,6 @@ export default function Header() {
             height={50}
             priority
           />
-          <span className="text-lg font-semibold">Menu</span>
         </motion.button>
 
         {/* Logo - Center */}
