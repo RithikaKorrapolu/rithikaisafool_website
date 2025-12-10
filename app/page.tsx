@@ -72,7 +72,7 @@ export default function Home() {
             <div className="absolute bottom-0 left-0 right-0 pt-20 pb-6 px-6">
               <div className="relative inline-block">
                 {/* Red box positioned to the left, behind gray/black boxes */}
-                <div className="bg-[#AC0C0E] absolute -top-12 -left-4 px-8 py-16 z-0">
+                <div className="bg-[#AC0C0E] absolute -top-12 -left-4 px-8 pt-3 pb-16 z-0">
                   <span className="text-white font-bold text-xl tracking-wider font-[family-name:var(--font-jaldi)]">BREAKING NEWS</span>
                 </div>
 
