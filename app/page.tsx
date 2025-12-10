@@ -1,8 +1,47 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
+
+// Video data with headlines
+const videos = [
+  {
+    id: 1,
+    videoUrl: "/videos/video1.mp4", // You can replace with actual video URLs
+    headline: "FOOTAGE: CRYSTAL DESAI IS LEARNING HOW TO JUGGLE AT 28 YEARS OLD",
+    tagline: "LIFE IS BETTER WHEN YOU PLAY THE FOOL",
+    placeholder: "Video 1 - Juggling Tutorial"
+  },
+  {
+    id: 2,
+    videoUrl: "/videos/video2.mp4",
+    headline: "BREAKING: NEW COMEDY SKETCH GOES VIRAL OVERNIGHT",
+    tagline: "LAUGHTER IS THE BEST MEDICINE",
+    placeholder: "Video 2 - Comedy Sketch"
+  },
+  {
+    id: 3,
+    videoUrl: "/videos/video3.mp4",
+    headline: "EXCLUSIVE: BEHIND THE SCENES OF LATEST STUDIO SESSION",
+    tagline: "CREATIVITY KNOWS NO BOUNDS",
+    placeholder: "Video 3 - Studio Session"
+  },
+];
 
 export default function Home() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Auto-advance videos every 10 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % videos.length);
+    }, 10000); // Change video every 10 seconds
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const currentVideo = videos[currentIndex];
+
   return (
     <main className="min-h-screen pt-[180px]" style={{ backgroundColor: '#F2F2F2' }}>
       {/* Hero Section */}
@@ -15,22 +54,55 @@ export default function Home() {
         >
           {/* Video/Image Container */}
           <div className="relative w-full rounded-3xl overflow-hidden shadow-2xl border-8 border-gray-800">
-            {/* Placeholder for video/image - you can replace with actual content */}
-            <div className="w-full aspect-video bg-gray-600 flex items-center justify-center">
-              <p className="text-white text-2xl">Video/Image Content Here</p>
-            </div>
+            {/* Video Placeholder - Replace with actual video player */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentVideo.id}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+                className="w-full aspect-video bg-gray-600 flex items-center justify-center"
+              >
+                <p className="text-white text-2xl">{currentVideo.placeholder}</p>
+              </motion.div>
+            </AnimatePresence>
 
             {/* Breaking News Overlay */}
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-8">
               <div className="bg-[#F44336] inline-block px-4 py-2 mb-4">
                 <span className="text-white font-bold text-lg">BREAKING NEWS</span>
               </div>
-              <h1 className="text-white text-3xl md:text-5xl font-bold mb-4">
-                FOOTAGE: CRYSTAL DESAI IS LEARNING HOW TO JUGGLE AT 28 YEARS OLD
-              </h1>
-              <p className="text-white text-xl font-semibold">
-                LIFE IS BETTER WHEN YOU PLAY THE FOOL
-              </p>
+
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentVideo.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <h1 className="text-white text-3xl md:text-5xl font-bold mb-4">
+                    {currentVideo.headline}
+                  </h1>
+                  <p className="text-white text-xl font-semibold">
+                    {currentVideo.tagline}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* Video indicators */}
+            <div className="absolute top-4 right-4 flex gap-2">
+              {videos.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentIndex(index)}
+                  className={`w-3 h-3 rounded-full transition-all ${
+                    index === currentIndex ? 'bg-white w-8' : 'bg-white/50'
+                  }`}
+                />
+              ))}
             </div>
           </div>
         </motion.div>
