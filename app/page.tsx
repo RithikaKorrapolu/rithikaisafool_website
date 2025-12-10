@@ -70,36 +70,34 @@ export default function Home() {
 
             {/* Breaking News Overlay */}
             <div className="absolute bottom-0 left-0 right-0 pt-20 pb-6 px-6">
-              {/* Red background box that extends behind */}
-              <div className="relative">
-                <div className="bg-[#AC0C0E] absolute top-0 left-0 right-0 h-full z-0"></div>
-
-                <div className="relative z-10">
-                  <div className="px-8 py-3 mb-3">
-                    <span className="text-white font-bold text-xl tracking-wider font-[family-name:var(--font-jaldi)]">BREAKING NEWS</span>
-                  </div>
-
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={currentVideo.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <div className="bg-[#D9D9D9] inline-block px-6 py-4 mb-2">
-                        <h1 className="text-black text-2xl md:text-3xl lg:text-4xl font-bold leading-tight uppercase font-[family-name:var(--font-inter)]">
-                          {currentVideo.headline}
-                        </h1>
-                      </div>
-                      <div className="bg-black inline-block px-6 py-2">
-                        <p className="text-white text-base md:text-lg font-bold uppercase tracking-wide font-[family-name:var(--font-inter)]">
-                          {currentVideo.tagline}
-                        </p>
-                      </div>
-                    </motion.div>
-                  </AnimatePresence>
+              <div className="relative inline-block">
+                {/* Red box positioned to the left, behind gray/black boxes */}
+                <div className="bg-[#AC0C0E] absolute top-12 -left-4 px-8 py-3 z-0">
+                  <span className="text-white font-bold text-xl tracking-wider font-[family-name:var(--font-jaldi)]">BREAKING NEWS</span>
                 </div>
+
+                {/* Gray and Black boxes */}
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentVideo.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.5 }}
+                    className="relative z-10"
+                  >
+                    <div className="bg-[#D9D9D9] px-6 py-4">
+                      <h1 className="text-black text-2xl md:text-3xl lg:text-4xl font-bold leading-tight uppercase font-[family-name:var(--font-inter)]">
+                        {currentVideo.headline}
+                      </h1>
+                    </div>
+                    <div className="bg-black px-6 py-2">
+                      <p className="text-white text-base md:text-lg font-bold uppercase tracking-wide font-[family-name:var(--font-inter)]">
+                        {currentVideo.tagline}
+                      </p>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
               </div>
             </div>
 
