@@ -71,14 +71,14 @@ export default function Home() {
             {/* Breaking News Overlay */}
             <div className="absolute bottom-0 left-0 right-0 pt-20 pb-6 px-6 flex justify-center">
               <div className="relative inline-block w-[80%] max-w-5xl">
-                {/* Red box positioned to the left, aligned with black box */}
-                <div className="bg-[#AC0C0E] absolute -top-12 left-0 px-8 pt-3 pb-20 z-0">
-                  <span className="text-white font-bold text-xl tracking-wider font-[family-name:var(--font-jaldi)]">BREAKING NEWS</span>
-                </div>
-
                 {/* Gray and Black boxes - stay in place */}
                 <div className="relative z-10 w-full">
-                  <div className="bg-[#D9D9D9] px-6 py-4 ml-[8%] w-[92%]">
+                  {/* Red box positioned to the left, extends to top of black box */}
+                  <div className="bg-[#AC0C0E] absolute -top-12 left-0 bottom-[2.25rem] px-8 pt-3 z-0">
+                    <span className="text-white font-bold text-xl tracking-wider font-[family-name:var(--font-jaldi)]">BREAKING NEWS</span>
+                  </div>
+
+                  <div className="bg-[#D9D9D9] px-6 py-4 ml-[3%] w-[97%]">
                     <AnimatePresence mode="wait">
                       <motion.h1
                         key={currentVideo.id + '-headline'}
