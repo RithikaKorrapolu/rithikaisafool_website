@@ -12,7 +12,7 @@ export default function Header() {
         transition={{ duration: 0.5 }}
       >
         <Image
-          src="/fulllogo_black.png"
+          src="/fulllogo2_black.png"
           alt="Logo"
           width={240}
           height={96}
