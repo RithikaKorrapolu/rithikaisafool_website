@@ -13,7 +13,7 @@ export default function Header() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
-          className="cursor-pointer"
+          className="cursor-pointer ml-8"
         >
           <Image
             src="/menu_icon.png"
@@ -44,7 +44,7 @@ export default function Header() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
-          className="cursor-pointer"
+          className="cursor-pointer mr-8"
         >
           <Image
             src="/cart_icon.png"
