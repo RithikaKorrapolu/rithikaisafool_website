@@ -92,7 +92,7 @@ export default function Home() {
                       </motion.h1>
                     </AnimatePresence>
                   </div>
-                  <div className="bg-black px-6 py-2 w-full">
+                  <div className="bg-black px-6 py-1 w-full">
                     <p className="text-white text-lg md:text-xl font-bold uppercase tracking-wide font-[family-name:var(--font-inter)]">
                       LIFE IS BETTER WHEN YOU PLAY THE FOOL
                     </p>
