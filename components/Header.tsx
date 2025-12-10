@@ -10,7 +10,7 @@ export default function Header() {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h1 className="text-2xl md:text-3xl font-bold text-white drop-shadow-lg">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
           Rithika is a fool!
         </h1>
       </motion.div>

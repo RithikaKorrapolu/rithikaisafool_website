@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#ff4825' }}>
+    <main className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#F2F2F2' }}>
       {/* Speech Bubble */}
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
@@ -68,7 +68,7 @@ export default function Home() {
         {[...Array(8)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-4 h-4 rounded-full bg-white opacity-30"
+            className="absolute w-4 h-4 rounded-full bg-gray-400 opacity-30"
             animate={{
               x: [0, Math.random() * 100 - 50, 0],
               y: [0, Math.random() * 100 - 50, 0],
