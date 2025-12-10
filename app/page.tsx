@@ -75,7 +75,7 @@ export default function Home() {
                 <div className="relative z-10 w-full">
                   {/* Red box positioned to the left, extends to top of black box */}
                   <div className="bg-[#AC0C0E] absolute -top-12 left-0 bottom-[2.25rem] pl-[1%] pr-8 pt-1 z-0 inline-block">
-                    <span className="text-white font-bold text-2xl md:text-3xl tracking-wider font-[family-name:var(--font-jaldi)]">BREAKING NEWS</span>
+                    <span className="text-white font-bold text-2xl md:text-3xl tracking-tight font-[family-name:var(--font-jaldi)]">BREAKING NEWS</span>
                   </div>
 
                   <div className="bg-[#D9D9D9] px-6 py-2 ml-[1%] w-[99%] relative z-20">
