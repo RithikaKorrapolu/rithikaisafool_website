@@ -69,9 +69,9 @@ export default function Home() {
             </AnimatePresence>
 
             {/* Breaking News Overlay */}
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/80 to-transparent pt-20 pb-8 px-8">
-              <div className="bg-[#F8330D] inline-block px-6 py-2 mb-4 rounded-sm">
-                <span className="text-white font-black text-base tracking-wide">BREAKING NEWS</span>
+            <div className="absolute bottom-0 left-0 right-0 pt-20 pb-6 px-6">
+              <div className="bg-[#D32F2F] inline-block px-8 py-3 mb-3">
+                <span className="text-white font-bold text-xl tracking-wider font-[family-name:var(--font-jaldi)]">BREAKING NEWS</span>
               </div>
 
               <AnimatePresence mode="wait">
@@ -82,12 +82,16 @@ export default function Home() {
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <h1 className="text-white text-2xl md:text-4xl lg:text-5xl font-black mb-6 leading-tight uppercase">
-                    {currentVideo.headline}
-                  </h1>
-                  <p className="text-white text-lg md:text-xl font-bold uppercase tracking-wide">
-                    {currentVideo.tagline}
-                  </p>
+                  <div className="bg-[#D9D9D9] inline-block px-6 py-4 mb-2">
+                    <h1 className="text-black text-2xl md:text-3xl lg:text-4xl font-bold leading-tight uppercase font-[family-name:var(--font-inter)]">
+                      {currentVideo.headline}
+                    </h1>
+                  </div>
+                  <div className="bg-black inline-block px-6 py-2">
+                    <p className="text-white text-base md:text-lg font-bold uppercase tracking-wide font-[family-name:var(--font-inter)]">
+                      {currentVideo.tagline}
+                    </p>
+                  </div>
                 </motion.div>
               </AnimatePresence>
             </div>
