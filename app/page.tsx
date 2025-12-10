@@ -87,7 +87,7 @@ export default function Home() {
                     className="relative z-10 w-full"
                   >
                     <div className="bg-[#D9D9D9] px-6 py-4 w-full">
-                      <h1 className="text-black text-2xl md:text-3xl lg:text-4xl font-bold leading-tight uppercase font-[family-name:var(--font-inter)]">
+                      <h1 className="text-black text-xl md:text-xl lg:text-2xl font-bold leading-tight uppercase font-[family-name:var(--font-inter)]">
                         {currentVideo.headline}
                       </h1>
                     </div>
