@@ -69,8 +69,8 @@ export default function Home() {
             </AnimatePresence>
 
             {/* Breaking News Overlay */}
-            <div className="absolute bottom-0 left-0 right-0 pt-20 pb-6 px-6">
-              <div className="relative inline-block">
+            <div className="absolute bottom-0 left-0 right-0 pt-20 pb-6 px-6 flex justify-center">
+              <div className="relative inline-block w-[80%] max-w-5xl">
                 {/* Red box positioned to the left, behind gray/black boxes */}
                 <div className="bg-[#AC0C0E] absolute -top-12 -left-4 px-8 pt-3 pb-16 z-0">
                   <span className="text-white font-bold text-xl tracking-wider font-[family-name:var(--font-jaldi)]">BREAKING NEWS</span>
@@ -84,14 +84,14 @@ export default function Home() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.5 }}
-                    className="relative z-10"
+                    className="relative z-10 w-full"
                   >
-                    <div className="bg-[#D9D9D9] px-6 py-4">
+                    <div className="bg-[#D9D9D9] px-6 py-4 w-full">
                       <h1 className="text-black text-2xl md:text-3xl lg:text-4xl font-bold leading-tight uppercase font-[family-name:var(--font-inter)]">
                         {currentVideo.headline}
                       </h1>
                     </div>
-                    <div className="bg-black px-6 py-2">
+                    <div className="bg-black px-6 py-2 w-full">
                       <p className="text-white text-base md:text-lg font-bold uppercase tracking-wide font-[family-name:var(--font-inter)]">
                         {currentVideo.tagline}
                       </p>
