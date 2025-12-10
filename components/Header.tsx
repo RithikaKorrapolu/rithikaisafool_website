@@ -14,8 +14,8 @@ export default function Header() {
         <Image
           src="/fulllogo_black.png"
           alt="Logo"
-          width={200}
-          height={80}
+          width={240}
+          height={96}
           priority
         />
       </motion.div>
