@@ -17,8 +17,8 @@ export default function Header() {
           <Image
             src="/menu.png"
             alt="Menu"
-            width={40}
-            height={40}
+            width={200}
+            height={80}
             priority
           />
         </motion.button>
@@ -40,7 +40,7 @@ export default function Header() {
         </motion.div>
 
         {/* Empty div for spacing balance */}
-        <div className="w-10"></div>
+        <div className="w-[200px]"></div>
       </div>
     </header>
   );
