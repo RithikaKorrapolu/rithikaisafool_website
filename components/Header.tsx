@@ -16,10 +16,10 @@ export default function Header() {
           className="cursor-pointer ml-8"
         >
           <Image
-            src="/menu_icon.png"
+            src="/assets/menu_logo.png"
             alt="Menu"
-            width={35}
-            height={35}
+            width={72}
+            height={72}
             priority
           />
         </motion.button>
@@ -31,7 +31,7 @@ export default function Header() {
           transition={{ duration: 0.5 }}
         >
           <Image
-            src="/fulllogo_black.png"
+            src="/assets/home_logo.png"
             alt="Logo"
             width={240}
             height={96}
@@ -57,15 +57,11 @@ export default function Header() {
       </div>
 
       {/* Orange Navigation Bar */}
-      <div className="bg-[#F8330D] text-white px-6 py-3 flex items-center justify-between border-t-4 border-b-4 border-black">
+      <div className="bg-[#F8330D] text-white px-6 py-3 border-t-4 border-b-4 border-black">
         <div className="flex gap-8">
           <button className="text-lg font-bold hover:underline">Shop!</button>
           <button className="text-lg font-bold hover:underline">Studio!</button>
           <button className="text-lg font-bold hover:underline">Idea Open Mic!</button>
-        </div>
-        <div className="bg-white text-black px-4 py-1 rounded">
-          <div className="text-sm font-semibold">New York City</div>
-          <div className="text-xs">11:48 AM ET</div>
         </div>
       </div>
     </header>
