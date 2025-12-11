@@ -47,7 +47,7 @@ export default function Header() {
           className="cursor-pointer mr-8"
         >
           <Image
-            src="/cart_icon.png"
+            src="/assets/cart_icon.png"
             alt="Cart"
             width={35}
             height={35}
