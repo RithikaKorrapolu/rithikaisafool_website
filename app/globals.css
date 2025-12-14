@@ -23,3 +23,54 @@ body {
     text-wrap: balance;
   }
 }
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
+}
+
+@keyframes marquee-seamless {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee-seamless {
+  display: flex;
+  animation: marquee-seamless 24s linear infinite;
+  will-change: transform;
+}
+
+@keyframes bounce-fast {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-bounce-fast {
+  animation: bounce-fast 0.3s ease-in-out infinite;
+}
+
+.home-logo-shadow {
+  filter: drop-shadow(0px 4px 0px #F7330C);
+  transform: scale(1.15) translateY(-4px);
+  transition: filter 0.3s ease;
+}
+
+.home-logo-shadow:hover {
+  filter: drop-shadow(0px 4px 0px #000000);
+}
