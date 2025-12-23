@@ -30,6 +30,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   const image = product.images?.[0]?.src;
   const hasMultipleVariants = product.variants?.length > 1;
   const isSelectedVariantAvailable = selectedVariant?.available ?? true;
+  const allVariantsSoldOut = product.variants?.every((v: any) => !v.available) ?? false;
 
   const handleAddToCart = () => {
     setErrorMessage(null);
@@ -86,6 +87,15 @@ export default function ProductCard({ product }: ProductCardProps) {
             No Image
           </div>
         )}
+        {allVariantsSoldOut && (
+          <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+            <div className="bg-white px-8 py-4 rotate-[-15deg] shadow-lg">
+              <span className="text-3xl font-bold text-black font-[family-name:var(--font-inter)]">
+                SOLD OUT
+              </span>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Product Info */}
@@ -128,7 +138,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                       }
                     }}
                     disabled={!isAvailable}
-                    className={`px-4 py-2 border-2 rounded-md text-sm font-semibold transition-all font-[family-name:var(--font-inter)] relative ${
+                    className={`px-4 py-2 border-2 rounded-md text-sm font-semibold transition-all font-[family-name:var(--font-inter)] ${
                       !isAvailable
                         ? 'border-gray-200 text-gray-400 cursor-not-allowed bg-gray-50'
                         : isSelected
@@ -137,11 +147,6 @@ export default function ProductCard({ product }: ProductCardProps) {
                     }`}
                   >
                     {variant.title}
-                    {!isAvailable && (
-                      <span className="absolute inset-0 flex items-center justify-center text-[10px] text-red-500 font-bold">
-                        SOLD
-                      </span>
-                    )}
                   </button>
                 );
               })}
