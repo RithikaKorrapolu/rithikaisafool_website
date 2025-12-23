@@ -88,13 +88,13 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
         )}
         {allVariantsSoldOut && (
-          <div className="absolute top-4 right-4 z-10 rotate-12">
-            <div className="relative border-4 border-[#F8330D] px-6 py-3 bg-white/90" style={{
-              borderRadius: '8px',
-              boxShadow: '0 4px 6px rgba(248, 51, 13, 0.3)'
+          <div className="absolute top-3 right-3 z-10 rotate-12">
+            <div className="relative border-2 border-[#F8330D] px-3 py-1 bg-white/90" style={{
+              borderRadius: '4px',
+              boxShadow: '0 2px 4px rgba(248, 51, 13, 0.3)'
             }}>
-              <span className="text-2xl font-black text-[#F8330D] font-[family-name:var(--font-inter)] tracking-wider" style={{
-                textShadow: '2px 2px 0px rgba(248, 51, 13, 0.1)'
+              <span className="text-xs font-black text-[#F8330D] font-[family-name:var(--font-inter)] tracking-wide" style={{
+                textShadow: '1px 1px 0px rgba(248, 51, 13, 0.1)'
               }}>
                 SOLD OUT
               </span>
