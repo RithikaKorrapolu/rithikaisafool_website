@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { Calendar, dateFnsLocalizer, Event, ToolbarProps } from 'react-big-calendar';
+import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
@@ -18,7 +18,7 @@ const localizer = dateFnsLocalizer({
 });
 
 // Custom Toolbar Component
-const CustomToolbar = (toolbar: ToolbarProps) => {
+const CustomToolbar = (toolbar: any) => {
   return (
     <div className="flex justify-between items-center mb-6">
       {/* Month and Year - Top Left */}
@@ -74,7 +74,7 @@ const CustomHeader = ({ date, label }: { date: Date; label: string }) => {
   );
 };
 
-interface CalendarEvent extends Event {
+interface CalendarEvent {
   title: string;
   start: Date;
   end: Date;
