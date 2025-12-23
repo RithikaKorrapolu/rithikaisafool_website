@@ -31,14 +31,14 @@ export async function POST(request: NextRequest) {
     // Get all line items from the order
     const lineItems = order.line_items || [];
 
-    // For each product purchased, zero out all other variants
+    // For each product purchased, check if it's a monthly-limited product
     for (const item of lineItems) {
       const productId = item.product_id;
       const purchasedVariantId = item.variant_id;
 
       if (!productId || !purchasedVariantId) continue;
 
-      // Fetch all variants for this product
+      // Fetch product details to check for "monthly-limited" tag
       const productResponse = await fetch(
         `https://${SHOPIFY_STORE_DOMAIN}/admin/api/2024-01/products/${productId}.json`,
         {
@@ -55,9 +55,18 @@ export async function POST(request: NextRequest) {
       }
 
       const productData = await productResponse.json();
-      const variants = productData.product?.variants || [];
+      const product = productData.product;
+      const tags = product?.tags || '';
 
-      // Zero out inventory for all OTHER variants
+      // Only apply inventory zeroing for products tagged with "monthly-limited"
+      if (!tags.includes('monthly-limited')) {
+        console.log(`Product ${productId} is not monthly-limited, skipping inventory update`);
+        continue;
+      }
+
+      const variants = product?.variants || [];
+
+      // Zero out inventory for all OTHER variants of this monthly-limited product
       for (const variant of variants) {
         if (variant.id.toString() === purchasedVariantId.toString()) {
           continue; // Skip the purchased variant
