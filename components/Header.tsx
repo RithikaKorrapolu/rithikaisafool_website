@@ -3,12 +3,17 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useCart } from "@/context/CartContext";
 
 interface HeaderProps {
   onMenuClick: () => void;
 }
 
 export default function Header({ onMenuClick }: HeaderProps) {
+  const pathname = usePathname();
+  const { openCart, cartCount } = useCart();
+
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-white">
       {/* Top Header with Menu, Logo, Cart */}
@@ -72,7 +77,8 @@ export default function Header({ onMenuClick }: HeaderProps) {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
-          className="cursor-pointer mr-2 sm:mr-4 md:mr-8"
+          onClick={openCart}
+          className="cursor-pointer mr-2 sm:mr-4 md:mr-8 relative"
         >
           <Image
             src="/assets/cart_icon.png"
@@ -82,17 +88,21 @@ export default function Header({ onMenuClick }: HeaderProps) {
             priority
             className="w-[22px] h-auto sm:w-[26px] sm:h-auto md:w-7 md:h-auto object-contain"
           />
+          {cartCount > 0 && (
+            <span className="absolute -top-1 -right-1 bg-[#F8330D] text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center font-[family-name:var(--font-inter)]">
+              {cartCount}
+            </span>
+          )}
         </motion.button>
       </div>
 
       {/* Navigation Bar with Drop Shadow - Desktop Only */}
       <div className="hidden lg:block bg-[#F2F2F2] text-black px-6 py-3.5" style={{ boxShadow: '0px 4px 34px 0px rgba(0, 0, 0, 0.25)' }}>
         <div className="flex gap-12 justify-center">
-          <Link href="/about" className="text-base font-bold hover:text-[#F8330D] transition-all duration-150 tracking-tighter inline-block hover:-translate-y-1">About!</Link>
-          <Link href="/studio" className="text-base font-bold hover:text-[#F8330D] transition-all duration-150 tracking-tighter inline-block hover:-translate-y-1">Studio!</Link>
-          <Link href="/shop" className="text-base font-bold hover:text-[#F8330D] transition-all duration-150 tracking-tighter inline-block hover:-translate-y-1">Shop!</Link>
-          <Link href="/community" className="text-base font-bold hover:text-[#F8330D] transition-all duration-150 tracking-tighter inline-block hover:-translate-y-1">Community!</Link>
-          <Link href="/connect" className="text-base font-bold hover:text-[#F8330D] transition-all duration-150 tracking-tighter inline-block hover:-translate-y-1">Connect!</Link>
+          <Link href="/about" className={`text-base font-bold hover:text-[#F8330D] transition-all duration-150 tracking-tighter inline-block hover:-translate-y-1 ${pathname === '/about' ? 'text-[#F8330D]' : ''}`}>About!</Link>
+          <Link href="/studio" className={`text-base font-bold hover:text-[#F8330D] transition-all duration-150 tracking-tighter inline-block hover:-translate-y-1 ${pathname === '/studio' ? 'text-[#F8330D]' : ''}`}>Studio!</Link>
+          <Link href="/shop" className={`text-base font-bold hover:text-[#F8330D] transition-all duration-150 tracking-tighter inline-block hover:-translate-y-1 ${pathname === '/shop' ? 'text-[#F8330D]' : ''}`}>Shop!</Link>
+          <Link href="/connect" className={`text-base font-bold hover:text-[#F8330D] transition-all duration-150 tracking-tighter inline-block hover:-translate-y-1 ${pathname === '/connect' ? 'text-[#F8330D]' : ''}`}>Connect!</Link>
         </div>
       </div>
     </header>

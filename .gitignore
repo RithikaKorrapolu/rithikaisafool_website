@@ -28,6 +28,9 @@ yarn-error.log*
 # local env files
 .env*.local
 
+# api tokens and credentials
+API Token/
+
 # vercel
 .vercel
 

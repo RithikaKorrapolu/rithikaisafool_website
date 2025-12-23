@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 interface MenuProps {
   isOpen: boolean;
@@ -10,6 +11,8 @@ interface MenuProps {
 }
 
 export default function Menu({ isOpen, onClose }: MenuProps) {
+  const pathname = usePathname();
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -47,19 +50,16 @@ export default function Menu({ isOpen, onClose }: MenuProps) {
 
             {/* Menu Items */}
             <nav className="space-y-3 mb-12">
-              <Link href="/about" onClick={onClose} className="block text-base font-bold text-black hover:text-[#F8330D] transition-colors">
+              <Link href="/about" onClick={onClose} className={`block text-base font-bold hover:text-[#F8330D] transition-colors ${pathname === '/about' ? 'text-[#F8330D]' : 'text-black'}`}>
                 About!
               </Link>
-              <Link href="/studio" onClick={onClose} className="block text-base font-bold text-black hover:text-[#F8330D] transition-colors">
+              <Link href="/studio" onClick={onClose} className={`block text-base font-bold hover:text-[#F8330D] transition-colors ${pathname === '/studio' ? 'text-[#F8330D]' : 'text-black'}`}>
                 Studio!
               </Link>
-              <Link href="/shop" onClick={onClose} className="block text-base font-bold text-black hover:text-[#F8330D] transition-colors">
+              <Link href="/shop" onClick={onClose} className={`block text-base font-bold hover:text-[#F8330D] transition-colors ${pathname === '/shop' ? 'text-[#F8330D]' : 'text-black'}`}>
                 Shop!
               </Link>
-              <Link href="/community" onClick={onClose} className="block text-base font-bold text-black hover:text-[#F8330D] transition-colors">
-                Community!
-              </Link>
-              <Link href="/connect" onClick={onClose} className="block text-base font-bold text-black hover:text-[#F8330D] transition-colors">
+              <Link href="/connect" onClick={onClose} className={`block text-base font-bold hover:text-[#F8330D] transition-colors ${pathname === '/connect' ? 'text-[#F8330D]' : 'text-black'}`}>
                 Connect!
               </Link>
             </nav>
