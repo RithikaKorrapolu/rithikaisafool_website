@@ -170,7 +170,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 : 'border-black text-black hover:bg-black hover:text-white'
             }`}
           >
-            {!isSelectedVariantAvailable ? 'Sold Out' : 'Add to Cart'}
+            Add to Cart
           </button>
 
           <button
@@ -185,7 +185,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             onMouseEnter={(e) => isSelectedVariantAvailable && (e.currentTarget.style.boxShadow = 'inset 0px 0px 10px 2px rgba(0, 0, 0, 0.8)')}
             onMouseLeave={(e) => isSelectedVariantAvailable && (e.currentTarget.style.boxShadow = '0px 4px 4px 0px #F8330D')}
           >
-            {!isSelectedVariantAvailable ? 'Sold Out' : 'Buy Now'}
+            Buy Now
           </button>
         </div>
       </div>
