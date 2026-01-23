@@ -66,21 +66,20 @@ export default function Shop() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="mb-1 md:mb-12 w-full overflow-hidden -mt-[30px] sm:-mt-[39px] md:-mt-[48px] lg:-mt-[54px] relative min-h-[180px] sm:min-h-[200px] md:min-h-0"
+        className="mb-6 sm:mb-4 md:mb-12 w-full overflow-hidden -mt-[30px] sm:-mt-[39px] md:-mt-[48px] lg:-mt-[54px] relative h-[150px] sm:h-[180px] md:h-auto md:min-h-0"
       >
         <Image
           src="/assets/shop awning 2.png"
           alt="Shop Awning"
           width={2400}
           height={1200}
-          className="max-w-none w-[150%] -ml-[25%] md:w-[110%] md:ml-0 lg:w-full"
-          style={{ objectFit: 'cover' }}
+          className="max-w-none w-[230%] -ml-[65%] sm:w-[180%] sm:-ml-[40%] md:w-[110%] md:ml-0 lg:w-full h-full md:h-auto object-cover"
         />
         {/* Text overlay on awning */}
-        <div className="absolute inset-0 flex items-start justify-center pt-8 sm:pt-6 md:pt-10 lg:pt-16">
+        <div className="absolute inset-0 flex items-start justify-center pt-6 sm:pt-6 md:pt-10 lg:pt-16 px-4">
           <h2
             ref={textRef}
-            className="font-[family-name:var(--font-abril-fatface)]"
+            className="font-[family-name:var(--font-abril-fatface)] text-center max-w-[90%] sm:max-w-none"
             style={{
               fontSize: 'clamp(1.6rem, 4.8vw, 3.2rem)',
               color: '#E5FF00',
@@ -150,13 +149,13 @@ export default function Shop() {
               </svg>
             </a>
           </div>
-          <p className="text-white text-sm font-normal font-[family-name:var(--font-inter)]">© Rithika is a Fool 2026</p>
           <div className="flex gap-6">
             <a href="/" className="text-white text-sm font-semibold hover:text-[#F8330D] transition-colors font-[family-name:var(--font-inter)]">Home</a>
             <a href="/shop" className="text-white text-sm font-semibold hover:text-[#F8330D] transition-colors font-[family-name:var(--font-inter)]">Store</a>
             <a href="/connect" className="text-white text-sm font-semibold hover:text-[#F8330D] transition-colors font-[family-name:var(--font-inter)]">Contact</a>
             <a href="/legal" className="text-white text-sm font-semibold hover:text-[#F8330D] transition-colors font-[family-name:var(--font-inter)]">Legal</a>
           </div>
+          <p className="text-white text-sm font-normal font-[family-name:var(--font-inter)]">© Rithika is a Fool 2026</p>
         </div>
         {/* Desktop layout */}
         <div className="hidden md:block relative">

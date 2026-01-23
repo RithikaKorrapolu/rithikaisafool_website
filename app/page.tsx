@@ -75,6 +75,7 @@ export default function Home() {
   const [showStwlTyping, setShowStwlTyping] = useState(true);
   const [stwlTextIndex, setStwlTextIndex] = useState(0);
   const [clientQuoteIndex, setClientQuoteIndex] = useState(0);
+  const [winkIndex, setWinkIndex] = useState(0);
 
   const clientQuotes = [
     "How can our features and notifications be beautiful and funny (along with being helpful)?",
@@ -138,6 +139,15 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [showClientPopup, clientQuotes.length]);
 
+  // Rotate wink images
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setWinkIndex((prev) => (prev + 1) % 2);
+    }, 800);
+    return () => clearInterval(interval);
+  }, []);
+
+  
   const handleSTWLSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
     if (stwlSubmitting) return;
@@ -392,7 +402,7 @@ export default function Home() {
       <main className="min-h-screen pt-[140px] md:pt-[145px] lg:pt-[155px] pb-20" style={{ backgroundColor: '#F2F2F2' }}>
         {/* Fixed Background Title and Subtitle */}
         <div
-          className="fixed left-0 right-0 z-0 pointer-events-none top-[200px] md:top-[140px]"
+          className="fixed left-0 right-0 z-0 pointer-events-none top-[140px] md:top-[140px]"
           style={{
             willChange: 'transform'
           }}
@@ -405,21 +415,32 @@ export default function Home() {
               transition={{ duration: 0.6 }}
               className="text-center mb-0 mt-3"
             >
-              <h1 className="text-[72px] md:text-[13vw] font-bold leading-none tracking-tight font-[family-name:var(--font-abril-fatface)] whitespace-nowrap" style={{
+              <h1 className="text-[29vw] sm:text-[13vw] font-bold leading-none tracking-tight font-[family-name:var(--font-abril-fatface)] text-left sm:text-center" style={{
                 color: '#F8330D'
               }}>
-                YOU MADE IT!
+                {/* Mobile layout */}
+                <span className="sm:hidden block">
+                  YOU<br/>MADE<br/>
+                  IT!
+                  <span className="block text-left -mt-20">
+                    <span className="text-base font-bold text-black font-[family-name:var(--font-abril-fatface)] tracking-wide">
+                      I guess dreams do come true <span className="inline-block relative w-5 h-5 align-bottom -translate-y-2"><Image src="/assets/wink1.png" alt="wink" width={30} height={30} className={`absolute inset-0 w-full h-full transition-opacity duration-100 ${winkIndex === 0 ? 'opacity-100' : 'opacity-0'}`} /><Image src="/assets/wink2.png" alt="wink" width={30} height={30} className={`absolute inset-0 w-full h-full transition-opacity duration-100 ${winkIndex === 1 ? 'opacity-100' : 'opacity-0'}`} /></span>
+                    </span>
+                  </span>
+                </span>
+                {/* Desktop layout */}
+                <span className="hidden sm:inline whitespace-nowrap">YOU MADE IT!</span>
               </h1>
             </motion.div>
 
-            {/* Subtitles */}
+            {/* Subtitles - Desktop only */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-center mb-12 -mt-4"
+              className="hidden sm:block text-center mb-12 -mt-4"
             >
-              <h2 className="text-lg md:text-3xl font-bold text-black font-[family-name:var(--font-abril-fatface)]">dream come true</h2>
+              <h2 className="text-3xl font-bold text-black font-[family-name:var(--font-abril-fatface)]">I guess dreams do come true <span className="inline-block relative w-8 h-8 align-bottom translate-y-0.5"><Image src="/assets/wink1.png" alt="wink" width={30} height={30} className={`absolute inset-0 w-full h-full transition-opacity duration-100 ${winkIndex === 0 ? 'opacity-100' : 'opacity-0'}`} /><Image src="/assets/wink2.png" alt="wink" width={30} height={30} className={`absolute inset-0 w-full h-full transition-opacity duration-100 ${winkIndex === 1 ? 'opacity-100' : 'opacity-0'}`} /></span></h2>
             </motion.div>
           </div>
         </div>
@@ -427,7 +448,7 @@ export default function Home() {
         {/* Scrollable Content */}
         <div className="container mx-auto px-6 relative z-10">
           {/* Spacer to account for fixed header height */}
-          <div className="h-[100px] md:h-[180px] lg:h-[280px]"></div>
+          <div className="h-[100vw] sm:h-[18vw] lg:h-[18vw]"></div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
             {reversedPosters.map((poster) => {
@@ -1391,13 +1412,13 @@ export default function Home() {
                 </svg>
               </a>
             </div>
-            <p className="text-white text-sm font-normal font-[family-name:var(--font-inter)]">© Rithika is a Fool 2026</p>
             <div className="flex gap-6">
               <a href="/" className="text-white text-sm font-semibold hover:text-[#F8330D] transition-colors font-[family-name:var(--font-inter)]">Home</a>
               <a href="/shop" className="text-white text-sm font-semibold hover:text-[#F8330D] transition-colors font-[family-name:var(--font-inter)]">Store</a>
               <a href="/connect" className="text-white text-sm font-semibold hover:text-[#F8330D] transition-colors font-[family-name:var(--font-inter)]">Contact</a>
               <a href="/legal" className="text-white text-sm font-semibold hover:text-[#F8330D] transition-colors font-[family-name:var(--font-inter)]">Legal</a>
             </div>
+            <p className="text-white text-sm font-normal font-[family-name:var(--font-inter)]">© Rithika is a Fool 2026</p>
           </div>
           {/* Desktop layout */}
           <div className="hidden md:block relative">
