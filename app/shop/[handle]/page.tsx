@@ -293,9 +293,9 @@ export default function ProductDetailPage() {
 
   return (
     <>
-    <main className="min-h-screen pt-48 md:pt-52 pb-16" style={{ backgroundColor: '#F2F2F2' }}>
+    <main className="min-h-screen pt-44 md:pt-52 pb-16" style={{ backgroundColor: '#F2F2F2' }}>
       <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-1 lg:gap-12">
           {/* Left: Product Image */}
           <div>
             {/* Stranger Product - Single Image */}

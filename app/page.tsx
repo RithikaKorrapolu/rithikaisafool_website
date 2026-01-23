@@ -143,7 +143,7 @@ export default function Home() {
   useEffect(() => {
     const interval = setInterval(() => {
       setWinkIndex((prev) => (prev + 1) % 2);
-    }, 800);
+    }, 400);
     return () => clearInterval(interval);
   }, []);
 
