@@ -78,10 +78,10 @@ export default function QuoteLinePoster() {
           0%, 100% { height: 34px; }
           35% { height: 94px; }
         }
-        @media (max-width: 375px) {
+        @media (max-width: 768px) {
           .phone-visualizer {
-            -webkit-transform: translate(-50%, -50%) scale(0.95) !important;
-            transform: translate(-50%, -50%) scale(0.95) !important;
+            -webkit-transform: translate(-50%, -50%) scale(0.9) !important;
+            transform: translate(-50%, -50%) scale(0.9) !important;
           }
         }
       `}</style>
