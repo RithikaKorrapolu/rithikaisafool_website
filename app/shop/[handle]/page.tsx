@@ -62,13 +62,18 @@ export default function ProductDetailPage() {
 
   // Scroll to top on page load to prevent content being under header
   useEffect(() => {
+    // Disable browser scroll restoration
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+
     // Immediate scroll
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0; // For Safari
 
     // Multiple delayed scrolls to handle layout shifts on mobile
-    const timeouts = [50, 100, 200, 500].map((delay) =>
+    const timeouts = [0, 50, 100, 200, 500].map((delay) =>
       setTimeout(() => {
         window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
         document.documentElement.scrollTop = 0;
