@@ -54,11 +54,16 @@ export default function Menu({ isOpen, onClose }: MenuProps) {
                 About!
               </Link>
               <Link href="/studio" onClick={onClose} className={`block text-base font-bold hover:text-[#F8330D] transition-colors ${pathname === '/studio' ? 'text-[#F8330D]' : 'text-black'}`}>
-                Studio!
+                Work!
               </Link>
-              <Link href="/shop" onClick={onClose} className={`block text-base font-bold hover:text-[#F8330D] transition-colors ${pathname === '/shop' ? 'text-[#F8330D]' : 'text-black'}`}>
-                Shop!
-              </Link>
+              <div>
+                <Link href="/shop" onClick={onClose} className={`block text-base font-bold hover:text-[#F8330D] transition-colors ${pathname === '/shop' ? 'text-[#F8330D]' : 'text-black'}`}>
+                  Shop!
+                </Link>
+                <div className="text-xs font-bold text-black mt-1" style={{ letterSpacing: '0.02em' }}>
+                  BUYING ART IS GOOD FOR YOU
+                </div>
+              </div>
               <Link href="/connect" onClick={onClose} className={`block text-base font-bold hover:text-[#F8330D] transition-colors ${pathname === '/connect' ? 'text-[#F8330D]' : 'text-black'}`}>
                 Connect!
               </Link>

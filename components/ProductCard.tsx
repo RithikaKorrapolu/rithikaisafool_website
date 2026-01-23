@@ -1,199 +1,406 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { useState, useEffect } from "react";
-import { client } from "@/lib/shopify";
-import { useCart } from "@/context/CartContext";
+import { BouncingBallPoster } from "./BouncingBallPoster";
+
+const GLORY_IMAGES = [
+  "/assets/STIL Cards/14.png",
+  "/assets/STIL Cards/15.png",
+  "/assets/STIL Cards/16.png",
+  "/assets/STIL Cards/17.png",
+];
+
+// Define which transitions to use
+// 'fade' = slow fade IN, 'flip' = card flip
+const GLORY_TRANSITIONS = [
+  'flip', // Image 14 (coming from 17): flip
+  'fade', // Image 15 (coming from 14): slow fade
+  'flip', // Image 16 (coming from 15): flip
+  'fade', // Image 17 (coming from 16): slow fade
+] as const;
 
 interface ProductCardProps {
   product: any;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const { addToCart, openCart } = useCart();
-  const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [gloryImageIndex, setGloryImageIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const [ccpLayerIndex, setCcpLayerIndex] = useState(0);
+  const [editionCount, setEditionCount] = useState(1);
 
-  // Auto-select first available variant if the default is sold out
+  const isStrangerProduct = product.title?.toLowerCase().includes('stranger');
+
+  // Fetch edition count for stranger hoodie
   useEffect(() => {
-    if (product.variants && !product.variants[0]?.available) {
-      const firstAvailableIndex = product.variants.findIndex((v: any) => v.available);
-      if (firstAvailableIndex !== -1) {
-        setSelectedVariantIndex(firstAvailableIndex);
-      }
+    if (isStrangerProduct) {
+      fetch('/api/edition-count')
+        .then(res => res.json())
+        .then(data => {
+          if (data.editionCount) {
+            setEditionCount(data.editionCount);
+          }
+        })
+        .catch(err => console.error('Failed to fetch edition count:', err));
     }
-  }, [product]);
+  }, [isStrangerProduct]);
 
-  const selectedVariant = product.variants?.[selectedVariantIndex];
-  const price = selectedVariant?.price;
+  const isCCPProduct = product.title?.toLowerCase().includes('creative') &&
+                       product.title?.toLowerCase().includes('care');
+
+  // Cycle through glory images for STWL product with custom timing
+  useEffect(() => {
+    const isCardProduct = product.title?.toLowerCase().includes('specific things') ||
+                          product.title?.toLowerCase().includes('card') ||
+                          product.title?.toLowerCase().includes('love');
+    if (isCardProduct && !product.title?.toLowerCase().includes('stranger')) {
+      // Image 15 (index 1) shows for 1.5 seconds, Image 17 (index 3) shows for 2.5 seconds, others show for 1 second
+      const delay = gloryImageIndex === 3 ? 2500 : gloryImageIndex === 1 ? 1500 : 1000;
+      const timeoutId = setTimeout(() => {
+        setGloryImageIndex((prev) => (prev + 1) % GLORY_IMAGES.length);
+      }, delay);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [product.title, gloryImageIndex]);
+
+  // CCP animation cycle - simple 5 states
+  // State 0: 8+9, State 1: 11+12, State 2: 15+16, State 3: 23+24, State 4: 27+28
+  useEffect(() => {
+    if (isCCPProduct) {
+      const delay = 2000; // 2 seconds per state
+      const timeoutId = setTimeout(() => {
+        setCcpLayerIndex((prev) => (prev + 1) % 5);
+      }, delay);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [isCCPProduct, ccpLayerIndex]);
+
   const image = product.images?.[0]?.src;
-  const hasMultipleVariants = product.variants?.length > 1;
-  const isSelectedVariantAvailable = selectedVariant?.available ?? true;
   const allVariantsSoldOut = product.variants?.every((v: any) => !v.available) ?? false;
 
-  const handleAddToCart = () => {
-    setErrorMessage(null);
-    const productWithSelectedVariant = {
-      ...product,
-      selectedVariantIndex
-    };
-    const result = addToCart(productWithSelectedVariant);
-    if (result && result.error) {
-      setErrorMessage(result.error);
-    } else {
-      openCart();
-    }
-  };
-
-  const handleBuyNow = async () => {
-    if (selectedVariant?.id) {
-      try {
-        const checkout = await client.checkout.create();
-        const lineItemsToAdd = [{
-          variantId: selectedVariant.id,
-          quantity: 1
-        }];
-
-        const updatedCheckout = await client.checkout.addLineItems(checkout.id, lineItemsToAdd);
-
-        window.open(updatedCheckout.webUrl, '_blank');
-      } catch (error) {
-        console.error('Error creating checkout:', error);
-        alert('Unable to process checkout. Please try again.');
-      }
-    }
-  };
+  // Create URL-friendly handle from product handle or title
+  const productHandle = product.handle || product.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="bg-white rounded-lg overflow-hidden"
-      style={{ boxShadow: '0px 4px 20px 0px rgba(0, 0, 0, 0.1)' }}
-    >
-      {/* Product Image */}
-      <div className="relative w-full h-80 bg-gray-200">
-        {image ? (
-          <Image
-            src={image}
-            alt={product.title}
-            fill
-            className="object-cover"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-400">
-            No Image
-          </div>
-        )}
-        {allVariantsSoldOut && (
-          <div className="absolute top-3 right-3 z-10 rotate-12">
-            <div className="relative border-2 border-[#F8330D] px-3 py-1 bg-white/90" style={{
-              borderRadius: '4px',
-              boxShadow: '0 2px 4px rgba(248, 51, 13, 0.3)'
-            }}>
-              <span className="text-xs font-black text-[#F8330D] font-[family-name:var(--font-inter)] tracking-wide" style={{
-                textShadow: '1px 1px 0px rgba(248, 51, 13, 0.1)'
-              }}>
-                SOLD OUT
-              </span>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Product Info */}
-      <div className="p-6">
-        <h3 className="text-xl font-semibold text-black mb-2 font-[family-name:var(--font-inter)]">
-          {product.title}
-        </h3>
-
-        {product.description && (
-          <p className="text-sm text-gray-600 mb-4 font-[family-name:var(--font-inter)] line-clamp-2">
-            {product.description}
-          </p>
-        )}
-
-        {errorMessage && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
-            <p className="text-sm text-red-600 font-semibold font-[family-name:var(--font-inter)]">
-              {errorMessage}
-            </p>
-          </div>
-        )}
-
-        {hasMultipleVariants && (
-          <div className="mb-4">
-            <label className="text-sm font-semibold text-black mb-2 block font-[family-name:var(--font-inter)]">
-              Size:
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {product.variants.map((variant: any, index: number) => {
-                const isAvailable = variant.available;
-                const isSelected = selectedVariantIndex === index;
-
-                return (
-                  <button
-                    key={variant.id}
-                    onClick={() => {
-                      if (isAvailable) {
-                        setSelectedVariantIndex(index);
-                        setErrorMessage(null);
-                      }
+    <Link href={`/shop/${productHandle}`}>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        whileHover={{ scale: 1.1, transition: { duration: 0.2 } }}
+        transition={{ duration: 0.5 }}
+        onHoverStart={() => setIsHovered(true)}
+        onHoverEnd={() => setIsHovered(false)}
+        className="bg-white rounded-lg overflow-visible cursor-pointer hover:shadow-2xl transition-shadow"
+        style={{ boxShadow: '0px 4px 20px 0px rgba(0, 0, 0, 0.1)' }}
+      >
+        {/* Product Image */}
+        <div className="relative w-full h-80" style={{ backgroundColor: '#F2F2F2' }}>
+          {isCCPProduct ? (
+            <>
+              {/* Base layer - Image 7 (always visible) */}
+              <Image
+                src="/assets/CCP/7.png"
+                alt="CCP"
+                fill
+                className="object-contain"
+              />
+              {/* State 0: Images 8+9 */}
+              <AnimatePresence>
+                {ccpLayerIndex === 0 && (
+                  <>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1, transform: 'translateY(-25%)' }}
+                    >
+                      <Image src="/assets/CCP/8.png" alt="CCP" fill className="object-contain" />
+                    </motion.div>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 2 }}
+                    >
+                      <Image src="/assets/CCP/9.png" alt="CCP" fill className="object-contain" />
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+              {/* State 1: Images 11+12 */}
+              <AnimatePresence>
+                {ccpLayerIndex === 1 && (
+                  <>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1, transform: 'translateY(-10%)' }}
+                    >
+                      <Image src="/assets/CCP/11.png" alt="CCP" fill className="object-contain" />
+                    </motion.div>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 2 }}
+                    >
+                      <Image src="/assets/CCP/12.png" alt="CCP" fill className="object-contain" />
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+              {/* State 2: Images 15+16 */}
+              <AnimatePresence>
+                {ccpLayerIndex === 2 && (
+                  <>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}
+                    >
+                      <Image src="/assets/CCP/15.png" alt="CCP" fill className="object-contain" />
+                    </motion.div>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 2 }}
+                    >
+                      <Image src="/assets/CCP/16.png" alt="CCP" fill className="object-contain" />
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+              {/* State 3: Images 23+24 */}
+              <AnimatePresence>
+                {ccpLayerIndex === 3 && (
+                  <>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}
+                    >
+                      <Image src="/assets/CCP/23.png" alt="CCP" fill className="object-contain" />
+                    </motion.div>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 2 }}
+                    >
+                      <Image src="/assets/CCP/24.png" alt="CCP" fill className="object-contain" />
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+              {/* State 4: Images 27+28 */}
+              <AnimatePresence>
+                {ccpLayerIndex === 4 && (
+                  <>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}
+                    >
+                      <Image src="/assets/CCP/27.png" alt="CCP" fill className="object-contain" />
+                    </motion.div>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 2 }}
+                    >
+                      <Image src="/assets/CCP/28.png" alt="CCP" fill className="object-contain" />
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+            </>
+          ) : product.title?.toLowerCase().includes('stranger') ? (
+            <BouncingBallPoster showLogo={false} isHovered={isHovered} />
+          ) : (product.title?.toLowerCase().includes('specific things') ||
+               product.title?.toLowerCase().includes('card') ||
+               product.title?.toLowerCase().includes('love')) &&
+              !product.title?.toLowerCase().includes('stranger') ? (
+            <>
+              {GLORY_TRANSITIONS[gloryImageIndex] === 'fade' ? (
+                // Fade transition
+                <>
+                  {/* Base layer - show previous image */}
+                  <Image
+                    src={GLORY_IMAGES[gloryImageIndex === 1 ? 0 : 2]}
+                    alt={product.title}
+                    fill
+                    className="object-contain"
+                  />
+                  {/* Fade layer on top */}
+                  <AnimatePresence>
+                    <motion.div
+                      key={gloryImageIndex}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 2 }}
+                      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                    >
+                      <Image
+                        src={GLORY_IMAGES[gloryImageIndex]}
+                        alt={product.title}
+                        fill
+                        className="object-contain"
+                      />
+                    </motion.div>
+                  </AnimatePresence>
+                </>
+              ) : (
+                // Flip transition
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={gloryImageIndex}
+                    initial={{ rotateY: -90, opacity: 0 }}
+                    animate={{ rotateY: 0, opacity: 1 }}
+                    exit={{ rotateY: 90, opacity: 0 }}
+                    transition={{ duration: 0.6 }}
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '100%',
+                      transformStyle: 'preserve-3d'
                     }}
-                    disabled={!isAvailable}
-                    className={`px-4 py-2 border-2 rounded-md text-sm font-semibold transition-all font-[family-name:var(--font-inter)] ${
-                      !isAvailable
-                        ? 'border-gray-200 text-gray-400 cursor-not-allowed bg-gray-50'
-                        : isSelected
-                        ? 'border-black bg-black text-white'
-                        : 'border-gray-300 text-black hover:border-black'
-                    }`}
                   >
-                    {variant.title}
-                  </button>
-                );
-              })}
+                    <Image
+                      src={GLORY_IMAGES[gloryImageIndex]}
+                      alt={product.title}
+                      fill
+                      className="object-contain"
+                    />
+                  </motion.div>
+                </AnimatePresence>
+              )}
+            </>
+          ) : (product.title?.toLowerCase().includes('condition') ||
+               product.title?.toLowerCase().includes('month')) && image ? (
+            <Image
+              src={image}
+              alt={product.title}
+              fill
+              className="object-contain"
+              style={{ transform: 'scale(0.88)' }}
+            />
+          ) : image ? (
+            <Image
+              src={image}
+              alt={product.title}
+              fill
+              className="object-cover"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-gray-400">
+              No Image
             </div>
-          </div>
-        )}
-
-        <div className="mb-4">
-          <span className="text-2xl font-bold text-black font-[family-name:var(--font-inter)]">
-            ${price?.amount || '0.00'}
-          </span>
+          )}
+          {allVariantsSoldOut && (
+            <div className="absolute top-3 right-3 z-10 rotate-6">
+              <div className="relative px-4 py-1.5 bg-[#F8330D]" style={{
+                borderRadius: '4px'
+              }}>
+                <span className="text-sm font-black text-white font-[family-name:var(--font-inter)] tracking-wide">
+                  SOLD OUT
+                </span>
+              </div>
+            </div>
+          )}
         </div>
 
-        <div className="flex gap-2">
-          <button
-            onClick={handleAddToCart}
-            disabled={!isSelectedVariantAvailable}
-            className={`flex-1 px-4 py-2 border-2 rounded-full text-sm font-semibold transition-all font-[family-name:var(--font-inter)] ${
-              !isSelectedVariantAvailable
-                ? 'border-gray-300 text-gray-400 cursor-not-allowed bg-gray-100'
-                : 'border-black text-black hover:bg-black hover:text-white'
-            }`}
-          >
-            Add to Cart
-          </button>
+        {/* Product Info */}
+        <div className="p-6">
+          <h3 className="text-xl font-semibold text-black mb-2 font-[family-name:var(--font-inter)]">
+            {product.title?.toLowerCase().includes('stranger') ? 'A STRANGER DESIGNED MY HOODIE' : product.title}
+          </h3>
+          {product.title?.toLowerCase().includes('stranger') && (
+            <div className="mb-2">
+              <div className="flex items-center gap-2">
+                <span className="bg-[#dcff73] text-black px-2 py-1 text-xs font-bold uppercase rounded font-[family-name:var(--font-inter)]">(EDITION #{String(editionCount).padStart(2, '0')})</span>
+                <p className="text-lg font-bold text-black font-[family-name:var(--font-inter)]">
+                  ${product.variants?.[0]?.price?.amount ? parseFloat(product.variants[0].price.amount).toFixed(2) : '0.00'}
+                </p>
+              </div>
+            </div>
+          )}
 
-          <button
-            onClick={handleBuyNow}
-            disabled={!isSelectedVariantAvailable}
-            className={`flex-1 px-4 py-2 border-2 rounded-full text-sm font-semibold transition-all font-[family-name:var(--font-inter)] ${
-              !isSelectedVariantAvailable
-                ? 'border-gray-300 text-gray-400 cursor-not-allowed bg-gray-100'
-                : 'border-black text-black hover:bg-black hover:text-white'
-            }`}
-            style={isSelectedVariantAvailable ? { boxShadow: '0px 4px 4px 0px #F8330D' } : {}}
-            onMouseEnter={(e) => isSelectedVariantAvailable && (e.currentTarget.style.boxShadow = 'inset 0px 0px 10px 2px rgba(0, 0, 0, 0.8)')}
-            onMouseLeave={(e) => isSelectedVariantAvailable && (e.currentTarget.style.boxShadow = '0px 4px 4px 0px #F8330D')}
-          >
-            Buy Now
-          </button>
+          {(product.title?.toLowerCase().includes('specific things') ||
+            product.title?.toLowerCase().includes('card') ||
+            product.title?.toLowerCase().includes('love')) &&
+           !product.title?.toLowerCase().includes('stranger') && (
+            <div className="mb-2">
+              <p className="text-lg font-bold text-black font-[family-name:var(--font-inter)]">
+                ${product.variants?.[0]?.price?.amount ? parseFloat(product.variants[0].price.amount).toFixed(2) : '0.00'}
+              </p>
+            </div>
+          )}
+
+          {isCCPProduct && (
+            <div className="mb-2">
+              <p className="text-lg font-bold text-black font-[family-name:var(--font-inter)]">
+                $8 / $6 subscription
+              </p>
+            </div>
+          )}
+
+          {(product.title?.toLowerCase().includes('condition') ||
+            product.title?.toLowerCase().includes('month')) &&
+           !isCCPProduct && (
+            <div className="mb-2">
+              <p className="text-lg font-bold text-black font-[family-name:var(--font-inter)]">
+                ${product.variants?.[0]?.price?.amount ? parseFloat(product.variants[0].price.amount).toFixed(2) : '0.00'}
+              </p>
+            </div>
+          )}
+
+          {product.title?.toLowerCase().includes('stranger') ? (
+            <p className="text-base text-black font-[family-name:var(--font-inter)]">
+              Can you trust a stranger to design your hoodie? Let&apos;s find out!
+            </p>
+          ) : (product.title?.toLowerCase().includes('specific things') ||
+               product.title?.toLowerCase().includes('card') ||
+               product.title?.toLowerCase().includes('love')) &&
+              !product.title?.toLowerCase().includes('stranger') ? (
+            <p className="text-base text-black font-[family-name:var(--font-inter)] line-clamp-2">
+              The thing about love is that it's so big, it's like the biggest thing in the world. But it's also really small. Love starts with noticing small, good things about someone until it adds up and becomes something big. This is a card for the small things.
+            </p>
+          ) : isCCPProduct ? (
+            <p className="text-base text-black font-[family-name:var(--font-inter)] line-clamp-2">
+              A monthly care package full of creative goodies to inspire you.
+            </p>
+          ) : (
+            <>
+              {product.description && (
+                <p className="text-base text-black font-[family-name:var(--font-inter)] line-clamp-2">
+                  {product.description}
+                </p>
+              )}
+            </>
+          )}
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </Link>
   );
 }

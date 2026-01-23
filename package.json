@@ -5,9 +5,12 @@
   "main": "index.js",
   "scripts": {
     "dev": "next dev",
+    "dev:turbo": "next dev --turbo",
+    "dev:clean": "rm -rf .next && next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "clean": "rm -rf .next"
   },
   "repository": {
     "type": "git",
@@ -16,7 +19,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module",
   "bugs": {
     "url": "https://github.com/RithikaKorrapolu/rithikaisafool_website/issues"
   },
@@ -24,6 +26,7 @@
   "dependencies": {
     "date-fns": "^4.1.0",
     "framer-motion": "^12.23.25",
+    "googleapis": "^169.0.0",
     "next": "^16.0.7",
     "react": "^19.2.1",
     "react-big-calendar": "^1.19.4",

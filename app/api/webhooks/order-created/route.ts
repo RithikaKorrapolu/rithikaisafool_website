@@ -14,6 +14,84 @@ function verifyWebhook(body: string, hmacHeader: string): boolean {
   return hash === hmacHeader;
 }
 
+// Increment edition count for stranger hoodie
+async function incrementEditionCount() {
+  // Get the stranger hoodie product
+  const response = await fetch(
+    `https://${SHOPIFY_STORE_DOMAIN}/admin/api/2024-01/products.json?handle=a-stranger-designed-my-hoodie`,
+    {
+      headers: {
+        'X-Shopify-Access-Token': SHOPIFY_ADMIN_ACCESS_TOKEN,
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+
+  const data = await response.json();
+  const product = data.products?.[0];
+
+  if (!product) {
+    throw new Error('Stranger hoodie product not found');
+  }
+
+  // Get current metafields
+  const metafieldsResponse = await fetch(
+    `https://${SHOPIFY_STORE_DOMAIN}/admin/api/2024-01/products/${product.id}/metafields.json`,
+    {
+      headers: {
+        'X-Shopify-Access-Token': SHOPIFY_ADMIN_ACCESS_TOKEN,
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+
+  const metafieldsData = await metafieldsResponse.json();
+  const editionMetafield = metafieldsData.metafields?.find(
+    (mf: any) => mf.namespace === 'custom' && mf.key === 'edition_count'
+  );
+
+  const currentCount = editionMetafield ? parseInt(editionMetafield.value) : 1;
+  const newCount = currentCount + 1;
+
+  // Update or create the metafield
+  if (editionMetafield) {
+    await fetch(
+      `https://${SHOPIFY_STORE_DOMAIN}/admin/api/2024-01/products/${product.id}/metafields/${editionMetafield.id}.json`,
+      {
+        method: 'PUT',
+        headers: {
+          'X-Shopify-Access-Token': SHOPIFY_ADMIN_ACCESS_TOKEN,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          metafield: {
+            value: newCount.toString(),
+          },
+        }),
+      }
+    );
+  } else {
+    await fetch(
+      `https://${SHOPIFY_STORE_DOMAIN}/admin/api/2024-01/products/${product.id}/metafields.json`,
+      {
+        method: 'POST',
+        headers: {
+          'X-Shopify-Access-Token': SHOPIFY_ADMIN_ACCESS_TOKEN,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          metafield: {
+            namespace: 'custom',
+            key: 'edition_count',
+            value: newCount.toString(),
+            type: 'number_integer',
+          },
+        }),
+      }
+    );
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const hmacHeader = request.headers.get('x-shopify-hmac-sha256');
@@ -30,6 +108,23 @@ export async function POST(request: NextRequest) {
 
     // Get all line items from the order
     const lineItems = order.line_items || [];
+
+    // Check if order contains the stranger hoodie and increment edition count
+    for (const item of lineItems) {
+      const productTitle = item.title?.toLowerCase() || '';
+      if (productTitle.includes('stranger')) {
+        // Increment edition count for each hoodie purchased
+        const quantity = item.quantity || 1;
+        for (let i = 0; i < quantity; i++) {
+          try {
+            await incrementEditionCount();
+            console.log('Incremented stranger hoodie edition count');
+          } catch (err) {
+            console.error('Failed to increment edition count:', err);
+          }
+        }
+      }
+    }
 
     // For each product purchased, check if it's a monthly-limited product
     for (const item of lineItems) {

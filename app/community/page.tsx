@@ -2,17 +2,18 @@
 
 import { motion } from "framer-motion";
 import CommunityCalendar from "@/components/CommunityCalendar";
+import { ScrollingMarquee } from "@/components/ScrollingMarquee";
 
 export default function Community() {
   return (
-    <main className="min-h-screen pt-[100px] sm:pt-[130px] md:pt-[160px] lg:pt-[180px] pb-32" style={{ backgroundColor: '#F2F2F2' }}>
+    <main className="min-h-screen pt-[150px] md:pt-[160px] lg:pt-[180px] pb-32" style={{ backgroundColor: '#F2F2F2' }}>
       <div className="container mx-auto px-6 max-w-7xl">
         {/* Main Heading */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-6 md:mb-16"
         >
           <h1 className="text-base md:text-2xl font-bold text-black font-[family-name:var(--font-inter)] leading-tight">
             We wanna hang out and talk about cool ideas<br />and laugh and stuff.
@@ -80,24 +81,7 @@ export default function Community() {
       </div>
 
       {/* Bottom Scrolling Text */}
-      <div className="fixed bottom-0 left-0 w-full bg-white py-3 overflow-hidden z-40" style={{ boxShadow: '0px 4px 34px 0px rgba(0, 0, 0, 0.25)' }}>
-        <div className="flex animate-marquee-seamless" style={{ letterSpacing: '-0.06em' }}>
-          <div className="flex whitespace-nowrap">
-            {Array(20).fill(0).map((_, i) => (
-              <span key={i} className="text-base md:text-xl font-normal italic text-black font-[family-name:var(--font-inter)]">
-                We are the future. Believe.&nbsp;
-              </span>
-            ))}
-          </div>
-          <div className="flex whitespace-nowrap" aria-hidden="true">
-            {Array(20).fill(0).map((_, i) => (
-              <span key={i} className="text-base md:text-xl font-normal italic text-black font-[family-name:var(--font-inter)]">
-                We are the future. Believe.&nbsp;
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
+      <ScrollingMarquee text="We are the future. Believe." />
     </main>
   );
 }
