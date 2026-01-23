@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from "react";
 
 export default function Eyes() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const eyeRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const eyeRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
