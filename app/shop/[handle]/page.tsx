@@ -60,6 +60,16 @@ export default function ProductDetailPage() {
 
   const [archiveIndex, setArchiveIndex] = useState(0);
 
+  // Scroll to top on page load to prevent content being under header
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    // Also scroll after a brief delay to handle any layout shifts
+    const timeout = setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+    return () => clearTimeout(timeout);
+  }, [handle]);
+
   // Check if this is the CCP product
   const isCCPProduct = product?.title?.toLowerCase().includes('creative care') ||
                        product?.title?.toLowerCase().includes('care package');
