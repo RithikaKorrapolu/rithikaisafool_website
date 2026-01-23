@@ -149,6 +149,19 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
+  // Prevent body scroll when any popup is open
+  useEffect(() => {
+    const isAnyPopupOpen = showPhonePopup || showClientPopup || showSTWLPopup || showComingSoonPopup;
+    if (isAnyPopupOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [showPhonePopup, showClientPopup, showSTWLPopup, showComingSoonPopup]);
+
   // Intersection Observer for mobile scroll hover effects
   useEffect(() => {
     if (!isTouchDevice) return;
