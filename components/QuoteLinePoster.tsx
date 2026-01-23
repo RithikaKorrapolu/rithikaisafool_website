@@ -80,9 +80,8 @@ export default function QuoteLinePoster() {
         }
         @media (max-width: 768px) {
           .phone-visualizer {
-            left: 50% !important;
-            -webkit-transform: translate(-50%, -50%) scale(0.9) !important;
-            transform: translate(-50%, -50%) scale(0.9) !important;
+            -webkit-transform: translate(-50%, -50%) scale(0.8) !important;
+            transform: translate(-50%, -50%) scale(0.8) !important;
           }
         }
       `}</style>

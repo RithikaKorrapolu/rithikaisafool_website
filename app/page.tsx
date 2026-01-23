@@ -76,6 +76,8 @@ export default function Home() {
   const [stwlTextIndex, setStwlTextIndex] = useState(0);
   const [clientQuoteIndex, setClientQuoteIndex] = useState(0);
   const [winkIndex, setWinkIndex] = useState(0);
+  const [activePosterIds, setActivePosterIds] = useState<Set<number>>(new Set());
+  const posterRefs = useRef<Map<number, HTMLDivElement>>(new Map());
 
   const clientQuotes = [
     "How can our features and notifications be beautiful and funny (along with being helpful)?",
@@ -146,6 +148,38 @@ export default function Home() {
     }, 400);
     return () => clearInterval(interval);
   }, []);
+
+  // Intersection Observer for mobile scroll hover effects
+  useEffect(() => {
+    if (!isTouchDevice) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const posterId = parseInt(entry.target.getAttribute('data-poster-id') || '0');
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.6) {
+            setActivePosterIds((prev) => new Set(prev).add(posterId));
+          } else {
+            setActivePosterIds((prev) => {
+              const newSet = new Set(prev);
+              newSet.delete(posterId);
+              return newSet;
+            });
+          }
+        });
+      },
+      {
+        threshold: [0, 0.6, 1],
+        rootMargin: '-10% 0px -10% 0px'
+      }
+    );
+
+    posterRefs.current.forEach((ref) => {
+      if (ref) observer.observe(ref);
+    });
+
+    return () => observer.disconnect();
+  }, [isTouchDevice]);
 
   
   const handleSTWLSubscribe = async (e: React.FormEvent) => {
@@ -398,6 +432,21 @@ export default function Home() {
         .poster-wrapper:hover .shop-sticker {
           transform: rotate(360deg);
         }
+
+        /* Mobile scroll-based hover effects */
+        .poster-wrapper.mobile-active {
+          animation-play-state: paused;
+          z-index: 10;
+          position: relative;
+        }
+
+        .poster-wrapper.mobile-active .poster-card {
+          transform: scale(1.1);
+        }
+
+        .poster-wrapper.mobile-active .shop-sticker {
+          transform: rotate(360deg);
+        }
       `}} />
       <main className="min-h-screen pt-[140px] md:pt-[145px] lg:pt-[155px] pb-20" style={{ backgroundColor: '#F2F2F2' }}>
         {/* Fixed Background Title and Subtitle */}
@@ -452,8 +501,15 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
             {reversedPosters.map((poster) => {
+              const isActive = isTouchDevice && activePosterIds.has(poster.id);
               const PosterContent = (
-                <div className="poster-wrapper">
+                <div
+                  className={`poster-wrapper ${isActive ? 'mobile-active' : ''}`}
+                  ref={(el) => {
+                    if (el) posterRefs.current.set(poster.id, el);
+                  }}
+                  data-poster-id={poster.id}
+                >
                   <div
                     className="poster-card rounded-lg shadow-xl flex items-center justify-center overflow-hidden"
                     style={{
