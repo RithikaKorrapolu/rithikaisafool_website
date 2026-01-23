@@ -237,7 +237,7 @@ export default function Connect() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12">
 
           {/* Left Column - Reach Out */}
-          <div className="flex flex-col">
+          <div className="flex flex-col order-2 lg:order-1">
             {/* Follow Us Around */}
             <div className="mb-6 flex items-center gap-2 md:gap-4">
               <h3 className="text-black font-semibold" style={{ fontFamily: 'Anek Bangla, sans-serif', fontSize: 'clamp(1rem, 3vw, 1.44rem)', lineHeight: '1.8' }}>
@@ -363,7 +363,7 @@ export default function Connect() {
           </div>
 
           {/* Right Column - Penny For Your Thoughts */}
-          <div>
+          <div className="order-1 lg:order-2">
             {/* Purple Dashed Border Box */}
             <div className="border-4 border-dashed px-4 md:px-8 pt-3 pb-4 mb-8" style={{ borderColor: '#561DF1' }}>
               <h2 className="text-center font-bold mb-1 text-black" style={{ fontSize: 'clamp(1.1rem, 4vw, 1.625rem)', fontFamily: 'Anek Bangla, sans-serif', letterSpacing: '-0.05em' }}>

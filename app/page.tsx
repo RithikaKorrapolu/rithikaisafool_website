@@ -1093,16 +1093,8 @@ export default function Home() {
                 &times;
               </button>
 
-              {/* First paragraph - appears immediately */}
-              <p
-                className="text-base md:text-lg text-black leading-relaxed mb-6 text-justify pr-8 md:pr-0"
-                style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
-              >
-                Hearing people talk about their dreams, like really talk about them, is one of the best things in life! Getting to work with them on it is an honor!!
-              </p>
-
-              {/* Custom Audio Player */}
-              <div className="mb-8 max-w-sm mx-auto">
+              {/* Custom Audio Player - at top */}
+              <div className="mb-6 mt-6 md:mt-0 max-w-sm mx-auto">
                 <audio
                   ref={audioRef}
                   onTimeUpdate={handleAudioTimeUpdate}
@@ -1148,45 +1140,50 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Second paragraph - appears slowly */}
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.5, duration: 1.5 }}
-                className="text-base md:text-lg text-black leading-relaxed mb-6 text-justify"
-                style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
-              >
-                If you&apos;re working on something new (building a new product, creating content, or hosting events) and could use a little help with creative direction / strategy, we might make a good team.
-              </motion.p>
-
-              <AnimatePresence mode="wait">
-                <motion.p
-                  key={clientQuoteIndex}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="text-base md:text-lg text-black leading-relaxed mb-6 italic text-center"
-                  style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
-                >
-                  &quot;{clientQuotes[clientQuoteIndex]}&quot;
-                </motion.p>
-              </AnimatePresence>
-
+              {/* All text content - fades in together */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 2.5, duration: 1 }}
-                className="text-center"
+                transition={{ delay: 0.5, duration: 1.5 }}
               >
-                <Link
-                  href="https://calendar.app.google/7Y2Mws8dAD7hSY1f8"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block bg-[#F8330D] text-white font-bold py-3 px-6 rounded-full hover:bg-black transition-colors text-sm shadow-lg font-[family-name:var(--font-inter)] hover-wiggle"
+                <p
+                  className="text-base md:text-lg text-black leading-relaxed mb-6 text-justify pr-8 md:pr-0"
+                  style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
                 >
-                  This is the best way to find out.
-                </Link>
+                  Hearing people talk about their dreams, like really talk about them, is one of the best things in life! Getting to work with them on it is an honor!!
+                </p>
+
+                <AnimatePresence mode="wait">
+                  <motion.p
+                    key={clientQuoteIndex}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="text-base md:text-lg text-black leading-relaxed mb-6 italic text-center"
+                    style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
+                  >
+                    &quot;{clientQuotes[clientQuoteIndex]}&quot;
+                  </motion.p>
+                </AnimatePresence>
+
+                <p
+                  className="text-base md:text-lg text-black leading-relaxed mb-6 text-justify"
+                  style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
+                >
+                  If you&apos;re working on something new (building a new product, creating content, or hosting events) and could use a little help with creative direction / strategy, we might make a good team.
+                </p>
+
+                <div className="text-center">
+                  <Link
+                    href="https://calendar.app.google/7Y2Mws8dAD7hSY1f8"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block bg-[#F8330D] text-white font-bold py-3 px-6 rounded-full hover:bg-black transition-colors text-sm shadow-lg font-[family-name:var(--font-inter)] hover-wiggle"
+                  >
+                    This is the best way to find out.
+                  </Link>
+                </div>
               </motion.div>
             </motion.div>
           </motion.div>
