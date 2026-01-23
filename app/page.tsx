@@ -929,7 +929,7 @@ export default function Home() {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="rounded-2xl p-8 max-w-md mx-4 text-center shadow-2xl relative border border-white/20"
+              className="rounded-2xl p-6 md:p-8 max-w-md mx-4 text-center shadow-2xl relative border border-white/20 max-h-[60vh] md:max-h-none overflow-y-auto"
               style={{ background: 'rgba(255, 255, 255, 0.7)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}
               onClick={(e) => e.stopPropagation()}
             >
@@ -942,12 +942,12 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
-              <h2 className="text-2xl font-bold mb-4 text-black font-[family-name:var(--font-loubag)]">
+              <h2 className="text-xl md:text-2xl font-bold mb-4 text-black font-[family-name:var(--font-loubag)]">
                 Call Anytime!
               </h2>
               <a
                 href="tel:6097322482"
-                className="text-4xl font-bold text-[#F8330D] hover:text-[#d42a0a] transition-colors font-[family-name:var(--font-loubag)]"
+                className="text-3xl md:text-4xl font-bold text-[#F8330D] hover:text-[#d42a0a] transition-colors font-[family-name:var(--font-loubag)]"
                 style={{ animation: 'flash 0.5s ease-in-out infinite' }}
               >
                 609-732-2482
@@ -961,14 +961,20 @@ export default function Home() {
               <p className="mt-4 text-black font-[family-name:var(--font-inter)]">
                 Each month, we feature one person. Every day, they answer one new question. Call to hear today&apos;s answer. Call everyday and you get to know someone over the course of a month.
               </p>
+              {/* CALL NOW button - mobile only, right after "course of a month" */}
+              {isTouchDevice && (
+                <a
+                  href="tel:6097322482"
+                  className="mt-4 px-6 py-2 bg-[#F8330D] hover:bg-black text-white rounded-full transition-colors font-[family-name:var(--font-inter)] font-bold inline-block hover-wiggle"
+                >
+                  CALL NOW
+                </a>
+              )}
               <p className="mt-4 text-black font-[family-name:var(--font-inter)] italic">
                 Pitch us new questions / come on the show by emailing{' '}
                 <a href="mailto:submissions@rithikaisafool.com" className="underline hover:text-gray-700">
                   submissions@rithikaisafool.com
                 </a>
-              </p>
-              <p className="mt-4 text-sm text-gray-600 font-[family-name:var(--font-inter)] text-center">
-                Follow us around
               </p>
               <div className="flex justify-center gap-6 mt-4">
                 <a href="https://www.instagram.com/rithikaisafool" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">
@@ -992,49 +998,6 @@ export default function Home() {
                   </svg>
                 </a>
               </div>
-
-              {/* More dropdown */}
-              <div className="mt-4">
-                <button
-                  onClick={() => setShowMoreInfo(!showMoreInfo)}
-                  className="text-gray-500 hover:text-black transition-colors font-[family-name:var(--font-inter)] text-sm flex items-center gap-1 mx-auto"
-                >
-                  More
-                  <svg
-                    className={`w-4 h-4 transition-transform ${showMoreInfo ? 'rotate-180' : ''}`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                <AnimatePresence>
-                  {showMoreInfo && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="overflow-hidden"
-                    >
-                      <p className="mt-3 text-sm text-gray-600 font-[family-name:var(--font-inter)] text-left">
-                        Sometimes I wake up really anxious. I usually want to feel connected to other people/the world so I reach for my phone and start doomscrolling or watching something but then I&apos;ll feel worse. I wanted a different option where I could still feel connected to other people and it&apos;s exciting to tune in but its simple and pure. That&apos;s what I&apos;m trying to get this show to be.
-                      </p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-
-{/* Only show CALL NOW on mobile */}
-              {isTouchDevice && (
-                <a
-                  href="tel:6097322482"
-                  className="mt-6 px-6 py-2 bg-[#F8330D] hover:bg-black text-white rounded-full transition-colors font-[family-name:var(--font-inter)] font-bold inline-block hover-wiggle"
-                >
-                  CALL NOW
-                </a>
-              )}
             </motion.div>
           </motion.div>
         )}
@@ -1054,7 +1017,7 @@ export default function Home() {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="rounded-3xl p-12 max-w-2xl mx-4 relative border border-white/20"
+              className="rounded-3xl p-6 md:p-12 max-w-2xl mx-4 relative border border-white/20 max-h-[60vh] md:max-h-none overflow-y-auto"
               style={{ background: 'rgba(255, 255, 255, 0.7)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}
               onClick={(e) => e.stopPropagation()}
             >
@@ -1067,7 +1030,7 @@ export default function Home() {
 
               {/* First paragraph - appears immediately */}
               <p
-                className="text-base md:text-lg text-black leading-relaxed mb-6 text-justify"
+                className="text-base md:text-lg text-black leading-relaxed mb-6 text-justify pr-8 md:pr-0"
                 style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
               >
                 Hearing people talk about their dreams, like really talk about them, is one of the best things in life! Getting to work with them on it is an honor!!
@@ -1179,7 +1142,7 @@ export default function Home() {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="rounded-2xl p-8 max-w-md mx-4 text-center shadow-2xl relative border border-white/20"
+              className="rounded-2xl p-6 md:p-8 max-w-md mx-4 text-center shadow-2xl relative border border-white/20 max-h-[60vh] md:max-h-none overflow-y-auto"
               style={{ background: 'rgba(255, 255, 255, 0.7)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}
               onClick={(e) => e.stopPropagation()}
             >
@@ -1237,9 +1200,6 @@ export default function Home() {
                   submissions@rithikaisafool.com
                 </a>
               </p>
-              <p className="mt-4 text-sm text-gray-600 font-[family-name:var(--font-inter)] text-center">
-                Follow us around
-              </p>
               <div className="flex justify-center gap-6 mt-4">
                 <a href="https://www.instagram.com/rithikaisafool" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">
                   <svg className="w-6 h-6" fill="black" viewBox="0 0 24 24">
@@ -1281,7 +1241,7 @@ export default function Home() {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="rounded-2xl p-8 max-w-md mx-4 text-center shadow-2xl relative border border-white/20"
+              className="rounded-2xl p-6 md:p-8 max-w-md mx-4 text-center shadow-2xl relative border border-white/20 max-h-[60vh] md:max-h-none overflow-y-auto"
               style={{ background: 'rgba(255, 255, 255, 0.7)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}
               onClick={(e) => e.stopPropagation()}
             >
@@ -1293,13 +1253,11 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
-              <h2 className="text-2xl font-bold mb-4 text-black font-[family-name:var(--font-loubag)]">
+              <h2 className="text-xl md:text-2xl font-bold mb-4 text-black font-[family-name:var(--font-loubag)] pr-8 md:pr-0">
                 We&apos;re Collecting Good Stories
               </h2>
-              <p className="text-black font-[family-name:var(--font-inter)] mb-6">
-                Do you have a story that you get really excited to tell?
-                <br /><br />
-                Send us a voice memo at{' '}
+              <p className="text-black font-[family-name:var(--font-inter)] mb-6 text-left">
+                Do you have a story that you get really excited to tell? Send us a voice memo at{' '}
                 <a href="mailto:submissions@rithikaisafool.com" className="underline hover:text-gray-700">
                   submissions@rithikaisafool.com
                 </a>
@@ -1349,15 +1307,12 @@ export default function Home() {
                   disabled={comingSoonSubmitting || comingSoonMessage === "You're in!"}
                   className={`w-full text-white font-bold py-3 px-6 rounded-full transition-colors font-[family-name:var(--font-inter)] hover-wiggle ${comingSoonMessage === "You're in!" ? 'bg-black' : 'bg-[#F8330D] hover:bg-black'}`}
                 >
-                  {comingSoonSubmitting ? 'Subscribing...' : comingSoonMessage === "You're in!" ? "You're in!" : 'Notify me at launch'}
+                  {comingSoonSubmitting ? 'Subscribing...' : comingSoonMessage === "You're in!" ? "You're in!" : 'Keep me posted'}
                 </button>
                 {comingSoonMessage && comingSoonMessage !== "You're in!" && (
                   <p className="mt-3 text-sm font-[family-name:var(--font-inter)] text-red-500 text-center">{comingSoonMessage}</p>
                 )}
               </form>
-              <p className="text-sm text-gray-600 font-[family-name:var(--font-inter)] text-center">
-                Follow us around
-              </p>
               <div className="flex justify-center gap-6 mt-4">
                 <a href="https://www.instagram.com/rithikaisafool" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">
                   <svg className="w-6 h-6" fill="black" viewBox="0 0 24 24">

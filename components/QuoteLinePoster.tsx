@@ -37,26 +37,52 @@ export default function QuoteLinePoster() {
 
   return (
     <>
-      <style jsx>{`
+      <style>{`
+        @-webkit-keyframes soundWave {
+          0%, 100% { -webkit-transform: translateY(0) scaleY(1); transform: translateY(0) scaleY(1); }
+          50% { -webkit-transform: translateY(-4px) scaleY(1.5); transform: translateY(-4px) scaleY(1.5); }
+        }
         @keyframes soundWave {
-          0%, 100% { transform: translateY(0) scaleY(1); }
-          50% { transform: translateY(-4px) scaleY(1.5); }
+          0%, 100% { -webkit-transform: translateY(0) scaleY(1); transform: translateY(0) scaleY(1); }
+          50% { -webkit-transform: translateY(-4px) scaleY(1.5); transform: translateY(-4px) scaleY(1.5); }
+        }
+        @-webkit-keyframes barWave1 {
+          0%, 100% { height: 25px; }
+          50% { height: 85px; }
         }
         @keyframes barWave1 {
           0%, 100% { height: 25px; }
           50% { height: 85px; }
         }
+        @-webkit-keyframes barWave2 {
+          0%, 100% { height: 43px; }
+          40% { height: 110px; }
+        }
         @keyframes barWave2 {
           0%, 100% { height: 43px; }
           40% { height: 110px; }
+        }
+        @-webkit-keyframes barWave3 {
+          0%, 100% { height: 17px; }
+          60% { height: 76px; }
         }
         @keyframes barWave3 {
           0%, 100% { height: 17px; }
           60% { height: 76px; }
         }
+        @-webkit-keyframes barWave4 {
+          0%, 100% { height: 34px; }
+          35% { height: 94px; }
+        }
         @keyframes barWave4 {
           0%, 100% { height: 34px; }
           35% { height: 94px; }
+        }
+        @media (max-width: 375px) {
+          .phone-visualizer {
+            -webkit-transform: translate(-50%, -50%) scale(0.95) !important;
+            transform: translate(-50%, -50%) scale(0.95) !important;
+          }
         }
       `}</style>
       <div
@@ -76,42 +102,6 @@ export default function QuoteLinePoster() {
           borderRadius: '8px'
         }}
       >
-        {/* Floating number blobs */}
-        {[
-          { num: '6', startX: -100, startY: -80, endX: 500, endY: 600, rotate: 30, duration: 2.2, delay: 0 },
-          { num: '0', startX: 450, startY: -100, endX: -150, endY: 550, rotate: -25, duration: 2.5, delay: 0.3 },
-          { num: '9', startX: -80, startY: 350, endX: 520, endY: -80, rotate: 45, duration: 1.9, delay: 0.6 },
-          { num: '7', startX: 400, startY: 500, endX: -100, endY: -50, rotate: -40, duration: 2.3, delay: 0.9 },
-          { num: '3', startX: -120, startY: 150, endX: 550, endY: 400, rotate: 20, duration: 2.1, delay: 1.2 },
-          { num: '2', startX: 480, startY: 200, endX: -80, endY: 450, rotate: -35, duration: 2.4, delay: 1.5 },
-          { num: '4', startX: 200, startY: -100, endX: 100, endY: 650, rotate: 15, duration: 2.0, delay: 1.8 },
-          { num: '8', startX: -60, startY: 500, endX: 480, endY: 100, rotate: -50, duration: 2.6, delay: 2.1 },
-        ].map((item, index) => (
-          <motion.span
-            key={index}
-            initial={{ x: item.startX, y: item.startY, rotate: 0 }}
-            animate={{ x: item.endX, y: item.endY, rotate: item.rotate }}
-            transition={{
-              duration: item.duration,
-              repeat: Infinity,
-              ease: "linear",
-              delay: item.delay,
-            }}
-            style={{
-              position: 'absolute',
-              fontSize: '80px',
-              fontWeight: 'bold',
-              color: 'rgba(255,255,255,0.5)',
-              filter: 'blur(8px)',
-              fontFamily: 'var(--font-loubag), Arial, sans-serif',
-              top: 0,
-              left: 0,
-            }}
-          >
-            {item.num}
-          </motion.span>
-        ))}
-
         {/* Cover image on top */}
         <Image
           src="/assets/QuoteLine/quotecover8.png"
@@ -124,7 +114,7 @@ export default function QuoteLinePoster() {
 
 
       {/* Phone number and visualizer */}
-      <div style={{
+      <div className="phone-visualizer" style={{
         position: 'absolute',
         top: '55%',
         left: '60%',
@@ -156,7 +146,9 @@ export default function QuoteLinePoster() {
                   borderRadius: '9999px',
                   border: '1px solid black',
                   height: '11px',
+                  WebkitAnimation: `${randomAnim} ${randomDuration}s ease-in-out infinite`,
                   animation: `${randomAnim} ${randomDuration}s ease-in-out infinite`,
+                  WebkitAnimationDelay: `${(index * 0.03) + (index % 3) * 0.1}s`,
                   animationDelay: `${(index * 0.03) + (index % 3) * 0.1}s`
                 }}
               />
@@ -179,7 +171,9 @@ export default function QuoteLinePoster() {
               key={index}
               style={{
                 display: 'inline-block',
+                WebkitAnimation: `soundWave 0.6s ease-in-out infinite`,
                 animation: `soundWave 0.6s ease-in-out infinite`,
+                WebkitAnimationDelay: `${index * 0.05}s`,
                 animationDelay: `${index * 0.05}s`
               }}
             >

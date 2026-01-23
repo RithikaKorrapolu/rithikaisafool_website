@@ -245,7 +245,7 @@ export default function Connect() {
               </h3>
               <div className="flex gap-2 md:gap-4">
                 <a href="https://www.instagram.com/rithikaisafool" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity dancing-icon">
-                  <svg className="w-5 h-5 md:w-8 md:h-8" fill="url(#instagram-gradient)" viewBox="0 0 24 24">
+                  <svg className="w-7 h-7 md:w-8 md:h-8" fill="url(#instagram-gradient)" viewBox="0 0 24 24">
                     <defs>
                       <linearGradient id="instagram-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" style={{ stopColor: '#833AB4' }} />
@@ -258,19 +258,19 @@ export default function Connect() {
                 </a>
 
                 <a href="https://www.tiktok.com/@rithikaisafool" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity dancing-icon">
-                  <svg className="w-5 h-5 md:w-8 md:h-8 text-black" fill="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-7 h-7 md:w-8 md:h-8 text-black" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/>
                   </svg>
                 </a>
 
                 <a href="https://x.com/rithikaisafool" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity dancing-icon">
-                  <svg className="w-5 h-5 md:w-8 md:h-8 text-black" fill="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-7 h-7 md:w-8 md:h-8 text-black" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                   </svg>
                 </a>
 
                 <a href="https://substack.com/@rithikaisafool" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity dancing-icon">
-                  <svg className="w-5 h-5 md:w-8 md:h-8 text-black" fill="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-7 h-7 md:w-8 md:h-8 text-black" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/>
                   </svg>
                 </a>
@@ -286,39 +286,39 @@ export default function Connect() {
 
             {/* Contact Info */}
             <div className="mb-1">
-              <span className="text-black" style={{ fontSize: '1.3rem', fontFamily: 'Anek Bangla, sans-serif' }}>
+              <span className="text-black text-[1.17rem] md:text-[1.3rem]" style={{ fontFamily: 'Anek Bangla, sans-serif' }}>
                 order support:{' '}
               </span>
               <a
                 href="mailto:support@rithikaisafool.com"
-                className="email-link transition-colors"
-                style={{ fontSize: '1.3rem', fontFamily: 'Anek Bangla, sans-serif' }}
+                className="email-link transition-colors text-[1.17rem] md:text-[1.3rem]"
+                style={{ fontFamily: 'Anek Bangla, sans-serif' }}
               >
                 support@rithikaisafool.com
               </a>
             </div>
 
             <div className="mb-1">
-              <span className="text-black" style={{ fontSize: '1.3rem', fontFamily: 'Anek Bangla, sans-serif' }}>
+              <span className="text-black text-[1.17rem] md:text-[1.3rem]" style={{ fontFamily: 'Anek Bangla, sans-serif' }}>
                 pitches and submissions:{' '}
               </span>
               <a
                 href="mailto:submissions@rithikaisafool.com"
-                className="email-link transition-colors"
-                style={{ fontSize: '1.3rem', fontFamily: 'Anek Bangla, sans-serif' }}
+                className="email-link transition-colors text-[1.17rem] md:text-[1.3rem]"
+                style={{ fontFamily: 'Anek Bangla, sans-serif' }}
               >
                 submissions@rithikaisafool.com
               </a>
             </div>
 
             <div className="mb-8">
-              <span className="text-black" style={{ fontSize: '1.3rem', fontFamily: 'Anek Bangla, sans-serif' }}>
+              <span className="text-black text-[1.17rem] md:text-[1.3rem]" style={{ fontFamily: 'Anek Bangla, sans-serif' }}>
                 everything else:{' '}
               </span>
               <a
                 href="mailto:rithika@rithikaisafool.com"
-                className="email-link transition-colors"
-                style={{ fontSize: '1.3rem', fontFamily: 'Anek Bangla, sans-serif' }}
+                className="email-link transition-colors text-[1.17rem] md:text-[1.3rem]"
+                style={{ fontFamily: 'Anek Bangla, sans-serif' }}
               >
                 rithika@rithikaisafool.com
               </a>

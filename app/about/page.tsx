@@ -166,7 +166,7 @@ export default function About() {
         {/* Dedication Text */}
         <div className="container mx-auto px-6 max-w-3xl mt-2 md:mt-8 mb-2 md:mb-6 text-center">
           <p className="text-black font-medium font-[family-name:var(--font-inter)]" style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(1rem, 4vw, 1.375rem)' }}>
-            My name is Rithika and this is my <span className="relative inline-block cursor-pointer" onMouseEnter={() => setShowTooltip1(true)} onMouseLeave={() => setShowTooltip1(false)}><strong>creative studio</strong><sup style={{ backgroundColor: '#dcff73', borderRadius: '50%', padding: '2px 6px', fontSize: '0.6em', marginLeft: '2px' }}>1</sup><AnimatePresence>{showTooltip1 && (<motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="absolute left-1/2 -translate-x-1/2 top-full mt-2 bg-white rounded-lg shadow-xl p-4 z-50 w-96 text-sm font-normal text-left" style={{ letterSpacing: 'normal' }}><p>I want to make art that brings people together in sweet, stupid, surprising ways.<br/>I want to unlock unexpected moments of love.</p></motion.div>)}</AnimatePresence></span>. I&apos;m very lucky because I have many <span className="relative inline-block cursor-pointer" onMouseEnter={() => setShowTooltip2(true)} onMouseLeave={() => setShowTooltip2(false)}><strong>fools</strong><sup style={{ backgroundColor: '#dcff73', borderRadius: '50%', padding: '2px 6px', fontSize: '0.6em', marginLeft: '2px' }}>2</sup><AnimatePresence>{showTooltip2 && (<motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="absolute left-1/2 -translate-x-1/2 top-full mt-2 bg-white rounded-lg shadow-xl p-4 z-50 whitespace-nowrap text-sm font-normal text-left" style={{ letterSpacing: 'normal' }}><p>see a few below</p></motion.div>)}</AnimatePresence></span> in my life. They taught me how to live well. This is dedicated to <span className="relative inline-block cursor-pointer" onMouseEnter={() => setShowTooltip3(true)} onMouseLeave={() => setShowTooltip3(false)}><strong>them</strong><sup style={{ backgroundColor: '#dcff73', borderRadius: '50%', padding: '2px 6px', fontSize: '0.6em', marginLeft: '2px' }}>3</sup><AnimatePresence>{showTooltip3 && (<motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="absolute left-1/2 -translate-x-1/2 top-full mt-2 bg-white rounded-lg shadow-xl p-4 z-50 whitespace-nowrap text-sm font-normal text-left" style={{ letterSpacing: 'normal' }}><p>I love you.</p></motion.div>)}</AnimatePresence></span>.
+            My name is Rithika and this is my <span className="relative inline-block cursor-pointer" onMouseEnter={() => setShowTooltip1(true)} onMouseLeave={() => setShowTooltip1(false)}><strong>creative studio</strong><sup style={{ backgroundColor: '#dcff73', borderRadius: '50%', padding: '2px 6px', fontSize: '0.6em', marginLeft: '2px' }}>1</sup><AnimatePresence>{showTooltip1 && (<motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="absolute left-1/2 -translate-x-1/2 top-full mt-2 bg-white rounded-lg shadow-xl p-2.5 md:p-4 z-50 w-96 text-xs md:text-sm font-normal text-left" style={{ letterSpacing: 'normal' }}><p>I want to make art that brings people together in sweet, stupid, surprising ways. Art that unlocks unexpected moments of love.</p></motion.div>)}</AnimatePresence></span>. I&apos;m very lucky because I have many <span className="relative inline-block cursor-pointer" onMouseEnter={() => setShowTooltip2(true)} onMouseLeave={() => setShowTooltip2(false)}><strong>fools</strong><sup style={{ backgroundColor: '#dcff73', borderRadius: '50%', padding: '2px 6px', fontSize: '0.6em', marginLeft: '2px' }}>2</sup><AnimatePresence>{showTooltip2 && (<motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="absolute left-1/2 -translate-x-1/2 top-full mt-2 bg-white rounded-lg shadow-xl p-2.5 md:p-4 z-50 whitespace-nowrap text-xs md:text-sm font-normal text-left" style={{ letterSpacing: 'normal' }}><p>see a few below</p></motion.div>)}</AnimatePresence></span> in my life. They taught me how to live well. This is dedicated to <span className="relative inline-block cursor-pointer" onMouseEnter={() => setShowTooltip3(true)} onMouseLeave={() => setShowTooltip3(false)}><strong>them</strong><sup style={{ backgroundColor: '#dcff73', borderRadius: '50%', padding: '2px 6px', fontSize: '0.6em', marginLeft: '2px' }}>3</sup><AnimatePresence>{showTooltip3 && (<motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="absolute left-1/2 -translate-x-1/2 top-full mt-2 bg-white rounded-lg shadow-xl p-2.5 md:p-4 z-50 whitespace-nowrap text-xs md:text-sm font-normal text-left" style={{ letterSpacing: 'normal' }}><p>I love you.</p></motion.div>)}</AnimatePresence></span>.
           </p>
         </div>
 
@@ -176,7 +176,7 @@ export default function About() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="relative w-full mx-auto"
+            className="relative w-full md:max-w-4xl lg:max-w-5xl mx-auto"
           >
             {/* Video/Image Container */}
             <div className="relative w-full rounded-3xl overflow-hidden" style={{
@@ -221,14 +221,14 @@ export default function About() {
               </button>
 
               {/* Breaking News Overlay */}
-              <div className="absolute bottom-0 left-0 right-0 pt-8 md:pt-20 pb-2 md:pb-6 px-2 md:px-6 flex justify-center">
-                <div className="relative inline-block w-[95%] md:w-[80%] max-w-5xl">
+              <div className="absolute bottom-4 md:bottom-0 left-0 right-0 pt-8 md:pt-20 pb-2 md:pb-6 px-2 md:px-6 flex justify-center">
+                <div className="relative inline-block w-[90%] md:w-[80%] max-w-5xl">
                   {/* Gray and Black boxes - stay in place */}
                   <div className="relative z-10 w-full">
                     {/* Red box positioned to the left, extends to top of black box */}
                     <div className="absolute -top-[1.1rem] sm:-top-5 md:-top-8 left-0 bottom-[0.9rem] sm:bottom-[1.2rem] md:bottom-[2rem] pl-[2%] sm:pl-[1%] pr-1 sm:pr-2 md:pr-4 z-0 inline-block" style={{ backgroundColor: 'rgba(255, 0, 0, 0.6)' }}>
                       <div className="relative -top-[0.25rem] sm:top-0 md:top-0">
-                        <span className="text-white font-bold text-[0.7rem] sm:text-xs md:text-lg lg:text-xl tracking-tight font-[family-name:var(--font-jaldi)]">BREAKING NEWS</span>
+                        <span className="text-white font-bold text-[0.85rem] sm:text-sm md:text-lg lg:text-xl tracking-tight font-[family-name:var(--font-jaldi)]">BREAKING NEWS</span>
                       </div>
                     </div>
 
@@ -240,14 +240,14 @@ export default function About() {
                           animate={{ opacity: 1, rotateX: 0 }}
                           exit={{ opacity: 0, rotateX: 90 }}
                           transition={{ duration: 0.5 }}
-                          className="text-black text-xs md:text-xl lg:text-2xl font-bold leading-none md:leading-tight uppercase font-[family-name:var(--font-inter)] max-w-[90%] md:max-w-full"
+                          className="text-black text-base md:text-xl lg:text-2xl font-bold leading-tight uppercase font-[family-name:var(--font-inter)] max-w-[85%] md:max-w-full"
                         >
                           {currentVideo?.headline}
                         </motion.h1>
                       </AnimatePresence>
                     </div>
                     <div className="px-2 md:px-6 py-0.5 w-full relative z-10" style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' }}>
-                      <p className="text-white text-[0.5rem] md:text-base lg:text-lg font-bold uppercase tracking-wide font-[family-name:var(--font-inter)]">
+                      <p className="text-white text-[0.6rem] md:text-base lg:text-lg font-bold uppercase tracking-wide font-[family-name:var(--font-inter)]">
                         LIFE IS BETTER WHEN YOU PLAY THE FOOL
                       </p>
                     </div>

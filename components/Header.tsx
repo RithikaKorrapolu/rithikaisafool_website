@@ -41,7 +41,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
               width={72}
               height={72}
               priority
-              className="w-[37px] md:w-[58px] h-auto object-contain home-logo-shadow"
+              className="w-[41px] md:w-[58px] h-auto object-contain home-logo-shadow"
             />
           </motion.div>
         </a>
@@ -92,7 +92,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
               width={240}
               height={96}
               priority
-              className="w-[123px] md:w-48 h-auto"
+              className="w-[135px] md:w-48 h-auto"
             />
           </motion.div>
         </a>
@@ -112,7 +112,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
             width={35}
             height={35}
             priority
-            className="w-[20px] md:w-[31px] h-auto object-contain"
+            className="w-[22px] md:w-[31px] h-auto object-contain"
           />
           {cartCount > 0 && (
             <span className="absolute -top-1 -right-1 bg-[#F8330D] text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center font-[family-name:var(--font-inter)]">
@@ -133,7 +133,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
               animate="rest"
             >
               <motion.span
-                className={`text-sm md:text-lg font-bold tracking-tighter inline-block ${pathname === '/about' ? 'text-[#F8330D]' : ''}`}
+                className={`text-[0.96rem] md:text-lg font-bold tracking-tighter inline-block ${pathname === '/about' ? 'text-[#F8330D]' : ''}`}
                 variants={{
                   rest: { rotate: pathname === '/about' ? 180 : 0 },
                   hover: { rotate: 180 }
@@ -152,7 +152,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
               animate="rest"
             >
               <motion.span
-                className={`text-sm md:text-lg font-bold tracking-tighter inline-block ${pathname === '/' ? 'text-[#F8330D]' : ''}`}
+                className={`text-[0.96rem] md:text-lg font-bold tracking-tighter inline-block ${pathname === '/' ? 'text-[#F8330D]' : ''}`}
                 variants={{
                   rest: { rotate: pathname === '/' ? 180 : 0 },
                   hover: { rotate: 180 }
@@ -171,7 +171,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
               animate="rest"
             >
               <motion.span
-                className={`text-sm md:text-lg font-bold tracking-tighter inline-block ${pathname === '/shop' ? 'text-[#F8330D]' : ''}`}
+                className={`text-[0.96rem] md:text-lg font-bold tracking-tighter inline-block ${pathname === '/shop' ? 'text-[#F8330D]' : ''}`}
                 variants={{
                   rest: { rotate: pathname === '/shop' ? 180 : 0 },
                   hover: { rotate: 180 }
@@ -190,7 +190,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
               animate="rest"
             >
               <motion.span
-                className={`text-sm md:text-lg font-bold tracking-tighter inline-block ${pathname === '/connect' ? 'text-[#F8330D]' : ''}`}
+                className={`text-[0.96rem] md:text-lg font-bold tracking-tighter inline-block ${pathname === '/connect' ? 'text-[#F8330D]' : ''}`}
                 variants={{
                   rest: { rotate: pathname === '/connect' ? 180 : 0 },
                   hover: { rotate: 180 }
