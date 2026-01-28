@@ -471,21 +471,21 @@ export default function Home() {
               transition={{ duration: 0.6 }}
               className="text-center mb-0 mt-3"
             >
-              <h1 className="text-[29vw] sm:text-[13vw] font-bold leading-none tracking-tight font-[family-name:var(--font-abril-fatface)] text-left sm:text-center" style={{
+              <h1 className="text-[26vw] sm:text-[11.7vw] font-bold leading-none tracking-tight font-[family-name:var(--font-abril-fatface)] text-left sm:text-center" style={{
                 color: '#F8330D'
               }}>
                 {/* Mobile layout */}
                 <span className="sm:hidden block">
-                  YOU<br/>MADE<br/>
-                  IT!
-                  <span className="block text-left -mt-20">
-                    <span className="text-base font-bold text-black font-[family-name:var(--font-abril-fatface)] tracking-wide">
-                      I guess dreams do come true <span className="inline-block relative w-5 h-5 align-bottom -translate-y-2"><Image src="/assets/wink1.png" alt="wink" width={30} height={30} className={`absolute inset-0 w-full h-full transition-opacity duration-100 ${winkIndex === 0 ? 'opacity-100' : 'opacity-0'}`} /><Image src="/assets/wink2.png" alt="wink" width={30} height={30} className={`absolute inset-0 w-full h-full transition-opacity duration-100 ${winkIndex === 1 ? 'opacity-100' : 'opacity-0'}`} /></span>
+                  LET&apos;S<br/>BE<br/>
+                  FOOLS!
+                  <span className="block text-right -mt-16">
+                    <span className="text-lg font-bold text-black font-[family-name:var(--font-abril-fatface)] tracking-wide italic">
+                      please
                     </span>
                   </span>
                 </span>
                 {/* Desktop layout */}
-                <span className="hidden sm:inline whitespace-nowrap">YOU MADE IT!</span>
+                <span className="hidden sm:inline whitespace-nowrap">LET&apos;S BE FOOLS!</span>
               </h1>
             </motion.div>
 
@@ -494,9 +494,9 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="hidden sm:block text-center mb-12 -mt-4"
+              className="hidden sm:block text-center mb-12 mt-2"
             >
-              <h2 className="text-3xl font-bold text-black font-[family-name:var(--font-abril-fatface)]">I guess dreams do come true <span className="inline-block relative w-8 h-8 align-bottom translate-y-0.5"><Image src="/assets/wink1.png" alt="wink" width={30} height={30} className={`absolute inset-0 w-full h-full transition-opacity duration-100 ${winkIndex === 0 ? 'opacity-100' : 'opacity-0'}`} /><Image src="/assets/wink2.png" alt="wink" width={30} height={30} className={`absolute inset-0 w-full h-full transition-opacity duration-100 ${winkIndex === 1 ? 'opacity-100' : 'opacity-0'}`} /></span></h2>
+              <h2 className="text-3xl font-bold text-black font-[family-name:var(--font-abril-fatface)] italic">please</h2>
             </motion.div>
           </div>
         </div>
@@ -504,7 +504,7 @@ export default function Home() {
         {/* Scrollable Content */}
         <div className="container mx-auto px-6 relative z-10">
           {/* Spacer to account for fixed header height */}
-          <div className="h-[100vw] sm:h-[18vw] lg:h-[18vw]"></div>
+          <div className="h-[93vw] sm:h-[18vw] lg:h-[18vw]"></div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
             {reversedPosters.map((poster) => {
