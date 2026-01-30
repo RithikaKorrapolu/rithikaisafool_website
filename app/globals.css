@@ -32,18 +32,18 @@
   --foreground: #0a0a0a;
 
   /* Header height variables - calculated from actual header structure */
-  /* Top bar: py-4 (32px) + logo (~72px) + border (1px) = ~105px */
+  /* Top bar: py-4 (32px) + logo (~60px) + border (1px) = ~93px */
   /* Nav bar: py-4 (32px) + text (~24px) = ~56px */
-  /* Total mobile: ~161px, add safety buffer = 175px */
-  --header-height-mobile: 175px;
+  /* Total mobile: ~149px, add small buffer = 155px */
+  --header-height-mobile: 155px;
 
   /* Desktop: slightly shorter nav bar (py-3.5 = 28px) */
-  /* Total desktop: ~153px, add buffer = 165px */
-  --header-height-desktop: 165px;
+  /* Total desktop: ~145px, add buffer = 150px */
+  --header-height-desktop: 150px;
 
   /* Page content padding - use these for main content spacing */
-  --page-top-padding-mobile: calc(var(--header-height-mobile) + 50px);
-  --page-top-padding-desktop: calc(var(--header-height-desktop) + 40px);
+  --page-top-padding-mobile: calc(var(--header-height-mobile) + 30px);
+  --page-top-padding-desktop: calc(var(--header-height-desktop) + 25px);
 }
 
 /* Use dvh (dynamic viewport height) for better mobile browser support */

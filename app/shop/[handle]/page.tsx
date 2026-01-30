@@ -333,7 +333,7 @@ export default function ProductDetailPage() {
 
   return (
     <>
-    <main className="min-h-screen pb-16 page-content-padding" style={{ backgroundColor: '#F2F2F2' }}>
+    <main className="min-h-screen pb-16 pt-40 md:pt-44" style={{ backgroundColor: '#F2F2F2' }}>
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-1 lg:gap-12">
           {/* Left: Product Image */}
@@ -563,7 +563,7 @@ export default function ProductDetailPage() {
                       alt={product.title}
                       fill
                       className="object-contain"
-                      style={{ transform: 'scale(0.88) translateY(-15%)' }}
+                      style={{ transform: 'scale(0.9) translateY(-5%)' }}
                     />
                   ) : image ? (
                     <Image
