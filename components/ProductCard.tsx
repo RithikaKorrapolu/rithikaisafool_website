@@ -333,7 +333,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Product Info */}
         <div className="p-6">
           <h3 className="text-xl font-semibold text-black mb-2 font-[family-name:var(--font-inter)]">
-            {product.title?.toLowerCase().includes('stranger') ? 'A STRANGER DESIGNED MY HOODIE' : product.title}
+            {product.title}
           </h3>
           {product.title?.toLowerCase().includes('stranger') && (
             <div className="mb-2">

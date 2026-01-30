@@ -117,7 +117,7 @@ export default function ProductDetailPage() {
 
   // Fetch edition count for stranger hoodie
   useEffect(() => {
-    if (handle === 'a-stranger-designed-my-hoodie') {
+    if (handle === 'a-stranger-designed-my-sweatshirt') {
       fetch('/api/edition-count')
         .then(res => res.json())
         .then(data => {
@@ -581,7 +581,7 @@ export default function ProductDetailPage() {
           <div className="flex flex-col lg:sticky lg:top-40 lg:self-start">
             {/* Title */}
             <h1 className="text-2xl md:text-4xl font-bold text-black mb-2 uppercase font-[family-name:var(--font-inter)]" style={{ letterSpacing: '-0.02em' }}>
-              {product.title?.toLowerCase().includes('stranger') ? 'A STRANGER DESIGNED MY HOODIE' : isCCPProduct ? 'THE CREATIVE CARE PACKAGE' : product.title}
+              {isCCPProduct ? 'THE CREATIVE CARE PACKAGE' : product.title}
             </h1>
             {product.title?.toLowerCase().includes('stranger') && (
               <p className="text-lg font-bold mb-4 uppercase font-[family-name:var(--font-inter)] inline-block w-fit">
