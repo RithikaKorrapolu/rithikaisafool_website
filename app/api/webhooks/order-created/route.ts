@@ -4,6 +4,8 @@ import crypto from 'crypto';
 const SHOPIFY_WEBHOOK_SECRET = process.env.SHOPIFY_WEBHOOK_SECRET || '';
 const SHOPIFY_ADMIN_ACCESS_TOKEN = process.env.SHOPIFY_ADMIN_ACCESS_TOKEN || '';
 const SHOPIFY_STORE_DOMAIN = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN || '';
+const KLAVIYO_API_KEY = process.env.KLAVIYO_API_KEY || '';
+const CCP_SUBSCRIPTION_LIST_ID = 'VhUSZw';
 
 // Verify webhook is from Shopify
 function verifyWebhook(body: string, hmacHeader: string): boolean {
@@ -12,6 +14,66 @@ function verifyWebhook(body: string, hmacHeader: string): boolean {
     .update(body, 'utf8')
     .digest('base64');
   return hash === hmacHeader;
+}
+
+// Subscribe email to Klaviyo list
+async function subscribeToKlaviyoList(email: string, listId: string) {
+  if (!KLAVIYO_API_KEY || !email) {
+    console.error('Missing Klaviyo API key or email');
+    return;
+  }
+
+  try {
+    const response = await fetch('https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
+        'Content-Type': 'application/json',
+        'revision': '2024-10-15',
+      },
+      body: JSON.stringify({
+        data: {
+          type: 'profile-subscription-bulk-create-job',
+          attributes: {
+            profiles: {
+              data: [
+                {
+                  type: 'profile',
+                  attributes: {
+                    email: email,
+                    subscriptions: {
+                      email: {
+                        marketing: {
+                          consent: 'SUBSCRIBED'
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            historical_import: false
+          },
+          relationships: {
+            list: {
+              data: {
+                type: 'list',
+                id: listId
+              }
+            }
+          }
+        }
+      }),
+    });
+
+    if (response.ok || response.status === 409) {
+      console.log(`Successfully subscribed ${email} to Klaviyo list ${listId}`);
+    } else {
+      console.error('Failed to subscribe to Klaviyo:', response.status);
+    }
+  } catch (error) {
+    console.error('Klaviyo subscription error:', error);
+  }
 }
 
 // Increment edition count for stranger hoodie
@@ -121,6 +183,25 @@ export async function POST(request: NextRequest) {
             console.log('Incremented stranger hoodie edition count');
           } catch (err) {
             console.error('Failed to increment edition count:', err);
+          }
+        }
+      }
+
+      // Check if order contains Creative Care Package subscription
+      const isCCPProduct = productTitle.includes('creative care') ||
+                          productTitle.includes('care package') ||
+                          productTitle.includes('creative') && productTitle.includes('package');
+      console.log('Checking product:', productTitle, 'Is CCP:', isCCPProduct);
+
+      if (isCCPProduct) {
+        const customerEmail = order.email || order.customer?.email;
+        console.log('CCP product found, customer email:', customerEmail);
+        if (customerEmail) {
+          try {
+            await subscribeToKlaviyoList(customerEmail, CCP_SUBSCRIPTION_LIST_ID);
+            console.log('Subscribed CCP buyer to Klaviyo list');
+          } catch (err) {
+            console.error('Failed to subscribe CCP buyer:', err);
           }
         }
       }

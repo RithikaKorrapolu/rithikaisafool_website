@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     }
 
     const klaviyoApiKey = process.env.KLAVIYO_API_KEY;
-    const listId = 'RSaqUR';
+    const listId = 'SyMryD';
 
     if (!klaviyoApiKey) {
       console.error('Missing Klaviyo API key');

@@ -11,11 +11,18 @@ export async function POST(request: NextRequest) {
     const KLAVIYO_API_KEY = process.env.KLAVIYO_API_KEY;
     const KLAVIYO_EMAIL_LIST_ID = process.env.KLAVIYO_LIST_ID;
 
-    // Use specific list for stranger sweatshirt waitlist
-    const STRANGER_SWEATSHIRT_LIST_ID = 'YmqFTt';
-    const KLAVIYO_WAITLIST_LIST_ID = productHandle?.includes('stranger')
-      ? STRANGER_SWEATSHIRT_LIST_ID
-      : process.env.KLAVIYO_WAITLIST_LIST_ID;
+    // Use specific lists for different product waitlists
+    const STRANGER_SWEATSHIRT_LIST_ID = 'SyMryD';
+    const CONDITION_HAT_LIST_ID = 'SJDchM';
+
+    let KLAVIYO_WAITLIST_LIST_ID;
+    if (productHandle?.includes('stranger')) {
+      KLAVIYO_WAITLIST_LIST_ID = STRANGER_SWEATSHIRT_LIST_ID;
+    } else if (productHandle?.includes('condition')) {
+      KLAVIYO_WAITLIST_LIST_ID = CONDITION_HAT_LIST_ID;
+    } else {
+      KLAVIYO_WAITLIST_LIST_ID = process.env.KLAVIYO_WAITLIST_LIST_ID;
+    }
 
     if (!KLAVIYO_API_KEY || !KLAVIYO_WAITLIST_LIST_ID || !KLAVIYO_EMAIL_LIST_ID) {
       console.error('Klaviyo API key or List IDs not configured');
