@@ -8,7 +8,7 @@ export async function GET() {
   try {
     // Get the stranger hoodie product by handle
     const response = await fetch(
-      `https://${SHOPIFY_STORE_DOMAIN}/admin/api/2024-01/products.json?handle=a-stranger-designed-my-hoodie`,
+      `https://${SHOPIFY_STORE_DOMAIN}/admin/api/2024-01/products.json?handle=a-stranger-designed-my-sweatshirt`,
       {
         headers: {
           'X-Shopify-Access-Token': SHOPIFY_ADMIN_API_TOKEN!,
@@ -54,7 +54,7 @@ export async function POST() {
   try {
     // Get the stranger hoodie product by handle
     const response = await fetch(
-      `https://${SHOPIFY_STORE_DOMAIN}/admin/api/2024-01/products.json?handle=a-stranger-designed-my-hoodie`,
+      `https://${SHOPIFY_STORE_DOMAIN}/admin/api/2024-01/products.json?handle=a-stranger-designed-my-sweatshirt`,
       {
         headers: {
           'X-Shopify-Access-Token': SHOPIFY_ADMIN_API_TOKEN!,

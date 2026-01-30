@@ -17,7 +17,21 @@ export default function Shop() {
     async function fetchProducts() {
       try {
         const fetchedProducts = await getProducts();
-        setProducts(fetchedProducts);
+        // Custom sort: Conditions hat before CCP
+        const sortedProducts = [...fetchedProducts].sort((a, b) => {
+          const aTitle = a.title?.toLowerCase() || '';
+          const bTitle = b.title?.toLowerCase() || '';
+          // Put "condition" products before "creative care" products
+          const aIsCondition = aTitle.includes('condition');
+          const bIsCondition = bTitle.includes('condition');
+          const aIsCCP = aTitle.includes('creative care') || aTitle.includes('care package');
+          const bIsCCP = bTitle.includes('creative care') || bTitle.includes('care package');
+
+          if (aIsCondition && bIsCCP) return -1;
+          if (aIsCCP && bIsCondition) return 1;
+          return 0;
+        });
+        setProducts(sortedProducts);
       } catch (error) {
         console.error("Error loading products:", error);
       } finally {

@@ -360,7 +360,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           {isCCPProduct && (
             <div className="mb-2">
               <p className="text-lg font-bold text-black font-[family-name:var(--font-inter)]">
-                $8 / $6 subscription
+                $4/month
               </p>
             </div>
           )}

@@ -51,11 +51,10 @@ export default function ProductDetailPage() {
   const [editionCount, setEditionCount] = useState(1);
 
   const editionImages = [
-    { id: 0, src: 'main', alt: 'Current Edition', title: 'Edition #01', description: 'The current mystery design. What will it be?' },
-    { id: 1, src: '/assets/Sweatshirt/Editions/1.png', alt: 'Edition 1', title: 'Edition #01', description: 'Designed by Sarah M. from Brooklyn, NY. Inspired by late night subway rides and neon signs.' },
-    { id: 2, src: '/assets/Sweatshirt/Editions/2.png', alt: 'Edition 2', title: 'Edition #02', description: 'Designed by Marcus T. from Austin, TX. A tribute to his grandmother\'s garden.' },
-    { id: 3, src: '/assets/Sweatshirt/Editions/3.png', alt: 'Edition 3', title: 'Edition #03', description: 'Designed by Priya K. from Seattle, WA. Based on a dream she had about flying.' },
-    { id: 4, src: '/assets/Sweatshirt/Editions/4.png', alt: 'Edition 4', title: 'Edition #04', description: 'Designed by James L. from Chicago, IL. Memories of childhood summers at the lake.' },
+    { id: 0, srcFront: 'main', srcBack: 'main', alt: 'Current Edition', title: 'Edition #01', description: 'The current mystery design. What will it be?' },
+    { id: 1, srcFront: '/assets/Sweatshirt/Editions/1a.png', srcBack: '/assets/Sweatshirt/Editions/1b.png', alt: 'Edition 1', title: 'Edition #01', description: '"The dream behind this project is to get strangers to collect and share stories with each other. For the first one, I liked the idea of someone on the sweatshirt literally asking for one. I hope it works and the wearer gets to hear a lot of cool stories." - Rithika K. from NYC' },
+    { id: 2, srcFront: '/assets/Sweatshirt/Editions/2a.png', srcBack: '/assets/Sweatshirt/Editions/2b.png', alt: 'Edition 2', title: 'Edition #02', description: '"I made this sweatshirt as a nod to my Telugu upbringing. I grew up with a loving, teasing extended family and on visits home to India, I would learn the swear words. Dunnapothu is one of my favorites. It literally means male buffalo but it\'s used when someone\'s being stubborn or foolish. Use it well." - Revanth K. from NYC' },
+    { id: 3, srcFront: '/assets/Sweatshirt/Editions/3a.png', srcBack: '/assets/Sweatshirt/Editions/3b.png', alt: 'Edition 3', title: 'Edition #03', description: 'This is the current hoodie up for sale. Someone will have to buy it to unlock it. You interested?' },
   ];
 
   const [archiveIndex, setArchiveIndex] = useState(0);
@@ -86,7 +85,8 @@ export default function ProductDetailPage() {
 
   // Check if this is the CCP product
   const isCCPProduct = product?.title?.toLowerCase().includes('creative care') ||
-                       product?.title?.toLowerCase().includes('care package');
+                       product?.title?.toLowerCase().includes('care package') ||
+                       handle?.toLowerCase().includes('creative-care-package');
 
   // Cycle through glory images for STWL product with custom timing
   useEffect(() => {
@@ -580,8 +580,8 @@ export default function ProductDetailPage() {
           {/* Right: Product Details */}
           <div className="flex flex-col lg:sticky lg:top-40 lg:self-start">
             {/* Title */}
-            <h1 className="text-4xl font-bold text-black mb-2 uppercase font-[family-name:var(--font-inter)]" style={{ letterSpacing: '-0.02em' }}>
-              {product.title?.toLowerCase().includes('stranger') ? 'A STRANGER DESIGNED MY HOODIE' : isCCPProduct ? 'DEAR FOOL: A CREATIVE CARE PACKAGE' : product.title}
+            <h1 className="text-2xl md:text-4xl font-bold text-black mb-2 uppercase font-[family-name:var(--font-inter)]" style={{ letterSpacing: '-0.02em' }}>
+              {product.title?.toLowerCase().includes('stranger') ? 'A STRANGER DESIGNED MY HOODIE' : isCCPProduct ? 'THE CREATIVE CARE PACKAGE' : product.title}
             </h1>
             {product.title?.toLowerCase().includes('stranger') && (
               <p className="text-lg font-bold mb-4 uppercase font-[family-name:var(--font-inter)] inline-block w-fit">
@@ -687,13 +687,13 @@ export default function ProductDetailPage() {
                     ></iframe>
                   </div>
                   <p className="text-base text-black font-[family-name:var(--font-inter)]">
-                    Can you trust a stranger to design your hoodie? Let&apos;s find out!
+                    Can you trust a stranger to design your hoodie? Let&apos;s find out.
                   </p>
                   <p className="text-base text-black font-[family-name:var(--font-inter)]">
-                    <strong>Each one is custom-designed by a different person</strong> and you don't get to see it ahead of time. You pick your size but the design is a total mystery until it arrives. After you buy one, you get a design call with me (Rithika) where <strong>you help design the next hoodie for the next stranger.</strong> And so forth!
+                    <strong>Each of these hoodies are custom-designed by a different person</strong> and you don't get to see it ahead of time. You pick your size but the design is a total mystery until it arrives. After you buy one, you get a design call with me (Rithika) where <strong>you help design the next hoodie for the next stranger.</strong> And so forth!
                   </p>
                   <p className="text-base text-black font-[family-name:var(--font-inter)] mt-4">
-                    <span className="bg-[#dcff73] px-1">You can check out the archive <button onClick={() => setShowArchivePopup(true)} className="font-bold underline hover:opacity-70">here</button></span>.
+                    <span className="bg-[#dcff73] px-1">You can check out the archive <button onClick={() => setShowArchivePopup(true)} className="font-bold underline hover:opacity-70">here</button></span>. We are currently on hoodie <strong>#{editionCount}</strong>.
                   </p>
                 </div>
               ) : (product.title?.toLowerCase().includes('specific things') ||
@@ -732,10 +732,21 @@ export default function ProductDetailPage() {
                   </div>
                 </div>
               ) : isCCPProduct ? (
-                <p className="text-base text-black font-[family-name:var(--font-inter)] italic">
-                  &quot;You think your pain and your heartbreak are unprecedented in the history of the world, but then you read. It was books that taught me that the things that tormented me most were the very things that connected me with all the people who were alive, who had ever been alive.&quot;
-                  <br />― James Baldwin
-                </p>
+                <div>
+                  <p className="text-base text-black font-[family-name:var(--font-inter)] italic mb-4">
+                    &quot;You think your pain and your heartbreak are unprecedented in the history of the world, but then you read.&quot;
+                    <br />― James Baldwin
+                  </p>
+                  <p className="text-sm text-black font-[family-name:var(--font-inter)] mb-4">
+                    Life can be hard. Sometimes, you have a job that makes you feel small and stupid. Or your ex starts dating your neighbor. Or you start having nightmares about your dead dad. It happens. Finding the right Art™ at the right time can help.
+                  </p>
+                  <p className="text-sm text-black font-[family-name:var(--font-inter)] mb-4">
+                    <strong>Once a month, we choose a theme</strong> (based on something someone might be going through) <strong>and we put together a digital, creative care package.</strong> We research and pull in all kinds of art (paintings, quotes, songs, excerpts from movies, photos from the street) that we think can help you process and relate to that theme. And then we add commentary and curate each of the pieces on a custom designed website.
+                  </p>
+                  <p className="text-sm text-black font-[family-name:var(--font-inter)] mb-4">
+                    <span className="bg-[#dcff73] px-1">You can check out a sample <a href="/shop/the-creative-care-package-sample" target="_blank" rel="noopener noreferrer" className="font-bold underline hover:opacity-70">here</a>.</span>
+                  </p>
+                </div>
               ) : (
                 <p className="text-sm text-gray-700 font-[family-name:var(--font-inter)]">
                   {product.description || "No description available."}
@@ -880,7 +891,7 @@ export default function ProductDetailPage() {
                               }
                             </span>
                             <span className="text-xs bg-[#dcff73] text-black px-2 py-1 rounded">
-                              SAVE 25% OFF
+                              SAVE 30% OFF
                             </span>
                           </div>
                           {plan.description && !isCCPProduct && (
@@ -1244,8 +1255,8 @@ export default function ProductDetailPage() {
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
-            className="bg-white rounded-2xl p-8 shadow-2xl relative"
-            style={{ width: '90vw', maxWidth: '1000px', height: '80vh', maxHeight: '700px' }}
+            className="bg-white rounded-2xl p-6 shadow-2xl relative overflow-y-auto md:overflow-hidden"
+            style={{ width: '90vw', maxWidth: '1100px', height: '85vh', maxHeight: '850px' }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close X Button */}
@@ -1258,26 +1269,38 @@ export default function ProductDetailPage() {
               </svg>
             </button>
 
-            <h2 className="text-2xl font-bold mb-6 text-black font-[family-name:var(--font-inter)] uppercase text-center">
+            <h2 className="text-2xl font-bold mb-0 text-black font-[family-name:var(--font-inter)] uppercase text-center">
               Hoodie Archive
             </h2>
+            <AnimatePresence mode="wait">
+              <motion.h3
+                key={archiveIndex}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="text-xl font-bold text-black font-[family-name:var(--font-inter)] uppercase text-center mb-1"
+              >
+                {editionImages[archiveIndex + 1].title}
+              </motion.h3>
+            </AnimatePresence>
 
             {/* Carousel Content */}
-            <div className="flex items-center h-[calc(100%-100px)]">
-              {/* Left Arrow */}
-              <button
-                onClick={() => setArchiveIndex((prev) => (prev === 0 ? editionImages.length - 2 : prev - 1))}
-                className="flex-shrink-0 w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors mr-4"
-              >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2">
-                  <path d="M15 18l-6-6 6-6"/>
-                </svg>
-              </button>
+            <div className="flex flex-col h-[calc(100%-35px)] -mt-18">
+              {/* Images with Arrows */}
+              <div className="flex items-center" style={{ height: '100%' }}>
+                {/* Left Arrow */}
+                <button
+                  onClick={() => setArchiveIndex((prev) => (prev === 0 ? editionImages.length - 2 : prev - 1))}
+                  className="flex-shrink-0 w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors mr-4"
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2">
+                    <path d="M15 18l-6-6 6-6"/>
+                  </svg>
+                </button>
 
-              {/* Image and Text */}
-              <div className="flex-1 flex gap-8 items-center h-full">
-                {/* Image */}
-                <div className="w-1/2 h-full relative">
+                {/* Images - Front and Back */}
+                <div className="flex-1 h-full relative overflow-visible">
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={archiveIndex}
@@ -1285,61 +1308,80 @@ export default function ProductDetailPage() {
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -50 }}
                       transition={{ duration: 0.3 }}
-                      className="relative w-full h-full"
+                      className="relative w-full h-full flex flex-col md:flex-row gap-0 md:gap-4 justify-center md:items-center pt-28 md:pt-0"
                     >
-                      <Image
-                        src={editionImages[archiveIndex + 1].src}
-                        alt={editionImages[archiveIndex + 1].alt}
-                        fill
-                        className="object-contain"
-                      />
+                      <div className="relative w-full h-[300px] md:h-full md:w-[50%] flex-shrink-0">
+                        {editionImages[archiveIndex + 1].srcFront === 'unlock' ? (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <div className="w-48 h-48 md:w-64 md:h-64 flex items-center justify-center bg-gray-100 rounded-lg">
+                              <div className="text-center">
+                                <svg className="w-12 h-12 mx-auto text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                                <p className="text-gray-500 font-bold text-sm">COMING SOON</p>
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <Image
+                            src={editionImages[archiveIndex + 1].srcFront}
+                            alt={`${editionImages[archiveIndex + 1].alt} Front`}
+                            fill
+                            className="object-contain"
+                          />
+                        )}
+                      </div>
+                      <div className="relative w-full h-[300px] md:h-full md:w-[50%] flex-shrink-0 -mt-8 md:mt-0">
+                        {editionImages[archiveIndex + 1].srcBack === 'unlock' ? (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <div className="w-48 h-48 md:w-64 md:h-64 flex items-center justify-center bg-gray-100 rounded-lg">
+                              <div className="text-center">
+                                <svg className="w-12 h-12 mx-auto text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                                <p className="text-gray-500 font-bold text-sm">COMING SOON</p>
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <Image
+                            src={editionImages[archiveIndex + 1].srcBack}
+                            alt={`${editionImages[archiveIndex + 1].alt} Back`}
+                            fill
+                            className="object-contain"
+                          />
+                        )}
+                      </div>
                     </motion.div>
                   </AnimatePresence>
                 </div>
 
-                {/* Text */}
-                <div className="w-1/2 flex flex-col justify-center">
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={archiveIndex}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <h3 className="text-3xl font-bold text-black font-[family-name:var(--font-inter)] uppercase mb-4">
-                        {editionImages[archiveIndex + 1].title}
-                      </h3>
-                      <p className="text-lg text-gray-700 font-[family-name:var(--font-inter)] leading-relaxed">
-                        {editionImages[archiveIndex + 1].description}
-                      </p>
-                    </motion.div>
-                  </AnimatePresence>
-
-                  {/* Dots indicator */}
-                  <div className="flex gap-2 mt-8">
-                    {editionImages.slice(1).map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setArchiveIndex(index)}
-                        className={`w-3 h-3 rounded-full transition-colors ${
-                          archiveIndex === index ? 'bg-black' : 'bg-gray-300 hover:bg-gray-400'
-                        }`}
-                      />
-                    ))}
-                  </div>
-                </div>
+                {/* Right Arrow */}
+                <button
+                  onClick={() => setArchiveIndex((prev) => (prev === editionImages.length - 2 ? 0 : prev + 1))}
+                  className="flex-shrink-0 w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors ml-4"
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2">
+                    <path d="M9 18l6-6-6-6"/>
+                  </svg>
+                </button>
               </div>
 
-              {/* Right Arrow */}
-              <button
-                onClick={() => setArchiveIndex((prev) => (prev === editionImages.length - 2 ? 0 : prev + 1))}
-                className="flex-shrink-0 w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors ml-4"
-              >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2">
-                  <path d="M9 18l6-6-6-6"/>
-                </svg>
-              </button>
+              {/* Text and Dots below images */}
+              <div className="text-center mt-6 md:-mt-10 mx-auto pb-8 md:pb-0" style={{ width: '80%' }}>
+                <AnimatePresence mode="wait">
+                  <motion.p
+                    key={archiveIndex}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3 }}
+                    className="text-lg text-black font-[family-name:var(--font-inter)]"
+                  >
+                    {editionImages[archiveIndex + 1].description}
+                  </motion.p>
+                </AnimatePresence>
+              </div>
             </div>
           </motion.div>
         </motion.div>

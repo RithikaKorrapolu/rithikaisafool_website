@@ -1,0 +1,8 @@
+"use client";
+
+export default function CCPSamplePage() {
+  return (
+    <div className="min-h-screen bg-white">
+    </div>
+  );
+}

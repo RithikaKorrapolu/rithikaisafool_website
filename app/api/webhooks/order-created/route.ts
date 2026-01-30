@@ -18,7 +18,7 @@ function verifyWebhook(body: string, hmacHeader: string): boolean {
 async function incrementEditionCount() {
   // Get the stranger hoodie product
   const response = await fetch(
-    `https://${SHOPIFY_STORE_DOMAIN}/admin/api/2024-01/products.json?handle=a-stranger-designed-my-hoodie`,
+    `https://${SHOPIFY_STORE_DOMAIN}/admin/api/2024-01/products.json?handle=a-stranger-designed-my-sweatshirt`,
     {
       headers: {
         'X-Shopify-Access-Token': SHOPIFY_ADMIN_ACCESS_TOKEN,
