@@ -986,7 +986,7 @@ export default function Home() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed bg-black/50 flex items-center justify-center z-50"
-            style={{ top: '-100vh', bottom: '-100vh', left: 0, right: 0 }}
+            style={{ top: '-200vh', bottom: '-200vh', left: 0, right: 0 }}
             onClick={() => setShowPhonePopup(false)}
           >
             <motion.div
@@ -1075,7 +1075,7 @@ export default function Home() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed bg-black/50 flex items-center justify-center z-50"
-            style={{ top: '-100vh', bottom: '-100vh', left: 0, right: 0 }}
+            style={{ top: '-200vh', bottom: '-200vh', left: 0, right: 0 }}
             onClick={() => setShowClientPopup(false)}
           >
             <motion.div
@@ -1198,7 +1198,7 @@ export default function Home() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed bg-black/50 flex items-center justify-center z-50"
-            style={{ top: '-100vh', bottom: '-100vh', left: 0, right: 0 }}
+            style={{ top: '-200vh', bottom: '-200vh', left: 0, right: 0 }}
             onClick={() => { setShowSTWLPopup(false); setSTWLEmail(''); setSTWLMessage(''); }}
           >
             <motion.div
@@ -1298,7 +1298,7 @@ export default function Home() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed bg-black/50 flex items-center justify-center z-50"
-            style={{ top: '-100vh', bottom: '-100vh', left: 0, right: 0 }}
+            style={{ top: '-200vh', bottom: '-200vh', left: 0, right: 0 }}
             onClick={() => { setShowComingSoonPopup(false); setComingSoonEmail(''); setComingSoonMessage(''); }}
           >
             <motion.div

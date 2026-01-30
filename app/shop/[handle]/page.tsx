@@ -66,18 +66,21 @@ export default function ProductDetailPage() {
       history.scrollRestoration = 'manual';
     }
 
+    const scrollToTop = () => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    };
+
     // Immediate scroll
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0; // For Safari
+    scrollToTop();
+
+    // Use requestAnimationFrame for smoother handling
+    requestAnimationFrame(scrollToTop);
 
     // Multiple delayed scrolls to handle layout shifts on mobile
-    const timeouts = [0, 50, 100, 200, 500].map((delay) =>
-      setTimeout(() => {
-        window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
-      }, delay)
+    const timeouts = [0, 50, 100, 200, 300, 500, 1000].map((delay) =>
+      setTimeout(scrollToTop, delay)
     );
 
     return () => timeouts.forEach(clearTimeout);
@@ -317,7 +320,7 @@ export default function ProductDetailPage() {
 
   return (
     <>
-    <main className="min-h-screen pt-52 md:pt-52 pb-16" style={{ backgroundColor: '#F2F2F2' }}>
+    <main className="min-h-screen pt-56 md:pt-52 pb-16" style={{ backgroundColor: '#F2F2F2' }}>
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-1 lg:gap-12">
           {/* Left: Product Image */}
@@ -644,7 +647,7 @@ export default function ProductDetailPage() {
                       setWaitlistSubmitting(false);
                     }
                   }}
-                  className="flex gap-2"
+                  className="flex flex-col md:flex-row gap-2"
                 >
                   <input
                     type="text"
@@ -657,11 +660,11 @@ export default function ProductDetailPage() {
                   <button
                     type="submit"
                     disabled={waitlistSubmitting || waitlistSuccess}
-                    className={`px-6 py-2 rounded-full font-bold font-[family-name:var(--font-inter)] transition-colors hover-wiggle ${
+                    className={`px-6 py-2 rounded-full font-bold font-[family-name:var(--font-inter)] transition-colors hover-wiggle whitespace-nowrap ${
                       waitlistSuccess ? 'bg-black text-white' : 'bg-[#F8330D] hover:bg-black text-white'
                     }`}
                   >
-                    {waitlistSubmitting ? '...' : waitlistSuccess ? "You're in!" : "Let me know when it's back"}
+                    {waitlistSubmitting ? '...' : waitlistSuccess ? "You're in!" : "Notify Me"}
                   </button>
                 </form>
                 {waitlistError && (
