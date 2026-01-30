@@ -317,7 +317,7 @@ export default function ProductDetailPage() {
 
   return (
     <>
-    <main className="min-h-screen pt-44 md:pt-52 pb-16" style={{ backgroundColor: '#F2F2F2' }}>
+    <main className="min-h-screen pt-52 md:pt-52 pb-16" style={{ backgroundColor: '#F2F2F2' }}>
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-1 lg:gap-12">
           {/* Left: Product Image */}
@@ -705,10 +705,8 @@ export default function ProductDetailPage() {
                 </p>
               ) : product.title?.toLowerCase().includes('condition') ? (
                 <div className="text-sm text-gray-700 font-[family-name:var(--font-inter)]">
-                  <p>If you wear this merch, you are signaling something powerful. That you are not ashamed of your weaknesses but proud of them. You will attract others like you. And you will rise.</p>
-                  <p className="mt-2 italic">*Also makes a great gift for someone special.</p>
-                  <p className="mt-2">Every month, we feature a new condition and make merch for it. You can vote for next month&apos;s condition on our socials:</p>
-                  <div className="flex gap-4 mt-2">
+                  <p><strong>Every month, we feature a new condition and make merch for it.</strong> You can vote for next month&apos;s condition on our socials:</p>
+                  <div className="flex gap-4 mt-2 mb-4">
                     <a href="https://www.instagram.com/rithikaisafool" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">
                       <svg className="w-5 h-5" fill="black" viewBox="0 0 24 24">
                         <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
@@ -730,6 +728,8 @@ export default function ProductDetailPage() {
                       </svg>
                     </a>
                   </div>
+                  <p>If you wear this merch, you are signaling something powerful. That you are not ashamed of your weaknesses but in fact proud of them. <strong>You will attract others like you. And you will rise.</strong></p>
+                  <p className="mt-2 italic">*Makes a great gift for someone special.</p>
                 </div>
               ) : isCCPProduct ? (
                 <div>
@@ -920,7 +920,7 @@ export default function ProductDetailPage() {
               <button
                 onClick={handleAddToCart}
                 disabled={!isAvailable}
-                className={`w-1/2 py-3.5 rounded-full text-base font-bold transition-all font-[family-name:var(--font-inter)] border-2 ${
+                className={`w-1/2 py-3.5 rounded-full text-[0.8rem] md:text-base font-bold transition-all font-[family-name:var(--font-inter)] border-2 ${
                   !isAvailable
                     ? 'bg-gray-200 text-gray-400 border-gray-300 cursor-not-allowed'
                     : 'bg-white text-black border-black hover:bg-black hover:text-white hover-wiggle'
@@ -933,7 +933,7 @@ export default function ProductDetailPage() {
               <button
                 onClick={isAvailable ? handleBuyNow : undefined}
                 disabled={!isAvailable}
-                className={`w-1/2 py-3.5 rounded-full text-base font-bold transition-all font-[family-name:var(--font-inter)] ${
+                className={`w-1/2 py-3.5 rounded-full text-[0.8rem] md:text-base font-bold transition-all font-[family-name:var(--font-inter)] ${
                   isAvailable
                     ? 'bg-[#dcff73] text-black hover:bg-black hover:text-white hover-wiggle'
                     : 'bg-gray-200 text-gray-400 cursor-not-allowed'

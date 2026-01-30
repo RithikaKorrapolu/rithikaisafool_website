@@ -182,6 +182,15 @@ export default function Connect() {
       .spin-penny {
         animation: spin 4s linear infinite;
       }
+      @keyframes button-dance {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        25% { transform: translateY(-2px) rotate(-1deg); }
+        50% { transform: translateY(0) rotate(0deg); }
+        75% { transform: translateY(-2px) rotate(1deg); }
+      }
+      .dancing-button:hover {
+        animation: button-dance 0.5s ease-in-out infinite;
+      }
     `}} />
 
     <main className="min-h-screen pt-[140px] md:pt-[145px] lg:pt-[155px] pb-16" style={{ backgroundColor: '#ffffff' }}>
@@ -278,8 +287,8 @@ export default function Connect() {
             </div>
 
             {/* REACH OUT Header */}
-            <div className="bg-black text-white text-center py-3 mb-2">
-              <h2 className="text-xl font-bold" style={{ fontFamily: 'Anek Bangla, sans-serif', letterSpacing: '-0.05em' }}>
+            <div className="text-left py-3 mb-2">
+              <h2 className="font-bold text-[#561DF1]" style={{ fontFamily: 'Anek Bangla, sans-serif', fontSize: '1.8rem', letterSpacing: '-0.05em', WebkitTextStroke: '0.1px black' }}>
                 LET US SEND BEAUTIFUL EMAILS
               </h2>
             </div>
@@ -342,7 +351,7 @@ export default function Connect() {
                 <button
                   type="submit"
                   disabled={subscribeStatus === "loading"}
-                  className="calendar-button px-8 py-3 text-white font-bold rounded-full transition-colors w-full"
+                  className="calendar-button px-8 py-3 text-white font-bold rounded-full transition-colors w-full dancing-button"
                   style={{ fontSize: '1rem', fontFamily: 'Anek Bangla, sans-serif' }}
                 >
                   {subscribeStatus === "loading" ? "Subscribing..." : "Subscribe"}
@@ -371,7 +380,7 @@ export default function Connect() {
               </h2>
 
               <p className="text-center mb-4 md:mb-6 text-black" style={{ fontSize: 'clamp(0.95rem, 3vw, 1.3rem)', fontFamily: 'Anek Bangla, sans-serif' }}>
-                We host an open mic to riff on new ideas and bits and art and such. A meeting of the minds. Everyone gets a penny. Come through.
+                We host a <strong>virtual open mic</strong> to riff on new ideas and bits and art and such. A meeting of the minds. Everyone gets a penny. Come through.
               </p>
 
               {/* Mobile: Stacked layout */}
@@ -388,9 +397,9 @@ export default function Connect() {
                 {/* Event Info */}
                 {!eventLoading && calendarEvent && (
                   <div className="text-center text-black" style={{ fontFamily: 'Anek Bangla, sans-serif' }}>
-                    <div className="text-xs font-semibold mb-1">UPCOMING EVENT:</div>
-                    <div className="text-xs">{calendarEvent.fullDate}</div>
-                    <div className="text-xs">{calendarEvent.time}</div>
+                    <div className="text-base font-semibold mb-1">UPCOMING EVENT:</div>
+                    <div className="text-base">{calendarEvent.fullDate}</div>
+                    <div className="text-base">{calendarEvent.time}</div>
                   </div>
                 )}
 
@@ -463,9 +472,9 @@ export default function Connect() {
                 <div className="flex flex-col items-center gap-4">
                   {!eventLoading && calendarEvent && (
                     <div className="text-center text-black" style={{ fontFamily: 'Anek Bangla, sans-serif' }}>
-                      <div className="text-sm font-semibold mb-1">UPCOMING EVENT:</div>
-                      <div className="text-sm">{calendarEvent.fullDate}</div>
-                      <div className="text-sm">{calendarEvent.time}</div>
+                      <div className="text-base font-semibold mb-1">UPCOMING EVENT:</div>
+                      <div className="text-base">{calendarEvent.fullDate}</div>
+                      <div className="text-base">{calendarEvent.time}</div>
                     </div>
                   )}
 
