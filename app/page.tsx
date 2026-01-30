@@ -149,6 +149,18 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
+  // Lock body scroll when any popup is open to prevent mobile address bar jumping
+  useEffect(() => {
+    const isAnyPopupOpen = showPhonePopup || showClientPopup || showSTWLPopup || showComingSoonPopup;
+    if (isAnyPopupOpen) {
+      document.body.classList.add('popup-open');
+    } else {
+      document.body.classList.remove('popup-open');
+    }
+    return () => {
+      document.body.classList.remove('popup-open');
+    };
+  }, [showPhonePopup, showClientPopup, showSTWLPopup, showComingSoonPopup]);
 
   // Intersection Observer for mobile scroll hover effects
   useEffect(() => {
@@ -985,7 +997,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed bg-black/50 flex items-center justify-center z-50"
+            className="fixed bg-black/50 flex items-center justify-center z-50 popup-backdrop"
             style={{ top: '-200vh', bottom: '-200vh', left: 0, right: 0 }}
             onClick={() => setShowPhonePopup(false)}
           >
@@ -1074,7 +1086,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed bg-black/50 flex items-center justify-center z-50"
+            className="fixed bg-black/50 flex items-center justify-center z-50 popup-backdrop"
             style={{ top: '-200vh', bottom: '-200vh', left: 0, right: 0 }}
             onClick={() => setShowClientPopup(false)}
           >
@@ -1197,7 +1209,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed bg-black/50 flex items-center justify-center z-50"
+            className="fixed bg-black/50 flex items-center justify-center z-50 popup-backdrop"
             style={{ top: '-200vh', bottom: '-200vh', left: 0, right: 0 }}
             onClick={() => { setShowSTWLPopup(false); setSTWLEmail(''); setSTWLMessage(''); }}
           >
@@ -1297,7 +1309,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed bg-black/50 flex items-center justify-center z-50"
+            className="fixed bg-black/50 flex items-center justify-center z-50 popup-backdrop"
             style={{ top: '-200vh', bottom: '-200vh', left: 0, right: 0 }}
             onClick={() => { setShowComingSoonPopup(false); setComingSoonEmail(''); setComingSoonMessage(''); }}
           >

@@ -59,6 +59,19 @@ export default function ProductDetailPage() {
 
   const [archiveIndex, setArchiveIndex] = useState(0);
 
+  // Lock body scroll when any popup is open to prevent mobile address bar jumping
+  useEffect(() => {
+    const isAnyPopupOpen = showWaitlistPopup || sizeChartOpen || showArchivePopup;
+    if (isAnyPopupOpen) {
+      document.body.classList.add('popup-open');
+    } else {
+      document.body.classList.remove('popup-open');
+    }
+    return () => {
+      document.body.classList.remove('popup-open');
+    };
+  }, [showWaitlistPopup, sizeChartOpen, showArchivePopup]);
+
   // Scroll to top on page load to prevent content being under header
   useEffect(() => {
     // Disable browser scroll restoration
@@ -320,7 +333,7 @@ export default function ProductDetailPage() {
 
   return (
     <>
-    <main className="min-h-screen pt-56 md:pt-52 pb-16" style={{ backgroundColor: '#F2F2F2' }}>
+    <main className="min-h-screen pb-16 page-content-padding" style={{ backgroundColor: '#F2F2F2' }}>
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-1 lg:gap-12">
           {/* Left: Product Image */}
@@ -613,7 +626,7 @@ export default function ProductDetailPage() {
             {!isAvailable && (
               <div className="mb-4">
                 <p className="text-base font-bold text-[#F8330D] mb-3 font-[family-name:var(--font-inter)]">
-                  Sold out! But more on the way!!
+                  Sold out! But more on the way!! We can let you know when it's back -
                 </p>
                 <form
                   onSubmit={async (e) => {
@@ -664,7 +677,7 @@ export default function ProductDetailPage() {
                       waitlistSuccess ? 'bg-black text-white' : 'bg-[#F8330D] hover:bg-black text-white'
                     }`}
                   >
-                    {waitlistSubmitting ? '...' : waitlistSuccess ? "You're in!" : "Notify Me"}
+                    {waitlistSubmitting ? '...' : waitlistSuccess ? "You're in!" : "Let me know"}
                   </button>
                 </form>
                 {waitlistError && (
@@ -1026,7 +1039,7 @@ export default function ProductDetailPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/30 z-50"
+            className="fixed inset-0 bg-black/30 z-50 popup-backdrop"
             onClick={() => {
               setShowWaitlistPopup(false);
               setWaitlistSuccess(false);
@@ -1155,7 +1168,7 @@ export default function ProductDetailPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 popup-backdrop"
           onClick={() => setSizeChartOpen(false)}
         >
           <motion.div
@@ -1251,7 +1264,7 @@ export default function ProductDetailPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 popup-backdrop"
           onClick={() => setShowArchivePopup(false)}
         >
           <motion.div

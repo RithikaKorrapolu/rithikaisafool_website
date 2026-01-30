@@ -30,6 +30,33 @@
 :root {
   --background: #ffffff;
   --foreground: #0a0a0a;
+
+  /* Header height variables - calculated from actual header structure */
+  /* Top bar: py-4 (32px) + logo (~72px) + border (1px) = ~105px */
+  /* Nav bar: py-4 (32px) + text (~24px) = ~56px */
+  /* Total mobile: ~161px, add safety buffer = 175px */
+  --header-height-mobile: 175px;
+
+  /* Desktop: slightly shorter nav bar (py-3.5 = 28px) */
+  /* Total desktop: ~153px, add buffer = 165px */
+  --header-height-desktop: 165px;
+
+  /* Page content padding - use these for main content spacing */
+  --page-top-padding-mobile: calc(var(--header-height-mobile) + 50px);
+  --page-top-padding-desktop: calc(var(--header-height-desktop) + 40px);
+}
+
+/* Use dvh (dynamic viewport height) for better mobile browser support */
+@supports (height: 100dvh) {
+  :root {
+    --viewport-height: 100dvh;
+  }
+}
+
+@supports not (height: 100dvh) {
+  :root {
+    --viewport-height: 100vh;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -49,6 +76,53 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+
+  /* Responsive page padding that accounts for fixed header */
+  .page-content-padding {
+    padding-top: var(--page-top-padding-mobile);
+  }
+
+  @media (min-width: 768px) {
+    .page-content-padding {
+      padding-top: var(--page-top-padding-desktop);
+    }
+  }
+
+  /* Fixed overlay that uses dynamic viewport height for mobile smoothness */
+  .fixed-overlay-smooth {
+    position: fixed;
+    inset: 0;
+    height: 100vh;
+    height: 100dvh; /* Dynamic viewport height - handles mobile address bar */
+  }
+}
+
+/* Smooth popup overlays for mobile - prevents jumping when address bar shows/hides */
+.popup-backdrop {
+  /* Prevent scroll chaining that can trigger address bar changes */
+  overscroll-behavior: contain;
+  /* Smoother touch scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
+  /* Prevent touch events from propagating to body */
+  touch-action: none;
+}
+
+.popup-content {
+  /* Prevent the popup content from causing layout shifts */
+  overscroll-behavior: contain;
+  /* Re-enable touch for interactive content */
+  touch-action: auto;
+  /* Ensure content stays within the safe area */
+  max-height: 100vh;
+  max-height: 100dvh;
+}
+
+/* Lock body scroll when popup is open - apply this class to body via JS */
+body.popup-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
 }
 
 @keyframes marquee {
