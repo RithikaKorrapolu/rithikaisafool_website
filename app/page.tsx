@@ -1117,7 +1117,7 @@ export default function Home() {
                   onEnded={() => setIsAudioPlaying(false)}
                   className="hidden"
                 >
-                  <source src="/assets/glory_dream.mp4" type="audio/mp4" />
+                  <source src="/assets/glory_dream.mp3" type="audio/mpeg" />
                 </audio>
                 <div className="flex items-center gap-3 bg-white rounded-full px-4 py-3 shadow-lg">
                   <button
