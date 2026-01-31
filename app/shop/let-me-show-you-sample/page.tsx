@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 
 // Sample data for the exhibit
@@ -59,10 +59,24 @@ const ARTWORKS = [
 export default function LMSYSamplePage() {
   const [selectedArtwork, setSelectedArtwork] = useState(ARTWORKS[0]);
   const [showInfoPopup, setShowInfoPopup] = useState(false);
+  const mainContentRef = useRef<HTMLDivElement>(null);
+
+  // Capture scroll events on the page and redirect to main content
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      if (mainContentRef.current) {
+        mainContentRef.current.scrollTop += e.deltaY;
+        e.preventDefault();
+      }
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    return () => window.removeEventListener('wheel', handleWheel);
+  }, []);
 
   return (
     <div
-      className="h-screen w-full flex items-center justify-center p-4 md:p-8 overflow-hidden"
+      className="h-screen w-full flex items-center justify-center p-4 md:p-8 overflow-hidden fixed inset-0"
       style={{
         backgroundImage: `url("/assets/CCP/Sample_Month/plains.avif")`,
         backgroundSize: "cover",
@@ -131,7 +145,7 @@ export default function LMSYSamplePage() {
           </div>
 
           {/* Main Content */}
-          <div className="flex-1 p-6 lg:p-8 overflow-y-auto glass-scrollbar">
+          <div ref={mainContentRef} className="flex-1 p-6 lg:p-8 overflow-y-auto glass-scrollbar">
             {/* Featured Artwork */}
             <div className="relative mb-6">
               <div
