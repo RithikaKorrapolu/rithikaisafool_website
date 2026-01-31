@@ -1195,6 +1195,9 @@ export default function Home() {
                   >
                     This is the best way to find out.
                   </Link>
+                  <p className="text-sm text-gray-600 mt-2" style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>
+                    Set up a free consult
+                  </p>
                 </div>
               </motion.div>
             </motion.div>
