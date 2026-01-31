@@ -756,7 +756,7 @@ export default function ProductDetailPage() {
                     <br />— James Baldwin
                   </p>
                   <p className="text-sm text-black font-[family-name:var(--font-inter)] mb-4">
-                    Every month, we pick a theme and work with different people to curate art related to that theme. We&apos;ll research and pull in all kinds of art (paintings, quotes, songs, excerpts from movies, texts from our mom) that we think is related to that theme.
+                    Every month, we pick a theme and pass it to different people, asking them to curate art around it. They send back all kinds of things - paintings, songs, excerpts from movies, text messages from their mom, whatever they think fits.
                   </p>
                   <p className="text-sm text-black font-[family-name:var(--font-inter)] mb-4">
                     <span className="bg-[#dcff73] px-1">You can check out a sample <a href="/shop/let-me-show-you-sample" target="_blank" rel="noopener noreferrer" className="font-bold underline hover:opacity-70">here</a>.</span>
