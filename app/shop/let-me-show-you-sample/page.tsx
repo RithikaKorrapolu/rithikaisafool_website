@@ -1,3 +1,6 @@
 export default function LMSYSamplePage() {
-  return null;
+  return (
+    <div className="min-h-screen bg-white">
+    </div>
+  );
 }
