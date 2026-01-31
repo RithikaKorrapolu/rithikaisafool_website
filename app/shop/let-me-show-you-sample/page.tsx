@@ -58,10 +58,7 @@ const ARTWORKS = [
 
 export default function LMSYSamplePage() {
   const [selectedArtwork, setSelectedArtwork] = useState(ARTWORKS[0]);
-  const [carouselStart, setCarouselStart] = useState(0);
   const [showInfoPopup, setShowInfoPopup] = useState(false);
-
-  const visibleArtworks = ARTWORKS.slice(carouselStart, carouselStart + 4);
 
   return (
     <div
@@ -120,7 +117,7 @@ export default function LMSYSamplePage() {
             </div>
 
             {/* Other Curators */}
-            <div className="space-y-2">
+            <div className="space-y-2 mb-6">
               {CURATORS.slice(1).map((curator) => (
                 <div
                   key={curator.id}
@@ -130,6 +127,39 @@ export default function LMSYSamplePage() {
                   {curator.name}
                 </div>
               ))}
+            </div>
+
+            {/* Table of Contents */}
+            <div className="border-t border-white/20 pt-4">
+              <p className="text-white/50 text-xs uppercase tracking-wider mb-3">Artworks</p>
+              <div className="space-y-2">
+                {ARTWORKS.map((artwork) => (
+                  <button
+                    key={artwork.id}
+                    onClick={() => setSelectedArtwork(artwork)}
+                    className={`w-full flex items-center gap-3 p-2 rounded-lg transition-colors text-left ${
+                      selectedArtwork.id === artwork.id
+                        ? "bg-white/20"
+                        : "hover:bg-white/10"
+                    }`}
+                  >
+                    <div className="relative w-10 h-10 rounded overflow-hidden flex-shrink-0">
+                      <Image
+                        src={artwork.image}
+                        alt={artwork.title}
+                        fill
+                        className="object-cover"
+                        unoptimized
+                      />
+                    </div>
+                    <span className={`text-sm truncate ${
+                      selectedArtwork.id === artwork.id ? "text-white font-medium" : "text-white/70"
+                    }`}>
+                      {artwork.title}
+                    </span>
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -191,64 +221,6 @@ export default function LMSYSamplePage() {
               )}
             </div>
 
-            {/* Carousel */}
-            <div
-              className="rounded-full px-4 py-3 flex items-center gap-3"
-              style={{
-                background: "rgba(128, 128, 128, 0.3)",
-                backdropFilter: "blur(10px)",
-              }}
-            >
-              {/* Left Arrow */}
-              <button
-                onClick={() => setCarouselStart(Math.max(0, carouselStart - 1))}
-                className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-gray-700 hover:bg-white/40 transition-colors flex-shrink-0"
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M15 18l-6-6 6-6"/>
-                </svg>
-              </button>
-
-              {/* Thumbnails */}
-              <div className="flex-1 flex gap-3 overflow-hidden">
-                {visibleArtworks.map((artwork) => (
-                  <button
-                    key={artwork.id}
-                    onClick={() => setSelectedArtwork(artwork)}
-                    className={`relative w-24 h-20 rounded-lg overflow-hidden flex-shrink-0 transition-all ${
-                      selectedArtwork.id === artwork.id ? "ring-2 ring-white" : "opacity-70 hover:opacity-100"
-                    }`}
-                  >
-                    <Image
-                      src={artwork.image}
-                      alt={artwork.title}
-                      fill
-                      className="object-cover"
-                      unoptimized
-                    />
-                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-1">
-                      <p className="text-white text-xs font-medium truncate">{artwork.title}</p>
-                    </div>
-                  </button>
-                ))}
-              </div>
-
-              {/* Right Arrow */}
-              <button
-                onClick={() => setCarouselStart(Math.min(ARTWORKS.length - 4, carouselStart + 1))}
-                className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-gray-700 hover:bg-white/40 transition-colors flex-shrink-0"
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M9 18l6-6-6-6"/>
-                </svg>
-              </button>
-            </div>
-
-            {/* Pagination Dots */}
-            <div className="flex justify-center gap-2 mt-4">
-              <div className="w-2 h-2 rounded-full bg-gray-400" />
-              <div className="w-8 h-2 rounded-full bg-gray-300" />
-            </div>
           </div>
         </div>
 
