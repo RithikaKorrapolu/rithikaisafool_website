@@ -97,7 +97,7 @@ export default function LMSYSamplePage() {
             </div>
 
             {/* Table of Contents */}
-            <div>
+            <div className="border-t border-white/20 pt-4">
               <p className="text-white/50 text-xs uppercase tracking-wider mb-3">Artworks</p>
               <div className="space-y-2">
                 {ARTWORKS.map((artwork) => (
