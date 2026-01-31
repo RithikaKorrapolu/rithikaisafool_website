@@ -21,38 +21,23 @@ const CURATORS = [
 const ARTWORKS = [
   {
     id: 1,
-    title: "The Starry Night",
-    artist: "Vincent van Gogh",
-    date: "June 1889",
+    title: "Meeting",
+    artist: "Remedios Varo",
+    date: "1959",
     medium: "Oil on canvas",
-    dimensions: "29 × 36 1/4 in.",
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg/1280px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg",
+    image: "/assets/CCP/Sample_Month/Meeting_Varo.jpg",
     curator: "Rithika K.",
-    note: "When I first saw this painting in person at MoMA, I cried. There's something about the movement in the sky that makes you feel like everything is alive and connected."
+    note: "There's something haunting about this piece - two figures meeting in a dreamlike space. It captures that feeling of finally encountering someone you've been searching for, but not knowing what to say."
   },
   {
     id: 2,
-    title: "A Walk at Twilight",
-    artist: "Vincent van Gogh",
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Van_Gogh_-_Landscape_with_Couple_Walking_and_Crescent_Moon.jpg/800px-Van_Gogh_-_Landscape_with_Couple_Walking_and_Crescent_Moon.jpg",
-  },
-  {
-    id: 3,
-    title: "Garden at Arles",
-    artist: "Vincent van Gogh",
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Van_Gogh_-_Flowering_Garden_with_Path.jpg/800px-Van_Gogh_-_Flowering_Garden_with_Path.jpg",
-  },
-  {
-    id: 4,
-    title: "The Bedroom",
-    artist: "Vincent van Gogh",
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Vincent_van_Gogh_-_De_slaapkamer_-_Google_Art_Project.jpg/1280px-Vincent_van_Gogh_-_De_slaapkamer_-_Google_Art_Project.jpg",
-  },
-  {
-    id: 5,
-    title: "Almond Blossoms",
-    artist: "Vincent van Gogh",
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Vincent_van_Gogh_-_Almond_blossom_-_Google_Art_Project.jpg/1280px-Vincent_van_Gogh_-_Almond_blossom_-_Google_Art_Project.jpg",
+    title: "Morning Sun",
+    artist: "Edward Hopper",
+    date: "1952",
+    medium: "Oil on canvas",
+    image: "/assets/CCP/Sample_Month/morningsun_hopper.jpeg",
+    curator: "Rithika K.",
+    note: "This painting always makes me feel both lonely and hopeful at the same time. The light coming through the window feels like a new beginning."
   },
 ];
 
