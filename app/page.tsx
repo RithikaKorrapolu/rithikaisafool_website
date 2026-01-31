@@ -1183,7 +1183,7 @@ export default function Home() {
                   className="text-base md:text-lg text-black leading-relaxed mb-6 text-justify"
                   style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
                 >
-                  If you&apos;re working on something new (building a new product, creating content, or hosting events) and could use a little help with creative direction / strategy, we might make a good team.
+                  If you&apos;re working on a new product, creating content, or hosting events and could use a little help with creative direction / strategy, we might make a good team.
                 </p>
 
                 <div className="text-center">
