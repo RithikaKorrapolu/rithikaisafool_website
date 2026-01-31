@@ -106,7 +106,7 @@ export default function LMSYSamplePage() {
             {/* Logo */}
             <div className="mb-8">
               <h1 className="text-white/60 text-xl tracking-tight font-[family-name:var(--font-abril-fatface)]">LET ME SHOW YOU:</h1>
-              <p className="text-white text-2xl font-bold mt-2">&ldquo;It feels too late.&rdquo;</p>
+              <p className="text-white text-3xl font-bold mt-2">&ldquo;It feels too late.&rdquo;</p>
             </div>
 
             {/* Table of Contents */}
