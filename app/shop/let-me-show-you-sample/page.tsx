@@ -96,41 +96,8 @@ export default function LMSYSamplePage() {
               <p className="text-white/60 text-sm mt-1">A Digital Art Exhibit</p>
             </div>
 
-            {/* Selected Curator */}
-            <div
-              className="rounded-xl p-4 mb-4"
-              style={{
-                background: "rgba(255, 255, 255, 0.1)",
-                border: "1px solid rgba(255, 255, 255, 0.2)",
-              }}
-            >
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-12 h-12 rounded-lg bg-gray-600 overflow-hidden">
-                  <div className="w-full h-full bg-gradient-to-br from-orange-400 to-pink-500" />
-                </div>
-                <div>
-                  <h3 className="text-white font-semibold">Rithika K.</h3>
-                  <p className="text-white/60 text-sm">Curator</p>
-                </div>
-              </div>
-              <p className="text-white/50 text-xs">Brooklyn, NY</p>
-            </div>
-
-            {/* Other Curators */}
-            <div className="space-y-2 mb-6">
-              {CURATORS.slice(1).map((curator) => (
-                <div
-                  key={curator.id}
-                  className="px-4 py-3 rounded-lg text-white/80 text-sm hover:bg-white/10 cursor-pointer transition-colors"
-                  style={{ borderLeft: "2px solid transparent" }}
-                >
-                  {curator.name}
-                </div>
-              ))}
-            </div>
-
             {/* Table of Contents */}
-            <div className="border-t border-white/20 pt-4">
+            <div>
               <p className="text-white/50 text-xs uppercase tracking-wider mb-3">Artworks</p>
               <div className="space-y-2">
                 {ARTWORKS.map((artwork) => (
