@@ -752,8 +752,8 @@ export default function ProductDetailPage() {
               ) : isLMSYProduct ? (
                 <div>
                   <p className="text-base text-black font-[family-name:var(--font-inter)] italic mb-4">
-                    &quot;You think your pain and your heartbreak are unprecedented in the history of the world, but then you read.&quot;
-                    <br />― James Baldwin
+                    &quot;The role of the artist is exactly the same as the role of the lover. If I love you, I have to make you conscious of the things you don&apos;t see.&quot;
+                    <br />— James Baldwin
                   </p>
                   <p className="text-sm text-black font-[family-name:var(--font-inter)] mb-4">
                     Life can be hard. Sometimes, you have a job that makes you feel small and stupid. Or your ex starts dating your neighbor. Or you start having nightmares about your dead dad. It happens. Finding the right Art™ at the right time can help.
