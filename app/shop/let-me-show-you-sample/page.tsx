@@ -59,6 +59,7 @@ const ARTWORKS = [
 export default function LMSYSamplePage() {
   const [selectedArtwork, setSelectedArtwork] = useState(ARTWORKS[0]);
   const [carouselStart, setCarouselStart] = useState(0);
+  const [showInfoPopup, setShowInfoPopup] = useState(false);
 
   const visibleArtworks = ARTWORKS.slice(carouselStart, carouselStart + 4);
 
@@ -281,13 +282,60 @@ export default function LMSYSamplePage() {
       </div>
 
       {/* Info Button */}
-      <button className="fixed top-4 right-4 w-10 h-10 rounded-full bg-white/20 backdrop-blur flex items-center justify-center text-white hover:bg-white/40 transition-colors z-50">
+      <button
+        onClick={() => setShowInfoPopup(true)}
+        className="fixed top-4 right-4 w-10 h-10 rounded-full bg-white/20 backdrop-blur flex items-center justify-center text-white hover:bg-white/40 transition-colors z-50"
+      >
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="12" cy="12" r="10"/>
           <line x1="12" y1="16" x2="12" y2="12"/>
           <circle cx="12" cy="8" r="0.5" fill="currentColor"/>
         </svg>
       </button>
+
+      {/* Info Popup */}
+      {showInfoPopup && (
+        <div
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+          onClick={() => setShowInfoPopup(false)}
+        >
+          <div
+            className="max-w-md w-full rounded-2xl p-6 relative"
+            style={{
+              background: "rgba(255, 255, 255, 0.9)",
+              backdropFilter: "blur(20px)",
+              WebkitBackdropFilter: "blur(20px)",
+              border: "1px solid rgba(255, 255, 255, 0.3)",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setShowInfoPopup(false)}
+              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/10 flex items-center justify-center hover:bg-black/20 transition-colors"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M18 6L6 18M6 6l12 12"/>
+              </svg>
+            </button>
+
+            <h2 className="text-2xl font-bold text-gray-900 mb-4 font-[family-name:var(--font-abril-fatface)]">
+              About This Exhibit
+            </h2>
+
+            <p className="text-gray-700 mb-4">
+              <strong>Let Me Show You</strong> is a monthly digital art exhibit. Each month, we pick a theme and invite different curators to share art that resonates with them.
+            </p>
+
+            <p className="text-gray-700 mb-4">
+              New pieces are added throughout the month. Subscribers receive email notifications when new art appears.
+            </p>
+
+            <p className="text-gray-600 text-sm italic">
+              This is a sample preview of what subscribers see.
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
