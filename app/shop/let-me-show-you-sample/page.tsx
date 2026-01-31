@@ -193,6 +193,7 @@ export default function LMSYSamplePage() {
                   className="mt-4 p-4 rounded-xl"
                   style={{
                     background: "rgba(255, 255, 255, 0.25)",
+                    boxShadow: "0 4px 15px rgba(0, 0, 0, 0.15)",
                   }}
                 >
                   <p className="text-gray-700 text-sm italic">&ldquo;{selectedArtwork.note}&rdquo;</p>
