@@ -756,10 +756,7 @@ export default function ProductDetailPage() {
                     <br />— James Baldwin
                   </p>
                   <p className="text-sm text-black font-[family-name:var(--font-inter)] mb-4">
-                    Life can be hard. Sometimes, you have a job that makes you feel small and stupid. Or your ex starts dating your neighbor. Or you start having nightmares about your dead dad. It happens. Finding the right Art™ at the right time can help.
-                  </p>
-                  <p className="text-sm text-black font-[family-name:var(--font-inter)] mb-4">
-                    <strong>Once a month, we choose a theme</strong> (based on something someone might be going through) <strong>and we put together a digital package.</strong> We research and pull in all kinds of art (paintings, quotes, songs, excerpts from movies, photos from the street) that we think can help you process and relate to that theme. And then we add commentary and curate each of the pieces on a custom designed website.
+                    Every month, we pick a theme and work with different people to curate art related to that theme. We&apos;ll research and pull in all kinds of art (paintings, quotes, songs, excerpts from movies, texts from our mom) that we think is related to that theme.
                   </p>
                   <p className="text-sm text-black font-[family-name:var(--font-inter)] mb-4">
                     <span className="bg-[#dcff73] px-1">You can check out a sample <a href="/shop/let-me-show-you-sample" target="_blank" rel="noopener noreferrer" className="font-bold underline hover:opacity-70">here</a>.</span>
