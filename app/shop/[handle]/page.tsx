@@ -762,7 +762,7 @@ export default function ProductDetailPage() {
                     How it Works
                   </p>
                   <p className="text-sm text-black font-[family-name:var(--font-inter)] mb-4">
-                    We&apos;ll have a custom website for each theme (month). We add new pieces over the month and email you when they appear. A new art exhibit every month.
+                    We&apos;ll have a custom website for each theme (month). We add new pieces throughout the month and email you when they appear. A new art exhibit every month.
                   </p>
                   <p className="text-sm text-black font-[family-name:var(--font-inter)] mb-4">
                     <span className="bg-[#dcff73] px-1">You can check out a sample <a href="/shop/let-me-show-you-sample" target="_blank" rel="noopener noreferrer" className="font-bold underline hover:opacity-70">here</a>.</span>
