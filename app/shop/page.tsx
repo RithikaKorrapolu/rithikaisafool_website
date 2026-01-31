@@ -17,18 +17,18 @@ export default function Shop() {
     async function fetchProducts() {
       try {
         const fetchedProducts = await getProducts();
-        // Custom sort: Conditions hat before CCP
+        // Custom sort: Conditions hat before Let Me Show You
         const sortedProducts = [...fetchedProducts].sort((a, b) => {
           const aTitle = a.title?.toLowerCase() || '';
           const bTitle = b.title?.toLowerCase() || '';
-          // Put "condition" products before "creative care" products
+          // Put "condition" products before "let me show you" products
           const aIsCondition = aTitle.includes('condition');
           const bIsCondition = bTitle.includes('condition');
-          const aIsCCP = aTitle.includes('creative care') || aTitle.includes('care package');
-          const bIsCCP = bTitle.includes('creative care') || bTitle.includes('care package');
+          const aIsLMSY = aTitle.includes('let me show you');
+          const bIsLMSY = bTitle.includes('let me show you');
 
-          if (aIsCondition && bIsCCP) return -1;
-          if (aIsCCP && bIsCondition) return 1;
+          if (aIsCondition && bIsLMSY) return -1;
+          if (aIsLMSY && bIsCondition) return 1;
           return 0;
         });
         setProducts(sortedProducts);

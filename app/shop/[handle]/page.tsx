@@ -103,10 +103,9 @@ export default function ProductDetailPage() {
     };
   }, []);
 
-  // Check if this is the CCP product
-  const isCCPProduct = product?.title?.toLowerCase().includes('creative care') ||
-                       product?.title?.toLowerCase().includes('care package') ||
-                       handle?.toLowerCase().includes('creative-care-package');
+  // Check if this is the Let Me Show You product
+  const isLMSYProduct = product?.title?.toLowerCase().includes('let me show you') ||
+                        handle?.toLowerCase().includes('let-me-show-you');
 
   // Cycle through glory images for STWL product with custom timing
   useEffect(() => {
@@ -126,14 +125,14 @@ export default function ProductDetailPage() {
   // CCP animation cycle - simple 5 states
   // State 0: 8+9, State 1: 11+12, State 2: 15+16, State 3: 23+24, State 4: 27+28
   useEffect(() => {
-    if (isCCPProduct) {
+    if (isLMSYProduct) {
       const delay = 2000; // 2 seconds per state
       const timeoutId = setTimeout(() => {
         setCcpLayerIndex((prev) => (prev + 1) % 5);
       }, delay);
       return () => clearTimeout(timeoutId);
     }
-  }, [isCCPProduct, ccpLayerIndex]);
+  }, [isLMSYProduct, ccpLayerIndex]);
 
   // Fetch edition count for stranger hoodie
   useEffect(() => {
@@ -160,10 +159,9 @@ export default function ProductDetailPage() {
           if (firstAvailableIndex !== -1) {
             setSelectedVariantIndex(firstAvailableIndex);
           }
-          // Auto-select subscription for CCP product
-          const isCCP = foundProduct.title?.toLowerCase().includes('creative care') ||
-                        foundProduct.title?.toLowerCase().includes('care package');
-          if (isCCP && foundProduct.sellingPlanGroups?.length > 0) {
+          // Auto-select subscription for LMSY product
+          const isLMSY = foundProduct.title?.toLowerCase().includes('let me show you');
+          if (isLMSY && foundProduct.sellingPlanGroups?.length > 0) {
             const firstPlan = foundProduct.sellingPlanGroups[0]?.sellingPlans?.[0];
             if (firstPlan) {
               setSelectedSellingPlan(firstPlan.id);
@@ -364,7 +362,7 @@ export default function ProductDetailPage() {
               /* Other Products - Original Single Image Layout */
               <div className="relative" style={{ width: '85%', margin: '0 auto' }}>
                 <div className="relative aspect-square rounded-lg overflow-hidden">
-                  {isCCPProduct ? (
+                  {isLMSYProduct ? (
                     <>
                       {/* Base layer - Image 7 (always visible) */}
                       <Image
@@ -601,7 +599,7 @@ export default function ProductDetailPage() {
           <div className="flex flex-col lg:sticky lg:top-40 lg:self-start">
             {/* Title */}
             <h1 className="text-2xl md:text-4xl font-bold text-black mb-2 uppercase font-[family-name:var(--font-inter)]" style={{ letterSpacing: '-0.02em' }}>
-              {isCCPProduct ? 'THE CREATIVE CARE PACKAGE' : product.title}
+              {product.title}
             </h1>
             {product.title?.toLowerCase().includes('stranger') && (
               <p className="text-lg font-bold mb-4 uppercase font-[family-name:var(--font-inter)] inline-block w-fit">
@@ -609,8 +607,8 @@ export default function ProductDetailPage() {
               </p>
             )}
 
-            {/* Price - hide for CCP products */}
-            {!isCCPProduct && (
+            {/* Price - hide for LMSY products */}
+            {!isLMSYProduct && (
               <div className="flex items-baseline gap-4 mb-2">
                 <span className="text-2xl font-bold text-black font-[family-name:var(--font-inter)]">
                   ${displayPrice.toFixed(2)}{selectedSellingPlan ? '/mo' : ''}
@@ -751,7 +749,7 @@ export default function ProductDetailPage() {
                   <p>If you wear this merch, you are signaling something powerful. That you are not ashamed of your weaknesses but in fact proud of them. <strong>You will attract others like you. And you will rise.</strong></p>
                   <p className="mt-2 italic">*Makes a great gift for someone special.</p>
                 </div>
-              ) : isCCPProduct ? (
+              ) : isLMSYProduct ? (
                 <div>
                   <p className="text-base text-black font-[family-name:var(--font-inter)] italic mb-4">
                     &quot;You think your pain and your heartbreak are unprecedented in the history of the world, but then you read.&quot;
@@ -761,10 +759,10 @@ export default function ProductDetailPage() {
                     Life can be hard. Sometimes, you have a job that makes you feel small and stupid. Or your ex starts dating your neighbor. Or you start having nightmares about your dead dad. It happens. Finding the right Art™ at the right time can help.
                   </p>
                   <p className="text-sm text-black font-[family-name:var(--font-inter)] mb-4">
-                    <strong>Once a month, we choose a theme</strong> (based on something someone might be going through) <strong>and we put together a digital, creative care package.</strong> We research and pull in all kinds of art (paintings, quotes, songs, excerpts from movies, photos from the street) that we think can help you process and relate to that theme. And then we add commentary and curate each of the pieces on a custom designed website.
+                    <strong>Once a month, we choose a theme</strong> (based on something someone might be going through) <strong>and we put together a digital package.</strong> We research and pull in all kinds of art (paintings, quotes, songs, excerpts from movies, photos from the street) that we think can help you process and relate to that theme. And then we add commentary and curate each of the pieces on a custom designed website.
                   </p>
                   <p className="text-sm text-black font-[family-name:var(--font-inter)] mb-4">
-                    <span className="bg-[#dcff73] px-1">You can check out a sample <a href="/shop/the-creative-care-package-sample" target="_blank" rel="noopener noreferrer" className="font-bold underline hover:opacity-70">here</a>.</span>
+                    <span className="bg-[#dcff73] px-1">You can check out a sample <a href="/shop/let-me-show-you-sample" target="_blank" rel="noopener noreferrer" className="font-bold underline hover:opacity-70">here</a>.</span>
                   </p>
                 </div>
               ) : (
@@ -874,7 +872,7 @@ export default function ProductDetailPage() {
                         : 'bg-white text-black border-gray-300 hover:border-black'
                     }`}
                   >
-                    {isCCPProduct ? `Single Month Purchase ($${basePrice.toFixed(0)})` : 'One-time purchase'}
+                    {isLMSYProduct ? `Single Month Purchase ($${basePrice.toFixed(0)})` : 'One-time purchase'}
                   </button>
                   {/* Subscription options */}
                   {product.sellingPlanGroups.map((group: any) =>
@@ -905,7 +903,7 @@ export default function ProductDetailPage() {
                         >
                           <div className="flex items-center justify-between">
                             <span>
-                              {isCCPProduct
+                              {isLMSYProduct
                                 ? `Monthly Subscription ($${planPrice.toFixed(0)}/month)`
                                 : plan.name
                               }
@@ -914,7 +912,7 @@ export default function ProductDetailPage() {
                               SAVE 30% OFF
                             </span>
                           </div>
-                          {plan.description && !isCCPProduct && (
+                          {plan.description && !isLMSYProduct && (
                             <p className="text-xs font-normal mt-1 opacity-70">{plan.description}</p>
                           )}
                         </button>

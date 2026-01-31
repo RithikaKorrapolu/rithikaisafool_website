@@ -187,21 +187,19 @@ export async function POST(request: NextRequest) {
         }
       }
 
-      // Check if order contains Creative Care Package subscription
-      const isCCPProduct = productTitle.includes('creative care') ||
-                          productTitle.includes('care package') ||
-                          productTitle.includes('creative') && productTitle.includes('package');
-      console.log('Checking product:', productTitle, 'Is CCP:', isCCPProduct);
+      // Check if order contains Let Me Show You subscription
+      const isLMSYProduct = productTitle.includes('let me show you');
+      console.log('Checking product:', productTitle, 'Is LMSY:', isLMSYProduct);
 
-      if (isCCPProduct) {
+      if (isLMSYProduct) {
         const customerEmail = order.email || order.customer?.email;
-        console.log('CCP product found, customer email:', customerEmail);
+        console.log('LMSY product found, customer email:', customerEmail);
         if (customerEmail) {
           try {
             await subscribeToKlaviyoList(customerEmail, CCP_SUBSCRIPTION_LIST_ID);
-            console.log('Subscribed CCP buyer to Klaviyo list');
+            console.log('Subscribed LMSY buyer to Klaviyo list');
           } catch (err) {
-            console.error('Failed to subscribe CCP buyer:', err);
+            console.error('Failed to subscribe LMSY buyer:', err);
           }
         }
       }

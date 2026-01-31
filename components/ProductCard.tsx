@@ -48,8 +48,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     }
   }, [isStrangerProduct]);
 
-  const isCCPProduct = product.title?.toLowerCase().includes('creative') &&
-                       product.title?.toLowerCase().includes('care');
+  const isLMSYProduct = product.title?.toLowerCase().includes('let me show you');
 
   // Cycle through glory images for STWL product with custom timing
   useEffect(() => {
@@ -69,14 +68,14 @@ export default function ProductCard({ product }: ProductCardProps) {
   // CCP animation cycle - simple 5 states
   // State 0: 8+9, State 1: 11+12, State 2: 15+16, State 3: 23+24, State 4: 27+28
   useEffect(() => {
-    if (isCCPProduct) {
+    if (isLMSYProduct) {
       const delay = 2000; // 2 seconds per state
       const timeoutId = setTimeout(() => {
         setCcpLayerIndex((prev) => (prev + 1) % 5);
       }, delay);
       return () => clearTimeout(timeoutId);
     }
-  }, [isCCPProduct, ccpLayerIndex]);
+  }, [isLMSYProduct, ccpLayerIndex]);
 
   const image = product.images?.[0]?.src;
   const allVariantsSoldOut = product.variants?.every((v: any) => !v.available) ?? false;
@@ -98,7 +97,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       >
         {/* Product Image */}
         <div className="relative w-full h-80" style={{ backgroundColor: '#F2F2F2' }}>
-          {isCCPProduct ? (
+          {isLMSYProduct ? (
             <>
               {/* Base layer - Image 7 (always visible) */}
               <Image
@@ -357,7 +356,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             </div>
           )}
 
-          {isCCPProduct && (
+          {isLMSYProduct && (
             <div className="mb-2">
               <p className="text-lg font-bold text-black font-[family-name:var(--font-inter)]">
                 $4/month
@@ -367,7 +366,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
           {(product.title?.toLowerCase().includes('condition') ||
             product.title?.toLowerCase().includes('month')) &&
-           !isCCPProduct && (
+           !isLMSYProduct && (
             <div className="mb-2">
               <p className="text-lg font-bold text-black font-[family-name:var(--font-inter)]">
                 ${product.variants?.[0]?.price?.amount ? parseFloat(product.variants[0].price.amount).toFixed(2) : '0.00'}
@@ -386,7 +385,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             <p className="text-base text-black font-[family-name:var(--font-inter)] line-clamp-2">
               The thing about love is that it's so big, it's like the biggest thing in the world. But it's also really small. Love starts with noticing small, good things about someone until it adds up and becomes something big. This is a card for the small things.
             </p>
-          ) : isCCPProduct ? (
+          ) : isLMSYProduct ? (
             <p className="text-base text-black font-[family-name:var(--font-inter)] line-clamp-2">
               A monthly care package full of creative goodies to inspire you.
             </p>
