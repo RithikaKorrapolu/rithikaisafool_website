@@ -80,9 +80,9 @@ export default function Home() {
   const posterRefs = useRef<Map<number, HTMLDivElement>>(new Map());
 
   const clientQuotes = [
-    "How can our features and notifications be beautiful and funny (along with being helpful)?",
-    "What content can we make that is engaging but also deeeply reflects our values?",
-    "How can we design this event to promote playfulness and vulnerability and real connection between our guests?"
+    "How can we design this event so people feel safe being playful and real together?",
+    "How can we make our features and notifications more beautiful and funny?",
+    "What content can we make that is engaging but also specific to our values and brand?"
   ];
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [audioProgress, setAudioProgress] = useState(0);
