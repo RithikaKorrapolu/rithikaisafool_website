@@ -93,8 +93,8 @@ export default function LMSYSamplePage() {
           >
             {/* Logo */}
             <div className="mb-8">
-              <h1 className="text-white text-2xl font-bold tracking-tight">LET ME</h1>
-              <h1 className="text-white text-2xl font-bold tracking-tight">SHOW YOU</h1>
+              <h1 className="text-white text-3xl tracking-tight font-[family-name:var(--font-abril-fatface)]">LET ME</h1>
+              <h1 className="text-white text-3xl tracking-tight font-[family-name:var(--font-abril-fatface)]">SHOW YOU</h1>
               <p className="text-white/60 text-sm mt-1">A Digital Art Exhibit</p>
             </div>
 
