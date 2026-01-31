@@ -282,9 +282,10 @@ export default function LMSYSamplePage() {
 
       {/* Info Button */}
       <button className="fixed top-4 right-4 w-10 h-10 rounded-full bg-white/20 backdrop-blur flex items-center justify-center text-white hover:bg-white/40 transition-colors z-50">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="12" cy="12" r="10"/>
-          <path d="M12 16v-4M12 8h.01"/>
+          <line x1="12" y1="16" x2="12" y2="12"/>
+          <circle cx="12" cy="8" r="0.5" fill="currentColor"/>
         </svg>
       </button>
     </div>
