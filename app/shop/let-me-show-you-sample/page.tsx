@@ -73,7 +73,7 @@ export default function LMSYSamplePage() {
     >
       {/* Main Glass Container */}
       <div
-        className="w-full max-w-6xl rounded-3xl overflow-hidden relative"
+        className="w-full max-w-4xl rounded-3xl overflow-hidden relative"
         style={{
           background: "rgba(255, 255, 255, 0.15)",
           backdropFilter: "blur(20px)",
