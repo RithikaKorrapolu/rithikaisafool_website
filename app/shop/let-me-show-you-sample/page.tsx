@@ -71,7 +71,7 @@ export default function LMSYSamplePage() {
     >
       {/* Main Glass Container */}
       <div
-        className="w-full max-w-6xl max-h-[90vh] rounded-3xl overflow-y-auto relative glass-scrollbar"
+        className="w-full max-w-6xl h-[85vh] rounded-3xl overflow-hidden relative"
         style={{
           background: "rgba(255, 255, 255, 0.15)",
           backdropFilter: "blur(20px)",
@@ -80,10 +80,10 @@ export default function LMSYSamplePage() {
           boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
         }}
       >
-        <div className="flex flex-col lg:flex-row">
+        <div className="flex flex-col lg:flex-row h-full">
           {/* Left Sidebar */}
           <div
-            className="w-full lg:w-72 p-6 flex-shrink-0"
+            className="w-full lg:w-72 p-6 flex-shrink-0 overflow-y-auto glass-scrollbar"
             style={{
               background: "rgba(50, 50, 50, 0.4)",
               backdropFilter: "blur(10px)",
@@ -131,7 +131,7 @@ export default function LMSYSamplePage() {
           </div>
 
           {/* Main Content */}
-          <div className="flex-1 p-6 lg:p-8">
+          <div className="flex-1 p-6 lg:p-8 overflow-y-auto glass-scrollbar">
             {/* Featured Artwork */}
             <div className="relative mb-6">
               <div
