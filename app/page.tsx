@@ -80,9 +80,9 @@ export default function Home() {
   const posterRefs = useRef<Map<number, HTMLDivElement>>(new Map());
 
   const clientQuotes = [
-    "How do we get users to be excited about new features and notifications because they're funny / beautiful?",
-    "How do we design an event to unlock meaningful moments between people?",
-    "What content can we make that is engaging but also specific to our values and brand?"
+    "How do we design notifications that get people giddy and excited to engage?",
+    "How do we design an event to unlock specific types of conversations between people?",
+    "How do we make content that is deeply aligned with the humor and personality of our brand?"
   ];
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [audioProgress, setAudioProgress] = useState(0);
@@ -1105,8 +1105,11 @@ export default function Home() {
                 &times;
               </button>
 
-              {/* Custom Audio Player - at top */}
+              {/* Audio Player */}
               <div className="mb-6 mt-6 md:mt-0 max-w-sm mx-auto">
+                <p className="text-sm text-gray-600 text-center mb-2" style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>
+                  Glory&apos;s Dream
+                </p>
                 <audio
                   ref={audioRef}
                   onTimeUpdate={handleAudioTimeUpdate}
@@ -1114,10 +1117,9 @@ export default function Home() {
                   onEnded={() => setIsAudioPlaying(false)}
                   className="hidden"
                 >
-                  <source src="/audio/dreams.mp3" type="audio/mpeg" />
+                  <source src="/assets/glory_dream.mp4" type="audio/mp4" />
                 </audio>
                 <div className="flex items-center gap-3 bg-white rounded-full px-4 py-3 shadow-lg">
-                  {/* Play/Pause Button */}
                   <button
                     onClick={toggleAudio}
                     className="w-8 h-8 flex items-center justify-center text-gray-700 hover:text-black transition-colors"
@@ -1133,13 +1135,9 @@ export default function Home() {
                       </svg>
                     )}
                   </button>
-
-                  {/* Time */}
                   <span className="text-sm text-gray-600 min-w-[70px]">
                     {formatTime(audioCurrentTime)} / {formatTime(audioDuration || 0)}
                   </span>
-
-                  {/* Progress Bar */}
                   <div
                     className="flex-1 h-1 bg-gray-300 rounded-full cursor-pointer"
                     onClick={handleAudioSeek}
@@ -1165,6 +1163,13 @@ export default function Home() {
                   Hearing people talk about their dreams, like really talk about them, is one of the best things in life! Getting to work with them on it is an honor!!
                 </p>
 
+                <p
+                  className="text-base md:text-lg text-black leading-relaxed mb-6 text-justify"
+                  style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
+                >
+                  If you&apos;re working on a new product, creating content, or hosting events and could use a little help with creative direction / strategy, we might make a good team.
+                </p>
+
                 <AnimatePresence mode="wait">
                   <motion.p
                     key={clientQuoteIndex}
@@ -1178,13 +1183,6 @@ export default function Home() {
                     &quot;{clientQuotes[clientQuoteIndex]}&quot;
                   </motion.p>
                 </AnimatePresence>
-
-                <p
-                  className="text-base md:text-lg text-black leading-relaxed mb-6 text-justify"
-                  style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
-                >
-                  If you&apos;re working on a new product, creating content, or hosting events and could use a little help with creative direction / strategy, we might make a good team.
-                </p>
 
                 <div className="text-center">
                   <Link

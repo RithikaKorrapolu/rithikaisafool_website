@@ -72,32 +72,36 @@ export default function ProductDetailPage() {
     };
   }, [showWaitlistPopup, sizeChartOpen, showArchivePopup]);
 
-  // Scroll to top on page load to prevent content being under header
+  // Measure header height and set CSS variable for proper spacing
   useEffect(() => {
-    // Disable browser scroll restoration
-    if ('scrollRestoration' in history) {
-      history.scrollRestoration = 'manual';
-    }
+    const header = document.querySelector('header');
+    if (!header) return;
 
-    const scrollToTop = () => {
-      window.scrollTo(0, 0);
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
+    const setHeaderHeight = () => {
+      const h = header.getBoundingClientRect().height;
+      document.documentElement.style.setProperty('--header-h', `${h}px`);
     };
 
-    // Immediate scroll
-    scrollToTop();
+    // Set immediately
+    setHeaderHeight();
 
-    // Use requestAnimationFrame for smoother handling
-    requestAnimationFrame(scrollToTop);
+    // Re-measure when fonts finish loading (common cause of layout shift)
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(setHeaderHeight);
+    }
 
-    // Multiple delayed scrolls to handle layout shifts on mobile
-    const timeouts = [0, 50, 100, 200, 300, 500, 1000].map((delay) =>
-      setTimeout(scrollToTop, delay)
-    );
+    // Re-measure when header size changes (responsive, cart count, etc.)
+    const ro = new ResizeObserver(setHeaderHeight);
+    ro.observe(header);
 
-    return () => timeouts.forEach(clearTimeout);
-  }, [handle]);
+    // Handle orientation change
+    window.addEventListener('orientationchange', setHeaderHeight);
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('orientationchange', setHeaderHeight);
+    };
+  }, []);
 
   // Check if this is the CCP product
   const isCCPProduct = product?.title?.toLowerCase().includes('creative care') ||
@@ -333,7 +337,7 @@ export default function ProductDetailPage() {
 
   return (
     <>
-    <main className="min-h-screen pb-16 pt-40 md:pt-44" style={{ backgroundColor: '#F2F2F2' }}>
+    <main className="min-h-screen pb-16" style={{ backgroundColor: '#F2F2F2', paddingTop: 'calc(var(--header-h, 160px) + 20px)' }}>
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-1 lg:gap-12">
           {/* Left: Product Image */}
