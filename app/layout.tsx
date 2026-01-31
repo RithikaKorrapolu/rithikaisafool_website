@@ -31,8 +31,8 @@ export default function RootLayout({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
 
-  // Check if we're on a standalone project page (like stwl)
-  const isStandalonePage = pathname?.startsWith('/stwl');
+  // Check if we're on a standalone project page (like stwl or sample pages)
+  const isStandalonePage = pathname?.startsWith('/stwl') || pathname?.startsWith('/shop/let-me-show-you-sample');
 
   return (
     <html lang="en">
