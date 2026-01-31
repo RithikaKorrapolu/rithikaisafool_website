@@ -1195,7 +1195,7 @@ export default function Home() {
                   >
                     This is the best way to find out.
                   </Link>
-                  <p className="text-sm text-gray-600 mt-2" style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>
+                  <p className="text-gray-600 mt-2" style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif', fontSize: '1.05rem' }}>
                     Set up a free consult
                   </p>
                 </div>
