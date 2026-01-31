@@ -73,7 +73,7 @@ export default function LMSYSamplePage() {
     >
       {/* Main Glass Container */}
       <div
-        className="w-full max-w-6xl max-h-[90vh] rounded-3xl overflow-y-auto relative"
+        className="w-full max-w-6xl max-h-[90vh] rounded-3xl overflow-y-auto relative glass-scrollbar"
         style={{
           background: "rgba(255, 255, 255, 0.15)",
           backdropFilter: "blur(20px)",
