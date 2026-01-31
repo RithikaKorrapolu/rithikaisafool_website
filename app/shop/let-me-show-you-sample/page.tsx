@@ -231,7 +231,7 @@ export default function LMSYSamplePage() {
           onClick={() => setShowInfoPopup(false)}
         >
           <div
-            className="max-w-md w-full rounded-2xl p-6 relative"
+            className="max-w-xl w-full rounded-2xl p-8 relative"
             style={{
               background: "rgba(255, 255, 255, 0.9)",
               backdropFilter: "blur(20px)",
