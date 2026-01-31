@@ -758,8 +758,11 @@ export default function ProductDetailPage() {
                   <p className="text-sm text-black font-[family-name:var(--font-inter)] mb-4">
                     Every month, <strong>we pick a theme</strong> and pass it to different people, asking them to <strong>curate art around it</strong>. They send back all kinds of beautiful things - paintings, songs, excerpts from movies, texts from their mom, whatever they think fits.
                   </p>
+                  <p className="text-sm font-bold text-black font-[family-name:var(--font-inter)] mb-1">
+                    How it Works
+                  </p>
                   <p className="text-sm text-black font-[family-name:var(--font-inter)] mb-4">
-                    How it works is that we&apos;ll have a custom website for each theme (month). We add new pieces over the month and email you when they appear. A new art exhibit every month.
+                    We&apos;ll have a custom website for each theme (month). We add new pieces over the month and email you when they appear. A new art exhibit every month.
                   </p>
                   <p className="text-sm text-black font-[family-name:var(--font-inter)] mb-4">
                     <span className="bg-[#dcff73] px-1">You can check out a sample <a href="/shop/let-me-show-you-sample" target="_blank" rel="noopener noreferrer" className="font-bold underline hover:opacity-70">here</a>.</span>
