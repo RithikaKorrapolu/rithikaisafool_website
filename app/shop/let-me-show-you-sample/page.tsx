@@ -64,7 +64,7 @@ export default function LMSYSamplePage() {
 
   return (
     <div
-      className="min-h-screen w-full flex items-center justify-center p-4 md:p-8"
+      className="h-screen w-full flex items-center justify-center p-4 md:p-8 overflow-hidden"
       style={{
         backgroundImage: `url("/assets/CCP/Sample_Month/plains.avif")`,
         backgroundSize: "cover",
@@ -73,7 +73,7 @@ export default function LMSYSamplePage() {
     >
       {/* Main Glass Container */}
       <div
-        className="w-full max-w-4xl rounded-3xl overflow-hidden relative"
+        className="w-full max-w-4xl max-h-[90vh] rounded-3xl overflow-hidden relative"
         style={{
           background: "rgba(255, 255, 255, 0.15)",
           backdropFilter: "blur(20px)",
