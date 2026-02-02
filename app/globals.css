@@ -474,3 +474,17 @@ body.popup-open {
   scrollbar-width: auto;
   scrollbar-color: rgba(255, 255, 255, 0.4) rgba(255, 255, 255, 0.15);
 }
+
+@keyframes fade-in-out {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.animate-fade-in-out {
+  display: inline-block;
+  animation: fade-in-out 4s ease-in-out infinite;
+}

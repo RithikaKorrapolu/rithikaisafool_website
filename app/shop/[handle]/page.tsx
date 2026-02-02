@@ -756,13 +756,10 @@ export default function ProductDetailPage() {
                     <br />— James Baldwin
                   </p>
                   <p className="text-sm text-black font-[family-name:var(--font-inter)] mb-4">
-                    Every month, <strong>we pick a theme</strong> and pass it to different people, asking them to <strong>curate art around it</strong>. They send back all kinds of beautiful things - paintings, songs, excerpts from movies, texts from their mom, whatever they think fits.
-                  </p>
-                  <p className="text-sm font-bold text-black font-[family-name:var(--font-inter)] mb-1">
-                    How it Works
+                    Let Me Show You is a <strong>monthly digital art exhibit</strong>. Each month, we pick a theme and <strong>invite guests to share art that they love.</strong> They share all kinds of things: paintings, songs, podcast excerpts, even texts from their mom, whatever feels beautiful and fits the theme.
                   </p>
                   <p className="text-sm text-black font-[family-name:var(--font-inter)] mb-4">
-                    We&apos;ll have a custom website for each theme (month). We add new pieces throughout the month and email you when they appear. A new art exhibit every month.
+                    Subscribers get a link and password to the exhibit website and receive email notifications as it grows.
                   </p>
                   <p className="text-sm text-black font-[family-name:var(--font-inter)] mb-4">
                     <span className="bg-[#dcff73] px-1">You can check out a sample <a href="/shop/let-me-show-you-sample" target="_blank" rel="noopener noreferrer" className="font-bold underline hover:opacity-70">here</a>.</span>
@@ -1006,7 +1003,16 @@ export default function ProductDetailPage() {
                       <p><strong>Fabric:</strong> Heavy weight, ~10 oz, 42% cotton 53% polyester, cotton fleece inside</p>
                       <p><strong>Construction:</strong> Super soft, pullover hood, drop shoulder, kangaroo pocket, self-fabric lined hood, no drawcord, sleeve cuff ribbing.</p>
                       <p className="mt-4"><strong>DESIGN PROCESS</strong></p>
-                      <p>Once you purchase a sweatshirt, you'll get an email to set up a 1 hour design call. We then take that design get it printed at a local screenprinting store and ship it to the next buyer.</p>
+                      <p>Once you purchase a sweatshirt (woohoo), we&apos;ll start processing and shipping your order AND you&apos;ll get an email to set up a 1 hour design call with me. On that call, we&apos;ll live walk through designing the sweatshirt together. We then take that design, get it printed at a local screenprinting store and ship it to the next buyer.</p>
+                    </div>
+                  ) : isLMSYProduct ? (
+                    <div className="text-sm text-gray-700 font-[family-name:var(--font-inter)] space-y-2">
+                      <p><strong>Single Month Purchase</strong></p>
+                      <p>For the single month purchase, you will receive a link and password to the current month&apos;s exhibit once it is complete. So for example, if you bought the single month purchase on 1/10, you will receive one email on 1/31 with clear access instructions. You will be able to access the website for as long as it&apos;s up and running, which we hope is a long, long time.</p>
+                      <p className="mt-4"><strong>Monthly Subscription Purchase</strong></p>
+                      <p>For the monthly subscription purchase, you will receive an email with the link and password to the current month&apos;s exhibit at the next drop (weekly-ish). You will continue to receive email notifications anytime there is a new drop. You can access the websites for as long as it&apos;s up and running, which we hope is a long, long time.</p>
+                      <p className="mt-4 text-gray-800">If you&apos;ve got special requests for notifications, or purchasing a previous theme, you can email us at <a href="mailto:support@rithikaisafool.com" className="underline hover:text-black">support@rithikaisafool.com</a></p>
+                      <p className="mt-4 text-gray-800"><em>Calling all art lovers!</em> If you want to be a contributing guest, email us with one of your favorite pieces of art and why at <a href="mailto:submissions@rithikaisafool.com" className="underline hover:text-black">submissions@rithikaisafool.com</a></p>
                     </div>
                   ) : (product.title?.toLowerCase().includes('condition') ||
                        product.title?.toLowerCase().includes('month')) ? (
