@@ -508,11 +508,6 @@ export default function LMSYSamplePage() {
                     Medium: <span className="font-medium">{selectedArtwork.medium}</span>
                   </p>
                 )}
-                {selectedArtwork.dimensions && (
-                  <p className="text-white/60 text-base mt-1">
-                    Dimensions: <span className="font-medium">{selectedArtwork.dimensions}</span>
-                  </p>
-                )}
               </div>
 
               

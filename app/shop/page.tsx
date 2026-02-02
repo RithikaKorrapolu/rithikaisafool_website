@@ -109,8 +109,8 @@ export default function Shop() {
       <div className="container mx-auto px-6 max-w-7xl">
 
         {loading ? (
-          <div className="flex justify-center items-center min-h-[400px]">
-            <div className="text-xl text-black font-[family-name:var(--font-inter)]">Loading products...</div>
+          <div className="flex justify-center items-center min-h-[400px]" style={{ backgroundColor: '#F2F2F2' }}>
+            <div className="text-xl text-black font-[family-name:var(--font-abril-fatface)]">Loading...</div>
           </div>
         ) : products.length === 0 ? (
           <div className="text-center py-12">

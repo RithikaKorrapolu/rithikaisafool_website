@@ -1103,7 +1103,7 @@ export default function Home() {
               {/* Audio Player */}
               <div className="mb-6 mt-6 md:mt-0 max-w-sm mx-auto">
                 <p className="text-sm text-gray-600 text-center mb-2" style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>
-                  Glory&apos;s Dream
+                  Excerpt of Glory&apos;s Dream
                 </p>
                 <audio
                   ref={audioRef}
