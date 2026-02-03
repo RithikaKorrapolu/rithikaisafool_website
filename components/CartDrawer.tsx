@@ -76,7 +76,7 @@ export default function CartDrawer() {
             <div className="flex-1 overflow-y-auto p-6">
               {cart.length === 0 ? (
                 <p className="text-center text-gray-600 mt-8 font-[family-name:var(--font-inter)]">
-                  Your cart is empty
+                  Your cart is full of potential.
                 </p>
               ) : (
                 <div className="space-y-4">

@@ -518,7 +518,7 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-left sm:text-center mb-12 mt-2"
             >
-              <h2 className="text-[22px] sm:text-3xl font-bold text-black font-[family-name:var(--font-abril-fatface)] italic">some stuff we do</h2>
+              <h2 className="text-[22px] sm:text-3xl lg:text-[33px] font-bold text-black font-[family-name:var(--font-abril-fatface)]">a chance to be fools</h2>
             </motion.div>
           </div>
         </div>
