@@ -289,13 +289,13 @@ export default function LMSYSamplePage() {
                     {/* Logo */}
                     <div className="mb-8">
                       <h1 className="text-white/60 text-[26px] tracking-tight font-[family-name:var(--font-abril-fatface)]">LET ME SHOW YOU:</h1>
-                      <p className="text-white text-[33px] font-bold mt-2">&ldquo;It feels too late.&rdquo;</p>
-                      <p className="text-gray-400 text-base font-medium mt-3">Feb 2026 Theme</p>
+                      <p className="text-white text-[33px] font-bold mt-2 font-[family-name:var(--font-inter)]">&ldquo;It feels too late.&rdquo;</p>
+                      <p className="text-gray-400 text-base font-medium mt-3 font-[family-name:var(--font-inter)]">Feb 2026 Theme</p>
                     </div>
 
                     {/* Artwork List */}
                     <div className="border-t border-white/20 pt-4">
-                      <p className="text-white/50 text-xs uppercase tracking-wider mb-3">Artworks</p>
+                      <p className="text-white/50 text-xs uppercase tracking-wider mb-3 font-[family-name:var(--font-inter)]">Artworks</p>
                       <div className="space-y-2">
                         {ARTWORKS.map((artwork) => (
                           <button
@@ -340,7 +340,7 @@ export default function LMSYSamplePage() {
                                 </div>
                               )}
                             </div>
-                            <span className={`text-sm truncate ${
+                            <span className={`text-sm truncate font-[family-name:var(--font-inter)] ${
                               selectedArtwork.id === artwork.id ? "text-white font-medium" : "text-white/70"
                             }`}>
                               {artwork.title}
@@ -368,14 +368,14 @@ export default function LMSYSamplePage() {
             <div className="mb-8">
               <h1 className="text-white/60 text-xl tracking-tight font-[family-name:var(--font-abril-fatface)]">LET ME SHOW YOU:</h1>
               <div className="relative">
-                <p className="text-white text-3xl font-bold mt-2">&ldquo;It feels too late.&rdquo;</p>
+                <p className="text-white text-3xl font-bold mt-2 font-[family-name:var(--font-inter)]">&ldquo;It feels too late.&rdquo;</p>
               </div>
-              <p className="text-gray-800 text-base font-medium mt-3">Feb 2026 Theme</p>
+              <p className="text-gray-800 text-base font-medium mt-3 font-[family-name:var(--font-inter)]">Feb 2026 Theme</p>
             </div>
 
             {/* Table of Contents */}
             <div className="border-t border-white/20 pt-4">
-              <p className="text-white/50 text-xs uppercase tracking-wider mb-3">Artworks</p>
+              <p className="text-white/50 text-xs uppercase tracking-wider mb-3 font-[family-name:var(--font-inter)]">Artworks</p>
               <div className="space-y-2">
                 {ARTWORKS.map((artwork) => (
                   <button
@@ -423,7 +423,7 @@ export default function LMSYSamplePage() {
                         </div>
                       )}
                     </div>
-                    <span className={`text-sm truncate ${
+                    <span className={`text-sm truncate font-[family-name:var(--font-inter)] ${
                       selectedArtwork.id === artwork.id ? "text-white font-medium" : "text-white/70"
                     }`}>
                       {artwork.title}
@@ -439,7 +439,7 @@ export default function LMSYSamplePage() {
             {/* Mobile Header */}
             <div className="lg:hidden mb-4 pb-3 border-b border-white/20 text-center">
               <p className="text-white/60 text-[18px] font-[family-name:var(--font-abril-fatface)]">LET ME SHOW YOU:</p>
-              <p className="text-white text-[22px] font-bold">&ldquo;It feels too late.&rdquo;</p>
+              <p className="text-white text-[22px] font-bold font-[family-name:var(--font-inter)]">&ldquo;It feels too late.&rdquo;</p>
               <p className="text-gray-800 text-sm font-medium mt-2">Feb 2026 Theme</p>
             </div>
             {/* Featured Artwork */}
@@ -483,29 +483,29 @@ export default function LMSYSamplePage() {
                 </div>
               ) : selectedArtwork.quote ? (
                 <div className="relative min-h-[300px] lg:min-h-[400px] flex flex-col items-center justify-center p-8">
-                  <p className="text-black/60 text-sm uppercase tracking-wider mb-4">Transcript</p>
-                  <p className="text-black text-2xl lg:text-3xl leading-relaxed italic text-center max-w-2xl" style={{ textShadow: "0 2px 4px rgba(0, 0, 0, 0.1)" }}>
+                  <p className="text-black/60 text-sm uppercase tracking-wider mb-4 font-[family-name:var(--font-inter)]">Transcript</p>
+                  <p className="text-black text-2xl lg:text-3xl leading-relaxed italic text-center max-w-2xl font-[family-name:var(--font-inter)]" style={{ textShadow: "0 2px 4px rgba(0, 0, 0, 0.1)" }}>
                     &ldquo;{selectedArtwork.quote}&rdquo;
                   </p>
-                  <p className="text-black/70 mt-4 text-base">— {selectedArtwork.quoteAttribution || selectedArtwork.artist}</p>
+                  <p className="text-black/70 mt-4 text-base font-[family-name:var(--font-inter)]">— {selectedArtwork.quoteAttribution || selectedArtwork.artist}</p>
                 </div>
               ) : null}
 
               {/* Artwork Info */}
               <div className="mt-4">
-                <h2 className="text-2xl lg:text-3xl font-semibold text-white">{selectedArtwork.title}</h2>
+                <h2 className="text-2xl lg:text-3xl font-semibold text-white font-[family-name:var(--font-inter)]">{selectedArtwork.title}</h2>
                 {selectedArtwork.artist && (
-                  <p className="text-white/60 text-base mt-1">
+                  <p className="text-white/60 text-base mt-1 font-[family-name:var(--font-inter)]">
                     Artist: <span className="font-medium">{selectedArtwork.artist}</span>
                   </p>
                 )}
                 {selectedArtwork.date && (
-                  <p className="text-white/60 text-base mt-1">
+                  <p className="text-white/60 text-base mt-1 font-[family-name:var(--font-inter)]">
                     Date: <span className="font-medium">{selectedArtwork.date}</span>
                   </p>
                 )}
                 {selectedArtwork.medium && (
-                  <p className="text-white/60 text-base mt-1">
+                  <p className="text-white/60 text-base mt-1 font-[family-name:var(--font-inter)]">
                     Medium: <span className="font-medium">{selectedArtwork.medium}</span>
                   </p>
                 )}
@@ -515,11 +515,11 @@ export default function LMSYSamplePage() {
               {/* Quote below video if both exist */}
               {selectedArtwork.video && selectedArtwork.quote && (
                 <div className="mt-4 p-4 rounded-xl" style={{ background: "rgba(255, 255, 255, 0.1)" }}>
-                  <p className="text-black/60 text-sm uppercase tracking-wider mb-3 text-center font-semibold">Transcript From Video</p>
-                  <p className="text-black text-base leading-relaxed italic text-center font-medium">
+                  <p className="text-black/60 text-sm uppercase tracking-wider mb-3 text-center font-semibold font-[family-name:var(--font-inter)]">Transcript From Video</p>
+                  <p className="text-black text-base leading-relaxed italic text-center font-medium font-[family-name:var(--font-inter)]">
                     &ldquo;{selectedArtwork.quote}&rdquo;
                   </p>
-                  <p className="text-black/70 mt-3 text-sm text-center font-medium">— {selectedArtwork.quoteAttribution || selectedArtwork.artist}</p>
+                  <p className="text-black/70 mt-3 text-sm text-center font-medium font-[family-name:var(--font-inter)]">— {selectedArtwork.quoteAttribution || selectedArtwork.artist}</p>
                 </div>
               )}
 
@@ -532,9 +532,9 @@ export default function LMSYSamplePage() {
                     boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
                   }}
                 >
-                  <p className="text-white/60 text-sm uppercase tracking-wider mb-2 font-semibold">Curator Notes</p>
-                  <p className="text-white text-xl italic">&ldquo;{selectedArtwork.note}&rdquo;</p>
-                  <p className="text-white text-base mt-2 text-right">— {selectedArtwork.curator}</p>
+                  <p className="text-white/60 text-sm uppercase tracking-wider mb-2 font-semibold font-[family-name:var(--font-inter)]">Curator Notes</p>
+                  <p className="text-white text-xl italic font-[family-name:var(--font-inter)]">&ldquo;{selectedArtwork.note}&rdquo;</p>
+                  <p className="text-white text-base mt-2 text-right font-[family-name:var(--font-inter)]">— {selectedArtwork.curator}</p>
                 </div>
               )}
 
@@ -547,8 +547,8 @@ export default function LMSYSamplePage() {
                     boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
                   }}
                 >
-                  <p className="text-white/60 text-sm uppercase tracking-wider mb-2 font-semibold">Additional Info</p>
-                  <ul className="text-white text-lg space-y-2">
+                  <p className="text-white/60 text-sm uppercase tracking-wider mb-2 font-semibold font-[family-name:var(--font-inter)]">Additional Info</p>
+                  <ul className="text-white text-lg space-y-2 font-[family-name:var(--font-inter)]">
                     {selectedArtwork.additionalInfo.map((info: string, index: number) => (
                       <li key={index} className="flex">
                         <span className="mr-2">•</span>
@@ -612,7 +612,7 @@ export default function LMSYSamplePage() {
               About This Exhibit
             </h2>
 
-            <p className="text-gray-700">
+            <p className="text-gray-700 font-[family-name:var(--font-inter)]">
               Let Me Show You is a monthly digital art exhibit from Rithika is a Fool! This is just a sample preview but you can learn more about the full thing <a href="/shop/let-me-show-you" className="font-bold underline hover:opacity-70">here</a>.
             </p>
           </div>

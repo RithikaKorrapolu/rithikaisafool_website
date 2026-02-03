@@ -296,9 +296,9 @@ export default function ProductCard({ product }: ProductCardProps) {
               )}
             </>
           ) : (product.title?.toLowerCase().includes('condition') ||
-               product.title?.toLowerCase().includes('month')) && image ? (
+               product.title?.toLowerCase().includes('month')) ? (
             <Image
-              src={image}
+              src="/assets/COTM/coverreal.png"
               alt={product.title}
               fill
               className="object-contain"

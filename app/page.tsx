@@ -80,9 +80,9 @@ export default function Home() {
   const posterRefs = useRef<Map<number, HTMLDivElement>>(new Map());
 
   const clientQuotes = [
-    "How do we design notifications that get people giddy and excited to engage?",
-    "How do we design an event to unlock specific types of conversations between people?",
-    "How do we make content that is deeply aligned with the humor and personality of our brand?"
+    "How can we design an event to unlock the conversations we care about?",
+    "How can we design features and notifications that make people feel giddy and excited to share?",
+    "How do we make content that is aligned with our humor and brand?"
   ];
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [audioProgress, setAudioProgress] = useState(0);
@@ -137,7 +137,7 @@ export default function Home() {
     }
     const interval = setInterval(() => {
       setClientQuoteIndex((prev) => (prev + 1) % clientQuotes.length);
-    }, 4000);
+    }, 7000);
     return () => clearInterval(interval);
   }, [showClientPopup, clientQuotes.length]);
 
@@ -153,12 +153,27 @@ export default function Home() {
   useEffect(() => {
     const isAnyPopupOpen = showPhonePopup || showClientPopup || showSTWLPopup || showComingSoonPopup;
     if (isAnyPopupOpen) {
-      document.body.classList.add('popup-open');
+      const scrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
     } else {
-      document.body.classList.remove('popup-open');
+      const scrollY = document.body.style.top;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
     }
     return () => {
-      document.body.classList.remove('popup-open');
+      const scrollY = document.body.style.top;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
     };
   }, [showPhonePopup, showClientPopup, showSTWLPopup, showComingSoonPopup]);
 
@@ -503,7 +518,7 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-left sm:text-center mb-12 mt-2"
             >
-              <h2 className="text-2xl sm:text-3xl font-bold text-black font-[family-name:var(--font-abril-fatface)] italic">some stuff we do</h2>
+              <h2 className="text-[22px] sm:text-3xl font-bold text-black font-[family-name:var(--font-abril-fatface)] italic">some stuff we do</h2>
             </motion.div>
           </div>
         </div>
@@ -511,7 +526,7 @@ export default function Home() {
         {/* Scrollable Content */}
         <div className="container mx-auto px-6 relative z-10">
           {/* Spacer to account for fixed header height */}
-          <div className="h-[115vw] sm:h-[26vw] lg:h-[26vw]"></div>
+          <div className="h-[110vw] sm:h-[26vw] lg:h-[26vw]"></div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 px-[2.5%] md:px-0">
             {reversedPosters.map((poster) => {
@@ -673,7 +688,7 @@ export default function Home() {
                     ) : poster.id === 5 ? (
                       <>
                         <Image
-                          src="/assets/COTM/cover.png"
+                          src="/assets/COTM/coverreal.png"
                           alt="COTM"
                           width={500}
                           height={625}
@@ -1030,7 +1045,7 @@ export default function Home() {
                 }
               `}</style>
               <p className="mt-4 text-black font-[family-name:var(--font-inter)]">
-                Each month, we feature one person. Every day, they answer one new question. Call to hear today&apos;s answer. Call everyday and you get to know someone over the course of a month.
+                Each month, we feature one person to be the guest on the show. Every day, they answer one new question. Call to hear today&apos;s answer. Call everyday and you get to know someone over the course of a month.
               </p>
               {/* CALL NOW button - mobile only, right after "course of a month" */}
               {isTouchDevice && (
@@ -1099,51 +1114,6 @@ export default function Home() {
               >
                 &times;
               </button>
-
-              {/* Audio Player */}
-              <div className="mb-6 mt-6 md:mt-0 max-w-sm mx-auto">
-                <p className="text-sm text-gray-600 text-center mb-2" style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>
-                  Excerpt of Glory&apos;s Dream
-                </p>
-                <audio
-                  ref={audioRef}
-                  onTimeUpdate={handleAudioTimeUpdate}
-                  onLoadedMetadata={handleAudioLoadedMetadata}
-                  onEnded={() => setIsAudioPlaying(false)}
-                  className="hidden"
-                >
-                  <source src="/assets/glory_dream.mp3" type="audio/mpeg" />
-                </audio>
-                <div className="flex items-center gap-3 bg-white rounded-full px-4 py-3 shadow-lg">
-                  <button
-                    onClick={toggleAudio}
-                    className="w-8 h-8 flex items-center justify-center text-gray-700 hover:text-black transition-colors"
-                  >
-                    {isAudioPlaying ? (
-                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <rect x="6" y="4" width="4" height="16" />
-                        <rect x="14" y="4" width="4" height="16" />
-                      </svg>
-                    ) : (
-                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <polygon points="5,3 19,12 5,21" />
-                      </svg>
-                    )}
-                  </button>
-                  <span className="text-sm text-gray-600 min-w-[70px]">
-                    {formatTime(audioCurrentTime)} / {formatTime(audioDuration || 0)}
-                  </span>
-                  <div
-                    className="flex-1 h-1 bg-gray-300 rounded-full cursor-pointer"
-                    onClick={handleAudioSeek}
-                  >
-                    <div
-                      className="h-full bg-gray-600 rounded-full transition-all"
-                      style={{ width: `${audioProgress}%` }}
-                    />
-                  </div>
-                </div>
-              </div>
 
               {/* All text content - fades in together */}
               <motion.div

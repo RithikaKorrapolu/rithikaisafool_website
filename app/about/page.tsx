@@ -119,7 +119,7 @@ export default function About() {
           <button
             onClick={() => setOriginStoryOpen(!originStoryOpen)}
             className="flex items-start gap-2 text-black font-bold font-[family-name:var(--font-inter)] mb-4 cursor-pointer hover:text-[#F8330D] transition-colors text-left"
-            style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(1.75rem, 5vw, 2rem)' }}
+            style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(1.4rem, 5vw, 2rem)' }}
           >
             <motion.span
               animate={{ rotate: originStoryOpen ? 90 : 0 }}
@@ -142,16 +142,16 @@ export default function About() {
                 transition={{ duration: 0.3 }}
                 className="overflow-visible"
               >
-                <div className="text-black font-medium font-[family-name:var(--font-inter)]" style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(1.05rem, 3.5vw, 1.2rem)' }}>
-                  When I was 12, I told <span className="relative inline-block cursor-pointer" onMouseEnter={() => setShowDadTooltip(true)} onMouseLeave={() => setShowDadTooltip(false)}><strong>my dad</strong><sup style={{ backgroundColor: '#dcff73', borderRadius: '50%', padding: '2px 6px', fontSize: '0.6em', marginLeft: '2px' }}>1</sup><AnimatePresence>{showDadTooltip && (<motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="absolute left-1/2 -translate-x-1/2 top-full mt-2 bg-white rounded-lg shadow-xl p-2 z-[100]" style={{ letterSpacing: 'normal', width: '150px' }}><img src="/assets/dad.jpg" alt="Dad" className="rounded-lg w-full h-auto" /></motion.div>)}</AnimatePresence></span> that we should find out how fireflies light up and put that in trees and then we&apos;d have glowing trees and people wouldn&apos;t have to pay for electricity. He looked at me and said <em>&quot;Wow, that&apos;s great Rithu. Let&apos;s look into it.&quot;</em> He meant it. I made a whole presentation that night. For months after, anytime <span className="relative inline-block cursor-pointer" onMouseEnter={() => setShowPeopleTooltip(true)} onMouseLeave={() => setShowPeopleTooltip(false)}><strong>people</strong><sup style={{ backgroundColor: '#dcff73', borderRadius: '50%', padding: '2px 6px', fontSize: '0.6em', marginLeft: '2px' }}>2</sup><AnimatePresence>{showPeopleTooltip && (<motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="absolute left-0 md:left-1/2 md:-translate-x-1/2 top-full mt-2 bg-white rounded-lg shadow-xl p-2.5 md:p-4 z-[100] w-64 md:w-80 text-sm md:text-base font-normal text-left" style={{ letterSpacing: 'normal' }}>These were adults. They were coworkers, neighbors, family friends, etc.</motion.div>)}</AnimatePresence></span> came over, he made them watch it. He made them put their phones away and ask me at least 3 questions. I was a kid talking about glowing trees.
+                <div className="text-black font-medium font-[family-name:var(--font-inter)]" style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(0.95rem, 3.5vw, 1.2rem)' }}>
+                  When I was 12, I told <span className="relative inline-block cursor-pointer" onMouseEnter={() => setShowDadTooltip(true)} onMouseLeave={() => setShowDadTooltip(false)}><strong>my dad</strong><sup style={{ backgroundColor: '#dcff73', borderRadius: '50%', padding: '2px 6px', fontSize: '0.6em', marginLeft: '2px' }}>1</sup><AnimatePresence>{showDadTooltip && (<motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="absolute left-1/2 -translate-x-1/2 top-full mt-2 bg-white rounded-lg shadow-xl p-2 z-[100]" style={{ letterSpacing: 'normal', width: '150px' }}><img src="/assets/dad.jpg" alt="Dad" className="rounded-lg w-full h-auto" /></motion.div>)}</AnimatePresence></span> that we should find out how fireflies light up and put that in trees and then we&apos;d have glowing trees and people wouldn&apos;t have to pay for electricity. He smiled at me and said <em>&quot;Wow, great idea Rithu. Let&apos;s look into it.&quot;</em> I made a whole presentation that night. For months after, anytime <span className="relative inline-block cursor-pointer" onMouseEnter={() => setShowPeopleTooltip(true)} onMouseLeave={() => setShowPeopleTooltip(false)}><strong>people</strong><sup style={{ backgroundColor: '#dcff73', borderRadius: '50%', padding: '2px 6px', fontSize: '0.6em', marginLeft: '2px' }}>2</sup><AnimatePresence>{showPeopleTooltip && (<motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="absolute -left-16 md:left-1/2 md:-translate-x-1/2 top-full mt-2 bg-white rounded-lg shadow-xl p-2.5 md:p-4 z-[100] w-[200px] md:w-80 text-sm md:text-base font-normal text-left" style={{ letterSpacing: 'normal' }}>These were adults. They were coworkers, neighbors, family friends, etc.</motion.div>)}</AnimatePresence></span> came over, he made them watch it. He made them put their phones away and ask me at least 3 questions. I was a kid talking about glowing trees.
                 </div>
-                <div className="text-black font-medium font-[family-name:var(--font-inter)]" style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(1.05rem, 3.5vw, 1.2rem)' }}>
+                <div className="text-black font-medium font-[family-name:var(--font-inter)]" style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(0.95rem, 3.5vw, 1.2rem)' }}>
                   I still remember the name of the specific molecule. Luciferin. It&apos;s what makes fireflies light up.
                 </div>
-                <div className="text-black font-medium font-[family-name:var(--font-inter)]" style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(1.05rem, 3.5vw, 1.2rem)' }}>
+                <div className="text-black font-medium font-[family-name:var(--font-inter)]" style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(0.95rem, 3.5vw, 1.2rem)' }}>
                   My dad <span className="relative inline-block cursor-pointer" onMouseEnter={() => setShowDidThatTooltip(true)} onMouseLeave={() => setShowDidThatTooltip(false)}><strong>did that for me my whole life</strong><sup style={{ backgroundColor: '#dcff73', borderRadius: '50%', padding: '2px 6px', fontSize: '0.6em', marginLeft: '2px' }}>3</sup><AnimatePresence>{showDidThatTooltip && (<motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="absolute left-0 md:left-1/2 md:-translate-x-1/2 top-full mt-2 bg-white rounded-lg shadow-xl p-2.5 md:p-4 z-50 w-64 md:w-80 text-sm md:text-base font-normal text-left" style={{ letterSpacing: 'normal' }}>He&apos;s not here anymore but I can still hear his voice in my head. <em>&quot;That&apos;s great Rithu, go for it.&quot;</em></motion.div>)}</AnimatePresence></span>. Took my foolish dreams seriously. Made other people too.
                 </div>
-                <div className="text-black font-medium font-[family-name:var(--font-inter)]" style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(1.05rem, 3.5vw, 1.2rem)' }}>
+                <div className="text-black font-medium font-[family-name:var(--font-inter)]" style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(0.95rem, 3.5vw, 1.2rem)' }}>
                   This is his.
                 </div>
               </motion.div>
@@ -160,7 +160,7 @@ export default function About() {
           <button
             onClick={() => setPeopleAwesomeOpen(!peopleAwesomeOpen)}
             className="flex items-start gap-2 text-black font-bold font-[family-name:var(--font-inter)] mt-8 mb-4 cursor-pointer hover:text-[#F8330D] transition-colors text-left"
-            style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(1.75rem, 5vw, 2rem)' }}
+            style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(1.4rem, 5vw, 2rem)' }}
           >
             <motion.span
               animate={{ rotate: peopleAwesomeOpen ? 90 : 0 }}
@@ -183,10 +183,10 @@ export default function About() {
                 transition={{ duration: 0.3 }}
                 className="overflow-visible"
               >
-                <div className="text-black font-medium font-[family-name:var(--font-inter)]" style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(1.05rem, 3.5vw, 1.2rem)' }}>
-                  I&apos;m lucky because I have an insanely good <span className="relative inline-block cursor-pointer" onMouseEnter={() => setShowFamilyTooltip(true)} onMouseLeave={() => setShowFamilyTooltip(false)}><strong>family</strong><sup style={{ backgroundColor: '#dcff73', borderRadius: '50%', padding: '2px 6px', fontSize: '0.6em', marginLeft: '2px' }}>4</sup><AnimatePresence>{showFamilyTooltip && (<motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="absolute left-0 md:left-1/2 md:-translate-x-1/2 top-full mt-2 bg-white rounded-lg shadow-xl p-2.5 md:p-4 z-50 whitespace-nowrap text-sm md:text-base font-normal text-left" style={{ letterSpacing: 'normal' }}>both given and chosen</motion.div>)}</AnimatePresence></span>. Probably because of that, I&apos;m pretty optimistic about people. I think they&apos;re mostly awesome and usually deserve forgiveness.
+                <div className="text-black font-medium font-[family-name:var(--font-inter)]" style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(0.95rem, 3.5vw, 1.2rem)' }}>
+                  I&apos;m lucky because I have an insanely good <span className="relative inline-block cursor-pointer" onMouseEnter={() => setShowFamilyTooltip(true)} onMouseLeave={() => setShowFamilyTooltip(false)}><strong>family</strong><sup style={{ backgroundColor: '#dcff73', borderRadius: '50%', padding: '2px 6px', fontSize: '0.6em', marginLeft: '2px' }}>4</sup><AnimatePresence>{showFamilyTooltip && (<motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="absolute left-0 md:left-1/2 md:-translate-x-1/2 top-full mt-2 bg-white rounded-lg shadow-xl p-2.5 md:p-4 z-50 whitespace-nowrap text-sm md:text-base font-normal text-left" style={{ letterSpacing: 'normal' }}>both given and chosen</motion.div>)}</AnimatePresence></span>. Because of that, I&apos;m pretty optimistic about people. I think they&apos;re mostly awesome and usually deserve forgiveness.
                 </div>
-                <div className="text-black font-medium font-[family-name:var(--font-inter)]" style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(1.05rem, 3.5vw, 1.2rem)' }}>
+                <div className="text-black font-medium font-[family-name:var(--font-inter)]" style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(0.95rem, 3.5vw, 1.2rem)' }}>
                   Awhile ago, I heard this song by Suki Waterhouse -
                 </div>
                 <div className="my-4">
@@ -201,16 +201,16 @@ export default function About() {
                     loading="lazy"
                   />
                 </div>
-                <div className="text-black font-medium font-[family-name:var(--font-inter)]" style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(1.05rem, 3.5vw, 1.2rem)' }}>
+                <div className="text-black font-medium font-[family-name:var(--font-inter)]" style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(0.95rem, 3.5vw, 1.2rem)' }}>
                   The whole song is beautiful but there&apos;s one line I think about all the time.
                 </div>
-                <div className="text-black font-medium font-[family-name:var(--font-inter)]" style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(1.05rem, 3.5vw, 1.2rem)' }}>
+                <div className="text-black font-medium font-[family-name:var(--font-inter)]" style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(0.95rem, 3.5vw, 1.2rem)' }}>
                   <em>&quot;God exists between people, homie&quot;</em>
                 </div>
-                <div className="text-black font-medium font-[family-name:var(--font-inter)] mt-4" style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(1.05rem, 3.5vw, 1.2rem)' }}>
+                <div className="text-black font-medium font-[family-name:var(--font-inter)] mt-4" style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(0.95rem, 3.5vw, 1.2rem)' }}>
                   People work three jobs so their kid can go to dance classes and then watch them forget the routine on stage. People risk their careers and reputations investing in someone else&apos;s dream. People practice for decades to make others laugh, only to get boo&apos;d off stage. People run into burning buildings for people they&apos;ve never met. People say &quot;I love you&quot; not knowing if it&apos;s going to be said back.
                 </div>
-                <div className="text-black font-medium font-[family-name:var(--font-inter)] mt-4" style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(1.05rem, 3.5vw, 1.2rem)' }}>
+                <div className="text-black font-medium font-[family-name:var(--font-inter)] mt-4" style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(0.95rem, 3.5vw, 1.2rem)' }}>
                   People willing to be fools for each other. There&apos;s something holy in that.
                 </div>
               </motion.div>
@@ -219,7 +219,7 @@ export default function About() {
           <button
             onClick={() => setMakeArtOpen(!makeArtOpen)}
             className="flex items-start gap-2 text-black font-bold font-[family-name:var(--font-inter)] mt-8 mb-4 cursor-pointer hover:text-[#F8330D] transition-colors text-left"
-            style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(1.75rem, 5vw, 2rem)' }}
+            style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(1.4rem, 5vw, 2rem)' }}
           >
             <motion.span
               animate={{ rotate: makeArtOpen ? 90 : 0 }}
@@ -245,8 +245,8 @@ export default function About() {
                 <div className="text-black font-bold font-[family-name:var(--font-inter)] text-center py-3 border-t-2 border-b-2 border-black my-3" style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(1.1rem, 3.2vw, 1.28rem)' }}>
                   People are awesome when they&apos;re willing to be fools for each other. I want to make art that invites that and brings people together in unexpected ways.
                 </div>
-                <div className="text-black font-medium font-[family-name:var(--font-inter)] mt-4" style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(1.05rem, 3.5vw, 1.2rem)' }}>
-                  It took me a long time to realize that this is what I want to do. It took me even longer <span className="relative inline-block cursor-pointer" onMouseEnter={() => setShowBelieveTooltip(true)} onMouseLeave={() => setShowBelieveTooltip(false)}><strong>to believe</strong><sup style={{ backgroundColor: '#dcff73', borderRadius: '50%', padding: '2px 6px', fontSize: '0.6em', marginLeft: '2px' }}>5</sup><AnimatePresence>{showBelieveTooltip && (<motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="absolute left-0 md:left-1/2 md:-translate-x-1/2 top-full mt-2 bg-white rounded-lg shadow-xl p-2.5 md:p-4 z-[100] w-64 md:w-80 text-sm md:text-base font-normal text-left" style={{ letterSpacing: 'normal' }}>I still can&apos;t believe this is a real job. It sort of feels illegal. Thank you to my friends for showing me the way. I love you.</motion.div>)}</AnimatePresence></span> that I can do it. I feel so, so lucky and grateful that I get to do this right now. This is my dream. Thank you for being here.
+                <div className="text-black font-medium font-[family-name:var(--font-inter)] mt-4" style={{ color: '#000000', letterSpacing: '-0.03em', fontSize: 'clamp(0.95rem, 3.5vw, 1.2rem)' }}>
+                  It took me a long time to realize that this is what I want to do. It took me even longer <span className="relative inline-block cursor-pointer" onMouseEnter={() => setShowBelieveTooltip(true)} onMouseLeave={() => setShowBelieveTooltip(false)}><strong>to believe</strong><sup style={{ backgroundColor: '#dcff73', borderRadius: '50%', padding: '2px 6px', fontSize: '0.6em', marginLeft: '2px' }}>5</sup><AnimatePresence>{showBelieveTooltip && (<motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="absolute -left-32 md:left-1/2 md:-translate-x-1/2 top-full mt-2 bg-white rounded-lg shadow-xl p-2.5 md:p-4 z-[100] w-64 md:w-80 text-sm md:text-base font-normal text-left" style={{ letterSpacing: 'normal' }}>I still can&apos;t believe this is a real job. It sort of feels illegal. Thank you to my friends for showing me the way. I love you.</motion.div>)}</AnimatePresence></span> that I can do it. I feel so, so lucky and grateful that I get to do this right now. This is my dream. Thank you for being here.
                 </div>
               </motion.div>
             )}

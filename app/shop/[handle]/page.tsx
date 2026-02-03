@@ -58,6 +58,13 @@ export default function ProductDetailPage() {
   ];
 
   const [archiveIndex, setArchiveIndex] = useState(0);
+  const [cotmImageIndex, setCotmImageIndex] = useState(0);
+
+  const COTM_IMAGES = [
+    { src: '/assets/COTM/coverreal.png', alt: 'Condition of the Month Hat', style: { transform: 'scale(0.765) translateY(-5%)' }, className: 'object-contain' },
+    { src: '/assets/COTM/backhat.png', alt: 'Condition of the Month Hat Back', style: { transform: 'scale(0.765) translateY(-5%)' }, className: 'object-contain' },
+    { src: '/assets/COTM/sidehat.png', alt: 'Condition of the Month Hat Side', style: { transform: 'scale(0.9) translateX(-10%)' }, className: 'object-cover' },
+  ];
 
   // Lock body scroll when any popup is open to prevent mobile address bar jumping
   useEffect(() => {
@@ -360,7 +367,29 @@ export default function ProductDetailPage() {
               </div>
             ) : (
               /* Other Products - Original Single Image Layout */
-              <div className="relative" style={{ width: '85%', margin: '0 auto' }}>
+              <div className="relative" style={{ width: '85%', margin: '0 auto', maxWidth: '500px' }}>
+                {/* COTM Mobile Carousel Arrows */}
+                {(product?.title?.toLowerCase().includes('condition') ||
+                  product?.title?.toLowerCase().includes('month')) && (
+                  <div className="lg:hidden absolute inset-y-0 -left-4 -right-4 flex justify-between items-center pointer-events-none z-20">
+                    <button
+                      onClick={() => setCotmImageIndex((prev) => (prev === 0 ? COTM_IMAGES.length - 1 : prev - 1))}
+                      className="w-10 h-10 rounded-full bg-white/80 flex items-center justify-center shadow-md pointer-events-auto"
+                    >
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2">
+                        <path d="M15 18l-6-6 6-6"/>
+                      </svg>
+                    </button>
+                    <button
+                      onClick={() => setCotmImageIndex((prev) => (prev === COTM_IMAGES.length - 1 ? 0 : prev + 1))}
+                      className="w-10 h-10 rounded-full bg-white/80 flex items-center justify-center shadow-md pointer-events-auto"
+                    >
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2">
+                        <path d="M9 18l6-6-6-6"/>
+                      </svg>
+                    </button>
+                  </div>
+                )}
                 <div className="relative aspect-square rounded-lg overflow-hidden">
                   {isLMSYProduct ? (
                     <>
@@ -559,14 +588,40 @@ export default function ProductDetailPage() {
                       )}
                     </>
                   ) : (product.title?.toLowerCase().includes('condition') ||
-                       product.title?.toLowerCase().includes('month')) && image ? (
-                    <Image
-                      src={image}
-                      alt={product.title}
-                      fill
-                      className="object-contain"
-                      style={{ transform: 'scale(0.9) translateY(-5%)' }}
-                    />
+                       product.title?.toLowerCase().includes('month')) ? (
+                    <>
+                      {/* Mobile Carousel */}
+                      <div className="lg:hidden w-full h-full">
+                        <AnimatePresence mode="wait">
+                          <motion.div
+                            key={cotmImageIndex}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="w-full h-full"
+                          >
+                            <Image
+                              src={COTM_IMAGES[cotmImageIndex].src}
+                              alt={COTM_IMAGES[cotmImageIndex].alt}
+                              fill
+                              className={COTM_IMAGES[cotmImageIndex].className}
+                              style={COTM_IMAGES[cotmImageIndex].style}
+                            />
+                          </motion.div>
+                        </AnimatePresence>
+                      </div>
+                      {/* Desktop - First Image Only */}
+                      <div className="hidden lg:block w-full h-full">
+                        <Image
+                          src="/assets/COTM/coverreal.png"
+                          alt={product.title}
+                          fill
+                          className="object-contain"
+                          style={{ transform: 'scale(0.765) translateY(-5%)' }}
+                        />
+                      </div>
+                    </>
                   ) : image ? (
                     <Image
                       src={image}
@@ -590,6 +645,30 @@ export default function ProductDetailPage() {
                     </div>
                   )}
                 </div>
+                                {/* COTM Hat Images - Desktop Only */}
+                {(product.title?.toLowerCase().includes('condition') ||
+                  product.title?.toLowerCase().includes('month')) && (
+                  <div className="hidden lg:block">
+                    <div className="relative aspect-square rounded-lg overflow-hidden -mt-16">
+                      <Image
+                        src="/assets/COTM/backhat.png"
+                        alt="Condition of the Month Hat Back"
+                        fill
+                        className="object-contain"
+                        style={{ transform: 'scale(0.765) translateY(-5%)' }}
+                      />
+                    </div>
+                    <div className="relative aspect-square rounded-lg overflow-hidden -mt-16">
+                      <Image
+                        src="/assets/COTM/sidehat.png"
+                        alt="Condition of the Month Hat Side"
+                        fill
+                        className="object-cover"
+                        style={{ transform: 'scale(0.9) translateX(-10%)' }}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
@@ -705,7 +784,7 @@ export default function ProductDetailPage() {
                     ></iframe>
                   </div>
                   <p className="text-base text-black font-[family-name:var(--font-inter)]">
-                    Can you trust a stranger to design your hoodie? Let&apos;s find out.
+                    Can you trust a stranger to design your hoodie?
                   </p>
                   <p className="text-base text-black font-[family-name:var(--font-inter)]">
                     <strong>Each of these hoodies are custom-designed by a different person</strong> and you don't get to see it ahead of time. You pick your size but the design is a total mystery until it arrives. After you buy one, you get a design call with me (Rithika) where <strong>you help design the next hoodie for the next stranger.</strong> And so forth!
@@ -722,7 +801,7 @@ export default function ProductDetailPage() {
                   The thing about love is that it's so big, it's like the biggest thing in the world. But it's also really small. Love starts with noticing small, good things about someone until it adds up and becomes something big. This is a card for the small things.
                 </p>
               ) : product.title?.toLowerCase().includes('condition') ? (
-                <div className="text-sm text-gray-700 font-[family-name:var(--font-inter)]">
+                <div className="text-base text-black font-[family-name:var(--font-inter)]">
                   <p><strong>Every month, we feature a new condition and make merch for it.</strong> You can vote for next month&apos;s condition on our socials:</p>
                   <div className="flex gap-4 mt-2 mb-4">
                     <a href="https://www.instagram.com/rithikaisafool" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">
@@ -756,10 +835,10 @@ export default function ProductDetailPage() {
                     <br />— James Baldwin
                   </p>
                   <p className="text-sm text-black font-[family-name:var(--font-inter)] mb-4">
-                    Let Me Show You is a <strong>monthly digital art exhibit</strong>. Each month, we pick a theme and <strong>invite guests to share art that they love.</strong> They share all kinds of things: paintings, songs, podcast excerpts, even texts from their mom, whatever feels beautiful and fits the theme.
+                    Let Me Show You is a <strong>monthly digital art exhibit</strong>. Each month, we pick a theme and <strong>invite guests to share art that they love.</strong> They share all kinds of things: paintings, songs, podcast excerpts, texts from their mom, whatever they deem as art and fits the theme.
                   </p>
                   <p className="text-sm text-black font-[family-name:var(--font-inter)] mb-4">
-                    Subscribers get a link and password to the exhibit website and receive email notifications as it grows.
+                    Each exhibit will have it&apos;s own custom website and you will get a link and password to access it whenever you would like. Subscribers will get email notifications whenever we have new drops.
                   </p>
                   <p className="text-sm text-black font-[family-name:var(--font-inter)] mb-4">
                     <span className="bg-[#dcff73] px-1">You can check out a sample <a href="/shop/let-me-show-you-sample" target="_blank" rel="noopener noreferrer" className="font-bold underline hover:opacity-70">here</a>.</span>
@@ -1008,9 +1087,9 @@ export default function ProductDetailPage() {
                   ) : isLMSYProduct ? (
                     <div className="text-sm text-gray-700 font-[family-name:var(--font-inter)] space-y-2">
                       <p><strong>Single Month Purchase</strong></p>
-                      <p>For the single month purchase, you will receive a link and password to the current month&apos;s exhibit once it is complete. So for example, if you bought the single month purchase on 1/10, you will receive one email on 1/31 with clear access instructions. You will be able to access the website for as long as it&apos;s up and running, which we hope is a long, long time.</p>
+                      <p>For the single month purchase, you will receive a link and password to the current month&apos;s exhibit once it is complete. So for example, if you bought the single month purchase on 1/10, you will receive one email on 1/31 with clear access instructions.</p>
                       <p className="mt-4"><strong>Monthly Subscription Purchase</strong></p>
-                      <p>For the monthly subscription purchase, you will receive an email with the link and password to the current month&apos;s exhibit at the next drop (weekly-ish). You will continue to receive email notifications anytime there is a new drop. You can access the websites for as long as it&apos;s up and running, which we hope is a long, long time.</p>
+                      <p>For the monthly subscription purchase, you will receive an email with the link and password to the current month&apos;s exhibit. You will continue to receive email notifications anytime there is a new drop.</p>
                       <p className="mt-4 text-gray-800">If you&apos;ve got special requests for notifications, or purchasing a previous theme, you can email us at <a href="mailto:support@rithikaisafool.com" className="underline hover:text-black">support@rithikaisafool.com</a></p>
                       <p className="mt-4 text-gray-800"><em>Calling all art lovers!</em> If you want to be a contributing guest, email us with one of your favorite pieces of art and why at <a href="mailto:submissions@rithikaisafool.com" className="underline hover:text-black">submissions@rithikaisafool.com</a></p>
                     </div>

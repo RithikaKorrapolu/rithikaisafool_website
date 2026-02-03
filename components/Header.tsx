@@ -30,6 +30,38 @@ export default function Header({ onMenuClick }: HeaderProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const currentVideo = videos[currentVideoIndex];
 
+  // Newsletter popup state
+  const [showNewsletterPopup, setShowNewsletterPopup] = useState(false);
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [newsletterError, setNewsletterError] = useState('');
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newsletterEmail) return;
+
+    setNewsletterStatus('loading');
+    try {
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: newsletterEmail }),
+      });
+
+      if (response.ok) {
+        setNewsletterStatus('success');
+        setNewsletterEmail('');
+      } else {
+        const data = await response.json();
+        setNewsletterError(data.error || 'Something went wrong');
+        setNewsletterStatus('error');
+      }
+    } catch {
+      setNewsletterError('Something went wrong');
+      setNewsletterStatus('error');
+    }
+  };
+
   // Handle video end - move to next video
   const handleVideoEnd = () => {
     setCurrentVideoIndex((prev) => (prev + 1) % videos.length);
@@ -55,9 +87,9 @@ export default function Header({ onMenuClick }: HeaderProps) {
     <header className={`fixed top-0 left-0 w-full z-50 ${isVoicemailPage ? 'bg-[#ebf8fd]' : 'bg-white'}`}>
       {/* Top Header with Menu, Logo, Cart */}
       <div className="flex items-center justify-between px-2 py-4 md:px-6 md:py-4 border-b border-gray-200">
-        {/* Home Button - Left */}
-        <Link
-          href="/"
+        {/* Logo Button - Left (Opens Newsletter) */}
+        <button
+          onClick={() => setShowNewsletterPopup(true)}
           className="cursor-pointer ml-4 md:ml-8"
         >
           <motion.div
@@ -67,14 +99,14 @@ export default function Header({ onMenuClick }: HeaderProps) {
           >
             <Image
               src="/assets/shorthome_logo.png"
-              alt="Home"
+              alt="Newsletter"
               width={72}
               height={72}
               priority
               className="w-[41px] md:w-[58px] h-auto object-contain home-logo-shadow"
             />
           </motion.div>
-        </Link>
+        </button>
 
         {/* Logo - Center */}
         <a
@@ -341,6 +373,87 @@ export default function Header({ onMenuClick }: HeaderProps) {
                 ))}
               </div>
             </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+
+    {/* Newsletter Popup */}
+    <AnimatePresence>
+      {showNewsletterPopup && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/60 flex items-center justify-center z-[100] p-4"
+          onClick={() => {
+            setShowNewsletterPopup(false);
+            setNewsletterStatus('idle');
+            setNewsletterError('');
+          }}
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            className="relative w-full max-w-md bg-white rounded-2xl p-8"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => {
+                setShowNewsletterPopup(false);
+                setNewsletterStatus('idle');
+                setNewsletterError('');
+              }}
+              className="absolute top-4 right-4 text-gray-500 hover:text-black text-2xl transition-colors"
+            >
+              ×
+            </button>
+
+            {newsletterStatus === 'success' ? (
+              <div className="text-center py-8">
+                <div className="text-4xl mb-4">🎉</div>
+                <h2 className="text-2xl font-bold text-black font-[family-name:var(--font-abril-fatface)] mb-2">
+                  You&apos;re in!
+                </h2>
+                <p className="text-gray-600 font-[family-name:var(--font-inter)]">
+                  Thanks for subscribing. Talk soon!
+                </p>
+              </div>
+            ) : (
+              <>
+                <h2 className="text-2xl font-bold text-black mb-2 text-center tracking-tight" style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif', letterSpacing: '-0.03em' }}>
+                  Sweet of you
+                </h2>
+                <p className="text-gray-600 font-[family-name:var(--font-inter)] text-center mb-6">
+                  Just wanted to say thanks for stopping by. It&apos;s sweet of you. If you feel like sticking around, you can sign up for our newsletter. We share cool stuff happening around here.
+                </p>
+
+                <form onSubmit={handleNewsletterSubmit}>
+                  <input
+                    type="email"
+                    value={newsletterEmail}
+                    onChange={(e) => setNewsletterEmail(e.target.value)}
+                    placeholder="email"
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-[#F8330D] focus:outline-none font-[family-name:var(--font-inter)] mb-4 text-black"
+                    required
+                  />
+                  {newsletterStatus === 'error' && (
+                    <p className="text-red-500 text-sm mb-4 font-[family-name:var(--font-inter)]">
+                      {newsletterError}
+                    </p>
+                  )}
+                  <button
+                    type="submit"
+                    disabled={newsletterStatus === 'loading'}
+                    className="w-full bg-[#F8330D] text-white font-bold py-3 rounded-xl hover:bg-black transition-colors font-[family-name:var(--font-inter)] disabled:opacity-50"
+                  >
+                    {newsletterStatus === 'loading' ? 'Subscribing...' : 'Subscribe'}
+                  </button>
+                </form>
+              </>
+            )}
           </motion.div>
         </motion.div>
       )}
