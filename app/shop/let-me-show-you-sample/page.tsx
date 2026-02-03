@@ -264,7 +264,7 @@ export default function LMSYSamplePage() {
                   transition={{ type: "spring", damping: 25, stiffness: 300 }}
                   className="w-[70%] max-w-sm h-full"
                   style={{
-                    background: "rgba(50, 50, 50, 0.95)",
+                    background: "rgba(50, 50, 50, 0.7)",
                     backdropFilter: "blur(20px)",
                   }}
                   onClick={(e) => e.stopPropagation()}
@@ -288,8 +288,8 @@ export default function LMSYSamplePage() {
 
                     {/* Logo */}
                     <div className="mb-8">
-                      <h1 className="text-white/60 text-xl tracking-tight font-[family-name:var(--font-abril-fatface)]">LET ME SHOW YOU:</h1>
-                      <p className="text-white text-2xl font-bold mt-2">&ldquo;It feels too late.&rdquo;</p>
+                      <h1 className="text-white/60 text-[26px] tracking-tight font-[family-name:var(--font-abril-fatface)]">LET ME SHOW YOU:</h1>
+                      <p className="text-white text-[33px] font-bold mt-2">&ldquo;It feels too late.&rdquo;</p>
                       <p className="text-gray-400 text-base font-medium mt-3">Feb 2026 Theme</p>
                     </div>
 
@@ -438,8 +438,9 @@ export default function LMSYSamplePage() {
           <div ref={mainContentRef} className="flex-1 p-4 pt-2 lg:p-8 overflow-y-auto glass-scrollbar">
             {/* Mobile Header */}
             <div className="lg:hidden mb-4 pb-3 border-b border-white/20 text-center">
-              <p className="text-white/60 text-sm font-[family-name:var(--font-abril-fatface)]">LET ME SHOW YOU:</p>
-              <p className="text-white text-lg font-bold">&ldquo;It feels too late.&rdquo;</p>
+              <p className="text-white/60 text-[18px] font-[family-name:var(--font-abril-fatface)]">LET ME SHOW YOU:</p>
+              <p className="text-white text-[22px] font-bold">&ldquo;It feels too late.&rdquo;</p>
+              <p className="text-gray-800 text-sm font-medium mt-2">Feb 2026 Theme</p>
             </div>
             {/* Featured Artwork */}
             <AnimatePresence mode="wait">
@@ -566,7 +567,7 @@ export default function LMSYSamplePage() {
       </div>
 
       {/* Sample Banner */}
-      <div className="fixed top-4 left-1/2 -translate-x-1/2 bg-black text-white px-6 py-2 rounded-full text-sm font-medium z-50">
+      <div className="fixed top-4 left-1/2 -translate-x-1/2 bg-black text-white px-5 py-1.5 rounded-full text-xs font-medium z-50">
         This is a sample preview
       </div>
 

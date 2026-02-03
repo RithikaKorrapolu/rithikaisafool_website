@@ -483,7 +483,7 @@ export default function Home() {
               transition={{ duration: 0.6 }}
               className="text-center mb-0 mt-3 flex justify-start sm:justify-center"
             >
-              <h1 className="text-[32vw] sm:text-[17vw] font-bold leading-none tracking-tight font-[family-name:var(--font-abril-fatface)] text-left sm:text-center" style={{
+              <h1 className="text-[36vw] sm:text-[19vw] font-bold leading-[0.85] sm:leading-none tracking-tight font-[family-name:var(--font-abril-fatface)] text-left sm:text-center" style={{
                 color: '#F8330D'
               }}>
                 {/* Mobile layout */}
@@ -511,9 +511,9 @@ export default function Home() {
         {/* Scrollable Content */}
         <div className="container mx-auto px-6 relative z-10">
           {/* Spacer to account for fixed header height */}
-          <div className="h-[115vw] sm:h-[22vw] lg:h-[22vw]"></div>
+          <div className="h-[115vw] sm:h-[26vw] lg:h-[26vw]"></div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 px-[2.5%] md:px-0">
             {reversedPosters.map((poster) => {
               const isActive = isTouchDevice && activePosterIds.has(poster.id);
               const PosterContent = (
