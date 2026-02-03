@@ -2,10 +2,10 @@
 
 export default function LegalPage() {
   return (
-    <main className="min-h-screen pt-[140px] md:pt-[145px] lg:pt-[155px] pb-20 px-6" style={{ backgroundColor: '#F2F2F2', fontFamily: 'Times New Roman, serif', color: 'black' }}>
+    <main className="min-h-screen pt-[140px] md:pt-[145px] lg:pt-[155px] pb-20 px-6 font-[family-name:var(--font-inter)]" style={{ backgroundColor: '#F2F2F2', color: 'black' }}>
       <div className="max-w-4xl mx-auto">
         {/* Page Title */}
-        <h1 className="text-center mb-4 md:mb-8 underline" style={{ fontSize: '3.38rem', fontWeight: 'bold' }}>Legal + FAQ Document</h1>
+        <h1 className="text-center mb-4 md:mb-8" style={{ fontSize: '3.38rem', fontWeight: 'bold' }}>Legal + FAQ Document</h1>
 
         {/* Introduction */}
         <p className="text-lg mb-8">
