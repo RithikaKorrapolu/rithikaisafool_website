@@ -424,10 +424,10 @@ export default function Header({ onMenuClick }: HeaderProps) {
             ) : (
               <>
                 <h2 className="text-2xl font-bold text-black mb-2 text-center tracking-tight" style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif', letterSpacing: '-0.03em' }}>
-                  Let&apos;s Keep This Going
+                  Many Thanks!!
                 </h2>
                 <p className="text-gray-600 font-[family-name:var(--font-inter)] text-center mb-6">
-                  Thanks for stopping by! If you liked this place, you can leave your email and we&apos;ll keep you posted on new products and behind-the-scenes content. You can also follow us around here:
+                  Many thanks for stopping by! Many, many thanks if you follow us on socials and subscribe to our newsletter!!
                 </p>
 
                 {/* Social Icons */}

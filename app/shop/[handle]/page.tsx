@@ -80,12 +80,12 @@ export default function ProductDetailPage() {
     };
   }, [showWaitlistPopup, sizeChartOpen, showArchivePopup]);
 
-  // Toggle archive image side every second on mobile
+  // Toggle archive image side every 2 seconds on mobile
   useEffect(() => {
     if (!showArchivePopup) return;
     const interval = setInterval(() => {
       setArchiveImageSide(prev => prev === 'front' ? 'back' : 'front');
-    }, 1000);
+    }, 2000);
     return () => clearInterval(interval);
   }, [showArchivePopup]);
 
@@ -1408,7 +1408,7 @@ export default function ProductDetailPage() {
                 {/* Left Arrow */}
                 <button
                   onClick={() => setArchiveIndex((prev) => (prev === 0 ? editionImages.length - 2 : prev - 1))}
-                  className="flex-shrink-0 w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors mr-4"
+                  className="flex-shrink-0 w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors mr-4 z-10 relative"
                 >
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2">
                     <path d="M15 18l-6-6 6-6"/>
@@ -1428,14 +1428,15 @@ export default function ProductDetailPage() {
                     >
                       {/* Mobile: Single rotating image */}
                       <div className="md:hidden relative w-full h-[300px] flex-shrink-0">
-                        <AnimatePresence mode="wait">
+                        <AnimatePresence>
                           <motion.div
                             key={archiveImageSide}
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            transition={{ duration: 0.3 }}
+                            transition={{ duration: 0.5 }}
                             className="absolute inset-0"
+                            style={{ transform: 'scale(1.30)' }}
                           >
                             {archiveImageSide === 'front' ? (
                               editionImages[archiveIndex + 1].srcFront === 'unlock' ? (
@@ -1531,7 +1532,7 @@ export default function ProductDetailPage() {
                 {/* Right Arrow */}
                 <button
                   onClick={() => setArchiveIndex((prev) => (prev === editionImages.length - 2 ? 0 : prev + 1))}
-                  className="flex-shrink-0 w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors ml-4"
+                  className="flex-shrink-0 w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors ml-4 z-10 relative"
                 >
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2">
                     <path d="M9 18l6-6-6-6"/>

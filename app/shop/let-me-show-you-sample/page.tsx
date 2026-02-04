@@ -533,7 +533,7 @@ export default function LMSYSamplePage() {
                   }}
                 >
                   <p className="text-white/60 text-sm uppercase tracking-wider mb-2 font-semibold font-[family-name:var(--font-inter)]">Curator Notes</p>
-                  <p className="text-white text-xl italic font-[family-name:var(--font-inter)]">&ldquo;{selectedArtwork.note}&rdquo;</p>
+                  <p className="text-white text-lg md:text-xl italic font-[family-name:var(--font-inter)]">&ldquo;{selectedArtwork.note}&rdquo;</p>
                   <p className="text-white text-base mt-2 text-right font-[family-name:var(--font-inter)]">— {selectedArtwork.curator}</p>
                 </div>
               )}
@@ -548,7 +548,7 @@ export default function LMSYSamplePage() {
                   }}
                 >
                   <p className="text-white/60 text-sm uppercase tracking-wider mb-2 font-semibold font-[family-name:var(--font-inter)]">Additional Info</p>
-                  <ul className="text-white text-lg space-y-2 font-[family-name:var(--font-inter)]">
+                  <ul className="text-white text-base md:text-lg space-y-2 font-[family-name:var(--font-inter)]">
                     {selectedArtwork.additionalInfo.map((info: string, index: number) => (
                       <li key={index} className="flex">
                         <span className="mr-2">•</span>
