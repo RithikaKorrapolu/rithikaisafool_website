@@ -58,6 +58,7 @@ export default function ProductDetailPage() {
   ];
 
   const [archiveIndex, setArchiveIndex] = useState(0);
+  const [archiveImageSide, setArchiveImageSide] = useState<'front' | 'back'>('front');
   const [cotmImageIndex, setCotmImageIndex] = useState(0);
 
   const COTM_IMAGES = [
@@ -78,6 +79,15 @@ export default function ProductDetailPage() {
       document.body.classList.remove('popup-open');
     };
   }, [showWaitlistPopup, sizeChartOpen, showArchivePopup]);
+
+  // Toggle archive image side every second on mobile
+  useEffect(() => {
+    if (!showArchivePopup) return;
+    const interval = setInterval(() => {
+      setArchiveImageSide(prev => prev === 'front' ? 'back' : 'front');
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [showArchivePopup]);
 
   // Measure header height and set CSS variable for proper spacing
   useEffect(() => {
@@ -1265,7 +1275,7 @@ export default function ProductDetailPage() {
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
-            className="bg-white rounded-2xl p-8 max-w-4xl mx-4 shadow-2xl relative"
+            className="bg-white rounded-2xl p-4 md:p-8 max-w-4xl mx-4 shadow-2xl relative max-h-[80vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close X Button */}
@@ -1278,16 +1288,16 @@ export default function ProductDetailPage() {
               </svg>
             </button>
 
-            <h2 className="text-xl font-bold text-black font-[family-name:var(--font-inter)] mb-6">
+            <h2 className="text-lg md:text-xl font-bold text-black font-[family-name:var(--font-inter)] mb-4 md:mb-6">
               Size Chart
             </h2>
 
-            <p className="text-base font-semibold text-black font-[family-name:var(--font-inter)] mb-4">
+            <p className="text-sm md:text-base font-semibold text-black font-[family-name:var(--font-inter)] mb-3 md:mb-4">
               US Regular
             </p>
 
             <div className="overflow-x-auto">
-              <table className="w-full text-sm text-black font-[family-name:var(--font-inter)]">
+              <table className="w-full text-xs md:text-sm text-black font-[family-name:var(--font-inter)]">
                 <thead>
                   <tr className="border-b border-gray-200">
                     <th className="text-left py-3 px-2 font-semibold">Brand Size</th>
@@ -1416,10 +1426,66 @@ export default function ProductDetailPage() {
                       transition={{ duration: 0.3 }}
                       className="relative w-full h-full flex flex-col md:flex-row gap-0 md:gap-4 justify-center md:items-center pt-28 md:pt-0"
                     >
-                      <div className="relative w-full h-[300px] md:h-full md:w-[50%] flex-shrink-0">
+                      {/* Mobile: Single rotating image */}
+                      <div className="md:hidden relative w-full h-[300px] flex-shrink-0">
+                        <AnimatePresence mode="wait">
+                          <motion.div
+                            key={archiveImageSide}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="absolute inset-0"
+                          >
+                            {archiveImageSide === 'front' ? (
+                              editionImages[archiveIndex + 1].srcFront === 'unlock' ? (
+                                <div className="w-full h-full flex items-center justify-center">
+                                  <div className="w-48 h-48 flex items-center justify-center bg-gray-100 rounded-lg">
+                                    <div className="text-center">
+                                      <svg className="w-12 h-12 mx-auto text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                      </svg>
+                                      <p className="text-gray-500 font-bold text-sm">COMING SOON</p>
+                                    </div>
+                                  </div>
+                                </div>
+                              ) : (
+                                <Image
+                                  src={editionImages[archiveIndex + 1].srcFront}
+                                  alt={`${editionImages[archiveIndex + 1].alt} Front`}
+                                  fill
+                                  className="object-contain"
+                                />
+                              )
+                            ) : (
+                              editionImages[archiveIndex + 1].srcBack === 'unlock' ? (
+                                <div className="w-full h-full flex items-center justify-center">
+                                  <div className="w-48 h-48 flex items-center justify-center bg-gray-100 rounded-lg">
+                                    <div className="text-center">
+                                      <svg className="w-12 h-12 mx-auto text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                      </svg>
+                                      <p className="text-gray-500 font-bold text-sm">COMING SOON</p>
+                                    </div>
+                                  </div>
+                                </div>
+                              ) : (
+                                <Image
+                                  src={editionImages[archiveIndex + 1].srcBack}
+                                  alt={`${editionImages[archiveIndex + 1].alt} Back`}
+                                  fill
+                                  className="object-contain"
+                                />
+                              )
+                            )}
+                          </motion.div>
+                        </AnimatePresence>
+                      </div>
+                      {/* Desktop: Both images side by side */}
+                      <div className="hidden md:block relative w-full h-full md:w-[50%] flex-shrink-0">
                         {editionImages[archiveIndex + 1].srcFront === 'unlock' ? (
                           <div className="w-full h-full flex items-center justify-center">
-                            <div className="w-48 h-48 md:w-64 md:h-64 flex items-center justify-center bg-gray-100 rounded-lg">
+                            <div className="w-64 h-64 flex items-center justify-center bg-gray-100 rounded-lg">
                               <div className="text-center">
                                 <svg className="w-12 h-12 mx-auto text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -1437,10 +1503,10 @@ export default function ProductDetailPage() {
                           />
                         )}
                       </div>
-                      <div className="relative w-full h-[300px] md:h-full md:w-[50%] flex-shrink-0 -mt-8 md:mt-0">
+                      <div className="hidden md:block relative w-full h-full md:w-[50%] flex-shrink-0">
                         {editionImages[archiveIndex + 1].srcBack === 'unlock' ? (
                           <div className="w-full h-full flex items-center justify-center">
-                            <div className="w-48 h-48 md:w-64 md:h-64 flex items-center justify-center bg-gray-100 rounded-lg">
+                            <div className="w-64 h-64 flex items-center justify-center bg-gray-100 rounded-lg">
                               <div className="text-center">
                                 <svg className="w-12 h-12 mx-auto text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -1482,7 +1548,7 @@ export default function ProductDetailPage() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.3 }}
-                    className="text-lg text-black font-[family-name:var(--font-inter)]"
+                    className="text-base md:text-lg text-black font-[family-name:var(--font-inter)]"
                   >
                     {editionImages[archiveIndex + 1].description}
                   </motion.p>
