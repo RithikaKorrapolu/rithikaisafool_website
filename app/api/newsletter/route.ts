@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     }
 
     const klaviyoApiKey = process.env.KLAVIYO_API_KEY;
-    const klaviyoListId = process.env.KLAVIYO_LIST_ID;
+    const klaviyoListId = 'RSaqUR'; // Sweet Things newsletter list
 
     if (!klaviyoApiKey) {
       console.error('Missing Klaviyo API key');

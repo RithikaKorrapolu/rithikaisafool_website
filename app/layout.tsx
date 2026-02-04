@@ -7,7 +7,7 @@ import CartDrawer from "@/components/CartDrawer";
 import { CartProvider } from "@/context/CartContext";
 import { Inter, Jaldi, Neuton, Archivo_Narrow } from 'next/font/google';
 import localFont from 'next/font/local';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
@@ -35,6 +35,11 @@ export default function RootLayout({
 
   // Check if we're on a standalone project page (like stwl or sample pages)
   const isStandalonePage = pathname?.startsWith('/stwl') || pathname?.startsWith('/shop/let-me-show-you-sample');
+
+  // Scroll to top on route change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   return (
     <html lang="en">

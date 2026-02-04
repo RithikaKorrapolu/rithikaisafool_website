@@ -387,7 +387,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             </p>
           ) : isLMSYProduct ? (
             <p className="text-base text-black font-[family-name:var(--font-inter)] line-clamp-2">
-              A monthly care package full of creative goodies to inspire you.
+              A monthly digital art exhibit. Each month, we pick a theme and invite guests to share art that they love.
             </p>
           ) : (
             <>
