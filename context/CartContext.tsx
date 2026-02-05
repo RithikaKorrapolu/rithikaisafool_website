@@ -193,7 +193,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       const data = await response.json();
 
       if (data.data?.cartCreate?.cart?.checkoutUrl) {
-        window.open(data.data.cartCreate.cart.checkoutUrl, '_blank');
+        window.location.href = data.data.cartCreate.cart.checkoutUrl;
       } else {
         console.error('Cart creation error:', data.data?.cartCreate?.userErrors || data.errors);
         alert('Unable to process checkout. Please try again.');
