@@ -6,22 +6,37 @@ const SHOPIFY_STORE_DOMAIN = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN;
 // Get the current edition count
 export async function GET() {
   try {
+    // Check if env vars are set
+    if (!SHOPIFY_ADMIN_API_TOKEN || !SHOPIFY_STORE_DOMAIN) {
+      console.error('Missing env vars:', {
+        hasToken: !!SHOPIFY_ADMIN_API_TOKEN,
+        hasDomain: !!SHOPIFY_STORE_DOMAIN
+      });
+      return NextResponse.json({ editionCount: 3, error: 'Missing env vars' });
+    }
+
     // Get the stranger hoodie product by handle
     const response = await fetch(
       `https://${SHOPIFY_STORE_DOMAIN}/admin/api/2024-01/products.json?handle=a-stranger-designed-my-sweatshirt`,
       {
         headers: {
-          'X-Shopify-Access-Token': SHOPIFY_ADMIN_API_TOKEN!,
+          'X-Shopify-Access-Token': SHOPIFY_ADMIN_API_TOKEN,
           'Content-Type': 'application/json',
         },
       }
     );
 
+    if (!response.ok) {
+      console.error('Shopify API error:', response.status, response.statusText);
+      return NextResponse.json({ editionCount: 3, error: `API error: ${response.status}` });
+    }
+
     const data = await response.json();
     const product = data.products?.[0];
 
     if (!product) {
-      return NextResponse.json({ editionCount: 1 });
+      console.error('Product not found');
+      return NextResponse.json({ editionCount: 3, error: 'Product not found' });
     }
 
     // Get metafields for this product
@@ -29,23 +44,28 @@ export async function GET() {
       `https://${SHOPIFY_STORE_DOMAIN}/admin/api/2024-01/products/${product.id}/metafields.json`,
       {
         headers: {
-          'X-Shopify-Access-Token': SHOPIFY_ADMIN_API_TOKEN!,
+          'X-Shopify-Access-Token': SHOPIFY_ADMIN_API_TOKEN,
           'Content-Type': 'application/json',
         },
       }
     );
+
+    if (!metafieldsResponse.ok) {
+      console.error('Metafields API error:', metafieldsResponse.status);
+      return NextResponse.json({ editionCount: 3, error: `Metafields error: ${metafieldsResponse.status}` });
+    }
 
     const metafieldsData = await metafieldsResponse.json();
     const editionMetafield = metafieldsData.metafields?.find(
       (mf: any) => mf.namespace === 'custom' && mf.key === 'edition_count'
     );
 
-    const editionCount = editionMetafield ? parseInt(editionMetafield.value) : 1;
+    const editionCount = editionMetafield ? parseInt(editionMetafield.value) : 3;
 
     return NextResponse.json({ editionCount });
   } catch (error) {
     console.error('Error fetching edition count:', error);
-    return NextResponse.json({ editionCount: 1 });
+    return NextResponse.json({ editionCount: 3, error: String(error) });
   }
 }
 
@@ -86,7 +106,7 @@ export async function POST() {
       (mf: any) => mf.namespace === 'custom' && mf.key === 'edition_count'
     );
 
-    const currentCount = editionMetafield ? parseInt(editionMetafield.value) : 1;
+    const currentCount = editionMetafield ? parseInt(editionMetafield.value) : 3;
     const newCount = currentCount + 1;
 
     // Update or create the metafield
