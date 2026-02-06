@@ -82,6 +82,12 @@ export async function POST(request: Request) {
 
     const responses = await Promise.all(subscribePromises);
 
+    // Log responses for debugging
+    for (let i = 0; i < responses.length; i++) {
+      const responseText = await responses[i].clone().text();
+      console.log(`List ${listIds[i]} response:`, responses[i].status, responseText);
+    }
+
     // Check if at least one succeeded
     const anySuccess = responses.some(r => r.ok || r.status === 409);
 
