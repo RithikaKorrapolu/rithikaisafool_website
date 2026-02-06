@@ -118,56 +118,65 @@ export async function POST(request: Request) {
       );
     }
 
-    // Step 2: Subscribe profile to SMS with consent
-    console.log('Subscribing profile to SMS...');
+    // Step 2: Subscribe profile to SMS with consent on BOTH lists
+    console.log('Subscribing profile to SMS on both lists...');
 
-    const smsConsentResponse = await fetch('https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Klaviyo-API-Key ${klaviyoApiKey}`,
-        'Content-Type': 'application/json',
-        'revision': '2024-10-15',
-      },
-      body: JSON.stringify({
-        data: {
-          type: 'profile-subscription-bulk-create-job',
-          attributes: {
-            profiles: {
-              data: [
-                {
-                  type: 'profile',
-                  attributes: {
-                    phone_number: formattedPhone,
-                    subscriptions: {
-                      sms: {
-                        marketing: {
-                          consent: 'SUBSCRIBED'
+    const smsConsentPromises = listIds.map(listId =>
+      fetch('https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Klaviyo-API-Key ${klaviyoApiKey}`,
+          'Content-Type': 'application/json',
+          'revision': '2024-10-15',
+        },
+        body: JSON.stringify({
+          data: {
+            type: 'profile-subscription-bulk-create-job',
+            attributes: {
+              profiles: {
+                data: [
+                  {
+                    type: 'profile',
+                    attributes: {
+                      phone_number: formattedPhone,
+                      subscriptions: {
+                        sms: {
+                          marketing: {
+                            consent: 'SUBSCRIBED'
+                          },
+                          transactional: {
+                            consent: 'SUBSCRIBED'
+                          }
                         }
                       }
                     }
                   }
-                }
-              ]
+                ]
+              },
+              historical_import: false
             },
-            historical_import: false
-          },
-          relationships: {
-            list: {
-              data: {
-                type: 'list',
-                id: listIds[0] // Subscribe to STWL list with SMS consent
+            relationships: {
+              list: {
+                data: {
+                  type: 'list',
+                  id: listId
+                }
               }
             }
           }
-        }
-      }),
-    });
+        }),
+      })
+    );
 
-    const smsConsentText = await smsConsentResponse.text();
-    console.log('SMS consent response:', smsConsentResponse.status, smsConsentText);
+    const smsConsentResponses = await Promise.all(smsConsentPromises);
 
-    // Step 3: Add profile to both lists directly
-    console.log('Adding profile to lists...');
+    for (let i = 0; i < smsConsentResponses.length; i++) {
+      const responseText = await smsConsentResponses[i].clone().text();
+      console.log(`SMS consent for list ${listIds[i]} response:`, smsConsentResponses[i].status, responseText);
+    }
+
+    // Step 3: Add profile to both lists directly (backup)
+    console.log('Adding profile to lists directly...');
 
     const addToListPromises = listIds.map(listId =>
       fetch(`https://a.klaviyo.com/api/lists/${listId}/relationships/profiles/`, {
