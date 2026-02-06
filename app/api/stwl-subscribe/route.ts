@@ -1,16 +1,31 @@
 export async function POST(request: Request) {
   try {
-    const { email } = await request.json();
+    const { phone } = await request.json();
 
-    if (!email || !email.includes('@')) {
+    if (!phone) {
       return Response.json(
-        { error: 'Valid email is required' },
+        { error: 'Phone number is required' },
+        { status: 400 }
+      );
+    }
+
+    // Format phone number to E.164 format
+    let formattedPhone = phone.replace(/\D/g, ''); // Remove non-digits
+    if (formattedPhone.length === 10) {
+      formattedPhone = '+1' + formattedPhone; // Assume US if 10 digits
+    } else if (!formattedPhone.startsWith('+')) {
+      formattedPhone = '+' + formattedPhone;
+    }
+
+    if (formattedPhone.length < 11) {
+      return Response.json(
+        { error: 'Please enter a valid phone number' },
         { status: 400 }
       );
     }
 
     const klaviyoApiKey = process.env.KLAVIYO_API_KEY;
-    const listIds = ['RSaqUR', 'Sv6TeQ'];
+    const listIds = ['RSaqUR', 'Sv6TeQ']; // Main newsletter + STWL list
 
     if (!klaviyoApiKey) {
       console.error('Missing Klaviyo API key');
@@ -20,7 +35,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // Subscribe to both Klaviyo lists
+    // Subscribe to both Klaviyo lists with SMS consent
     const subscribePromises = listIds.map(listId =>
       fetch('https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/', {
         method: 'POST',
@@ -38,9 +53,9 @@ export async function POST(request: Request) {
                   {
                     type: 'profile',
                     attributes: {
-                      email: email,
+                      phone_number: formattedPhone,
                       subscriptions: {
-                        email: {
+                        sms: {
                           marketing: {
                             consent: 'SUBSCRIBED'
                           }

@@ -68,7 +68,7 @@ export default function Home() {
   const [comingSoonEmail, setComingSoonEmail] = useState('');
   const [comingSoonSubmitting, setComingSoonSubmitting] = useState(false);
   const [comingSoonMessage, setComingSoonMessage] = useState('');
-  const [stwlEmail, setSTWLEmail] = useState('');
+  const [stwlPhone, setSTWLPhone] = useState('');
   const [stwlSubmitting, setSTWLSubmitting] = useState(false);
   const [stwlMessage, setSTWLMessage] = useState('');
   const [stwlTypingText, setStwlTypingText] = useState('');
@@ -214,13 +214,15 @@ export default function Home() {
     e.preventDefault();
     if (stwlSubmitting) return;
 
-    // Custom email validation
-    if (!stwlEmail) {
-      setSTWLMessage('Please enter your email');
+    // Phone validation
+    if (!stwlPhone) {
+      setSTWLMessage('Please enter your phone number');
       return;
     }
-    if (!stwlEmail.includes('@') || !stwlEmail.includes('.')) {
-      setSTWLMessage('Please enter a valid email address');
+    // Basic phone validation - at least 10 digits
+    const phoneDigits = stwlPhone.replace(/\D/g, '');
+    if (phoneDigits.length < 10) {
+      setSTWLMessage('Please enter a valid phone number');
       return;
     }
 
@@ -231,14 +233,14 @@ export default function Home() {
       const response = await fetch('/api/stwl-subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: stwlEmail }),
+        body: JSON.stringify({ phone: stwlPhone }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
         setSTWLMessage(data.message || "You're subscribed!");
-        setSTWLEmail('');
+        setSTWLPhone('');
       } else {
         setSTWLMessage(data.error || 'Something went wrong');
       }
@@ -1177,7 +1179,7 @@ export default function Home() {
             exit={{ opacity: 0 }}
             className="fixed bg-black/50 flex items-center justify-center z-50 popup-backdrop"
             style={{ top: '-200vh', bottom: '-200vh', left: 0, right: 0 }}
-            onClick={() => { setShowSTWLPopup(false); setSTWLEmail(''); setSTWLMessage(''); }}
+            onClick={() => { setShowSTWLPopup(false); setSTWLPhone(''); setSTWLMessage(''); }}
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
@@ -1188,7 +1190,7 @@ export default function Home() {
               onClick={(e) => e.stopPropagation()}
             >
               <button
-                onClick={() => { setShowSTWLPopup(false); setSTWLEmail(''); setSTWLMessage(''); }}
+                onClick={() => { setShowSTWLPopup(false); setSTWLPhone(''); setSTWLMessage(''); }}
                 className="absolute top-4 right-4 text-gray-500 hover:text-black transition-colors"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1203,7 +1205,7 @@ export default function Home() {
                 - Mary Oliver
               </p>
               <p className="text-black font-[family-name:var(--font-inter)] mb-6 text-right">
-                Once a week, we share three small things that brought someone joy.
+                Once a week, we share three small things that brought someone joy. And that&apos;s it.
               </p>
               <motion.div
                 initial={{ opacity: 0 }}
@@ -1215,14 +1217,36 @@ export default function Home() {
                   &quot;{stwlTypingText}<span className="animate-pulse">|</span>&quot;
                 </span>
               </motion.div>
-              <form onSubmit={handleSTWLSubscribe} className="text-right">
-                <input
-                  type="text"
-                  placeholder="Enter your email"
-                  value={stwlEmail}
-                  onChange={(e) => { setSTWLEmail(e.target.value); setSTWLMessage(''); }}
-                  className="w-full px-4 py-3 rounded-full border border-black mb-3 font-[family-name:var(--font-inter)] text-right text-black focus:outline-none focus:border-[#F8330D] focus:ring-1 focus:ring-[#F8330D]"
-                />
+              <form onSubmit={handleSTWLSubscribe} className="text-center">
+                <div className="flex items-center w-full px-4 py-3 rounded-full border border-black mb-3 bg-transparent">
+                  <span className="text-xl mr-2">🇺🇸</span>
+                  <span className="text-black font-[family-name:var(--font-inter)] mr-2">+1</span>
+                  <input
+                    type="tel"
+                    placeholder="(555) 555-5555"
+                    value={stwlPhone}
+                    onChange={(e) => {
+                      // Format as (XXX) XXX-XXXX
+                      const digits = e.target.value.replace(/\D/g, '').slice(0, 10);
+                      let formatted = '';
+                      if (digits.length > 0) {
+                        formatted = '(' + digits.slice(0, 3);
+                        if (digits.length > 3) {
+                          formatted += ') ' + digits.slice(3, 6);
+                          if (digits.length > 6) {
+                            formatted += '-' + digits.slice(6, 10);
+                          }
+                        }
+                      }
+                      setSTWLPhone(formatted);
+                      setSTWLMessage('');
+                    }}
+                    className="flex-1 font-[family-name:var(--font-inter)] text-black focus:outline-none bg-transparent"
+                  />
+                </div>
+                <p className="text-sm text-gray-700 font-[family-name:var(--font-inter)] mb-3 text-center">
+                  We won&apos;t spam you with anything else or sell your data to weirdos. You can opt out anytime.
+                </p>
                 <button
                   type="submit"
                   disabled={stwlSubmitting || stwlMessage.includes("You're")}
@@ -1305,6 +1329,9 @@ export default function Home() {
                 </a>
                 {' '}and you might get paid and featured on this next project!
               </p>
+              <p className="text-black font-[family-name:var(--font-inter)] mb-6 text-left">
+                Want to check this out when it goes live? Sign up below!
+              </p>
               <form onSubmit={async (e) => {
                 e.preventDefault();
                 if (comingSoonSubmitting) return;
@@ -1319,10 +1346,14 @@ export default function Home() {
                 setComingSoonSubmitting(true);
                 setComingSoonMessage('');
                 try {
-                  const response = await fetch('/api/coming-soon-subscribe', {
+                  const response = await fetch('/api/klaviyo/subscribe', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: comingSoonEmail }),
+                    body: JSON.stringify({
+                      email: comingSoonEmail,
+                      productName: 'Good Stories Project',
+                      productHandle: 'good-stories'
+                    }),
                   });
                   const data = await response.json();
                   if (response.ok) {

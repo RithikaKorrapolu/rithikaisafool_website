@@ -6,6 +6,7 @@ const SHOPIFY_ADMIN_ACCESS_TOKEN = process.env.SHOPIFY_ADMIN_ACCESS_TOKEN || '';
 const SHOPIFY_STORE_DOMAIN = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN || '';
 const KLAVIYO_API_KEY = process.env.KLAVIYO_API_KEY || '';
 const CCP_SUBSCRIPTION_LIST_ID = 'VhUSZw';
+const MAIN_NEWSLETTER_LIST_ID = 'RSaqUR';
 
 // Verify webhook is from Shopify
 function verifyWebhook(body: string, hmacHeader: string): boolean {
@@ -197,7 +198,8 @@ export async function POST(request: NextRequest) {
         if (customerEmail) {
           try {
             await subscribeToKlaviyoList(customerEmail, CCP_SUBSCRIPTION_LIST_ID);
-            console.log('Subscribed LMSY buyer to Klaviyo list');
+            await subscribeToKlaviyoList(customerEmail, MAIN_NEWSLETTER_LIST_ID);
+            console.log('Subscribed LMSY buyer to Klaviyo lists');
           } catch (err) {
             console.error('Failed to subscribe LMSY buyer:', err);
           }

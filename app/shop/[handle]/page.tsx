@@ -732,10 +732,14 @@ export default function ProductDetailPage() {
                     setWaitlistSubmitting(true);
                     setWaitlistError('');
                     try {
-                      const response = await fetch('/api/coming-soon-subscribe', {
+                      const response = await fetch('/api/klaviyo/subscribe', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ email: waitlistEmail }),
+                        body: JSON.stringify({
+                          email: waitlistEmail,
+                          productName: product.title,
+                          productHandle: handle,
+                        }),
                       });
                       if (response.ok) {
                         setWaitlistSuccess(true);

@@ -9,23 +9,22 @@ export async function POST(request: NextRequest) {
     }
 
     const KLAVIYO_API_KEY = process.env.KLAVIYO_API_KEY;
-    const KLAVIYO_EMAIL_LIST_ID = process.env.KLAVIYO_LIST_ID;
+    const KLAVIYO_EMAIL_LIST_ID = 'RSaqUR'; // Main RIAF newsletter
 
     // Use specific lists for different product waitlists
     const STRANGER_SWEATSHIRT_LIST_ID = 'SyMryD';
     const CONDITION_HAT_LIST_ID = 'SJDchM';
 
-    let KLAVIYO_WAITLIST_LIST_ID;
+    let KLAVIYO_WAITLIST_LIST_ID: string | null = null;
     if (productHandle?.includes('stranger')) {
       KLAVIYO_WAITLIST_LIST_ID = STRANGER_SWEATSHIRT_LIST_ID;
     } else if (productHandle?.includes('condition')) {
       KLAVIYO_WAITLIST_LIST_ID = CONDITION_HAT_LIST_ID;
-    } else {
-      KLAVIYO_WAITLIST_LIST_ID = process.env.KLAVIYO_WAITLIST_LIST_ID;
     }
+    // If no matching product, only subscribe to main newsletter (no waitlist)
 
-    if (!KLAVIYO_API_KEY || !KLAVIYO_WAITLIST_LIST_ID || !KLAVIYO_EMAIL_LIST_ID) {
-      console.error('Klaviyo API key or List IDs not configured');
+    if (!KLAVIYO_API_KEY) {
+      console.error('Klaviyo API key not configured');
       return NextResponse.json({ error: 'Service not configured' }, { status: 500 });
     }
 
@@ -103,7 +102,7 @@ export async function POST(request: NextRequest) {
 
     console.log('Using profile ID:', profileId);
 
-    // Step 2: Subscribe to both lists
+    // Step 2: Subscribe to lists
     const subscribeToList = async (listId: string) => {
       return fetch(`https://a.klaviyo.com/api/lists/${listId}/relationships/profiles/`, {
         method: 'POST',
@@ -118,18 +117,19 @@ export async function POST(request: NextRequest) {
       });
     };
 
-    const [waitlistResponse, emailListResponse] = await Promise.all([
-      subscribeToList(KLAVIYO_WAITLIST_LIST_ID),
-      subscribeToList(KLAVIYO_EMAIL_LIST_ID),
-    ]);
-
-    console.log('Waitlist response:', waitlistResponse.status);
+    // Always subscribe to main newsletter
+    const emailListResponse = await subscribeToList(KLAVIYO_EMAIL_LIST_ID);
     console.log('Email list response:', emailListResponse.status);
 
+    // Subscribe to waitlist if applicable
+    if (KLAVIYO_WAITLIST_LIST_ID) {
+      const waitlistResponse = await subscribeToList(KLAVIYO_WAITLIST_LIST_ID);
+      console.log('Waitlist response:', waitlistResponse.status);
+    }
+
     // 204 = success for this endpoint
-    if ((waitlistResponse.status !== 204 && !waitlistResponse.ok) ||
-        (emailListResponse.status !== 204 && !emailListResponse.ok)) {
-      console.error('Failed to subscribe to one or both lists');
+    if (emailListResponse.status !== 204 && !emailListResponse.ok) {
+      console.error('Failed to subscribe to email list');
       return NextResponse.json({ error: 'Failed to subscribe' }, { status: 500 });
     }
 

@@ -38,7 +38,18 @@ export default function RootLayout({
 
   // Scroll to top on route change
   useEffect(() => {
-    window.scrollTo(0, 0);
+    // Disable browser's scroll restoration
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    // Multiple methods to ensure scroll to top works on all devices
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    // Slight delay for mobile browsers
+    setTimeout(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }, 10);
   }, [pathname]);
 
   return (
