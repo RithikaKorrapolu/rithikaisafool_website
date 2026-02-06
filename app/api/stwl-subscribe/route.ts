@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     }
 
     const klaviyoApiKey = process.env.KLAVIYO_API_KEY;
-    const listIds = ['RSaqUR', 'Sv6TeQ']; // Main newsletter + STWL list
+    const listIds = ['Sv6TeQ', 'WH4hb5']; // STWL list + SMS list
 
     if (!klaviyoApiKey) {
       console.error('Missing Klaviyo API key');

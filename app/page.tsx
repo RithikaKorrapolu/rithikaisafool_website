@@ -1245,7 +1245,7 @@ export default function Home() {
                   />
                 </div>
                 <p className="text-sm text-gray-700 font-[family-name:var(--font-inter)] mb-3 text-center">
-                  We won&apos;t spam you with anything else or sell your data to weirdos. You can opt out anytime.
+                  We won&apos;t spam you or sell your data to weirdos. You can opt out anytime.
                 </p>
                 <button
                   type="submit"
