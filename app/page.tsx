@@ -1268,9 +1268,9 @@ export default function Home() {
                 <button
                   type="submit"
                   disabled={stwlSubmitting || stwlMessage.includes("You're")}
-                  className={`inline-block text-white font-bold py-3 px-6 rounded-full transition-colors font-[family-name:var(--font-inter)] disabled:opacity-100 hover-wiggle ${stwlMessage.includes("You're") ? 'bg-black' : 'bg-[#F8330D] hover:bg-black'}`}
+                  className={`inline-block text-white font-bold py-3 px-6 rounded-full transition-colors font-[family-name:var(--font-inter)] disabled:opacity-100 hover-wiggle ${stwlMessage.includes("You're") ? 'bg-green-500' : 'bg-[#F8330D] hover:bg-black'}`}
                 >
-                  {stwlSubmitting ? 'Subscribing...' : stwlMessage.includes("You're") ? "You're in!" : 'Subscribe'}
+                  {stwlSubmitting ? 'Subscribing...' : stwlMessage.includes("You're") ? "You're in baby!" : 'Subscribe'}
                 </button>
                 {stwlMessage && !stwlMessage.includes("You're") && (
                   <p className="mt-3 text-sm font-[family-name:var(--font-inter)] text-red-500">{stwlMessage}</p>
@@ -1396,9 +1396,9 @@ export default function Home() {
                 <button
                   type="submit"
                   disabled={comingSoonSubmitting || comingSoonMessage === "You're in!"}
-                  className={`w-full text-white font-bold py-3 px-6 rounded-full transition-colors font-[family-name:var(--font-inter)] hover-wiggle ${comingSoonMessage === "You're in!" ? 'bg-black' : 'bg-[#F8330D] hover:bg-black'}`}
+                  className={`w-full text-white font-bold py-3 px-6 rounded-full transition-colors font-[family-name:var(--font-inter)] hover-wiggle ${comingSoonMessage === "You're in!" ? 'bg-green-500' : 'bg-[#F8330D] hover:bg-black'}`}
                 >
-                  {comingSoonSubmitting ? 'Subscribing...' : comingSoonMessage === "You're in!" ? "You're in!" : 'Keep me posted'}
+                  {comingSoonSubmitting ? 'Subscribing...' : comingSoonMessage === "You're in!" ? "You're in baby!" : 'Keep me posted'}
                 </button>
                 {comingSoonMessage && comingSoonMessage !== "You're in!" && (
                   <p className="mt-3 text-sm font-[family-name:var(--font-inter)] text-red-500 text-center">{comingSoonMessage}</p>

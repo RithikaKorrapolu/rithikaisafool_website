@@ -429,24 +429,12 @@ export default function Header({ onMenuClick }: HeaderProps) {
               ×
             </button>
 
-            {newsletterStatus === 'success' ? (
-              <div className="text-center py-8">
-                <div className="text-4xl mb-4">🎉</div>
-                <h2 className="text-2xl font-bold text-black font-[family-name:var(--font-abril-fatface)] mb-2">
-                  You&apos;re in!
-                </h2>
-                <p className="text-gray-600 font-[family-name:var(--font-inter)]">
-                  Thanks for subscribing. Talk soon!
-                </p>
-              </div>
-            ) : (
-              <>
-                <h2 className="text-2xl font-bold text-black mb-2 text-center tracking-tight" style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif', letterSpacing: '-0.03em' }}>
-                  {newsletterCustomContent?.title || 'Many Thanks!!'}
-                </h2>
-                <p className="text-gray-600 font-[family-name:var(--font-inter)] text-center mb-6">
-                  {newsletterCustomContent?.description || 'Many thanks for stopping by! Many, many thanks if you follow us on socials and subscribe to our newsletter!!'}
-                </p>
+            <h2 className="text-2xl font-bold text-black mb-2 text-center tracking-tight" style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif', letterSpacing: '-0.03em' }}>
+              {newsletterCustomContent?.title || 'Many Thanks!!'}
+            </h2>
+            <p className="text-gray-600 font-[family-name:var(--font-inter)] text-center mb-6">
+              {newsletterCustomContent?.description || 'Many thanks for stopping by! Many, many thanks if you follow us on socials and subscribe to our newsletter!!'}
+            </p>
 
                 {/* Social Icons */}
                 <div className="flex justify-center gap-4 mb-6 text-black">
@@ -488,14 +476,12 @@ export default function Header({ onMenuClick }: HeaderProps) {
                   )}
                   <button
                     type="submit"
-                    disabled={newsletterStatus === 'loading'}
-                    className="w-full bg-[#F8330D] text-white font-bold py-3 rounded-xl hover:bg-black transition-colors font-[family-name:var(--font-inter)] disabled:opacity-50"
+                    disabled={newsletterStatus === 'loading' || newsletterStatus === 'success'}
+                    className={`w-full text-white font-bold py-3 rounded-xl transition-colors font-[family-name:var(--font-inter)] disabled:opacity-100 ${newsletterStatus === 'success' ? 'bg-green-500' : 'bg-[#F8330D] hover:bg-black'}`}
                   >
-                    {newsletterStatus === 'loading' ? 'Subscribing...' : 'Let me in!'}
+                    {newsletterStatus === 'loading' ? 'Subscribing...' : newsletterStatus === 'success' ? "You're in baby!" : 'Let me in!'}
                   </button>
                 </form>
-              </>
-            )}
           </motion.div>
         </motion.div>
       )}

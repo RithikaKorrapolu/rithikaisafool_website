@@ -768,10 +768,10 @@ export default function ProductDetailPage() {
                     type="submit"
                     disabled={waitlistSubmitting || waitlistSuccess}
                     className={`px-6 py-2 rounded-full font-bold font-[family-name:var(--font-inter)] transition-colors hover-wiggle whitespace-nowrap ${
-                      waitlistSuccess ? 'bg-black text-white' : 'bg-[#F8330D] hover:bg-black text-white'
+                      waitlistSuccess ? 'bg-green-500 text-white' : 'bg-[#F8330D] hover:bg-black text-white'
                     }`}
                   >
-                    {waitlistSubmitting ? '...' : waitlistSuccess ? "You're in!" : "Let me know"}
+                    {waitlistSubmitting ? '...' : waitlistSuccess ? "You're in baby!" : "Let me know"}
                   </button>
                 </form>
                 {waitlistError && (

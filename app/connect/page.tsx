@@ -350,19 +350,14 @@ export default function Connect() {
                 />
                 <button
                   type="submit"
-                  disabled={subscribeStatus === "loading"}
-                  className="calendar-button px-8 py-3 text-white font-bold rounded-full transition-colors w-full dancing-button"
+                  disabled={subscribeStatus === "loading" || subscribeStatus === "success"}
+                  className={`px-8 py-3 text-white font-bold rounded-full transition-colors w-full ${subscribeStatus === "success" ? 'bg-green-500' : 'calendar-button dancing-button'}`}
                   style={{ fontSize: '1rem', fontFamily: 'Anek Bangla, sans-serif' }}
                 >
-                  {subscribeStatus === "loading" ? "Subscribing..." : "Subscribe"}
+                  {subscribeStatus === "loading" ? "Subscribing..." : subscribeStatus === "success" ? "You're in baby!" : "Subscribe"}
                 </button>
               </form>
 
-              {subscribeStatus === "success" && (
-                <p className="mt-4 text-center text-green-600 font-semibold" style={{ fontFamily: 'Anek Bangla, sans-serif' }}>
-                  {subscribeMessage}
-                </p>
-              )}
               {subscribeStatus === "error" && (
                 <p className="mt-4 text-center text-red-600 font-semibold" style={{ fontFamily: 'Anek Bangla, sans-serif' }}>
                   {subscribeMessage}
