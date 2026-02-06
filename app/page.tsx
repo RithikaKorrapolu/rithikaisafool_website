@@ -1262,8 +1262,8 @@ export default function Home() {
                     className="flex-1 font-[family-name:var(--font-inter)] text-black focus:outline-none bg-transparent"
                   />
                 </div>
-                <p className="text-sm text-gray-700 font-[family-name:var(--font-inter)] mb-3 text-center">
-                  We won&apos;t spam you or sell your data to weirdos. You can opt out anytime.
+                <p className="text-xs text-gray-600 font-[family-name:var(--font-inter)] mb-3 text-center italic">
+                  By submitting this form, you consent to receive informational and/or marketing texts from Rithika is a Fool! Msg &amp; data rates may apply. Msg frequency varies. Unsubscribe at any time by replying STOP. View <a href="/legal" className="underline hover:text-black">Privacy Policy &amp; Terms</a> here.
                 </p>
                 <button
                   type="submit"
