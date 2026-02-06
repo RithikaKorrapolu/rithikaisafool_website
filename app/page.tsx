@@ -68,6 +68,7 @@ export default function Home() {
   const [comingSoonEmail, setComingSoonEmail] = useState('');
   const [comingSoonSubmitting, setComingSoonSubmitting] = useState(false);
   const [comingSoonMessage, setComingSoonMessage] = useState('');
+  const [stwlName, setSTWLName] = useState('');
   const [stwlPhone, setSTWLPhone] = useState('');
   const [stwlSubmitting, setSTWLSubmitting] = useState(false);
   const [stwlMessage, setSTWLMessage] = useState('');
@@ -214,6 +215,12 @@ export default function Home() {
     e.preventDefault();
     if (stwlSubmitting) return;
 
+    // Name validation
+    if (!stwlName.trim()) {
+      setSTWLMessage('Please enter your name');
+      return;
+    }
+
     // Phone validation
     if (!stwlPhone) {
       setSTWLMessage('Please enter your phone number');
@@ -233,13 +240,14 @@ export default function Home() {
       const response = await fetch('/api/stwl-subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone: stwlPhone }),
+        body: JSON.stringify({ name: stwlName.trim(), phone: stwlPhone }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
         setSTWLMessage(data.message || "You're subscribed!");
+        setSTWLName('');
         setSTWLPhone('');
       } else {
         setSTWLMessage(data.error || 'Something went wrong');
@@ -1179,7 +1187,7 @@ export default function Home() {
             exit={{ opacity: 0 }}
             className="fixed bg-black/50 flex items-center justify-center z-50 popup-backdrop"
             style={{ top: '-200vh', bottom: '-200vh', left: 0, right: 0 }}
-            onClick={() => { setShowSTWLPopup(false); setSTWLPhone(''); setSTWLMessage(''); }}
+            onClick={() => { setShowSTWLPopup(false); setSTWLName(''); setSTWLPhone(''); setSTWLMessage(''); }}
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
@@ -1190,7 +1198,7 @@ export default function Home() {
               onClick={(e) => e.stopPropagation()}
             >
               <button
-                onClick={() => { setShowSTWLPopup(false); setSTWLPhone(''); setSTWLMessage(''); }}
+                onClick={() => { setShowSTWLPopup(false); setSTWLName(''); setSTWLPhone(''); setSTWLMessage(''); }}
                 className="absolute top-4 right-4 text-gray-500 hover:text-black transition-colors"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1218,6 +1226,16 @@ export default function Home() {
                 </span>
               </motion.div>
               <form onSubmit={handleSTWLSubscribe} className="text-center">
+                <input
+                  type="text"
+                  placeholder="First name"
+                  value={stwlName}
+                  onChange={(e) => {
+                    setSTWLName(e.target.value);
+                    setSTWLMessage('');
+                  }}
+                  className="w-full px-4 py-3 rounded-full border border-black mb-3 bg-transparent font-[family-name:var(--font-inter)] text-black focus:outline-none"
+                />
                 <div className="flex items-center w-full px-4 py-3 rounded-full border border-black mb-3 bg-transparent">
                   <span className="text-xl mr-2">🇺🇸</span>
                   <span className="text-black font-[family-name:var(--font-inter)] mr-2">+1</span>
