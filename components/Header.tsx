@@ -35,6 +35,22 @@ export default function Header({ onMenuClick }: HeaderProps) {
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [newsletterError, setNewsletterError] = useState('');
+  const [newsletterCustomContent, setNewsletterCustomContent] = useState<{ title: string; description: string } | null>(null);
+
+  // Listen for custom event to open newsletter popup
+  useEffect(() => {
+    const handleOpenNewsletter = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      if (customEvent.detail) {
+        setNewsletterCustomContent(customEvent.detail);
+      } else {
+        setNewsletterCustomContent(null);
+      }
+      setShowNewsletterPopup(true);
+    };
+    window.addEventListener('openNewsletterPopup', handleOpenNewsletter);
+    return () => window.removeEventListener('openNewsletterPopup', handleOpenNewsletter);
+  }, []);
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -390,6 +406,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
             setShowNewsletterPopup(false);
             setNewsletterStatus('idle');
             setNewsletterError('');
+            setNewsletterCustomContent(null);
           }}
         >
           <motion.div
@@ -405,6 +422,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
                 setShowNewsletterPopup(false);
                 setNewsletterStatus('idle');
                 setNewsletterError('');
+                setNewsletterCustomContent(null);
               }}
               className="absolute top-4 right-4 text-gray-500 hover:text-black text-2xl transition-colors"
             >
@@ -424,10 +442,10 @@ export default function Header({ onMenuClick }: HeaderProps) {
             ) : (
               <>
                 <h2 className="text-2xl font-bold text-black mb-2 text-center tracking-tight" style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif', letterSpacing: '-0.03em' }}>
-                  Many Thanks!!
+                  {newsletterCustomContent?.title || 'Many Thanks!!'}
                 </h2>
                 <p className="text-gray-600 font-[family-name:var(--font-inter)] text-center mb-6">
-                  Many thanks for stopping by! Many, many thanks if you follow us on socials and subscribe to our newsletter!!
+                  {newsletterCustomContent?.description || 'Many thanks for stopping by! Many, many thanks if you follow us on socials and subscribe to our newsletter!!'}
                 </p>
 
                 {/* Social Icons */}
@@ -473,7 +491,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
                     disabled={newsletterStatus === 'loading'}
                     className="w-full bg-[#F8330D] text-white font-bold py-3 rounded-xl hover:bg-black transition-colors font-[family-name:var(--font-inter)] disabled:opacity-50"
                   >
-                    {newsletterStatus === 'loading' ? 'Subscribing...' : 'Loop me in!'}
+                    {newsletterStatus === 'loading' ? 'Subscribing...' : 'Let me in!'}
                   </button>
                 </form>
               </>
