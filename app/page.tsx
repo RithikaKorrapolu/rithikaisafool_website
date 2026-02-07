@@ -717,138 +717,32 @@ export default function Home() {
                       </>
                     ) : poster.id === 4 ? (
                       <>
-                        {/* Base layer - Image 7 (always visible) */}
+                        {/* Base layer - Image 30 (always visible) */}
                         <Image
-                          src="/assets/CCP/7.png"
-                          alt="CCP"
+                          src="/assets/CCP/30.png"
+                          alt="Let Me Show You"
                           width={500}
                           height={625}
                           className="w-full h-full object-contain"
                         />
-                        {/* State 0: Images 8+9 */}
+                        {/* Rotating images 33-37 with crossfade */}
                         <AnimatePresence>
-                          {ccpLayerIndex === 0 && (
-                            <>
-                              <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.5 }}
-                                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1, transform: 'translateY(-25%)' }}
-                              >
-                                <Image src="/assets/CCP/8.png" alt="CCP" width={500} height={625} className="w-full h-full object-contain" />
-                              </motion.div>
-                              <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.5 }}
-                                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 2 }}
-                              >
-                                <Image src="/assets/CCP/9.png" alt="CCP" width={500} height={625} className="w-full h-full object-contain" />
-                              </motion.div>
-                            </>
-                          )}
-                        </AnimatePresence>
-                        {/* State 1: Images 11+12 */}
-                        <AnimatePresence>
-                          {ccpLayerIndex === 1 && (
-                            <>
-                              <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.5 }}
-                                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1, transform: 'translateY(-10%)' }}
-                              >
-                                <Image src="/assets/CCP/11.png" alt="CCP" width={500} height={625} className="w-full h-full object-contain" />
-                              </motion.div>
-                              <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.5 }}
-                                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 2 }}
-                              >
-                                <Image src="/assets/CCP/12.png" alt="CCP" width={500} height={625} className="w-full h-full object-contain" />
-                              </motion.div>
-                            </>
-                          )}
-                        </AnimatePresence>
-                        {/* State 2: Images 15+16 */}
-                        <AnimatePresence>
-                          {ccpLayerIndex === 2 && (
-                            <>
-                              <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.5 }}
-                                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}
-                              >
-                                <Image src="/assets/CCP/15.png" alt="CCP" width={500} height={625} className="w-full h-full object-contain" />
-                              </motion.div>
-                              <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.5 }}
-                                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 2 }}
-                              >
-                                <Image src="/assets/CCP/16.png" alt="CCP" width={500} height={625} className="w-full h-full object-contain" />
-                              </motion.div>
-                            </>
-                          )}
-                        </AnimatePresence>
-                        {/* State 3: Images 23+24 */}
-                        <AnimatePresence>
-                          {ccpLayerIndex === 3 && (
-                            <>
-                              <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.5 }}
-                                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}
-                              >
-                                <Image src="/assets/CCP/23.png" alt="CCP" width={500} height={625} className="w-full h-full object-contain" />
-                              </motion.div>
-                              <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.5 }}
-                                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 2 }}
-                              >
-                                <Image src="/assets/CCP/24.png" alt="CCP" width={500} height={625} className="w-full h-full object-contain" />
-                              </motion.div>
-                            </>
-                          )}
-                        </AnimatePresence>
-                        {/* State 4: Images 27+28 */}
-                        <AnimatePresence>
-                          {ccpLayerIndex === 4 && (
-                            <>
-                              <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.5 }}
-                                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}
-                              >
-                                <Image src="/assets/CCP/27.png" alt="CCP" width={500} height={625} className="w-full h-full object-contain" />
-                              </motion.div>
-                              <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.5 }}
-                                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 2 }}
-                              >
-                                <Image src="/assets/CCP/28.png" alt="CCP" width={500} height={625} className="w-full h-full object-contain" />
-                              </motion.div>
-                            </>
-                          )}
+                          <motion.div
+                            key={ccpLayerIndex}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.8 }}
+                            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                          >
+                            <Image
+                              src={`/assets/CCP/${33 + ccpLayerIndex}.png`}
+                              alt="Let Me Show You"
+                              width={500}
+                              height={625}
+                              className="w-full h-full object-contain"
+                            />
+                          </motion.div>
                         </AnimatePresence>
                         {/* Shop sticker */}
                         <div style={{ position: 'absolute', top: '8px', right: '8px', zIndex: 20 }}>

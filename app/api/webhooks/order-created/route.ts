@@ -7,6 +7,7 @@ const SHOPIFY_STORE_DOMAIN = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN || '';
 const KLAVIYO_API_KEY = process.env.KLAVIYO_API_KEY || '';
 const CCP_SUBSCRIPTION_LIST_ID = 'VhUSZw';
 const MAIN_NEWSLETTER_LIST_ID = 'RSaqUR';
+const STRANGER_SWEATSHIRT_LIST_ID = 'VHc2sZ';
 
 // Verify webhook is from Shopify
 function verifyWebhook(body: string, hmacHeader: string): boolean {
@@ -15,6 +16,71 @@ function verifyWebhook(body: string, hmacHeader: string): boolean {
     .update(body, 'utf8')
     .digest('base64');
   return hash === hmacHeader;
+}
+
+// Track Stranger Sweatshirt purchase event in Klaviyo
+async function trackStrangerPurchaseEvent(
+  email: string,
+  firstName: string,
+  editionNumber: number,
+  size: string,
+  orderId: string
+) {
+  if (!KLAVIYO_API_KEY || !email) {
+    console.error('Missing Klaviyo API key or email for stranger purchase event');
+    return;
+  }
+
+  try {
+    const response = await fetch('https://a.klaviyo.com/api/events/', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
+        'Content-Type': 'application/json',
+        'revision': '2024-10-15',
+      },
+      body: JSON.stringify({
+        data: {
+          type: 'event',
+          attributes: {
+            metric: {
+              data: {
+                type: 'metric',
+                attributes: {
+                  name: 'Stranger Sweatshirt Purchased'
+                }
+              }
+            },
+            profile: {
+              data: {
+                type: 'profile',
+                attributes: {
+                  email: email,
+                  first_name: firstName || undefined
+                }
+              }
+            },
+            properties: {
+              edition_number: editionNumber,
+              size: size,
+              order_id: orderId,
+              product_name: 'A Stranger Designed My Sweatshirt'
+            },
+            time: new Date().toISOString()
+          }
+        }
+      }),
+    });
+
+    if (response.ok) {
+      console.log(`Successfully tracked Stranger Sweatshirt purchase event for ${email}`);
+    } else {
+      const errorText = await response.text();
+      console.error('Failed to track Klaviyo event:', response.status, errorText);
+    }
+  } catch (error) {
+    console.error('Klaviyo event tracking error:', error);
+  }
 }
 
 // Subscribe email to Klaviyo list
@@ -176,12 +242,61 @@ export async function POST(request: NextRequest) {
     for (const item of lineItems) {
       const productTitle = item.title?.toLowerCase() || '';
       if (productTitle.includes('stranger')) {
+        // Get customer info for the email
+        const customerEmail = order.email || order.customer?.email;
+        const customerFirstName = order.customer?.first_name || order.billing_address?.first_name || '';
+        const size = item.variant_title || 'Unknown';
+
         // Increment edition count for each hoodie purchased
         const quantity = item.quantity || 1;
         for (let i = 0; i < quantity; i++) {
           try {
             await incrementEditionCount();
             console.log('Incremented stranger hoodie edition count');
+
+            // Get the new edition count to include in the email
+            const editionResponse = await fetch(
+              `https://${SHOPIFY_STORE_DOMAIN}/admin/api/2024-01/products.json?handle=a-stranger-designed-my-sweatshirt`,
+              {
+                headers: {
+                  'X-Shopify-Access-Token': SHOPIFY_ADMIN_ACCESS_TOKEN,
+                  'Content-Type': 'application/json',
+                },
+              }
+            );
+            const editionData = await editionResponse.json();
+            const product = editionData.products?.[0];
+
+            if (product && customerEmail) {
+              const metafieldsResponse = await fetch(
+                `https://${SHOPIFY_STORE_DOMAIN}/admin/api/2024-01/products/${product.id}/metafields.json`,
+                {
+                  headers: {
+                    'X-Shopify-Access-Token': SHOPIFY_ADMIN_ACCESS_TOKEN,
+                    'Content-Type': 'application/json',
+                  },
+                }
+              );
+              const metafieldsData = await metafieldsResponse.json();
+              const editionMetafield = metafieldsData.metafields?.find(
+                (mf: any) => mf.namespace === 'custom' && mf.key === 'edition_count'
+              );
+              const currentEdition = editionMetafield ? parseInt(editionMetafield.value) : 1;
+
+              // Track the purchase event in Klaviyo to trigger the welcome email
+              await trackStrangerPurchaseEvent(
+                customerEmail,
+                customerFirstName,
+                currentEdition,
+                size,
+                order.id?.toString() || ''
+              );
+              console.log(`Tracked Stranger purchase event for edition #${currentEdition}`);
+
+              // Add buyer to the Stranger Sweatshirt Klaviyo list
+              await subscribeToKlaviyoList(customerEmail, STRANGER_SWEATSHIRT_LIST_ID);
+              console.log(`Added ${customerEmail} to Stranger Sweatshirt list`);
+            }
           } catch (err) {
             console.error('Failed to increment edition count:', err);
           }

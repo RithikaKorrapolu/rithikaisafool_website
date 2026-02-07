@@ -34,7 +34,7 @@ export default function RootLayout({
   const pathname = usePathname();
 
   // Check if we're on a standalone project page (like stwl or sample pages)
-  const isStandalonePage = pathname?.startsWith('/stwl') || pathname?.startsWith('/shop/let-me-show-you-sample');
+  const isStandalonePage = pathname?.startsWith('/stwl') || pathname?.startsWith('/shop/let-me-show-you-sample') || pathname?.startsWith('/let-me-show-you/');
 
   // Scroll to top on route change
   useEffect(() => {

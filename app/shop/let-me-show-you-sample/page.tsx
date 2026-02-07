@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
+const PASSWORD = "Hit-Enter";
+
 // Sample data for the exhibit
 const CURATORS = [
   {
@@ -28,11 +30,11 @@ const ARTWORKS = [
     medium: "Oil-on-canvas painting",
     image: "/assets/CCP/Sample_Month/Meeting_Varo.jpg",
     curator: "Nina",
-    note: "I always get a feeling of loneliness when looking at this piece. To me, it looks like a woman keeping some parts of herself locked up because maybe she's ashamed or afraid to embody them fully. It feels like she's comfortable doing this and has given up on the chance to be fully seen by others and the world.",
+    note: "I always get a feeling of loneliness when looking at this piece. To me, it looks like a woman keeping some parts of herself locked up because maybe she's ashamed or afraid to embody them fully. It feels like she's been hiding some parts of herself for a long, long time and has given up on the chance to be fully seen by others and the world.",
     additionalInfo: [
-      "Remedios Varo was a Spanish-born surrealist painter who spent much of her life in exile, eventually settling in Mexico after fleeing Europe during World War II.",
-      "Her paintings often depict solitary women in enclosed, interior spaces that suggest the mind or inner life more than the physical world.",
-      "She was strongly influenced by mysticism, alchemy, and Jungian psychology, shaping her recurring themes of transformation and hidden selves."
+      "Remedios Varo was a Spanish-born surrealist painter who spent a lot of her life in exile because of her political ties. Her experience as a refugee informed a lot of her perspective as an artist.",
+      "Varo was an exceptionally well-read researcher, and her scientific knowledge often fed into her work. She would mix science and reality with spirituality and fantasy. <a href=\"https://www.christies.com/en/stories/ten-things-to-know-about-remedios-varo-1bd7c9dd53c74b0a88f1c820a74fbfaf\" target=\"_blank\" class=\"underline text-white/60 hover:text-white\">(source)</a>",
+      "Her paintings often depict solitary women in enclosed, interior spaces that suggest the mind or inner life more than the physical world."
     ]
   },
   {
@@ -43,11 +45,11 @@ const ARTWORKS = [
     medium: "Music",
     video: "dLMFlph54-g",
     curator: "Jin",
-    note: "This song is Kanye realizing his own toxicity and how much he's hurt others. The piano sounds lonely and dramatic, and the whole song feels heavy. In it, he's asking people he loves to run away from him. Maybe he feels like it's too late or too hard to change. He sounds resigned.",
+    note: "I think this is Kanye's best song of all time. It's so vunerable and self-aware and shameless in a way. He admits that he's an asshole and treats women badly and is begging them to runaway from him because even though he's mature enough to be self aware, he's not mature enough to change yet. He's being honest about where he is and what he thinks he's capable of and that maybe it's too late for him to change and deserve better.",
     additionalInfo: [
-      "The song sits in the middle of the album, My Beautiful Dark Twisted Fantasy, which many fans see as Kanye confronting both his genius and his self-sabotage at the same time.",
-      "Unlike most rap songs about ego, Runaway is about self-awareness without redemption. Kanye doesn't promise growth, change, or healing. He just admits the damage is real.",
-      "The distorted, wordless vocal outro at the end is Kanye's voice run through heavy effects, meant to sound emotional but not clear to express how he's feeling pain but doesn't know how to articulate it properly."
+      "The song famously opens with a single repeated piano note. Kanye said he wanted it to feel simple and vulnerable, almost like someone hesitantly starting a confession.",
+      "The song this album is on, My Beautiful Dark Twisted Fantasy, is widely considered one of the best albums of the 2010s and of hip-hop history. It won Best Rap Album of the year at the Grammy's.",
+      "The distorted, wordless vocals at the end are Kanye's voice with heavy effects. Some fans think that they're meant to sound emotional but unclear, showing he's in pain and struggling to express it in words."
     ]
   },
   {
@@ -59,10 +61,11 @@ const ARTWORKS = [
     image: "/assets/CCP/Sample_Month/jamesbaldwin.webp",
     quote: "It took many years of vomiting up all the filth I'd been taught about myself, and half-believed, before I was able to walk on the earth as though I had a right to be here.",
     curator: "Lily",
-    note: "Oh God, Baldwin is so good. He cuts straight to the bone. This is about shame to me, the painful process of unlearning shame. You have to fight for it, you have to fight to unlearn the bad things that your parents, your teachers, society may have taught you about yourself. I spent so much of my life listening to other people and their opinions of me than myself and what I wanted and what I thought I could be good at. I wished I realized it earlier but I'm glad I can now exist fully in the world.",
+    note: "Oh God, Baldwin is so good. He cuts straight to the bone. This is about shame to me, the painful process of unlearning shame. You have to fight for it, you have to fight to unlearn the bad things that your parents, your teachers, society may have taught you about yourself. I spent so much of my life listening to other people and their opinions of me than myself and what I wanted and what I thought I could be good at. It might feel too late to change but it never is. I urge you to trust yourself.",
     additionalInfo: [
-      "As a Black, queer man in mid-20th-century America, Baldwin grew up surrounded by messages telling him he was dangerous, sinful, or disposable. This quote reflects years of internal conflict.",
-      "Baldwin left the United States for France in his twenties partly to survive emotionally. Distance gave him the space to reflect and write about his experiences in America."
+      "Baldwin was a black, queer man who grew up in deep poverty in mid-20th-century America. He grew up surrounded by people telling him he was dangerous and sinful and worthless. This quote reflects him overcoming all the filthy things people made him believe about himself.",
+      "During the civil rights movement, Baldwin often helped activists by connecting them with celebrities to give them a platform.",
+      "Baldwin was also famous for his laugh. His friends described it as huge and booming."
     ]
   },
   {
@@ -86,11 +89,11 @@ const ARTWORKS = [
     medium: "Photography",
     image: "/assets/CCP/Sample_Month/twilight_gregory.webp",
     curator: "Sam",
-    note: "This image feels like the exact moment in a sci-fi story where everything changes. Like the main character didn't mean to get chosen, but it's happening anyway. What I like is how normal everything else is - suburban houses, parked cars, power lines. I like the idea that this can happen to anybody. At any moment, your life can completely change.",
+    note: "This image feels like the exact moment in a sci-fi story where everything changes. Like the main character didn't mean to get chosen, but it's happening anyway. What I like is how normal everything else is - suburban houses, parked cars, power lines. I like the idea that this can happen to anybody. At any moment, your life can completely change. And there could be nothing you can do to stop it.",
     additionalInfo: [
       "Gregory Crewdson is an American photographer known for elaborately staged, cinematic images of American suburban life.",
-      "His photographs are produced like film sets, involving crews of dozens, complex lighting rigs, and months of preparation for a single shot.",
-      "Although a lot of his images resemble alien encounters or supernatural events, Crewdson has said they are meant to represent emotional or psychological states, not literal narratives."
+      "He treats his photographs like film sets. He'll involve crews of dozens, complex lighting rigs, and months of preparation for a single shot.",
+      "Even though a lot of his images resemble alien encounters or supernatural events, Crewdson has said they are meant to represent emotional or psychological states, not literal narratives."
     ]
   },
   {
@@ -101,9 +104,10 @@ const ARTWORKS = [
     medium: "Poetry",
     image: "/assets/CCP/Sample_Month/loving_jane.jpg",
     curator: "Cal",
-    note: "This reminds me of my first relationship. Everything felt so serious and intense and heavy. I was always doubting whether my partner liked me and replaying conversations. I was exhausted all the time. I wish I could go back and be a lot more light in it. I wish I knew that it was going to end and that I would be fine.",
+    note: "This reminds me of my first relationship. Everything felt so serious and intense and heavy. I was always doubting whether my partner liked me and replaying conversations to actually enjoy it. I was exhausted all the time. I wish I could go back and be a lot more light in it. I wish I knew that it was going to end and that I would be fine and that I should let myself be free.",
     additionalInfo: [
-      "Jane Stembridge was a British poet whose work often focused on intimate relationships, memory, and emotional hindsight, especially how love feels once it's already over."
+      "Jane Stembridge was not only a poet but also a civil rights activist and flutist. <a href=\"https://www.womeninpeace.org/s-names/2019/5/13/jane-stembridge\" target=\"_blank\" class=\"underline text-white/60 hover:text-white\">(source)</a>",
+      "Jane is remembered for \"spreading poetry as a way to understand and survive the movement's emotional and political challenges.\" <a href=\"https://alicewalkersgarden.com/2021/10/jane-stembrige-sister-southerner-from-georgia-presente/\" target=\"_blank\" class=\"underline text-white/60 hover:text-white\">(source)</a>"
     ]
   },
     {
@@ -114,7 +118,7 @@ const ARTWORKS = [
     medium: "Oil-on-canvas painting",
     image: "/assets/CCP/Sample_Month/nycmovie.jpg",
     curator: "Robert",
-    note: "If I had to guess the story behind this painting, I'd say that the usher was an aspiring actress who has just decided to give up on her dreams to pursue something more sensible. Maybe she initially got this job for her love of movies, but overtime, she lost it standing in the same spot night after night. The magic is gone.",
+    note: "If I had to guess the story behind this painting, I'd say that the usher, the woman is an aspiring actress who is starting to give up on her dreams. I get the sense she initially got this job for her love of movies, but overtime, she got jaded after getting many rejections. Now, she stands off the side in the same spot night after night. She doesn't watch anymore. The magic is gone.",
     additionalInfo: [
       "Edward Hopper was an American realist painter known for capturing isolation and loneliness in modern American life.",
       "His wife Jo posed for nearly all the female figures in his paintings, including this one.",
@@ -131,11 +135,10 @@ const ARTWORKS = [
     quote: "For what it's worth: it's never too late or, in my case, too early to be whoever you want to be. There's no time limit, stop whenever you want. You can change or stay the same, there are no rules to this thing. We can make the best or the worst of it. I hope you make the best of it. And I hope you see things that startle you. I hope you feel things you never felt before. I hope you meet people with a different point of view. I hope you live a life you're proud of. If you find that you're not, I hope you have the courage to start all over again.",
     quoteAttribution: "From Benjamin Button",
     curator: "Cliff",
-    note: "I had an optimistic take on the theme. That something can feel too late but it never is. This scene is from the end of the movie where Button is writing a letter to his daughter. It's about holding on to hope that you can always change, no matter how many mistakes you've made.",
+    note: "I had an optimistic take on the theme. That something can feel too late but it never is. This scene is from the end of the movie where Button is writing a letter to his daughter. It's about holding on to hope that you can always change, no matter how many mistakes you've made. There's something about having kids that makes you want to be so much better. To start all over so that you can give them so much more.",
     additionalInfo: [
-      "The Curious Case of Benjamin Button was released in 2008 and directed by David Fincher, loosely based on a 1922 short story by F. Scott Fitzgerald.",
-      "The story follows a man who is born physically old and ages backward, exploring themes of time, love, memory, and mortality.",
-      "It received 13 Academy Award nominations, winning 3 Oscars (Best Art Direction, Best Makeup, and Best Visual Effects)."
+      "The movie is based on a 1922 short story by F. Scott Fitzgerald about a man who is born physically old and ages backward.",
+      "The film actually had to invent new aging and de-aging visual effects to make it look good. The VFX team developed custom software to realistically map the actor's expressions onto different ages and body types."
     ]
   },
         {
@@ -146,10 +149,9 @@ const ARTWORKS = [
     medium: "Podcast",
     video: "0omhW3ivKsQ",
     curator: "Sherry",
-    note: "This podcast is about a funny, rad 101-year-old woman named Deborah who suddenly feels a rush of intense, romantic feelings for someone decades after his death. It sounds like a wild story, but I found it weirdly relatable. Don't we all get those moments of intensely missing someone sometimes? It's hard to control when or who you feel love towards sometimes. In the podcast, Deborah doesn't get a chance to tell him because he's passed but she honors him in a very sweet way. Made me think about how I can honor the people who've passed in my life.",
+    note: "This podcast is about a funny, rad 101-year-old woman named Deborah who starts feeling these crazy, intense, romantic feelings for an old boyfriend after finding his photographs. But she can't tell him becauase he died decades ago. It sounds like a wild story, but I found it weirdly relatable. Don't we all get those moments of intensely missing someone from the past sometimes? It's hard to control when or who you feel love towards sometimes. In the podcast, Deborah finds a way to honor him in a very sweet way. Made me think about how I can still honor the people I've loved in my life who aren't in it anymore.",
     additionalInfo: [
-      "Heavyweight is a podcast hosted by Jonathan Goldstein that helps people resolve long-held regrets and revisit moments from their past.",
-      "The episode explores how memory and emotion can resurface unexpectedly, regardless of age or the passage of time."
+      "Heavyweight is a podcast hosted by Jonathan Goldstein that helps people resolve old fights and regrets and feelings that they might have. It's like a mix between investigative journalism and therapy."
     ]
   },
   {
@@ -160,26 +162,68 @@ const ARTWORKS = [
     medium: "Poem",
     image: "/assets/CCP/Sample_Month/latefragment_raymond.jpeg",
     curator: "Rithika K.",
-    note: "This was the last poem in the last book that Carver ever wrote. He was dying of cancer when he wrote it. It's what's written on his tombstone. You can have such a shitty life (alcoholism, abuse, depression, illness, divorce) and still say you've gotten what you wanted out of life if you felt loved even once. If you felt beloved even once on this Earth, you got the greatest thing you can in life.",
+    note: "This was the last poem in the last book that Carver ever wrote. He was dying of cancer when he wrote it. It's what's written on his tombstone. You can have such a shitty life (alcoholism, abuse, depression, illness, divorce) and still say you've gotten what you wanted out of life if you felt loved even once. If you felt beloved even once on this Earth, you got the greatest thing you can in life. I read and re-read this poem a lot when my dad was dying of cancer. I felt really useless and hopeless because he was in chronic pain and I couldn't do anything. But I guess the point of this poem is the best, most honorable thing you can do is just to make someone feel loved.",
     additionalInfo: [
-      "Raymond Carver was an American short story writer and poet, considered one of the most influential writers of the 20th century.",
-      "He wrote 'Late Fragment' shortly before his death from lung cancer in 1988, and it serves as the final poem in his last collection.",
-      "The poem reflects a major shift in Carver's life: after years of alcoholism and instability, he found sobriety and a stable, loving relationship late in life."
+      "Raymond Carver wrote this poem after he found about his lung cancer diagnosis. He knew he did not have long. He died shortly after writing it in 1988. It's the final poem in his last collection.",
+      "Carver had a tough early life dealing with years of alcholism and divorce and instability but it shifted near the end when he became sober and entered a stable, loving relationship. He seems like he died peacefully."
     ]
   },
 ];
 
 export default function LMSYSamplePage() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [contentBlurred, setContentBlurred] = useState(true);
+  const [passwordInput, setPasswordInput] = useState("Hit-Enter");
+  const [passwordError, setPasswordError] = useState("");
   const [selectedArtwork, setSelectedArtwork] = useState(ARTWORKS[0]);
   const [showInfoPopup, setShowInfoPopup] = useState(false);
   const [themeRevealed, setThemeRevealed] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const mainContentRef = useRef<HTMLDivElement>(null);
   const sidebarRef = useRef<HTMLDivElement>(null);
 
+  // Detect mobile device
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Check if already authenticated (stored in sessionStorage)
+  useEffect(() => {
+    const stored = sessionStorage.getItem("lmsy-sample-auth");
+    if (stored === "true") {
+      setIsAuthenticated(true);
+      setContentBlurred(false); // No blur animation for returning users
+    }
+  }, []);
+
+  const handlePasswordSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (passwordInput === PASSWORD) {
+      setIsTransitioning(true);
+      sessionStorage.setItem("lmsy-sample-auth", "true");
+      setPasswordError("");
+      // After popup fades, show main content blurred
+      setTimeout(() => {
+        setIsAuthenticated(true);
+        // Then unblur the content
+        setTimeout(() => {
+          setContentBlurred(false);
+        }, 100);
+      }, 1000);
+    } else {
+      setPasswordError("Incorrect password. Please try again.");
+    }
+  };
+
   // Capture scroll events on the page and redirect to main content (except when over sidebar or mobile menu)
   useEffect(() => {
+    if (!isAuthenticated) return;
     const handleWheel = (e: WheelEvent) => {
       // Don't capture when mobile menu is open
       if (mobileMenuOpen) {
@@ -197,7 +241,7 @@ export default function LMSYSamplePage() {
 
     window.addEventListener('wheel', handleWheel, { passive: false });
     return () => window.removeEventListener('wheel', handleWheel);
-  }, [mobileMenuOpen]);
+  }, [mobileMenuOpen, isAuthenticated]);
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
@@ -211,24 +255,162 @@ export default function LMSYSamplePage() {
     };
   }, [mobileMenuOpen]);
 
+  // Scroll to top when artwork changes
+  useEffect(() => {
+    if (mainContentRef.current) {
+      mainContentRef.current.scrollTo({ top: 0, behavior: 'instant' });
+    }
+  }, [selectedArtwork]);
+
+  // Password Gate
+  if (!isAuthenticated) {
+    return (
+      <div
+        className="min-h-screen w-full flex items-center justify-center p-4"
+        style={{
+          backgroundImage: `url("/assets/CCP/Sample_Month/plains.avif")`,
+          backgroundSize: "cover",
+          backgroundPosition: isMobile ? "center" : undefined,
+          backgroundRepeat: "no-repeat",
+          animation: isMobile ? "none" : "floatBackground 120s linear infinite",
+        }}
+      >
+        <style jsx>{`
+          @keyframes floatBackground {
+            0% { background-position: 20% 30%; }
+            8% { background-position: 80% 10%; }
+            17% { background-position: 95% 60%; }
+            26% { background-position: 50% 90%; }
+            35% { background-position: 5% 70%; }
+            44% { background-position: 30% 15%; }
+            53% { background-position: 70% 45%; }
+            62% { background-position: 90% 85%; }
+            71% { background-position: 15% 55%; }
+            80% { background-position: 60% 5%; }
+            89% { background-position: 85% 40%; }
+            100% { background-position: 20% 30%; }
+          }
+          @keyframes pulseBlur {
+            0%, 100% { filter: blur(3px); }
+            50% { filter: blur(10px); }
+          }
+        `}</style>
+        <div
+          className="max-w-lg w-full rounded-3xl p-10"
+          style={{
+            background: "rgba(255, 255, 255, 0.15)",
+            backdropFilter: "blur(20px)",
+            WebkitBackdropFilter: "blur(20px)",
+            border: "0.5px solid rgba(255, 255, 255, 0.3)",
+            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+            opacity: isTransitioning ? 0 : 1,
+            transform: isTransitioning ? "scale(1.1)" : "scale(1)",
+            transition: "opacity 1s ease-out, transform 1s ease-out",
+          }}
+        >
+          <h1 className="text-3xl font-bold text-white mb-3 font-[family-name:var(--font-abril-fatface)] text-center">
+            LET ME SHOW YOU
+          </h1>
+          <div
+            className="relative mb-5 cursor-pointer group"
+            onTouchStart={(e) => {
+              const target = e.currentTarget;
+              target.classList.add('revealed');
+            }}
+          >
+            {/* Blurred yellow/green version with pulse */}
+            <p
+              className="text-2xl font-bold text-center font-[family-name:var(--font-inter)] select-none transition-opacity duration-300 opacity-100 group-hover:opacity-0 group-[.revealed]:opacity-0"
+              style={{
+                animation: "pulseBlur 2s ease-in-out infinite",
+                color: "#e8c05a",
+                textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+              }}
+            >
+              &ldquo;It Feels Too Late&rdquo;
+            </p>
+            {/* Clear version on hover */}
+            <p
+              className="text-2xl font-bold text-center font-[family-name:var(--font-inter)] select-none transition-opacity duration-300 opacity-0 group-hover:opacity-100 group-[.revealed]:opacity-100 absolute inset-0"
+              style={{
+                color: "#e8c05a",
+                textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+              }}
+            >
+              &ldquo;It Feels Too Late&rdquo;
+            </p>
+          </div>
+          <p className="text-white/70 text-center mb-7 font-[family-name:var(--font-inter)] font-medium text-lg">
+            Enter the password to view this exhibit
+          </p>
+          <form onSubmit={handlePasswordSubmit}>
+            <input
+              type="text"
+              value={passwordInput}
+              onChange={(e) => {
+                setPasswordInput(e.target.value);
+                setPasswordError("");
+              }}
+              placeholder="Password"
+              className="w-full px-5 py-4 border border-white/30 rounded-xl focus:border-white focus:outline-none font-[family-name:var(--font-inter)] mb-5 text-white placeholder-white/50 bg-white/10 text-lg"
+            />
+            {passwordError && (
+              <p className="text-red-400 text-base mb-4 font-[family-name:var(--font-inter)]">
+                {passwordError}
+              </p>
+            )}
+            <button
+              type="submit"
+              className="w-full bg-white/20 text-white font-bold py-4 rounded-xl hover:bg-white/30 transition-colors font-[family-name:var(--font-inter)] border border-white/30 text-lg"
+            >
+              Enter
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
-      className="h-screen w-full flex items-center justify-center p-4 md:p-8 overflow-hidden fixed inset-0"
+      className="h-[100dvh] w-full flex items-center justify-center p-2 md:p-8 overflow-hidden fixed inset-0"
       style={{
         backgroundImage: `url("/assets/CCP/Sample_Month/plains.avif")`,
         backgroundSize: "cover",
-        backgroundPosition: "center",
+        backgroundPosition: isMobile ? "center" : undefined,
+        backgroundRepeat: "no-repeat",
+        animation: isMobile ? "none" : "floatBackground 120s linear infinite",
       }}
     >
+      <style jsx global>{`
+        @keyframes floatBackground {
+          0% { background-position: 20% 30%; }
+          8% { background-position: 80% 10%; }
+          17% { background-position: 95% 60%; }
+          26% { background-position: 50% 90%; }
+          35% { background-position: 5% 70%; }
+          44% { background-position: 30% 15%; }
+          53% { background-position: 70% 45%; }
+          62% { background-position: 90% 85%; }
+          71% { background-position: 15% 55%; }
+          80% { background-position: 60% 5%; }
+          89% { background-position: 85% 40%; }
+          100% { background-position: 20% 30%; }
+        }
+      `}</style>
       {/* Main Glass Container */}
       <div
-        className="w-full max-w-6xl h-[80vh] lg:h-[85vh] rounded-3xl overflow-hidden relative mt-12 lg:mt-0"
+        className="w-full max-w-6xl h-[calc(100dvh-1rem)] md:h-[80vh] lg:h-[85vh] rounded-3xl overflow-hidden relative lg:mt-0"
         style={{
           background: "rgba(255, 255, 255, 0.15)",
           backdropFilter: "blur(20px)",
           WebkitBackdropFilter: "blur(20px)",
           border: "0.5px solid rgba(255, 255, 255, 0.3)",
           boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+          filter: contentBlurred ? "blur(20px)" : "blur(0px)",
+          opacity: contentBlurred ? 0 : 1,
+          transform: contentBlurred ? "scale(0.95)" : "scale(1)",
+          transition: "filter 2s ease-out, opacity 2s ease-out, transform 2s ease-out",
         }}
       >
         <div className="flex flex-col lg:flex-row h-full">
@@ -253,28 +435,33 @@ export default function LMSYSamplePage() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="lg:hidden fixed inset-0 bg-black/50 z-50"
-                onClick={() => setMobileMenuOpen(false)}
-                onTouchMove={(e) => e.stopPropagation()}
+                className="lg:hidden fixed inset-0 z-50 flex"
+                onWheel={(e) => {
+                  const menuContent = e.currentTarget.querySelector('[data-menu-content]') as HTMLElement;
+                  if (menuContent) menuContent.scrollTop += e.deltaY;
+                }}
               >
+                {/* Dark overlay - click to close */}
+                <div
+                  className="absolute inset-0 bg-black/50"
+                  onClick={() => setMobileMenuOpen(false)}
+                />
                 <motion.div
                   initial={{ x: "-100%" }}
                   animate={{ x: 0 }}
                   exit={{ x: "-100%" }}
                   transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                  className="w-[70%] max-w-sm h-full"
+                  data-menu-content
+                  className="relative w-[85%] max-w-md h-full overflow-y-auto"
                   style={{
                     background: "rgba(50, 50, 50, 0.7)",
                     backdropFilter: "blur(20px)",
+                    WebkitOverflowScrolling: 'touch',
                   }}
                   onClick={(e) => e.stopPropagation()}
                 >
                   <div
-                    className="p-6 h-full overflow-y-scroll overscroll-contain"
-                    style={{
-                      WebkitOverflowScrolling: 'touch',
-                    }}
-                    onTouchMove={(e) => e.stopPropagation()}
+                    className="p-6"
                   >
                     {/* Close button */}
                     <button
@@ -288,9 +475,9 @@ export default function LMSYSamplePage() {
 
                     {/* Logo */}
                     <div className="mb-8">
-                      <h1 className="text-white/60 text-[26px] tracking-tight font-[family-name:var(--font-abril-fatface)]">LET ME SHOW YOU:</h1>
-                      <p className="text-white text-[33px] font-bold mt-2 font-[family-name:var(--font-inter)]">&ldquo;It feels too late.&rdquo;</p>
-                      <p className="text-gray-400 text-base font-medium mt-3 font-[family-name:var(--font-inter)]">Feb 2026 Theme</p>
+                      <h1 className="text-white/60 text-[20px] tracking-tight font-[family-name:var(--font-abril-fatface)]">LET ME SHOW YOU:</h1>
+                      <p className="text-white text-[24px] font-bold mt-2 font-[family-name:var(--font-inter)]">&ldquo;It feels too late.&rdquo;</p>
+                      <p className="text-gray-400 text-base font-medium mt-3 font-[family-name:var(--font-inter)]">Jan 2026 Theme</p>
                     </div>
 
                     {/* Artwork List */}
@@ -370,7 +557,7 @@ export default function LMSYSamplePage() {
               <div className="relative">
                 <p className="text-white text-3xl font-bold mt-2 font-[family-name:var(--font-inter)]">&ldquo;It feels too late.&rdquo;</p>
               </div>
-              <p className="text-gray-800 text-base font-medium mt-3 font-[family-name:var(--font-inter)]">Feb 2026 Theme</p>
+              <p className="text-gray-800 text-base font-medium mt-3 font-[family-name:var(--font-inter)]">Jan 2026 Theme</p>
             </div>
 
             {/* Table of Contents */}
@@ -438,9 +625,9 @@ export default function LMSYSamplePage() {
           <div ref={mainContentRef} className="flex-1 p-4 pt-2 lg:p-8 overflow-y-auto glass-scrollbar">
             {/* Mobile Header */}
             <div className="lg:hidden mb-4 pb-3 border-b border-white/20 text-center">
-              <p className="text-white/60 text-[18px] font-[family-name:var(--font-abril-fatface)]">LET ME SHOW YOU:</p>
-              <p className="text-white text-[22px] font-bold font-[family-name:var(--font-inter)]">&ldquo;It feels too late.&rdquo;</p>
-              <p className="text-gray-800 text-sm font-medium mt-2">Feb 2026 Theme</p>
+              <p className="text-white/60 text-[14px] font-[family-name:var(--font-abril-fatface)]">LET ME SHOW YOU:</p>
+              <p className="text-white text-[18px] font-bold font-[family-name:var(--font-inter)]">&ldquo;It feels too late.&rdquo;</p>
+              <p className="text-gray-800 text-xs font-medium mt-1">Jan 2026 Theme</p>
             </div>
             {/* Featured Artwork */}
             <AnimatePresence mode="wait">
@@ -482,12 +669,18 @@ export default function LMSYSamplePage() {
                   />
                 </div>
               ) : selectedArtwork.quote ? (
-                <div className="relative min-h-[300px] lg:min-h-[400px] flex flex-col items-center justify-center p-8">
-                  <p className="text-black/60 text-sm uppercase tracking-wider mb-4 font-[family-name:var(--font-inter)]">Transcript</p>
-                  <p className="text-black text-2xl lg:text-3xl leading-relaxed italic text-center max-w-2xl font-[family-name:var(--font-inter)]" style={{ textShadow: "0 2px 4px rgba(0, 0, 0, 0.1)" }}>
+                <div
+                  className="relative min-h-[300px] lg:min-h-[400px] flex flex-col items-center justify-center p-8 rounded-xl"
+                  style={{
+                    background: "rgba(0, 0, 0, 0.2)",
+                    boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
+                  }}
+                >
+                  <p className="text-white/60 text-sm uppercase tracking-wider mb-4 font-semibold font-[family-name:var(--font-inter)]">QUOTE</p>
+                  <p className="text-white text-2xl lg:text-3xl leading-relaxed italic text-center max-w-2xl font-[family-name:var(--font-inter)]" style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)" }}>
                     &ldquo;{selectedArtwork.quote}&rdquo;
                   </p>
-                  <p className="text-black/70 mt-4 text-base font-[family-name:var(--font-inter)]">— {selectedArtwork.quoteAttribution || selectedArtwork.artist}</p>
+                  <p className="text-white/70 mt-4 text-base font-[family-name:var(--font-inter)]">— {selectedArtwork.quoteAttribution || selectedArtwork.artist}</p>
                 </div>
               ) : null}
 
@@ -552,7 +745,7 @@ export default function LMSYSamplePage() {
                     {selectedArtwork.additionalInfo.map((info: string, index: number) => (
                       <li key={index} className="flex">
                         <span className="mr-2">•</span>
-                        <span>{info}</span>
+                        <span dangerouslySetInnerHTML={{ __html: info }} />
                       </li>
                     ))}
                   </ul>
@@ -590,9 +783,9 @@ export default function LMSYSamplePage() {
           onClick={() => setShowInfoPopup(false)}
         >
           <div
-            className="max-w-xl w-full rounded-2xl p-8 relative"
+            className="max-w-2xl w-full rounded-2xl p-10 relative"
             style={{
-              background: "rgba(255, 255, 255, 0.9)",
+              background: "rgba(0, 0, 0, 0.4)",
               backdropFilter: "blur(20px)",
               WebkitBackdropFilter: "blur(20px)",
               border: "1px solid rgba(255, 255, 255, 0.3)",
@@ -601,18 +794,18 @@ export default function LMSYSamplePage() {
           >
             <button
               onClick={() => setShowInfoPopup(false)}
-              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/10 flex items-center justify-center hover:bg-black/20 transition-colors"
+              className="absolute top-5 right-5 w-9 h-9 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors text-white"
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M18 6L6 18M6 6l12 12"/>
               </svg>
             </button>
 
-            <h2 className="text-2xl font-bold text-gray-900 mb-4 font-[family-name:var(--font-abril-fatface)]">
-              About This Exhibit
+            <h2 className="text-3xl text-white mb-5 font-[family-name:var(--font-abril-fatface)]">
+              ABOUT THIS EXHIBIT
             </h2>
 
-            <p className="text-gray-700 font-[family-name:var(--font-inter)]">
+            <p className="text-white/90 font-[family-name:var(--font-inter)] text-lg">
               Let Me Show You is a monthly digital art exhibit from Rithika is a Fool! This is just a sample preview but you can learn more about the full thing <a href="/shop/let-me-show-you" className="font-bold underline hover:opacity-70">here</a>.
             </p>
           </div>

@@ -17,18 +17,16 @@ export default function Shop() {
     async function fetchProducts() {
       try {
         const fetchedProducts = await getProducts();
-        // Custom sort: Conditions hat before Let Me Show You
+        // Custom sort: Let Me Show You at the end
         const sortedProducts = [...fetchedProducts].sort((a, b) => {
           const aTitle = a.title?.toLowerCase() || '';
           const bTitle = b.title?.toLowerCase() || '';
-          // Put "condition" products before "let me show you" products
-          const aIsCondition = aTitle.includes('condition');
-          const bIsCondition = bTitle.includes('condition');
           const aIsLMSY = aTitle.includes('let me show you');
           const bIsLMSY = bTitle.includes('let me show you');
 
-          if (aIsCondition && bIsLMSY) return -1;
-          if (aIsLMSY && bIsCondition) return 1;
+          // Put LMSY products at the end
+          if (aIsLMSY && !bIsLMSY) return 1;
+          if (!aIsLMSY && bIsLMSY) return -1;
           return 0;
         });
         setProducts(sortedProducts);

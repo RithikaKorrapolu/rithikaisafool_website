@@ -41,6 +41,7 @@ export default function ProductDetailPage() {
   const [inventoryError, setInventoryError] = useState<string | null>(null);
   const [gloryImageIndex, setGloryImageIndex] = useState(0);
   const [ccpLayerIndex, setCcpLayerIndex] = useState(0);
+  const [lmsyImageIndex, setLmsyImageIndex] = useState(0); // 0 = animation, 1 = video
   const [selectedSellingPlan, setSelectedSellingPlan] = useState<string | null>(null);
   const [showWaitlistPopup, setShowWaitlistPopup] = useState(false);
   const [waitlistEmail, setWaitlistEmail] = useState('');
@@ -399,141 +400,77 @@ export default function ProductDetailPage() {
                     </button>
                   </div>
                 )}
+                {/* LMSY Carousel Arrows - Mobile Only */}
+                {isLMSYProduct && (
+                  <div className="lg:hidden absolute inset-y-0 -left-4 -right-4 flex justify-between items-center pointer-events-none z-20">
+                    <button
+                      onClick={() => setLmsyImageIndex((prev) => (prev === 0 ? 2 : prev - 1))}
+                      className="w-10 h-10 rounded-full bg-white/80 flex items-center justify-center shadow-md pointer-events-auto"
+                    >
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2">
+                        <path d="M15 18l-6-6 6-6"/>
+                      </svg>
+                    </button>
+                    <button
+                      onClick={() => setLmsyImageIndex((prev) => (prev === 2 ? 0 : prev + 1))}
+                      className="w-10 h-10 rounded-full bg-white/80 flex items-center justify-center shadow-md pointer-events-auto"
+                    >
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2">
+                        <path d="M9 18l6-6-6-6"/>
+                      </svg>
+                    </button>
+                  </div>
+                )}
                 <div className="relative aspect-square rounded-lg overflow-hidden">
                   {isLMSYProduct ? (
                     <>
-                      {/* Base layer - Image 7 (always visible) */}
-                      <Image
-                        src="/assets/CCP/7.png"
-                        alt="CCP"
-                        fill
-                        className="object-contain"
-                      />
-                      {/* State 0: Images 8+9 */}
-                      <AnimatePresence>
-                        {ccpLayerIndex === 0 && (
-                          <>
+                      {lmsyImageIndex === 0 ? (
+                        <div style={{ transform: 'scale(1.15)', transformOrigin: 'center center', position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+                          {/* Base layer - Image 30 (always visible) */}
+                          <Image
+                            src="/assets/CCP/30.png"
+                            alt="Let Me Show You"
+                            fill
+                            className="object-contain"
+                          />
+                          {/* Rotating images 33-37 with crossfade */}
+                          <AnimatePresence>
                             <motion.div
+                              key={ccpLayerIndex}
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
                               exit={{ opacity: 0 }}
-                              transition={{ duration: 0.5 }}
-                              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1, transform: 'translateY(-25%)' }}
+                              transition={{ duration: 0.8 }}
+                              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
                             >
-                              <Image src="/assets/CCP/8.png" alt="CCP" fill className="object-contain" />
+                              <Image
+                                src={`/assets/CCP/${33 + ccpLayerIndex}.png`}
+                                alt="Let Me Show You"
+                                fill
+                                className="object-contain"
+                              />
                             </motion.div>
-                            <motion.div
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              exit={{ opacity: 0 }}
-                              transition={{ duration: 0.5 }}
-                              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 2 }}
-                            >
-                              <Image src="/assets/CCP/9.png" alt="CCP" fill className="object-contain" />
-                            </motion.div>
-                          </>
-                        )}
-                      </AnimatePresence>
-                      {/* State 1: Images 11+12 */}
-                      <AnimatePresence>
-                        {ccpLayerIndex === 1 && (
-                          <>
-                            <motion.div
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              exit={{ opacity: 0 }}
-                              transition={{ duration: 0.5 }}
-                              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1, transform: 'translateY(-10%)' }}
-                            >
-                              <Image src="/assets/CCP/11.png" alt="CCP" fill className="object-contain" />
-                            </motion.div>
-                            <motion.div
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              exit={{ opacity: 0 }}
-                              transition={{ duration: 0.5 }}
-                              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 2 }}
-                            >
-                              <Image src="/assets/CCP/12.png" alt="CCP" fill className="object-contain" />
-                            </motion.div>
-                          </>
-                        )}
-                      </AnimatePresence>
-                      {/* State 2: Images 15+16 */}
-                      <AnimatePresence>
-                        {ccpLayerIndex === 2 && (
-                          <>
-                            <motion.div
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              exit={{ opacity: 0 }}
-                              transition={{ duration: 0.5 }}
-                              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}
-                            >
-                              <Image src="/assets/CCP/15.png" alt="CCP" fill className="object-contain" />
-                            </motion.div>
-                            <motion.div
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              exit={{ opacity: 0 }}
-                              transition={{ duration: 0.5 }}
-                              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 2 }}
-                            >
-                              <Image src="/assets/CCP/16.png" alt="CCP" fill className="object-contain" />
-                            </motion.div>
-                          </>
-                        )}
-                      </AnimatePresence>
-                      {/* State 3: Images 23+24 */}
-                      <AnimatePresence>
-                        {ccpLayerIndex === 3 && (
-                          <>
-                            <motion.div
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              exit={{ opacity: 0 }}
-                              transition={{ duration: 0.5 }}
-                              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}
-                            >
-                              <Image src="/assets/CCP/23.png" alt="CCP" fill className="object-contain" />
-                            </motion.div>
-                            <motion.div
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              exit={{ opacity: 0 }}
-                              transition={{ duration: 0.5 }}
-                              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 2 }}
-                            >
-                              <Image src="/assets/CCP/24.png" alt="CCP" fill className="object-contain" />
-                            </motion.div>
-                          </>
-                        )}
-                      </AnimatePresence>
-                      {/* State 4: Images 27+28 */}
-                      <AnimatePresence>
-                        {ccpLayerIndex === 4 && (
-                          <>
-                            <motion.div
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              exit={{ opacity: 0 }}
-                              transition={{ duration: 0.5 }}
-                              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}
-                            >
-                              <Image src="/assets/CCP/27.png" alt="CCP" fill className="object-contain" />
-                            </motion.div>
-                            <motion.div
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              exit={{ opacity: 0 }}
-                              transition={{ duration: 0.5 }}
-                              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 2 }}
-                            >
-                              <Image src="/assets/CCP/28.png" alt="CCP" fill className="object-contain" />
-                            </motion.div>
-                          </>
-                        )}
-                      </AnimatePresence>
+                          </AnimatePresence>
+                        </div>
+                      ) : lmsyImageIndex === 1 ? (
+                        <video
+                          src="/assets/CCP/LMSU-sample_.mp4"
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          className="absolute inset-0 w-full h-full object-contain"
+                        />
+                      ) : (
+                        <video
+                          src="/assets/CCP/LMSU-sample_feb2026.mp4"
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          className="absolute inset-0 w-full h-full object-contain"
+                        />
+                      )}
                     </>
                   ) : (product.title?.toLowerCase().includes('specific things') ||
                        product.title?.toLowerCase().includes('card') ||
@@ -678,13 +615,38 @@ export default function ProductDetailPage() {
                     </div>
                   </div>
                 )}
+                {/* LMSY Video - Desktop Only */}
+                {isLMSYProduct && (
+                  <div className="hidden lg:block mt-4">
+                    <div className="relative aspect-square rounded-lg overflow-hidden">
+                      <video
+                        src="/assets/CCP/LMSU-sample_.mp4"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                    <div className="relative aspect-square rounded-lg overflow-hidden mt-4">
+                      <video
+                        src="/assets/CCP/LMSU-sample_feb2026.mp4"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
           </div>
 
           {/* Right: Product Details */}
-          <div className="flex flex-col lg:sticky lg:top-40 lg:self-start">
+          <div className="flex flex-col lg:sticky lg:top-40 lg:self-start mt-4 lg:mt-0">
             {/* Title */}
             <h1 className="text-2xl md:text-4xl font-bold text-black mb-2 uppercase font-[family-name:var(--font-inter)]" style={{ letterSpacing: '-0.02em' }}>
               {product.title}
@@ -695,18 +657,24 @@ export default function ProductDetailPage() {
               </p>
             )}
 
-            {/* Price - hide for LMSY products */}
-            {!isLMSYProduct && (
+            {/* Price */}
+            {isLMSYProduct ? (
               <div className="flex items-baseline gap-4 mb-2">
-                <span className="text-2xl font-bold text-black font-[family-name:var(--font-inter)]">
+                <span className="text-xl md:text-2xl font-bold text-black font-[family-name:var(--font-inter)]">
+                  $4/month subscription
+                </span>
+              </div>
+            ) : (
+              <div className="flex items-baseline gap-4 mb-2">
+                <span className="text-xl md:text-2xl font-bold text-black font-[family-name:var(--font-inter)]">
                   ${displayPrice.toFixed(2)}{selectedSellingPlan ? '/mo' : ''}
                 </span>
                 {selectedSellingPlan && displayPrice < basePrice && (
-                  <span className="text-lg text-gray-400 line-through font-[family-name:var(--font-inter)]">
+                  <span className="text-base md:text-lg text-gray-400 line-through font-[family-name:var(--font-inter)]">
                     ${basePrice.toFixed(2)}
                   </span>
                 )}
-                <span className="text-sm text-gray-600 font-[family-name:var(--font-inter)]">
+                <span className="text-xs md:text-sm text-gray-600 font-[family-name:var(--font-inter)]">
                   <Link href="/legal" className="underline hover:text-[#F8330D] transition-colors">SHIPPING</Link> CALCULATED AT CHECKOUT.
                 </span>
               </div>
@@ -948,14 +916,14 @@ export default function ProductDetailPage() {
               </div>
             )}
 
-            {/* Subscription Options */}
-            {product.sellingPlanGroups && product.sellingPlanGroups.length > 0 && (
+            {/* Subscription Options - hidden for LMSY */}
+            {!isLMSYProduct && product.sellingPlanGroups && product.sellingPlanGroups.length > 0 && (
               <div className="mb-6">
                 <label className="text-sm font-bold text-black mb-3 block uppercase font-[family-name:var(--font-inter)]">
                   PURCHASE OPTIONS
                 </label>
                 <div className="space-y-2">
-                  {/* Single Month / One-time purchase option */}
+                  {/* One-time purchase option */}
                   <button
                     onClick={() => setSelectedSellingPlan(null)}
                     className={`w-full px-4 py-3 text-left text-sm font-bold transition-all rounded-lg font-[family-name:var(--font-inter)] border-2 ${
@@ -964,7 +932,7 @@ export default function ProductDetailPage() {
                         : 'bg-white text-black border-gray-300 hover:border-black'
                     }`}
                   >
-                    {isLMSYProduct ? `Single Month Purchase ($${basePrice.toFixed(0)})` : 'One-time purchase'}
+                    One-time purchase
                   </button>
                   {/* Subscription options */}
                   {product.sellingPlanGroups.map((group: any) =>
@@ -994,17 +962,12 @@ export default function ProductDetailPage() {
                           }`}
                         >
                           <div className="flex items-center justify-between">
-                            <span>
-                              {isLMSYProduct
-                                ? `Monthly Subscription ($${planPrice.toFixed(0)}/month)`
-                                : plan.name
-                              }
-                            </span>
+                            <span>{plan.name}</span>
                             <span className="text-xs bg-[#dcff73] text-black px-2 py-1 rounded">
                               SAVE 30% OFF
                             </span>
                           </div>
-                          {plan.description && !isLMSYProduct && (
+                          {plan.description && (
                             <p className="text-xs font-normal mt-1 opacity-70">{plan.description}</p>
                           )}
                         </button>
@@ -1049,7 +1012,7 @@ export default function ProductDetailPage() {
                     : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                 }`}
               >
-                {selectedSellingPlan ? 'SUBSCRIBE NOW' : 'BUY NOW'}
+                {selectedSellingPlan && !isLMSYProduct ? 'SUBSCRIBE NOW' : 'BUY NOW'}
               </button>
             </div>
 
@@ -1099,10 +1062,8 @@ export default function ProductDetailPage() {
                     </div>
                   ) : isLMSYProduct ? (
                     <div className="text-sm text-gray-700 font-[family-name:var(--font-inter)] space-y-2">
-                      <p><strong>Single Month Purchase</strong></p>
-                      <p>For the single month purchase, you will receive a link and password to the current month&apos;s exhibit once it is complete. So for example, if you bought the single month purchase on 1/10, you will receive one email on 1/31 with clear access instructions.</p>
-                      <p className="mt-4"><strong>Monthly Subscription Purchase</strong></p>
-                      <p>For the monthly subscription purchase, you will receive an email with the link and password to the current month&apos;s exhibit. You will continue to receive email notifications anytime there is a new drop.</p>
+                      <p><strong>How It Works</strong></p>
+                      <p>With your subscription, you&apos;ll receive an email with the link and password to the current month&apos;s exhibit. You&apos;ll continue to receive email notifications whenever there is a new drop.</p>
                       <p className="mt-4 text-gray-800">If you&apos;ve got special requests for notifications, or purchasing a previous theme, you can email us at <a href="mailto:support@rithikaisafool.com" className="underline hover:text-black">support@rithikaisafool.com</a></p>
                       <p className="mt-4 text-gray-800"><em>Calling all art lovers!</em> If you want to be a contributing guest, email us with one of your favorite pieces of art and why at <a href="mailto:submissions@rithikaisafool.com" className="underline hover:text-black">submissions@rithikaisafool.com</a></p>
                     </div>
