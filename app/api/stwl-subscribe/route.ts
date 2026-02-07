@@ -1,10 +1,17 @@
 export async function POST(request: Request) {
   try {
-    const { name, phone } = await request.json();
+    const { name, lastName, phone, subscribeNewsletter, email } = await request.json();
 
     if (!name || !name.trim()) {
       return Response.json(
-        { error: 'Name is required' },
+        { error: 'First name is required' },
+        { status: 400 }
+      );
+    }
+
+    if (!lastName || !lastName.trim()) {
+      return Response.json(
+        { error: 'Last name is required' },
         { status: 400 }
       );
     }
@@ -43,7 +50,7 @@ export async function POST(request: Request) {
     }
 
     // Step 1: Create or update profile with phone number and SMS consent
-    console.log('Creating profile for:', name.trim(), formattedPhone);
+    console.log('Creating profile for:', name.trim(), lastName.trim(), formattedPhone);
 
     const profileResponse = await fetch('https://a.klaviyo.com/api/profiles/', {
       method: 'POST',
@@ -58,6 +65,7 @@ export async function POST(request: Request) {
           attributes: {
             phone_number: formattedPhone,
             first_name: name.trim(),
+            last_name: lastName.trim(),
             properties: {
               'SMS Source': 'STWL Signup'
             }
@@ -82,7 +90,7 @@ export async function POST(request: Request) {
       profileId = errorData.errors?.[0]?.meta?.duplicate_profile_id;
       console.log('Profile exists, ID:', profileId);
 
-      // Update existing profile with first name
+      // Update existing profile with first and last name
       if (profileId) {
         await fetch(`https://a.klaviyo.com/api/profiles/${profileId}/`, {
           method: 'PATCH',
@@ -97,6 +105,7 @@ export async function POST(request: Request) {
               id: profileId,
               attributes: {
                 first_name: name.trim(),
+                last_name: lastName.trim(),
                 properties: {
                   'SMS Source': 'STWL Signup'
                 }
@@ -214,6 +223,77 @@ export async function POST(request: Request) {
         { error: 'Failed to subscribe' },
         { status: 500 }
       );
+    }
+
+    // Step 4: Subscribe to newsletter if checkbox was checked
+    if (subscribeNewsletter && email) {
+      const newsletterListId = 'RSaqUR'; // Main newsletter list
+      console.log('Subscribing to newsletter with email:', email);
+
+      // First update the profile with the email address
+      if (profileId) {
+        await fetch(`https://a.klaviyo.com/api/profiles/${profileId}/`, {
+          method: 'PATCH',
+          headers: {
+            'Authorization': `Klaviyo-API-Key ${klaviyoApiKey}`,
+            'Content-Type': 'application/json',
+            'revision': '2024-10-15',
+          },
+          body: JSON.stringify({
+            data: {
+              type: 'profile',
+              id: profileId,
+              attributes: {
+                email: email.trim()
+              }
+            }
+          }),
+        });
+      }
+
+      // Subscribe to newsletter with email consent
+      await fetch('https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Klaviyo-API-Key ${klaviyoApiKey}`,
+          'Content-Type': 'application/json',
+          'revision': '2024-10-15',
+        },
+        body: JSON.stringify({
+          data: {
+            type: 'profile-subscription-bulk-create-job',
+            attributes: {
+              profiles: {
+                data: [
+                  {
+                    type: 'profile',
+                    attributes: {
+                      email: email.trim(),
+                      subscriptions: {
+                        email: {
+                          marketing: {
+                            consent: 'SUBSCRIBED'
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              historical_import: false
+            },
+            relationships: {
+              list: {
+                data: {
+                  type: 'list',
+                  id: newsletterListId
+                }
+              }
+            }
+          }
+        }),
+      });
+      console.log('Added to newsletter list');
     }
 
     return Response.json(
