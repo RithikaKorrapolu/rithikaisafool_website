@@ -1,32 +1,3 @@
-// Subscribe to Substack newsletter
-async function subscribeToSubstack(email: string) {
-  try {
-    const response = await fetch('https://rithikakorrapolu.substack.com/api/v1/free', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: email,
-        first_url: 'https://rithikaisafool.com',
-        first_referrer: '',
-        current_url: 'https://rithikaisafool.com',
-        current_referrer: '',
-      }),
-    });
-
-    if (response.ok) {
-      console.log('Successfully subscribed to Substack:', email);
-    } else {
-      const text = await response.text();
-      console.log('Substack response:', response.status, text);
-    }
-  } catch (error) {
-    console.error('Substack subscription error:', error);
-    // Don't throw - we don't want to fail the whole signup if Substack fails
-  }
-}
-
 export async function POST(request: Request) {
   try {
     const { email } = await request.json();
@@ -117,9 +88,6 @@ export async function POST(request: Request) {
         { status: 500 }
       );
     }
-
-    // Also subscribe to Substack (fire and forget - don't fail if this fails)
-    await subscribeToSubstack(email);
 
     return Response.json(
       { message: "You're in baby!" },

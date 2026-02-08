@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCart } from "@/context/CartContext";
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 
 // Video data - same as about page
 const videos = [
@@ -37,18 +37,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
   const [newsletterError, setNewsletterError] = useState('');
   const [newsletterCustomContent, setNewsletterCustomContent] = useState<{ title: string; description: string } | null>(null);
 
-  // Refs for hidden Substack form
-  const substackFormRef = useRef<HTMLFormElement>(null);
-  const substackEmailRef = useRef<HTMLInputElement>(null);
-
-  // Function to submit to Substack via hidden form
-  const submitToSubstack = useCallback((email: string) => {
-    if (substackEmailRef.current && substackFormRef.current) {
-      substackEmailRef.current.value = email;
-      substackFormRef.current.submit();
-    }
-  }, []);
-
+  
   // Listen for custom event to open newsletter popup
   useEffect(() => {
     const handleOpenNewsletter = (e: Event) => {
@@ -78,8 +67,6 @@ export default function Header({ onMenuClick }: HeaderProps) {
 
       if (response.ok) {
         setNewsletterStatus('success');
-        // Also submit to Substack via hidden form
-        submitToSubstack(newsletterEmail);
         setNewsletterEmail('');
       } else {
         const data = await response.json();
@@ -501,21 +488,6 @@ export default function Header({ onMenuClick }: HeaderProps) {
       )}
     </AnimatePresence>
 
-    {/* Hidden Substack form for newsletter sync */}
-    <iframe name="substack-iframe" style={{ display: 'none' }} title="Substack Subscribe" />
-    <form
-      ref={substackFormRef}
-      action="https://rithikakorrapolu.substack.com/api/v1/free"
-      method="POST"
-      target="substack-iframe"
-      style={{ display: 'none' }}
-    >
-      <input ref={substackEmailRef} type="email" name="email" />
-      <input type="hidden" name="first_url" value="https://rithikaisafool.com" />
-      <input type="hidden" name="first_referrer" value="" />
-      <input type="hidden" name="current_url" value="https://rithikaisafool.com" />
-      <input type="hidden" name="current_referrer" value="" />
-    </form>
-    </>
+        </>
   );
 }
