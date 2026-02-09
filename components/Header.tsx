@@ -461,17 +461,28 @@ export default function Header({ onMenuClick }: HeaderProps) {
                   </a>
                 </div>
 
-                {/* Substack Embed */}
-                <div className="flex justify-center">
-                  <iframe
-                    src="https://rithikakorrapolu.substack.com/embed"
-                    width="100%"
-                    height="150"
-                    style={{ border: 'none', background: 'white', maxWidth: '400px' }}
-                    frameBorder="0"
-                    scrolling="no"
+                <form onSubmit={handleNewsletterSubmit}>
+                  <input
+                    type="email"
+                    value={newsletterEmail}
+                    onChange={(e) => setNewsletterEmail(e.target.value)}
+                    placeholder="email"
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-[#F8330D] focus:outline-none font-[family-name:var(--font-inter)] mb-4 text-black"
+                    required
                   />
-                </div>
+                  {newsletterStatus === 'error' && (
+                    <p className="text-red-500 text-sm mb-4 font-[family-name:var(--font-inter)]">
+                      {newsletterError}
+                    </p>
+                  )}
+                  <button
+                    type="submit"
+                    disabled={newsletterStatus === 'loading' || newsletterStatus === 'success'}
+                    className={`w-full text-white font-bold py-3 rounded-xl transition-colors font-[family-name:var(--font-inter)] disabled:opacity-100 ${newsletterStatus === 'success' ? 'bg-green-500' : 'bg-[#F8330D] hover:bg-black'}`}
+                  >
+                    {newsletterStatus === 'loading' ? 'Subscribing...' : newsletterStatus === 'success' ? "You're in baby!" : 'Let me in!'}
+                  </button>
+                </form>
           </motion.div>
         </motion.div>
       )}
