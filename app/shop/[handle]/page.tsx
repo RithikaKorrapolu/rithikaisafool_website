@@ -410,7 +410,7 @@ export default function ProductDetailPage() {
                           loop
                           muted
                           playsInline
-                          className="w-full h-full object-contain rounded-lg"
+                          className="w-full h-full object-cover rounded-2xl"
                         />
                       </motion.div>
                     )}
@@ -451,14 +451,14 @@ export default function ProductDetailPage() {
                     )}
                   </div>
                   {/* Glory Sweatshirt Video */}
-                  <div className="relative aspect-square rounded-lg overflow-hidden mt-4">
+                  <div className="relative aspect-square mt-4">
                     <video
                       src="/assets/glory_sweatshirt.mov"
                       autoPlay
                       loop
                       muted
                       playsInline
-                      className="w-full h-full object-contain rounded-lg"
+                      className="w-full h-full object-cover rounded-2xl"
                     />
                     <div className="absolute bottom-2 left-[12%] right-[12%] bg-white/90 px-3 py-2 rounded text-xs text-black font-[family-name:var(--font-inter)]">
                       <p className="mb-1">This is a sample base hoodie. Each one can vary in color and design.</p>
