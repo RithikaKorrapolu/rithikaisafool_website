@@ -459,7 +459,7 @@ export default function ProductDetailPage() {
                       playsInline
                       className="w-full h-full object-cover rounded-2xl"
                     />
-                    <div className="absolute bottom-2 left-[12%] right-[12%] bg-white/90 px-3 py-2 rounded text-xs text-black font-[family-name:var(--font-inter)]">
+                    <div className="absolute bottom-2 left-[6%] right-[6%] bg-white/90 px-3 py-2 rounded text-xs text-black font-[family-name:var(--font-inter)]">
                       Model is 5&apos;4&quot; and wearing a size S. Model loves dancing and wearing an oversized fit. Model is one of my best friends of all time.
                     </div>
                   </div>
