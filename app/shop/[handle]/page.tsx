@@ -429,7 +429,8 @@ export default function ProductDetailPage() {
                 {/* Mobile Caption - Only shown when video is displayed */}
                 {strangerImageIndex === 1 && (
                   <div className="lg:hidden mt-2 bg-white/90 px-3 py-2 rounded text-xs text-black font-[family-name:var(--font-inter)]">
-                    Model is 5&apos;4&quot; and wearing a size S. Model loves dancing and wearing an oversized fit. Model is one of my best friends of all time.
+                    <p className="mb-1">This is a sample base hoodie. Each one can vary in color and design.</p>
+                    <p>Model is 5&apos;4&quot; and wearing a size S. Model loves dancing and wearing an oversized fit. Model is one of my best friends of all time.</p>
                   </div>
                 )}
 
@@ -460,7 +461,8 @@ export default function ProductDetailPage() {
                       className="w-full h-full object-contain"
                     />
                     <div className="absolute bottom-2 left-[12%] right-[12%] bg-white/90 px-3 py-2 rounded text-xs text-black font-[family-name:var(--font-inter)]">
-                      Model is 5&apos;4&quot; and wearing a size S. Model loves dancing and wearing an oversized fit. Model is one of my best friends of all time.
+                      <p className="mb-1">This is a sample base hoodie. Each one can vary in color and design.</p>
+                      <p>Model is 5&apos;4&quot; and wearing a size S. Model loves dancing and wearing an oversized fit. Model is one of my best friends of all time.</p>
                     </div>
                   </div>
                 </div>
