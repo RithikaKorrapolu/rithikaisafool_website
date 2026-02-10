@@ -374,13 +374,15 @@ export default function ProductDetailPage() {
                     </div>
                   )}
                 </div>
-                {/* Glory Sweatshirt Image */}
+                {/* Glory Sweatshirt Video */}
                 <div className="relative aspect-square rounded-lg overflow-hidden mt-4">
-                  <Image
-                    src="/assets/glory_sweatshirt.png"
-                    alt="Stranger Sweatshirt"
-                    fill
-                    className="object-contain"
+                  <video
+                    src="/assets/glory_sweatshirt.mov"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-full h-full object-contain"
                   />
                 </div>
               </div>
