@@ -615,17 +615,15 @@ export default function ProductDetailPage() {
                     </div>
                   </div>
                 )}
-                {/* Stranger Sweatshirt Image - Desktop Only */}
+                {/* Stranger Sweatshirt Image */}
                 {product.title?.toLowerCase().includes('stranger') && (
-                  <div className="hidden lg:block">
-                    <div className="relative aspect-square rounded-lg overflow-hidden -mt-16">
-                      <Image
-                        src="/assets/glory_sweatshirt.png"
-                        alt="Stranger Sweatshirt"
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
+                  <div className="relative aspect-square rounded-lg overflow-hidden mt-4 lg:-mt-16">
+                    <Image
+                      src="/assets/glory_sweatshirt.png"
+                      alt="Stranger Sweatshirt"
+                      fill
+                      className="object-contain"
+                    />
                   </div>
                 )}
                 {/* LMSY Video - Desktop Only */}
