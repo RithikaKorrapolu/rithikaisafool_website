@@ -60,6 +60,7 @@ export default function ProductDetailPage() {
   const [archiveIndex, setArchiveIndex] = useState(0);
   const [archiveImageSide, setArchiveImageSide] = useState<'front' | 'back'>('front');
   const [cotmImageIndex, setCotmImageIndex] = useState(0);
+  const [strangerImageIndex, setStrangerImageIndex] = useState(0);
 
   const COTM_IMAGES = [
     { src: '/assets/COTM/coverreal.png', alt: 'Condition of the Month Hat', style: { transform: 'scale(0.765) translateY(-5%)' }, className: 'object-contain' },
@@ -357,12 +358,63 @@ export default function ProductDetailPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-1 lg:gap-12">
           {/* Left: Product Image */}
           <div>
-            {/* Stranger Product - Single Image */}
+            {/* Stranger Product */}
             {product.title?.toLowerCase().includes('stranger') ? (
-              <div style={{ width: '85%', margin: '0 auto' }}>
-                {/* Main image - Bouncing Ball Poster */}
-                <div className="relative aspect-square rounded-lg overflow-hidden">
-                  <BouncingBallPoster showLogo={false} />
+              <div className="relative" style={{ width: '85%', margin: '0 auto' }}>
+                {/* Mobile Carousel Arrows */}
+                <div className="lg:hidden absolute inset-y-0 -left-4 -right-4 flex justify-between items-center pointer-events-none z-20">
+                  <button
+                    onClick={() => setStrangerImageIndex((prev) => (prev === 0 ? 1 : 0))}
+                    className="w-10 h-10 rounded-full bg-white/80 flex items-center justify-center shadow-md pointer-events-auto"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2">
+                      <path d="M15 18l-6-6 6-6"/>
+                    </svg>
+                  </button>
+                  <button
+                    onClick={() => setStrangerImageIndex((prev) => (prev === 0 ? 1 : 0))}
+                    className="w-10 h-10 rounded-full bg-white/80 flex items-center justify-center shadow-md pointer-events-auto"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2">
+                      <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                  </button>
+                </div>
+
+                {/* Mobile Carousel */}
+                <div className="lg:hidden relative aspect-square rounded-lg overflow-hidden">
+                  <AnimatePresence mode="wait">
+                    {strangerImageIndex === 0 ? (
+                      <motion.div
+                        key="bouncing-ball"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="w-full h-full"
+                      >
+                        <BouncingBallPoster showLogo={false} />
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key="glory-video"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="w-full h-full"
+                      >
+                        <video
+                          src="/assets/glory_sweatshirt.mov"
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          className="w-full h-full object-contain"
+                        />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                   {/* Sold Out Sticker */}
                   {!isAvailable && (
                     <div className="absolute top-3 right-3 z-10 rotate-6">
@@ -374,18 +426,42 @@ export default function ProductDetailPage() {
                     </div>
                   )}
                 </div>
-                {/* Glory Sweatshirt Video */}
-                <div className="relative aspect-square rounded-lg overflow-hidden mt-4">
-                  <video
-                    src="/assets/glory_sweatshirt.mov"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="w-full h-full object-contain"
-                  />
-                  <div className="absolute bottom-2 left-[12%] right-[12%] bg-white/90 px-3 py-2 rounded text-xs text-black font-[family-name:var(--font-inter)]">
+                {/* Mobile Caption - Only shown when video is displayed */}
+                {strangerImageIndex === 1 && (
+                  <div className="lg:hidden mt-2 bg-white/90 px-3 py-2 rounded text-xs text-black font-[family-name:var(--font-inter)]">
                     Model is 5&apos;4&quot; and wearing a size S. Model loves dancing and wearing an oversized fit. Model is one of my best friends of all time.
+                  </div>
+                )}
+
+                {/* Desktop - Both Images Stacked */}
+                <div className="hidden lg:block">
+                  {/* Main image - Bouncing Ball Poster */}
+                  <div className="relative aspect-square rounded-lg overflow-hidden">
+                    <BouncingBallPoster showLogo={false} />
+                    {/* Sold Out Sticker */}
+                    {!isAvailable && (
+                      <div className="absolute top-3 right-3 z-10 rotate-6">
+                        <div className="relative px-4 py-1.5 bg-[#F8330D]" style={{ borderRadius: '4px' }}>
+                          <span className="text-sm font-black text-white font-[family-name:var(--font-inter)] tracking-wide">
+                            SOLD OUT
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  {/* Glory Sweatshirt Video */}
+                  <div className="relative aspect-square rounded-lg overflow-hidden mt-4">
+                    <video
+                      src="/assets/glory_sweatshirt.mov"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="w-full h-full object-contain"
+                    />
+                    <div className="absolute bottom-2 left-[12%] right-[12%] bg-white/90 px-3 py-2 rounded text-xs text-black font-[family-name:var(--font-inter)]">
+                      Model is 5&apos;4&quot; and wearing a size S. Model loves dancing and wearing an oversized fit. Model is one of my best friends of all time.
+                    </div>
                   </div>
                 </div>
               </div>
