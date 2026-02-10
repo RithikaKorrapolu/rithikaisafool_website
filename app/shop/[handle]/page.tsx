@@ -615,6 +615,22 @@ export default function ProductDetailPage() {
                     </div>
                   </div>
                 )}
+                {/* STWL Sweatshirt Image - Desktop Only */}
+                {(product.title?.toLowerCase().includes('specific things') ||
+                  product.title?.toLowerCase().includes('card') ||
+                  product.title?.toLowerCase().includes('love')) &&
+                  !product.title?.toLowerCase().includes('stranger') && (
+                  <div className="hidden lg:block">
+                    <div className="relative aspect-square rounded-lg overflow-hidden -mt-16">
+                      <Image
+                        src="/assets/glory_sweatshirt.png"
+                        alt="Glory Sweatshirt"
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                  </div>
+                )}
                 {/* LMSY Video - Desktop Only */}
                 {isLMSYProduct && (
                   <div className="hidden lg:block mt-4">
