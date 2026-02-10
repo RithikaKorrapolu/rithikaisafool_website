@@ -410,7 +410,7 @@ export default function ProductDetailPage() {
                           loop
                           muted
                           playsInline
-                          className="w-full h-full object-contain"
+                          className="w-full h-full object-contain rounded-lg"
                         />
                       </motion.div>
                     )}
@@ -458,7 +458,7 @@ export default function ProductDetailPage() {
                       loop
                       muted
                       playsInline
-                      className="w-full h-full object-contain"
+                      className="w-full h-full object-contain rounded-lg"
                     />
                     <div className="absolute bottom-2 left-[12%] right-[12%] bg-white/90 px-3 py-2 rounded text-xs text-black font-[family-name:var(--font-inter)]">
                       <p className="mb-1">This is a sample base hoodie. Each one can vary in color and design.</p>
