@@ -374,6 +374,15 @@ export default function ProductDetailPage() {
                     </div>
                   )}
                 </div>
+                {/* Glory Sweatshirt Image */}
+                <div className="relative aspect-square rounded-lg overflow-hidden mt-4">
+                  <Image
+                    src="/assets/glory_sweatshirt.png"
+                    alt="Stranger Sweatshirt"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
               </div>
             ) : (
               /* Other Products - Original Single Image Layout */
@@ -615,18 +624,7 @@ export default function ProductDetailPage() {
                     </div>
                   </div>
                 )}
-                {/* Stranger Sweatshirt Image */}
-                {product.title?.toLowerCase().includes('stranger') && (
-                  <div className="relative aspect-square rounded-lg overflow-hidden mt-4 lg:-mt-16">
-                    <Image
-                      src="/assets/glory_sweatshirt.png"
-                      alt="Stranger Sweatshirt"
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                )}
-                {/* LMSY Video - Desktop Only */}
+                                {/* LMSY Video - Desktop Only */}
                 {isLMSYProduct && (
                   <div className="hidden lg:block mt-4">
                     <div className="relative aspect-square rounded-lg overflow-hidden">
