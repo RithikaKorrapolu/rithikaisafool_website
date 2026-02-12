@@ -67,6 +67,33 @@ const ARTWORKS = [
   },
   {
     id: 4,
+    title: "Any Love I Have Given You",
+    artist: "Unknown",
+    date: "",
+    medium: "Quote",
+    quote: "Any love I have given you is yours to keep.",
+    emoji: "❤️",
+    curator: "Shay",
+    note: "I think this is the most loving, precious way to think about love. Pure love is selfless. Pure love is eternal. If somebody you loves passes away or they stop being in your life, it doesn&apos;t erase all the love you felt from them. That love is still there and can be accessed. A high school&apos;s teacher belief in you 10 years ago can still drive you now to go after your dreams. An ex-boyfriend&apos;s love of your dancing can still make you feel confident on the dance floor. It&apos;s an amazing thing. Everyone&apos;s love in you is always there, you just have to be able to receive and access it.",
+    additionalInfo: [
+      "I&apos;m not sure who to attribute this quote to because I&apos;ve seen it online in different versions many times. I try to come back to it often."
+    ]
+  },
+  {
+    id: 5,
+    title: "Jazz for Cows",
+    artist: "The New Hot 5",
+    date: "2012",
+    medium: "Music",
+    video: "lXKDu6cdXLI",
+    curator: "",
+    note: "This video reminds me that love can come in any and all forms. The fact that these musicians thought to pause their work, lug all this equipment and travel to a field to serenade cows is so, so beautiful, honestly. It moved me deeply to think that these cows felt love like this, it may have been the best day in their lives. Everything alive deserves to feel love like this.",
+    additionalInfo: [
+      "The New Hot 5 are the American-based jazz band playing in this video. They&apos;re playing for a herd of cows in Autrans, France."
+    ]
+  },
+  {
+    id: 6,
     title: "More Coming Soon",
     artist: "",
     date: "",
@@ -431,6 +458,10 @@ export default function LMSYFeb2026Page() {
                                     </svg>
                                   </div>
                                 </>
+                              ) : (artwork as any).emoji ? (
+                                <div className="w-full h-full bg-white/20 flex items-center justify-center text-2xl">
+                                  {(artwork as any).emoji}
+                                </div>
                               ) : (
                                 <div className="w-full h-full bg-white/20 flex items-center justify-center text-white text-lg">
                                   &ldquo;
@@ -514,6 +545,10 @@ export default function LMSYFeb2026Page() {
                             )}
                           </div>
                         </>
+                      ) : (artwork as any).emoji ? (
+                        <div className="w-full h-full bg-white/20 flex items-center justify-center text-2xl">
+                          {(artwork as any).emoji}
+                        </div>
                       ) : (
                         <div className="w-full h-full bg-white/20 flex items-center justify-center text-white text-lg">
                           &ldquo;
@@ -580,7 +615,7 @@ export default function LMSYFeb2026Page() {
                 </div>
               ) : (selectedArtwork as any).quote ? (
                 <div
-                  className="relative min-h-[300px] lg:min-h-[400px] flex flex-col items-center justify-center p-8 rounded-xl"
+                  className="relative min-h-[150px] lg:min-h-[200px] flex flex-col items-center justify-center p-8 rounded-xl"
                   style={{
                     background: "rgba(0, 0, 0, 0.2)",
                     boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
@@ -637,7 +672,6 @@ export default function LMSYFeb2026Page() {
                 >
                   <p className="text-white/60 text-sm uppercase tracking-wider mb-2 font-semibold font-[family-name:var(--font-inter)]">Curator Notes</p>
                   <p className="text-white text-lg md:text-xl italic font-[family-name:var(--font-inter)]" dangerouslySetInnerHTML={{ __html: `&ldquo;${selectedArtwork.note}&rdquo;` }} />
-                  <p className="text-white text-base mt-2 text-right font-[family-name:var(--font-inter)]">— {selectedArtwork.curator}</p>
                 </div>
               )}
 
