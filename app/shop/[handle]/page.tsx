@@ -429,7 +429,7 @@ export default function ProductDetailPage() {
                 {/* Mobile Caption - Only shown when video is displayed */}
                 {strangerImageIndex === 1 && (
                   <div className="lg:hidden mt-2 bg-white/90 px-3 py-2 rounded text-xs text-black font-[family-name:var(--font-inter)]">
-                    <p>Model is 5&apos;4&quot; and wearing a size S. Model loves dancing and is one of my best friends of all time.</p>
+                    <p>Model is 5&apos;4&quot; and wearing a size S. Model loves dancing. I love Model. She is a best friend.</p>
                     <p className="mt-2">Note: This is just a sample base hoodie. Each one will vary in color and design.</p>
                   </div>
                 )}
@@ -462,7 +462,7 @@ export default function ProductDetailPage() {
                     />
                   </div>
                   <div className="mt-2 bg-white/90 px-3 py-2 rounded text-xs text-black font-[family-name:var(--font-inter)]">
-                    <p>Model is 5&apos;4&quot; and wearing a size S. Model loves dancing and is one of my best friends of all time.</p>
+                    <p>Model is 5&apos;4&quot; and wearing a size S. Model loves dancing. I love Model. She is a best friend.</p>
                     <p className="mt-2">Note: This is just a sample base hoodie. Each one will vary in color and design.</p>
                   </div>
                 </div>
@@ -776,7 +776,7 @@ export default function ProductDetailPage() {
             {!isAvailable && (
               <div className="mb-4">
                 <p className="text-base font-bold text-[#F8330D] mb-3 font-[family-name:var(--font-inter)]">
-                  Sold out! But more on the way!! We can let you know when it's back -
+                  Sold out for the month! We can let you know when it's back -
                 </p>
                 <form
                   onSubmit={async (e) => {
@@ -898,7 +898,7 @@ export default function ProductDetailPage() {
                       </svg>
                     </a>
                   </div>
-                  <p>If you wear this merch, you are signaling something powerful. That you are not ashamed of your weaknesses but in fact proud of them. <strong>You will attract others like you. And you will rise.</strong></p>
+                  <p>People usually wear merch for things that they&apos;re proud of and identify with like their favorite sports teams or what college they went to. Why not our conditions? We must be proud of those too. <strong>If you wear this merch, you will attract others like you. And you will rise.</strong></p>
                   <p className="mt-2 italic">*Makes a great gift for someone special.</p>
                 </div>
               ) : isLMSYProduct ? (
