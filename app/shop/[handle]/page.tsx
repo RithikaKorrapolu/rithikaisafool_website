@@ -49,7 +49,7 @@ export default function ProductDetailPage() {
   const [waitlistSuccess, setWaitlistSuccess] = useState(false);
   const [waitlistError, setWaitlistError] = useState('');
   const [showArchivePopup, setShowArchivePopup] = useState(false);
-  const [editionCount, setEditionCount] = useState(1);
+  const [editionCount, setEditionCount] = useState(9);
 
   const editionImages = [
     { id: 0, srcFront: 'main', srcBack: 'main', alt: 'Current Edition', title: 'Edition #01', description: 'The current mystery design. What will it be?' },

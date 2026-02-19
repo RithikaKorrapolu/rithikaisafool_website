@@ -79,6 +79,8 @@ export default function Home() {
   const [winkIndex, setWinkIndex] = useState(0);
   const [activePosterIds, setActivePosterIds] = useState<Set<number>>(new Set());
   const posterRefs = useRef<Map<number, HTMLDivElement>>(new Map());
+  const [amwyOverlayIndex, setAmwyOverlayIndex] = useState<number | null>(null);
+  const [showAMWYPopup, setShowAMWYPopup] = useState(false);
 
   const clientQuotes = [
     "How can we design an event to unlock the conversations we care about?",
@@ -348,6 +350,24 @@ export default function Home() {
 
     return () => clearTimeout(timeoutId);
   }, [ccpLayerIndex]);
+
+  // For poster 11 (A Month With You) - cycle through overlay images 4,5,6,7 in order
+  const amwyImages = [4, 5, 6, 7];
+  useEffect(() => {
+    // Start with image 4
+    setAmwyOverlayIndex(4);
+
+    // Cycle through 4,5,6,7 every 0.3 seconds
+    const interval = setInterval(() => {
+      setAmwyOverlayIndex((prev) => {
+        const currentIdx = amwyImages.indexOf(prev as number);
+        const nextIdx = (currentIdx + 1) % amwyImages.length;
+        return amwyImages[nextIdx];
+      });
+    }, 300);
+
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     // Set initial position to center of screen
@@ -755,6 +775,35 @@ export default function Home() {
                           />
                         </div>
                       </>
+                    ) : poster.id === 11 ? (
+                      <>
+                        {/* Base image - always visible */}
+                        <Image
+                          src="/assets/A Month With you/A Month With You.png"
+                          alt="A Month With You"
+                          width={500}
+                          height={625}
+                          className="w-full h-full object-contain"
+                        />
+                        {/* Overlay images 4-7 with crossfade */}
+                        {amwyImages.map((imgNum) => (
+                          <motion.div
+                            key={imgNum}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: amwyOverlayIndex === imgNum ? 1 : 0 }}
+                            transition={{ duration: 0.12 }}
+                            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                          >
+                            <Image
+                              src={`/assets/A Month With you/${imgNum}.png`}
+                              alt="A Month With You"
+                              width={500}
+                              height={625}
+                              className="w-full h-full object-contain"
+                            />
+                          </motion.div>
+                        ))}
+                      </>
                     ) : (
                       <>
                         <span
@@ -886,6 +935,18 @@ export default function Home() {
                     </div>
                   );
                 }
+                // For poster 11 (A Month With You) - show popup
+                if (poster.id === 11) {
+                  return (
+                    <div
+                      key={poster.id}
+                      onClick={() => setShowAMWYPopup(true)}
+                      className="cursor-pointer"
+                    >
+                      {PosterContent}
+                    </div>
+                  );
+                }
                 return (
                   <Link
                     key={poster.id}
@@ -949,9 +1010,15 @@ export default function Home() {
                 }
               `}</style>
               <p className="mt-4 text-black font-[family-name:var(--font-inter)]">
-                Each month, we feature one person to be the guest on the show. Every day, they answer one new question. Call to hear today&apos;s answer. Call everyday and you get to know someone over the course of a month.
+                Tired of unsolicited advice from friends, family, the people you love? Try strangers.
               </p>
-              {/* CALL NOW button - mobile only, right after "course of a month" */}
+              <p className="mt-4 text-black font-[family-name:var(--font-inter)]">
+                Every day, someone shares one piece of advice. Dial in.
+              </p>
+              <p className="mt-2 text-black font-[family-name:var(--font-inter)] italic">
+                Launching 3/1/2026
+              </p>
+              {/* CALL NOW button - mobile only */}
               {isTouchDevice && (
                 <a
                   href="tel:6097322482"
@@ -961,7 +1028,7 @@ export default function Home() {
                 </a>
               )}
               <p className="mt-4 text-black font-[family-name:var(--font-inter)] italic">
-                Pitch us new questions / come on the show by emailing{' '}
+                Got advice? Email us at{' '}
                 <a href="mailto:submissions@rithikaisafool.com" className="underline hover:text-gray-700">
                   submissions@rithikaisafool.com
                 </a>
@@ -988,6 +1055,61 @@ export default function Home() {
                   </svg>
                 </a>
               </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* A Month With You Popup */}
+      <AnimatePresence>
+        {showAMWYPopup && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed bg-black/50 flex items-center justify-center z-50 popup-backdrop"
+            style={{ top: '-200vh', bottom: '-200vh', left: 0, right: 0 }}
+            onClick={() => setShowAMWYPopup(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="rounded-2xl p-6 md:p-8 max-w-md mx-4 text-center shadow-2xl relative border border-white/20 max-h-[60vh] md:max-h-none overflow-y-auto"
+              style={{ background: 'rgba(255, 255, 255, 0.7)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* X close button */}
+              <button
+                onClick={() => setShowAMWYPopup(false)}
+                className="absolute top-4 right-4 text-gray-500 hover:text-black transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+              <h2 className="text-xl md:text-2xl font-bold mb-1 text-black font-[family-name:var(--font-loubag)]">
+                A Month With You
+              </h2>
+              <p className="text-sm text-black/70 mb-4 font-[family-name:var(--font-inter)]">
+                a short-form video series
+              </p>
+              <p className="text-black font-[family-name:var(--font-inter)]">
+                Every month, we pick a new person.<br />
+                Every day, you help choose the next question.<br />
+                By the end of the month, we all get to know someone new.
+              </p>
+              <p className="mt-4 text-black font-[family-name:var(--font-inter)] italic">
+                Launching 3/1/2026 on our instagram
+              </p>
+              <a
+                href="https://www.instagram.com/rithikaisafool/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-2 px-6 py-2 bg-[#F8330D] hover:bg-black text-white rounded-full transition-colors font-[family-name:var(--font-inter)] font-bold inline-block"
+              >
+                Join in
+              </a>
             </motion.div>
           </motion.div>
         )}

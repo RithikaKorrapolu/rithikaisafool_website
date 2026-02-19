@@ -104,7 +104,7 @@ export default function QuoteLinePoster() {
       >
         {/* Cover image on top */}
         <Image
-          src="/assets/QuoteLine/quotecover8.png"
+          src="/assets/QuoteLine/unsolicitedcover.png"
           alt="Quote Line"
           width={500}
           height={625}
