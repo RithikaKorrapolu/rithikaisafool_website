@@ -558,7 +558,7 @@ export default function Home() {
           {/* Spacer to account for fixed header height */}
           <div className="h-[110vw] sm:h-[26vw] lg:h-[26vw]"></div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 px-[2.5%] md:px-0">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 px-[2.5%] md:px-0">
             {reversedPosters.map((poster) => {
               const isActive = isTouchDevice && activePosterIds.has(poster.id);
               const PosterContent = (

@@ -78,6 +78,24 @@ export default function QuoteLinePoster() {
           0%, 100% { height: 34px; }
           35% { height: 94px; }
         }
+        @media (max-width: 1400px) {
+          .phone-visualizer {
+            -webkit-transform: translate(-50%, -50%) scale(0.85) !important;
+            transform: translate(-50%, -50%) scale(0.85) !important;
+          }
+        }
+        @media (max-width: 1200px) {
+          .phone-visualizer {
+            -webkit-transform: translate(-50%, -50%) scale(0.75) !important;
+            transform: translate(-50%, -50%) scale(0.75) !important;
+          }
+        }
+        @media (max-width: 1024px) {
+          .phone-visualizer {
+            -webkit-transform: translate(-50%, -50%) scale(0.65) !important;
+            transform: translate(-50%, -50%) scale(0.65) !important;
+          }
+        }
         @media (max-width: 768px) {
           .phone-visualizer {
             -webkit-transform: translate(-50%, -50%) scale(0.8) !important;
@@ -117,7 +135,7 @@ export default function QuoteLinePoster() {
       <div className="phone-visualizer" style={{
         position: 'absolute',
         top: '55%',
-        left: '60%',
+        left: '55%',
         transform: 'translate(-50%, -50%)',
         zIndex: 20
       }}>
