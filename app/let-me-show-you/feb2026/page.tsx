@@ -94,6 +94,33 @@ const ARTWORKS = [
   },
   {
     id: 6,
+    title: "The Old Guitarist",
+    artist: "Pablo Picasso",
+    date: "1903-1904",
+    medium: "Oil painting",
+    image: "/assets/CCP/Sample_Month/Feb2026/Old_guitarist.jpg",
+    curator: "",
+    note: "My interpretation of this theme was love as a devotion to a craft. This painting shows an old, impoverished man who is showing little signs of life. He looks so close to death that even moving seems painful and yet he continues to play his guitar. This expresses the loneliness and obsessiveness an artist can feel towards their craft. And the desperation to make something beautiful. This is true love of a craft.",
+    additionalInfo: [
+      "This painting was created during Picasso's Blue Period (1901–1904), a time marked by grief, poverty, and emotional isolation. After his close friend Carlos Casagemas died by suicide, Picasso became deeply depressed and began painting dark, blue-toned works focused on poverty and tragedy.",
+      "The Old Guitarist became one of Picasso's most famous Blue Period paintings and has inspired many artists. Paul McCartney once saw a copy of the painting on a wall and was inspired to create a chord progression, which he later used in Kanye West's 2015 song \"All Day.\""
+    ]
+  },
+  {
+    id: 7,
+    title: "Mountain Dew Commercial Disguised as a Love Poem",
+    artist: "Matthew Olzmann",
+    date: "2013",
+    medium: "Poetry",
+    image: "/assets/CCP/Sample_Month/Feb2026/mountaindew.jpg",
+    curator: "",
+    note: "People think love is this big, grand, ambiguous cloud of a thing. It is but at the end of the day, it's just made up of small, specific things. That's what this poem shows.",
+    additionalInfo: [
+      "Olzmann wrote this love poem about his wife, Vievee Francis who is also a poet. She also writes love poems about him."
+    ]
+  },
+  {
+    id: 8,
     title: "More Coming Soon",
     artist: "",
     date: "",
@@ -585,7 +612,7 @@ export default function LMSYFeb2026Page() {
                 className="relative mb-6"
               >
               {selectedArtwork.image && !(selectedArtwork as any).quote ? (
-                <div className="relative aspect-[4/3] lg:aspect-[16/10]">
+                <div className="relative aspect-[4/3] lg:aspect-[16/10] cursor-pointer" onClick={() => setIsExpanded(true)}>
                   <Image
                     src={selectedArtwork.image}
                     alt={selectedArtwork.title}
@@ -765,19 +792,20 @@ export default function LMSYFeb2026Page() {
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0.9 }}
-              className="relative w-full h-full max-w-[95vw] max-h-[95vh]"
-              onClick={(e) => e.stopPropagation()}
+              className="relative max-w-[95vw] max-h-[95vh] flex items-center justify-center"
             >
               <Image
                 src={selectedArtwork.image}
                 alt={selectedArtwork.title}
-                fill
-                className="object-contain"
+                width={1200}
+                height={900}
+                className="object-contain max-w-full max-h-[95vh]"
                 unoptimized
+                onClick={(e) => e.stopPropagation()}
               />
               {/* Close button */}
               <button
-                onClick={() => setIsExpanded(false)}
+                onClick={(e) => { e.stopPropagation(); setIsExpanded(false); }}
                 className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/20 backdrop-blur flex items-center justify-center text-white hover:bg-white/40 transition-colors"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
