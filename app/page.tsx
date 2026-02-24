@@ -1170,8 +1170,7 @@ export default function Home() {
                 style={{
                   fontFamily: 'Futura, "Futura PT", "Century Gothic", sans-serif',
                   color: 'transparent',
-                  WebkitTextStroke: '1.5px black',
-                  textStroke: '1.5px black'
+                  WebkitTextStroke: '1.5px black'
                 }}
               >
                 QUIRKS
