@@ -2,6 +2,7 @@
 export const POSTERS = [
   { id: 3, label: "Poster 3", link: null, shop: true, clientWork: false },
   { id: 8, label: "Client Work", link: null, shop: false, clientWork: true },
+  { id: 12, label: "Quirks", link: "https://www.instagram.com/rithikaisafool", shop: false, clientWork: false },
   { id: 11, label: "A Month With You", link: "https://www.instagram.com/rithikaisafool/", shop: false, clientWork: false },
   { id: 9, label: "Specific Things We Like", link: "https://specificthingswelike.substack.com/", shop: true, clientWork: false },
   { id: 4, label: "Poster 4", link: "/shop/let-me-show-you", shop: true, clientWork: false },

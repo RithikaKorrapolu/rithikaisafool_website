@@ -81,6 +81,7 @@ export default function Home() {
   const posterRefs = useRef<Map<number, HTMLDivElement>>(new Map());
   const [amwyOverlayIndex, setAmwyOverlayIndex] = useState<number | null>(null);
   const [showAMWYPopup, setShowAMWYPopup] = useState(false);
+  const [showQuirksPopup, setShowQuirksPopup] = useState(false);
 
   const clientQuotes = [
     "How can we design an event to unlock the conversations we care about?",
@@ -804,6 +805,15 @@ export default function Home() {
                           </motion.div>
                         ))}
                       </>
+                    ) : poster.id === 12 ? (
+                      <video
+                        src="/assets/Quirks/quirks cover.mp4"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="w-full h-full object-cover"
+                      />
                     ) : (
                       <>
                         <span
@@ -941,6 +951,18 @@ export default function Home() {
                     <div
                       key={poster.id}
                       onClick={() => setShowAMWYPopup(true)}
+                      className="cursor-pointer"
+                    >
+                      {PosterContent}
+                    </div>
+                  );
+                }
+                // For poster 12 (Quirks) - show popup
+                if (poster.id === 12) {
+                  return (
+                    <div
+                      key={poster.id}
+                      onClick={() => setShowQuirksPopup(true)}
                       className="cursor-pointer"
                     >
                       {PosterContent}
@@ -1109,6 +1131,67 @@ export default function Home() {
                 className="mt-2 px-6 py-2 bg-[#F8330D] hover:bg-black text-white rounded-full transition-colors font-[family-name:var(--font-inter)] font-bold inline-block"
               >
                 Join in
+              </a>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Quirks Popup */}
+      <AnimatePresence>
+        {showQuirksPopup && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed bg-black/50 flex items-center justify-center z-50 popup-backdrop"
+            style={{ top: '-200vh', bottom: '-200vh', left: 0, right: 0 }}
+            onClick={() => setShowQuirksPopup(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="rounded-2xl p-6 md:p-8 max-w-md mx-4 text-left shadow-2xl relative border border-white/20 max-h-[60vh] md:max-h-none overflow-y-auto"
+              style={{ background: 'rgba(255, 255, 255, 0.7)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* X close button */}
+              <button
+                onClick={() => setShowQuirksPopup(false)}
+                className="absolute top-4 right-4 text-gray-500 hover:text-black transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+              <h2
+                className="text-4xl md:text-5xl font-bold mb-1"
+                style={{
+                  fontFamily: 'Futura, "Futura PT", "Century Gothic", sans-serif',
+                  color: 'transparent',
+                  WebkitTextStroke: '1.5px black',
+                  textStroke: '1.5px black'
+                }}
+              >
+                QUIRKS
+              </h2>
+              <p className="text-sm text-black/70 mb-4 font-[family-name:var(--font-inter)]">
+                a weekly series
+              </p>
+              <p className="text-black font-[family-name:var(--font-inter)]">
+                a collection of funny, odd, sweet little quirks that people have. The things that make us human.
+              </p>
+              <p className="mt-4 text-black font-[family-name:var(--font-inter)] italic">
+                New every Tuesday on our instagram
+              </p>
+              <a
+                href="https://www.instagram.com/rithikaisafool"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-2 px-6 py-2 bg-[#F8330D] hover:bg-black text-white rounded-full transition-colors font-[family-name:var(--font-inter)] font-bold inline-block"
+              >
+                Follow to see
               </a>
             </motion.div>
           </motion.div>
