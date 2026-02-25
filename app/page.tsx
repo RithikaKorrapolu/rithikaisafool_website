@@ -807,7 +807,7 @@ export default function Home() {
                       </>
                     ) : poster.id === 12 ? (
                       <video
-                        src="/assets/quirks/simplecover.mp4"
+                        src="/assets/quirks/bluecover.mp4"
                         autoPlay
                         loop
                         muted
