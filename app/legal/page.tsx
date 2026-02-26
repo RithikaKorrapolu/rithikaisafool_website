@@ -14,7 +14,7 @@ export default function LegalPage() {
 
         {/* Introduction */}
         <p className="text-lg mb-8">
-          Generally, if you have any support questions, just email support@rithikaisafool.com with your order number and we'll try to get back to you ASAP.
+          Hi, this is a small, independent run creative studio - basically just a lady (me) doing weird shit in her apartment. If you have any questions or are upset, please do reach out at <a href="mailto:support@rithikaisafool.com" className="underline hover:text-gray-600">support@rithikaisafool.com</a> and I'll try to get back to you ASAP. Generally, I'm a big fan of talking things through and trying to make things right so hopefully we can sort out everything you need.
         </p>
 
         {/* Shipping Section */}

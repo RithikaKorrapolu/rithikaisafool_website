@@ -82,6 +82,19 @@ export default function Home() {
   const [amwyOverlayIndex, setAmwyOverlayIndex] = useState<number | null>(null);
   const [showAMWYPopup, setShowAMWYPopup] = useState(false);
   const [showQuirksPopup, setShowQuirksPopup] = useState(false);
+  const [quirksVideoVisible, setQuirksVideoVisible] = useState(false);
+  const quirksVideoRef = useRef<HTMLDivElement>(null);
+
+  // Visibility states for pausing animations when off-screen
+  const [winkVisible, setWinkVisible] = useState(false);
+  const [clientPosterVisible, setClientPosterVisible] = useState(false);
+  const [typingPosterVisible, setTypingPosterVisible] = useState(false);
+  const [amwyPosterVisible, setAmwyPosterVisible] = useState(false);
+  const [pageVisible, setPageVisible] = useState(true);
+  const winkRef = useRef<HTMLDivElement>(null);
+  const clientPosterRef = useRef<HTMLDivElement>(null);
+  const typingPosterRef = useRef<HTMLDivElement>(null);
+  const amwyPosterRef = useRef<HTMLDivElement>(null);
 
   const clientQuotes = [
     "How can we design an event to unlock the conversations we care about?",
@@ -145,12 +158,76 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [showClientPopup, clientQuotes.length]);
 
-  // Rotate wink images
+  // Pause all animations when tab is not visible
   useEffect(() => {
+    const handleVisibilityChange = () => {
+      setPageVisible(!document.hidden);
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
+
+  // Rotate wink images (only when visible)
+  useEffect(() => {
+    if (!winkVisible || !pageVisible) return;
     const interval = setInterval(() => {
       setWinkIndex((prev) => (prev + 1) % 2);
     }, 400);
     return () => clearInterval(interval);
+  }, [winkVisible, pageVisible]);
+
+  // Lazy load Quirks video when it enters viewport
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setQuirksVideoVisible(true);
+            observer.disconnect();
+          }
+        });
+      },
+      { rootMargin: '200px' }
+    );
+
+    if (quirksVideoRef.current) {
+      observer.observe(quirksVideoRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Track visibility of animated elements to pause animations when off-screen
+  const observersRef = useRef<Map<string, IntersectionObserver>>(new Map());
+
+  useEffect(() => {
+    const observerOptions = { rootMargin: '100px' };
+
+    const setupObserver = (key: string, element: HTMLElement | null, setVisible: (visible: boolean) => void) => {
+      if (!element) return;
+      // Don't re-observe if already observing
+      if (observersRef.current.has(key)) return;
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => setVisible(entry.isIntersecting));
+      }, observerOptions);
+
+      observer.observe(element);
+      observersRef.current.set(key, observer);
+    };
+
+    // Use a small delay to ensure refs are populated after render
+    const timeoutId = setTimeout(() => {
+      setupObserver('client', clientPosterRef.current, setClientPosterVisible);
+      setupObserver('typing', typingPosterRef.current, setTypingPosterVisible);
+      setupObserver('amwy', amwyPosterRef.current, setAmwyPosterVisible);
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+      observersRef.current.forEach((observer) => observer.disconnect());
+      observersRef.current.clear();
+    };
   }, []);
 
   // Lock body scroll when any popup is open to prevent mobile address bar jumping
@@ -265,17 +342,20 @@ export default function Home() {
   // Reverse the array to show in descending order (10, 9, 8, ...)
   const reversedPosters = [...POSTERS].reverse();
 
-  // For poster 8 (Client cover) - alternate between images every 0.5 seconds
+  // For poster 8 (Client cover) - alternate between images every 0.5 seconds (only when visible)
   useEffect(() => {
+    if (!clientPosterVisible || !pageVisible) return;
     const interval = setInterval(() => {
       setClientImageIndex((prev) => (prev + 1) % 2);
     }, 500);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [clientPosterVisible, pageVisible]);
 
-  // Typing animation for poster 7
+  // Typing animation for poster 7 (only when visible)
   useEffect(() => {
+    if (!typingPosterVisible || !pageVisible) return;
+
     const fullText = TYPING_TEXTS[currentTextIndex];
     let currentChar = 0;
     setShowTyping(true);
@@ -299,7 +379,7 @@ export default function Home() {
     }, 80); // Type a character every 80ms
 
     return () => clearInterval(typeInterval);
-  }, [currentTextIndex]);
+  }, [currentTextIndex, typingPosterVisible, pageVisible]);
 
   // Typing animation for STWL popup
   useEffect(() => {
@@ -352,9 +432,11 @@ export default function Home() {
     return () => clearTimeout(timeoutId);
   }, [ccpLayerIndex]);
 
-  // For poster 11 (A Month With You) - cycle through overlay images 4,5,6,7 in order
+  // For poster 11 (A Month With You) - cycle through overlay images 4,5,6,7 in order (only when visible)
   const amwyImages = [4, 5, 6, 7];
   useEffect(() => {
+    if (!amwyPosterVisible || !pageVisible) return;
+
     // Start with image 4
     setAmwyOverlayIndex(4);
 
@@ -368,7 +450,7 @@ export default function Home() {
     }, 300);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [amwyPosterVisible, pageVisible]);
 
   useEffect(() => {
     // Set initial position to center of screen
@@ -566,7 +648,19 @@ export default function Home() {
                 <div
                   className={`poster-wrapper ${isActive ? 'mobile-active' : ''}`}
                   ref={(el) => {
-                    if (el) posterRefs.current.set(poster.id, el);
+                    if (el) {
+                      posterRefs.current.set(poster.id, el);
+                      // Set visibility tracking refs for animated posters
+                      if (poster.id === 8 && clientPosterRef.current !== el) {
+                        (clientPosterRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+                      }
+                      if (poster.id === 9 && typingPosterRef.current !== el) {
+                        (typingPosterRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+                      }
+                      if (poster.id === 11 && amwyPosterRef.current !== el) {
+                        (amwyPosterRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+                      }
+                    }
                   }}
                   data-poster-id={poster.id}
                 >
@@ -806,14 +900,20 @@ export default function Home() {
                         ))}
                       </>
                     ) : poster.id === 12 ? (
-                      <video
-                        src="/assets/quirks/bluecover.mp4"
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        className="w-full h-full object-cover"
-                      />
+                      <div ref={quirksVideoRef} className="w-full h-full">
+                        {quirksVideoVisible ? (
+                          <video
+                            src="/assets/quirks/bluecover.mp4"
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gray-800" />
+                        )}
+                      </div>
                     ) : (
                       <>
                         <span
@@ -1179,7 +1279,10 @@ export default function Home() {
                 a weekly series
               </p>
               <p className="text-black font-[family-name:var(--font-inter)]">
-                a collection of funny, odd, sweet little quirks that people have. The things that make us human.
+                <a href="https://www.youtube.com/watch?v=ltNhwj-F7c8" target="_blank" rel="noopener noreferrer" className="hover:text-black transition-colors"><span className="text-[#F8330D] font-bold hover:text-black">This scene</span> in Good Will Hunting</a> inspired this project.
+              </p>
+              <p className="text-black font-[family-name:var(--font-inter)] mt-2">
+                This is a collection of funny, odd, sweet little quirks that people have. The things that make us human.
               </p>
               <p className="mt-4 text-black font-[family-name:var(--font-inter)] italic">
                 New every Tuesday on our instagram

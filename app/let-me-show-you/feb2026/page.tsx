@@ -121,14 +121,58 @@ const ARTWORKS = [
   },
   {
     id: 8,
-    title: "More Coming Soon",
+    title: "Lovers (Self Portrait with Wally)",
+    artist: "Egon Schiele",
+    date: "1914",
+    medium: "Watercolor and pencil painting",
+    image: "/assets/CCP/Sample_Month/Feb2026/lovers.jpg",
+    curator: "",
+    note: "As someone who's anxiously attached, I gotta tell you, this one really speaks to me. You can see the desparation and kind of manic energy in the woman's face and the heaviness and resigned look in the man's. It's literally me anytime my boyfriend has a \"guys night out\". Damn, I feel so seen.",
+    additionalInfo: [
+      "Wally is the woman in this portrait and was the artist's longtime partner and model, Walburga Neuzil.",
+      "In 1914, the year of this painting, their relationship was deteriorating. Soon after, Schiele left her to marry Edith Harms, who came from a more \"socially acceptable\" background."
+    ]
+  },
+  {
+    id: 9,
+    title: "The Kiss",
+    artist: "Constantin Brâncuși",
+    date: "1907-1908",
+    medium: "Plaster",
+    images: [
+      "/assets/CCP/Sample_Month/Feb2026/thekiss.webp",
+      "/assets/CCP/Sample_Month/Feb2026/thekiss2.jpg",
+    ],
+    curator: "",
+    note: "They truly look like they're one. From a distance it's hard to see where one person starts and the other ends. They look like they are blending together. It symbolizes what real love is. The death of ego and self and full harmony with another. It also feels almost innocent and child-like, like a stick figure drawing.",
+    additionalInfo: [
+      "The figures are carved from one block, intentionally. They are the same stone, same mass. They are one form."
+    ]
+  },
+  {
+    id: 10,
+    title: "Yellow",
+    artist: "Coldplay",
+    date: "2000",
+    medium: "Music",
+    video: "yKNxeF4KMsY",
+    curator: "",
+    note: "This is the most romantic song in the whole world and I will fight anyone who thinks otherwise. Imagine your partner giving you a color. A WHOLE COLOR! Do you understand what kind of committment that is? If you sing this song to someone, you're giving them the color yellow. You're telling them that the stars shine for them, that you would bleed for them. That's insane. That's the most romantic thing you can give someone.",
+    additionalInfo: [
+      "Many argue that this is the song that made Coldplay famous. \"Yellow\" was their breakthrough single from the album Parachutes. Before this, they were relatively unknown.",
+      "Chris Martin described writing the lyrics while looking at the night sky outside the studio. He was in awe."
+    ]
+  },
+  {
+    id: 11,
+    title: "The End of Feb 2026",
     artist: "",
     date: "",
     medium: "",
     curator: "Rithika",
-    note: "<strong>New pieces will be dropped throughout the month.</strong> Subscribers will get notified via email when they do. See you soon.",
+    note: "Thank you for being apart of the Feb 2026 collection. This is the final drop of that exhibit and it's been such a joy seeing everyone's different interpretation of what love feels like. Thank you for all the love, literally.",
     additionalInfo: [
-      "<strong>Calling All Art Lovers!</strong> If you have a piece you want to submit for this theme, reach out to submissions@rithikaisafool.com"
+      "The next drop will be revealing a brand new theme for March. Stay tuned!"
     ]
   },
 ];
@@ -145,8 +189,17 @@ export default function LMSYFeb2026Page() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [bgLoaded, setBgLoaded] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const mainContentRef = useRef<HTMLDivElement>(null);
   const sidebarRef = useRef<HTMLDivElement>(null);
+
+  // Preload background image
+  useEffect(() => {
+    const img = new window.Image();
+    img.src = "/assets/CCP/Sample_Month/Feb2026/cover.jpg";
+    img.onload = () => setBgLoaded(true);
+  }, []);
 
   // Detect mobile device
   useEffect(() => {
@@ -224,22 +277,70 @@ export default function LMSYFeb2026Page() {
     if (mainContentRef.current) {
       mainContentRef.current.scrollTo({ top: 0, behavior: 'instant' });
     }
+    setCurrentImageIndex(0); // Reset image index when artwork changes
+  }, [selectedArtwork]);
+
+  // Rotate through images for artworks with multiple images
+  useEffect(() => {
+    const artwork = selectedArtwork as any;
+    if (artwork.images && artwork.images.length > 1) {
+      const interval = setInterval(() => {
+        setCurrentImageIndex((prev) => (prev + 1) % artwork.images.length);
+      }, 4000); // Change image every 4 seconds
+      return () => clearInterval(interval);
+    }
   }, [selectedArtwork]);
 
   // Password Gate
   if (!isAuthenticated) {
     return (
       <div
-        className="min-h-screen w-full flex items-center justify-center p-4"
+        className="min-h-screen w-full flex items-center justify-center p-4 relative"
         style={{
-          backgroundImage: `url("/assets/CCP/Sample_Month/Feb2026/cover.jpg")`,
+          backgroundImage: bgLoaded ? `url("/assets/CCP/Sample_Month/Feb2026/cover.jpg")` : undefined,
+          backgroundColor: "#1a1a2e",
           backgroundSize: "cover",
           backgroundPosition: isMobile ? "center" : undefined,
           backgroundRepeat: "no-repeat",
-          animation: isMobile ? "none" : "floatBackground 120s linear infinite",
+          animation: isMobile || !bgLoaded ? "none" : "floatBackground 120s linear infinite",
         }}
       >
+        {/* Loading overlay */}
+        <div
+          className="absolute inset-0 flex flex-col items-center justify-center z-50 transition-opacity duration-1000"
+          style={{
+            background: "#000000",
+            opacity: bgLoaded ? 0 : 1,
+            pointerEvents: bgLoaded ? "none" : "auto",
+          }}
+        >
+          <p
+            className="text-white/40 text-sm tracking-[0.3em] uppercase mb-3 font-[family-name:var(--font-inter)]"
+            style={{ animation: "pulse 2s ease-in-out infinite" }}
+          >
+            Loading
+          </p>
+          <h1
+            className="text-white text-2xl md:text-3xl font-[family-name:var(--font-abril-fatface)] tracking-wide"
+            style={{ animation: "pulse 2s ease-in-out infinite" }}
+          >
+            LET ME SHOW YOU
+          </h1>
+          <div className="mt-6 flex gap-1">
+            <div className="w-2 h-2 bg-white/60 rounded-full" style={{ animation: "bounce 1s ease-in-out infinite" }} />
+            <div className="w-2 h-2 bg-white/60 rounded-full" style={{ animation: "bounce 1s ease-in-out infinite 0.2s" }} />
+            <div className="w-2 h-2 bg-white/60 rounded-full" style={{ animation: "bounce 1s ease-in-out infinite 0.4s" }} />
+          </div>
+        </div>
         <style jsx>{`
+          @keyframes bounce {
+            0%, 100% { transform: translateY(0); opacity: 0.6; }
+            50% { transform: translateY(-8px); opacity: 1; }
+          }
+          @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+          }
           @keyframes pulseBlur {
             0%, 100% { filter: blur(3px); }
             50% { filter: blur(10px); }
@@ -462,15 +563,15 @@ export default function LMSYFeb2026Page() {
                             }`}
                           >
                             <div className="relative w-10 h-10 rounded overflow-hidden flex-shrink-0">
-                              {artwork.image ? (
+                              {((artwork as any).image || (artwork as any).images) ? (
                                 <Image
-                                  src={artwork.image}
+                                  src={(artwork as any).images ? (artwork as any).images[0] : (artwork as any).image}
                                   alt={artwork.title}
                                   fill
                                   className="object-cover"
                                   unoptimized
                                 />
-                              ) : artwork.video ? (
+                              ) : (artwork as any).video ? (
                                 <>
                                   <Image
                                     src={`https://img.youtube.com/vi/${artwork.video}/hqdefault.jpg`}
@@ -543,15 +644,15 @@ export default function LMSYFeb2026Page() {
                     }`}
                   >
                     <div className="relative w-10 h-10 rounded overflow-hidden flex-shrink-0">
-                      {artwork.image ? (
+                      {((artwork as any).image || (artwork as any).images) ? (
                         <Image
-                          src={artwork.image}
+                          src={(artwork as any).images ? (artwork as any).images[0] : (artwork as any).image}
                           alt={artwork.title}
                           fill
                           className="object-cover"
                           unoptimized
                         />
-                      ) : artwork.video ? (
+                      ) : (artwork as any).video ? (
                         <>
                           <Image
                             src={`https://img.youtube.com/vi/${artwork.video}/hqdefault.jpg`}
@@ -611,26 +712,60 @@ export default function LMSYFeb2026Page() {
                 transition={{ duration: 0.5, ease: "easeOut" }}
                 className="relative mb-6"
               >
-              {selectedArtwork.image && !(selectedArtwork as any).quote ? (
+              {((selectedArtwork as any).image || (selectedArtwork as any).images) && !(selectedArtwork as any).quote ? (
                 <div className="relative aspect-[4/3] lg:aspect-[16/10] cursor-pointer" onClick={() => setIsExpanded(true)}>
-                  <Image
-                    src={selectedArtwork.image}
-                    alt={selectedArtwork.title}
-                    fill
-                    className="object-contain"
-                    unoptimized
-                  />
+                  {(selectedArtwork as any).images ? (
+                    (selectedArtwork as any).images.map((img: string, index: number) => (
+                      <motion.div
+                        key={img}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: index === currentImageIndex ? 1 : 0 }}
+                        transition={{ duration: 1 }}
+                        className="absolute inset-0"
+                      >
+                        <Image
+                          src={img}
+                          alt={selectedArtwork.title}
+                          fill
+                          className="object-contain"
+                          unoptimized
+                        />
+                      </motion.div>
+                    ))
+                  ) : (
+                    <Image
+                      src={(selectedArtwork as any).image}
+                      alt={selectedArtwork.title}
+                      fill
+                      className="object-contain"
+                      unoptimized
+                    />
+                  )}
                   {/* Expand button */}
                   <button
                     onClick={() => setIsExpanded(true)}
-                    className="absolute top-3 right-3 w-8 h-8 rounded-lg bg-black/30 backdrop-blur flex items-center justify-center text-white hover:bg-black/50 transition-colors"
+                    className="absolute top-3 right-3 w-8 h-8 rounded-lg bg-black/30 backdrop-blur flex items-center justify-center text-white hover:bg-black/50 transition-colors z-10"
                   >
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
                     </svg>
                   </button>
+                  {/* Image indicators */}
+                  {(selectedArtwork as any).images && (selectedArtwork as any).images.length > 1 && (
+                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                      {(selectedArtwork as any).images.map((_: any, index: number) => (
+                        <button
+                          key={index}
+                          onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(index); }}
+                          className={`w-2 h-2 rounded-full transition-colors ${
+                            index === currentImageIndex ? "bg-white" : "bg-white/40"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
-              ) : selectedArtwork.video ? (
+              ) : (selectedArtwork as any).video ? (
                 <div className="relative aspect-video rounded-xl overflow-hidden">
                   <iframe
                     src={`https://www.youtube.com/embed/${selectedArtwork.video}?modestbranding=1&rel=0`}
@@ -780,7 +915,7 @@ export default function LMSYFeb2026Page() {
 
       {/* Expanded Image Overlay */}
       <AnimatePresence>
-        {isExpanded && selectedArtwork.image && (
+        {isExpanded && ((selectedArtwork as any).image || (selectedArtwork as any).images) && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -795,7 +930,7 @@ export default function LMSYFeb2026Page() {
               className="relative max-w-[95vw] max-h-[95vh] flex items-center justify-center"
             >
               <Image
-                src={selectedArtwork.image}
+                src={(selectedArtwork as any).images ? (selectedArtwork as any).images[currentImageIndex] : (selectedArtwork as any).image}
                 alt={selectedArtwork.title}
                 width={1200}
                 height={900}
