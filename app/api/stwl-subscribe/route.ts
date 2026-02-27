@@ -9,13 +9,6 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!lastName || !lastName.trim()) {
-      return Response.json(
-        { error: 'Last name is required' },
-        { status: 400 }
-      );
-    }
-
     if (!phone) {
       return Response.json(
         { error: 'Phone number is required' },
@@ -50,7 +43,7 @@ export async function POST(request: Request) {
     }
 
     // Step 1: Create or update profile with phone number and SMS consent
-    console.log('Creating profile for:', name.trim(), lastName.trim(), formattedPhone);
+    console.log('Creating profile for:', name.trim(), lastName?.trim() || '', formattedPhone);
 
     const profileResponse = await fetch('https://a.klaviyo.com/api/profiles/', {
       method: 'POST',
@@ -65,7 +58,7 @@ export async function POST(request: Request) {
           attributes: {
             phone_number: formattedPhone,
             first_name: name.trim(),
-            last_name: lastName.trim(),
+            ...(lastName?.trim() && { last_name: lastName.trim() }),
             properties: {
               'SMS Source': 'STWL Signup'
             }
@@ -105,7 +98,7 @@ export async function POST(request: Request) {
               id: profileId,
               attributes: {
                 first_name: name.trim(),
-                last_name: lastName.trim(),
+                ...(lastName?.trim() && { last_name: lastName.trim() }),
                 properties: {
                   'SMS Source': 'STWL Signup'
                 }
