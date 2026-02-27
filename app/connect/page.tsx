@@ -13,6 +13,29 @@ interface CalendarEvent {
   link: string;
 }
 
+// Daily offerings - add more here!
+const DAILY_OFFERINGS = [
+  {
+    title: "Read Something Wonderful",
+    description: "A collection of the best articles, essays, and long-form writing on the internet.",
+    link: "https://readsomethingwonderful.com/",
+    category: "Website"
+  },
+  {
+    title: "Brain Pickings",
+    description: "Maria Popova's labor of love exploring what it means to live a good life.",
+    link: "https://www.themarginalian.org/",
+    category: "Blog"
+  },
+  {
+    title: "The Pudding",
+    description: "Visual essays that explain ideas debated in culture.",
+    link: "https://pudding.cool/",
+    category: "Website"
+  },
+  // Add more offerings here!
+];
+
 export default function Connect() {
   const [calendarEvent, setCalendarEvent] = useState<CalendarEvent | null>(null);
   const [eventLoading, setEventLoading] = useState(true);
@@ -21,6 +44,18 @@ export default function Connect() {
   const [subscribeStatus, setSubscribeStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [subscribeMessage, setSubscribeMessage] = useState("");
   const [blackLetterIndex, setBlackLetterIndex] = useState(-1);
+  const [dailyOffering, setDailyOffering] = useState<typeof DAILY_OFFERINGS[0] | null>(null);
+
+  // Get today's offering based on day of year (client-side only to avoid hydration mismatch)
+  useEffect(() => {
+    const now = new Date();
+    const start = new Date(now.getFullYear(), 0, 0);
+    const diff = now.getTime() - start.getTime();
+    const oneDay = 1000 * 60 * 60 * 24;
+    const dayOfYear = Math.floor(diff / oneDay);
+    const offeringIndex = dayOfYear % DAILY_OFFERINGS.length;
+    setDailyOffering(DAILY_OFFERINGS[offeringIndex]);
+  }, []);
 
   // "FEEL IT" traveling black letter animation
   useEffect(() => {
@@ -525,6 +560,38 @@ export default function Connect() {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* A Daily Offering Section */}
+      <div className="container mx-auto px-6 max-w-7xl mt-12 mb-8">
+        <div className="w-full h-1 mb-8" style={{ backgroundColor: '#58585A' }}></div>
+        <div className="text-center">
+          <h2 className="font-bold text-[#561DF1] mb-2" style={{ fontFamily: 'Anek Bangla, sans-serif', fontSize: '1.8rem', letterSpacing: '-0.05em' }}>
+            A DAILY OFFERING
+          </h2>
+          <p className="text-black mb-6" style={{ fontFamily: 'Anek Bangla, sans-serif', fontSize: '1.1rem' }}>
+            Something cool we think you should check out today
+          </p>
+          {dailyOffering && (
+            <a
+              href={dailyOffering.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block border-4 border-dashed px-8 py-6 hover:bg-[#561DF1] hover:border-[#561DF1] transition-all group shadow-lg hover:shadow-2xl"
+              style={{ borderColor: '#561DF1', boxShadow: '0 10px 40px rgba(86, 29, 241, 0.2)' }}
+            >
+              <span className="text-xs uppercase tracking-wider text-[#561DF1] group-hover:text-white mb-2 block" style={{ fontFamily: 'Anek Bangla, sans-serif' }}>
+                {dailyOffering.category}
+              </span>
+              <h3 className="text-2xl font-bold text-black group-hover:text-white mb-2" style={{ fontFamily: 'Anek Bangla, sans-serif' }}>
+                {dailyOffering.title}
+              </h3>
+              <p className="text-black/70 group-hover:text-white/90" style={{ fontFamily: 'Anek Bangla, sans-serif' }}>
+                {dailyOffering.description}
+              </p>
+            </a>
+          )}
         </div>
       </div>
     </main>

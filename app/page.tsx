@@ -84,6 +84,7 @@ export default function Home() {
   const [showQuirksPopup, setShowQuirksPopup] = useState(false);
   const [quirksVideoVisible, setQuirksVideoVisible] = useState(false);
   const quirksVideoRef = useRef<HTMLDivElement>(null);
+  const quirksVideoElementRef = useRef<HTMLVideoElement>(null);
 
   // Visibility states for pausing animations when off-screen
   const [winkVisible, setWinkVisible] = useState(false);
@@ -903,12 +904,18 @@ export default function Home() {
                       <div ref={quirksVideoRef} className="w-full h-full">
                         {quirksVideoVisible ? (
                           <video
+                            ref={quirksVideoElementRef}
                             src="/assets/quirks/bluecover.mp4"
                             autoPlay
                             loop
                             muted
                             playsInline
+                            webkit-playsinline="true"
                             className="w-full h-full object-cover"
+                            onLoadedData={(e) => {
+                              const video = e.currentTarget;
+                              video.play().catch(() => {});
+                            }}
                           />
                         ) : (
                           <div className="w-full h-full bg-gray-800" />
@@ -1132,10 +1139,7 @@ export default function Home() {
                 }
               `}</style>
               <p className="mt-4 text-black font-[family-name:var(--font-inter)]">
-                Tired of unsolicited advice from friends, family, the people you love? Try strangers.
-              </p>
-              <p className="mt-4 text-black font-[family-name:var(--font-inter)]">
-                Every day, someone shares one piece of advice. Dial in.
+                They say if you want to win, study the winners. Every day, I share something a "successful" person once said. It's daily advice. And it ranges from Steve Jobs to Rihanna to Nathan Fielder to my friend who grew her first tomato. Dial in.
               </p>
               <p className="mt-2 text-black font-[family-name:var(--font-inter)] italic">
                 Launching 3/1/2026
