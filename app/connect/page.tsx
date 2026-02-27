@@ -52,15 +52,10 @@ export default function Connect() {
   const [blackLetterIndex, setBlackLetterIndex] = useState(-1);
   const [dailyOffering, setDailyOffering] = useState<typeof DAILY_OFFERINGS[0] | null>(null);
 
-  // Get today's offering based on day of year (client-side only to avoid hydration mismatch)
+  // Randomly pick an offering (client-side only to avoid hydration mismatch)
   useEffect(() => {
-    const now = new Date();
-    const start = new Date(now.getFullYear(), 0, 0);
-    const diff = now.getTime() - start.getTime();
-    const oneDay = 1000 * 60 * 60 * 24;
-    const dayOfYear = Math.floor(diff / oneDay);
-    const offeringIndex = dayOfYear % DAILY_OFFERINGS.length;
-    setDailyOffering(DAILY_OFFERINGS[offeringIndex]);
+    const randomIndex = Math.floor(Math.random() * DAILY_OFFERINGS.length);
+    setDailyOffering(DAILY_OFFERINGS[randomIndex]);
   }, []);
 
   // "FEEL IT" traveling black letter animation
@@ -577,7 +572,7 @@ export default function Connect() {
             A DAILY OFFERING
           </h2>
           <p className="text-black mb-6" style={{ fontFamily: 'Anek Bangla, sans-serif', fontSize: '1.1rem' }}>
-            Things we're fans of. Updated daily.
+            Things we're fans of.
           </p>
           {dailyOffering && (
             <a
