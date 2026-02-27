@@ -571,7 +571,7 @@ export default function Connect() {
             A DAILY OFFERING
           </h2>
           <p className="text-black mb-6" style={{ fontFamily: 'Anek Bangla, sans-serif', fontSize: '1.1rem' }}>
-            Something cool we think you should check out today
+            Things we're fans of. Updated daily.
           </p>
           {dailyOffering && (
             <a
