@@ -540,7 +540,7 @@ export default function Connect() {
         </div>
       </div>
 
-      {/* A Daily Offering Section */}
+      {/* A Daily Offering Section - temporarily hidden
       <div className="container mx-auto px-6 max-w-7xl mt-12 mb-8">
         <div className="w-full h-1 mb-8" style={{ backgroundColor: '#58585A' }}></div>
         <div className="text-center">
@@ -553,6 +553,7 @@ export default function Connect() {
           <DailyOffering />
         </div>
       </div>
+      */}
     </main>
 
     {/* Footer */}
