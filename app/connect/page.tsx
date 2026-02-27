@@ -16,6 +16,12 @@ interface CalendarEvent {
 // Daily offerings - add more here!
 const DAILY_OFFERINGS = [
   {
+    title: "Obelisk Art History Kaleidoscope",
+    description: "A random piece of art from across history to inspire your day.",
+    link: "https://www.arthistoryproject.com/kaleidoscope/",
+    category: "Website"
+  },
+  {
     title: "Read Something Wonderful",
     description: "A collection of the best articles, essays, and long-form writing on the internet.",
     link: "https://readsomethingwonderful.com/",
