@@ -16,15 +16,15 @@ interface CalendarEvent {
 // Daily offerings - add more here!
 const DAILY_OFFERINGS = [
   {
-    title: "The Kaleidoscope",
-    description: "A hypnotic journey through art history.",
-    link: "https://www.arthistoryproject.com/kaleidoscope/",
-    category: "Website"
-  },
-  {
     title: "Read Something Wonderful",
     description: "A collection of the best articles, essays, and long-form writing on the internet.",
     link: "https://readsomethingwonderful.com/",
+    category: "Website"
+  },
+  {
+    title: "The Kaleidoscope",
+    description: "A hypnotic journey through art history.",
+    link: "https://www.arthistoryproject.com/kaleidoscope/",
     category: "Website"
   },
   {
