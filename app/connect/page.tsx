@@ -572,7 +572,7 @@ export default function Connect() {
       {/* A Daily Offering Section */}
       <div className="container mx-auto px-6 max-w-7xl mt-12 mb-8">
         <div className="w-full h-1 mb-8" style={{ backgroundColor: '#58585A' }}></div>
-        <div className="text-center">
+        <div className="text-center" suppressHydrationWarning>
           <h2 className="font-bold text-[#561DF1] mb-2" style={{ fontFamily: 'Anek Bangla, sans-serif', fontSize: '1.8rem', letterSpacing: '-0.05em' }}>
             A DAILY OFFERING
           </h2>
@@ -584,8 +584,10 @@ export default function Connect() {
               href={dailyOffering.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block border-4 border-dashed px-8 py-6 hover:bg-[#561DF1] hover:border-[#561DF1] transition-all group shadow-lg hover:shadow-2xl"
+              className="inline-block border-4 border-dashed px-8 py-6 hover:bg-[#561DF1] hover:border-[#561DF1] transition-all group"
               style={{ borderColor: '#561DF1', boxShadow: '0 10px 40px rgba(86, 29, 241, 0.2)' }}
+              onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.4)'}
+              onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 10px 40px rgba(86, 29, 241, 0.2)'}
             >
               <span className="text-xs uppercase tracking-wider text-[#561DF1] group-hover:text-white mb-2 block" style={{ fontFamily: 'Anek Bangla, sans-serif' }}>
                 {dailyOffering.category}
