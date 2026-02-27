@@ -1,24 +1,23 @@
 "use client";
 
-import Image from "next/image";
-
 export default function DailyOffering() {
   return (
     <a
       href="https://www.arthistoryproject.com/kaleidoscope/"
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-block border-4 border-dashed p-6 hover:border-[#561DF1] transition-all group"
+      className="inline-block border-4 border-dashed p-4 hover:border-[#561DF1] transition-all group"
       style={{ borderColor: '#561DF1', boxShadow: '0 10px 40px rgba(86, 29, 241, 0.2)', maxWidth: '400px' }}
       onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.4)'}
       onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 10px 40px rgba(86, 29, 241, 0.2)'}
     >
-      {/* Thumbnail */}
-      <div className="w-full h-48 mb-4 overflow-hidden rounded bg-gray-100">
-        <img
-          src="https://image.thum.io/get/width/800/crop/600/https://www.arthistoryproject.com/kaleidoscope/"
-          alt="The Kaleidoscope Preview"
-          className="w-full h-full object-cover"
+      {/* Preview iframe */}
+      <div className="w-full h-48 mb-4 overflow-hidden rounded pointer-events-none">
+        <iframe
+          src="https://www.arthistoryproject.com/kaleidoscope/"
+          className="w-full h-full border-0"
+          style={{ transform: 'scale(0.5)', transformOrigin: 'top left', width: '200%', height: '200%' }}
+          title="The Kaleidoscope Preview"
         />
       </div>
       <span className="text-sm uppercase tracking-wider text-[#561DF1] group-hover:text-[#561DF1] mb-3 block" style={{ fontFamily: 'Anek Bangla, sans-serif' }}>
