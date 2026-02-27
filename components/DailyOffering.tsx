@@ -10,6 +10,12 @@ const DAILY_OFFERINGS = [
     category: "Website"
   },
   {
+    title: "Internet Sculptures",
+    description: "Digital art exploring the boundaries of the web.",
+    link: "https://internetsculptures.com/",
+    category: "Website"
+  },
+  {
     title: "MSCHF",
     description: "Art collective making weird, wonderful things.",
     link: "https://mschf.com/",
@@ -22,9 +28,81 @@ const DAILY_OFFERINGS = [
     category: "Website"
   },
   {
-    title: "Internet Sculptures",
-    description: "Digital art exploring the boundaries of the web.",
-    link: "https://internetsculptures.com/",
+    title: "Read Something Wonderful",
+    description: "A collection of the best writing on the internet.",
+    link: "https://readsomethingwonderful.com/",
+    category: "Website"
+  },
+  {
+    title: "It's Nice That",
+    description: "Championing creativity across art, illustration, and design.",
+    link: "https://www.itsnicethat.com/",
+    category: "Website"
+  },
+  {
+    title: "Ask Polly",
+    description: "Advice column for the lost, the confused, and the hopeful.",
+    link: "https://www.ask-polly.com/",
+    category: "Website"
+  },
+  {
+    title: "Radiooooo",
+    description: "A musical time machine. Pick a decade, pick a country, listen.",
+    link: "https://app.radiooooo.com/",
+    category: "Website"
+  },
+  {
+    title: "Window Swap",
+    description: "See the view from someone else's window, anywhere in the world.",
+    link: "https://www.window-swap.com/",
+    category: "Website"
+  },
+  {
+    title: "Pointer Pointer",
+    description: "A photo of someone pointing at your cursor. Every time.",
+    link: "https://pointerpointer.com/",
+    category: "Website"
+  },
+  {
+    title: "The Pudding",
+    description: "Visual essays that explain ideas debated in culture.",
+    link: "https://pudding.cool/",
+    category: "Website"
+  },
+  {
+    title: "Wait But Why",
+    description: "Long-form posts about science, society, and the human experience.",
+    link: "https://waitbutwhy.com/",
+    category: "Website"
+  },
+  {
+    title: "FutureMe",
+    description: "Write a letter to your future self. Receive it when the time comes.",
+    link: "https://www.futureme.org/",
+    category: "Website"
+  },
+  {
+    title: "Neal.fun",
+    description: "Delightful internet experiments and interactive experiences.",
+    link: "https://neal.fun/",
+    category: "Website"
+  },
+  {
+    title: "Every Noise at Once",
+    description: "A map of every music genre. Click to explore and listen.",
+    link: "https://everynoise.com/",
+    category: "Website"
+  },
+  {
+    title: "Staggering Beauty",
+    description: "Wiggle the worm. Warning: flashing lights.",
+    link: "http://www.staggeringbeauty.com/",
+    category: "Website"
+  },
+  {
+    title: "SFPC",
+    description: "School for Poetic Computation. Art, code, and critical theory.",
+    link: "https://sfpc.study/",
     category: "Website"
   },
 ];
@@ -33,17 +111,26 @@ export default function DailyOffering() {
   const [offering, setOffering] = useState<typeof DAILY_OFFERINGS[0] | null>(null);
 
   useEffect(() => {
-    // Calculate day of year to rotate daily
+    // Get current time in EST
     const now = new Date();
-    const start = new Date(now.getFullYear(), 0, 0);
-    const diff = now.getTime() - start.getTime();
+    const estTime = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+    const startOfYear = new Date(estTime.getFullYear(), 0, 0);
+    const diff = estTime.getTime() - startOfYear.getTime();
     const oneDay = 1000 * 60 * 60 * 24;
     const dayOfYear = Math.floor(diff / oneDay);
-    const offeringIndex = dayOfYear % DAILY_OFFERINGS.length;
-    setOffering(DAILY_OFFERINGS[offeringIndex]);
+    setOffering(DAILY_OFFERINGS[dayOfYear % DAILY_OFFERINGS.length]);
   }, []);
 
-  if (!offering) return null;
+  if (!offering) {
+    return (
+      <div
+        className="inline-block border-4 border-dashed p-6"
+        style={{ borderColor: '#561DF1', maxWidth: '550px', width: '100%', height: '400px' }}
+      />
+    );
+  }
+
+  const offeringData = offering;
 
   return (
     <a

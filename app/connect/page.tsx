@@ -205,7 +205,7 @@ export default function Connect() {
       }
     `}} />
 
-    <main className="min-h-screen pt-[140px] md:pt-[145px] lg:pt-[155px] pb-16" style={{ backgroundColor: '#ffffff' }}>
+    <main className="min-h-screen pt-[140px] md:pt-[145px] lg:pt-[155px] pb-16" style={{ backgroundColor: '#ffffff' }} suppressHydrationWarning>
       {/* Purple Hero Banner */}
       <div className="container mx-auto px-6 max-w-7xl mb-2 md:mb-6">
         <div className="w-full py-4 text-center" style={{ backgroundColor: '#561DF1' }}>
@@ -548,7 +548,7 @@ export default function Connect() {
             A DAILY OFFERING
           </h2>
           <p className="text-black mb-6" style={{ fontFamily: 'Anek Bangla, sans-serif', fontSize: '1.1rem' }}>
-            Things we're fans of. Updated daily.
+            Something we're a fan of. Updated daily.
           </p>
           <DailyOffering />
         </div>
