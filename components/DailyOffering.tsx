@@ -105,6 +105,60 @@ const DAILY_OFFERINGS = [
     link: "https://sfpc.study/",
     category: "Website"
   },
+  {
+    title: "Spotted in Prod",
+    description: "Real products spotted in TV shows and movies.",
+    link: "https://www.spottedinprod.com/",
+    category: "Website"
+  },
+  {
+    title: "Mauhan",
+    description: "A creative portfolio and digital playground.",
+    link: "https://mauhan.com/",
+    category: "Website"
+  },
+  {
+    title: "Steve Jobs Archive",
+    description: "Letters, speeches, and interviews from Steve Jobs.",
+    link: "https://letters.stevejobsarchive.com/",
+    category: "Website"
+  },
+  {
+    title: "Only Poems Daily",
+    description: "Wake up to a poem every day.",
+    link: "https://www.onlypoemsdaily.com/",
+    category: "Website"
+  },
+  {
+    title: "Dialectic",
+    description: "Curated conversations and ideas worth exploring.",
+    link: "https://www.dialectic.fm/",
+    category: "Website"
+  },
+  {
+    title: "Godly",
+    description: "Curation of the best web design inspiration.",
+    link: "https://godly.website/",
+    category: "Website"
+  },
+  {
+    title: "Oblique Strategies",
+    description: "Creative prompts to break through blocks, inspired by Brian Eno.",
+    link: "https://ob-strat.netlify.app/",
+    category: "Website"
+  },
+  {
+    title: "The Unsent Project",
+    description: "Unsent text messages to first loves, shown by color.",
+    link: "https://theunsentproject.com/",
+    category: "Website"
+  },
+  {
+    title: "Should I Take A Jacket",
+    description: "The only weather question that matters, answered.",
+    link: "https://www.shoulditakeajacket.com/",
+    category: "Website"
+  },
 ];
 
 export default function DailyOffering() {
