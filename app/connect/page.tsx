@@ -51,9 +51,11 @@ export default function Connect() {
   const [subscribeMessage, setSubscribeMessage] = useState("");
   const [blackLetterIndex, setBlackLetterIndex] = useState(-1);
   const [dailyOffering, setDailyOffering] = useState<typeof DAILY_OFFERINGS[0] | null>(null);
+  const [mounted, setMounted] = useState(false);
 
-  // Randomly pick an offering (client-side only to avoid hydration mismatch)
+  // Set mounted after hydration to avoid hydration mismatch
   useEffect(() => {
+    setMounted(true);
     const randomIndex = Math.floor(Math.random() * DAILY_OFFERINGS.length);
     setDailyOffering(DAILY_OFFERINGS[randomIndex]);
   }, []);
@@ -246,7 +248,7 @@ export default function Connect() {
                 style={{
                   display: 'inline-block',
                   transform: `translateY(${Math.sin(index * 0.5) * 8}px)`,
-                  color: index === blackLetterIndex ? '#000000' : '#ffffff',
+                  color: mounted && index === blackLetterIndex ? '#000000' : '#ffffff',
                   transition: 'color 0.1s ease-in-out',
                 }}
               >
@@ -260,7 +262,7 @@ export default function Connect() {
                   style={{
                     display: 'inline-block',
                     transform: `translateY(${Math.sin((index + 15) * 0.5) * 8}px)`,
-                    color: (index + 15) === blackLetterIndex ? '#000000' : '#ffffff',
+                    color: mounted && (index + 15) === blackLetterIndex ? '#000000' : '#ffffff',
                     transition: 'color 0.1s ease-in-out',
                   }}
                 >
