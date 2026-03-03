@@ -730,63 +730,63 @@ export default function TheRIAFMuseumOfArt() {
         </span>
       </button>
 
-      {/* Info Popup */}
-      {showInfoPopup && (
+      {/* Info Popup - Always rendered for smooth transitions */}
+      <div
+        className={`fixed inset-0 z-[100] flex items-center justify-center transition-all duration-200 ease-out ${showInfoPopup ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+        style={{ backgroundColor: 'rgba(0,0,0,0.8)', willChange: 'opacity' }}
+        onClick={() => setShowInfoPopup(false)}
+      >
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80"
-          onClick={() => setShowInfoPopup(false)}
+          className={`bg-white/70 backdrop-blur-sm rounded-2xl p-8 max-w-md mx-4 relative transition-all duration-200 ease-out ${showInfoPopup ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
+          style={{ willChange: 'transform, opacity' }}
+          onClick={(e) => e.stopPropagation()}
         >
-          <div
-            className="bg-white/70 backdrop-blur-sm rounded-2xl p-8 max-w-md mx-4 relative"
-            onClick={(e) => e.stopPropagation()}
+          <button
+            className="absolute top-4 right-4 text-gray-700 hover:text-black text-2xl"
+            onClick={() => setShowInfoPopup(false)}
           >
-            <button
-              className="absolute top-4 right-4 text-gray-700 hover:text-black text-2xl"
-              onClick={() => setShowInfoPopup(false)}
-            >
-              &times;
-            </button>
-            <h2
-              className="text-2xl font-bold text-black mb-4"
-              style={{ fontFamily: 'Futura, "Trebuchet MS", Arial, sans-serif' }}
-            >
-              The RIAF! Museum of Art
-            </h2>
-            <p
-              className="text-gray-800 mb-4"
-              style={{ fontFamily: 'Futura, "Trebuchet MS", Arial, sans-serif' }}
-            >
-              <em className="font-bold" style={{ color: '#000000' }}>"Art is not what you see, but what you make others see." — Edgar Degas</em>
-              <br /><br />
-              If I had a dream museum, it would look like this. All of these pieces moved me in some way. I hope they move you too. The collection grows as I grow.
-            </p>
-            <p
-              className="text-gray-800 mb-4"
-              style={{ fontFamily: 'Futura, "Trebuchet MS", Arial, sans-serif' }}
-            >
-              I also think every museum should let you search by how you're feeling. That's what art is for. To help you feel. Try our search bar.
-            </p>
-            <p
-              className="text-gray-800 mb-4"
-              style={{ fontFamily: 'Futura, "Trebuchet MS", Arial, sans-serif' }}
-            >
-              <em className="font-bold" style={{ color: '#000000' }}>"The role of the artist is exactly the same as the role of the lover. If I love you, I have to make you conscious of the things you don't see." — James Baldwin</em>
-            </p>
-            <p
-              className="text-gray-700 text-sm mt-4 text-right"
-              style={{ fontFamily: 'Futura, "Trebuchet MS", Arial, sans-serif' }}
-            >
-              <em>made by <a href="https://rithikaisafool.com/" className="underline hover:text-gray-700">Rithika is a Fool!</a></em>
-            </p>
-            <p
-              className="text-gray-700 text-sm mt-2 text-right"
-              style={{ fontFamily: 'Futura, "Trebuchet MS", Arial, sans-serif' }}
-            >
-              <em>P.S. If you liked this, you might want to try <a href="/shop/let-me-show-you" className="underline hover:text-gray-700">this</a></em>
-            </p>
-          </div>
+            &times;
+          </button>
+          <h2
+            className="text-2xl font-bold text-black mb-4"
+            style={{ fontFamily: 'Futura, "Trebuchet MS", Arial, sans-serif' }}
+          >
+            The RIAF! Museum of Art
+          </h2>
+          <p
+            className="text-gray-800 mb-4"
+            style={{ fontFamily: 'Futura, "Trebuchet MS", Arial, sans-serif' }}
+          >
+            <em className="font-bold" style={{ color: '#000000' }}>"Art is not what you see, but what you make others see." — Edgar Degas</em>
+            <br /><br />
+            If I had a dream museum, it would look like this. All of these pieces moved me in some way. I hope they move you too. The collection grows as I grow.
+          </p>
+          <p
+            className="text-gray-800 mb-4"
+            style={{ fontFamily: 'Futura, "Trebuchet MS", Arial, sans-serif' }}
+          >
+            I also think every museum should let you search by how you're feeling. That's what art is for. To help you feel. Try our search bar.
+          </p>
+          <p
+            className="text-gray-800 mb-4"
+            style={{ fontFamily: 'Futura, "Trebuchet MS", Arial, sans-serif' }}
+          >
+            <em className="font-bold" style={{ color: '#000000' }}>"The role of the artist is exactly the same as the role of the lover. If I love you, I have to make you conscious of the things you don't see." — James Baldwin</em>
+          </p>
+          <p
+            className="text-gray-700 text-sm mt-4 text-right"
+            style={{ fontFamily: 'Futura, "Trebuchet MS", Arial, sans-serif' }}
+          >
+            <em>made by <a href="https://rithikaisafool.com/" className="underline hover:text-gray-700">Rithika is a Fool!</a></em>
+          </p>
+          <p
+            className="text-gray-700 text-sm mt-2 text-right"
+            style={{ fontFamily: 'Futura, "Trebuchet MS", Arial, sans-serif' }}
+          >
+            <em>P.S. If you liked this, you might want to try <a href="/shop/let-me-show-you" className="underline hover:text-gray-700">this</a></em>
+          </p>
         </div>
-      )}
+      </div>
 
       {/* Expandable Search - Top Right (next to ?) */}
       <div className="fixed top-6 right-16 md:right-20 z-50 flex items-center">
@@ -921,8 +921,9 @@ export default function TheRIAFMuseumOfArt() {
                   {/* "Please Do Not Touch" Warning - Desktop hover, Mobile click */}
                   <div
                     className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none
-                      opacity-0 md:group-hover:opacity-100 md:transition-opacity md:duration-200
-                      ${showWarningForId === artwork.id ? '!opacity-100' : ''}`}
+                      transition-all duration-150 ease-out
+                      ${showWarningForId === artwork.id ? 'opacity-100 scale-100' : 'opacity-0 scale-90 md:group-hover:opacity-100 md:group-hover:scale-100'}`}
+                    style={{ willChange: 'transform, opacity' }}
                   >
                     <div
                       className="bg-red-600 text-white px-4 py-2 md:px-6 md:py-3 rounded-lg shadow-lg text-center"
