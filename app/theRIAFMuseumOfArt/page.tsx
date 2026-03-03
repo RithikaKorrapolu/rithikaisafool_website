@@ -560,28 +560,129 @@ export default function TheRIAFMuseumOfArt() {
   if (isLoading) {
     return (
       <div
-        className="min-h-screen h-screen flex flex-col items-center justify-center bg-black"
+        className="min-h-screen h-screen flex flex-col items-center justify-center bg-black overflow-hidden relative"
       >
-        <div className="relative">
-          {/* Animated rings */}
-          <div className="w-20 h-20 rounded-full border border-white/20 animate-ping absolute inset-0" />
-          <div className="w-20 h-20 rounded-full border border-white/10 animate-pulse" />
+        <style jsx>{`
+          @keyframes warpTunnel {
+            0% {
+              transform: scale(0) rotate(0deg);
+              opacity: 0;
+            }
+            20% {
+              opacity: 0.6;
+            }
+            100% {
+              transform: scale(15) rotate(180deg);
+              opacity: 0;
+            }
+          }
+          @keyframes starZoom {
+            0% {
+              transform: translateZ(0) scale(0.1);
+              opacity: 0;
+            }
+            10% {
+              opacity: 1;
+            }
+            100% {
+              transform: translateZ(500px) scale(2);
+              opacity: 0;
+            }
+          }
+          @keyframes pulse {
+            0%, 100% {
+              transform: scale(1);
+              opacity: 0.8;
+            }
+            50% {
+              transform: scale(1.1);
+              opacity: 1;
+            }
+          }
+          @keyframes fadeInUp {
+            0% {
+              transform: translateY(20px);
+              opacity: 0;
+            }
+            100% {
+              transform: translateY(0);
+              opacity: 1;
+            }
+          }
+          .warp-ring {
+            animation: warpTunnel 2s ease-in infinite;
+          }
+          .warp-ring-1 { animation-delay: 0s; }
+          .warp-ring-2 { animation-delay: 0.3s; }
+          .warp-ring-3 { animation-delay: 0.6s; }
+          .warp-ring-4 { animation-delay: 0.9s; }
+          .warp-ring-5 { animation-delay: 1.2s; }
+          .warp-ring-6 { animation-delay: 1.5s; }
+          .center-pulse {
+            animation: pulse 1.5s ease-in-out infinite;
+          }
+          .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: starZoom 1.5s ease-in infinite;
+          }
+          .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            animation-delay: 0.5s;
+            opacity: 0;
+          }
+          .fade-in-up-delayed {
+            animation: fadeInUp 0.8s ease-out forwards;
+            animation-delay: 0.8s;
+            opacity: 0;
+          }
+        `}</style>
+
+        {/* Star field - particles zooming past */}
+        {[...Array(30)].map((_, i) => (
+          <div
+            key={i}
+            className="star"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 2}s`,
+              animationDuration: `${1 + Math.random() * 1}s`,
+            }}
+          />
+        ))}
+
+        {/* Warp tunnel rings */}
+        <div className="relative flex items-center justify-center" style={{ perspective: '500px' }}>
+          <div className="absolute w-40 h-40 rounded-full border border-white/20 warp-ring warp-ring-1" />
+          <div className="absolute w-40 h-40 rounded-full border border-white/25 warp-ring warp-ring-2" />
+          <div className="absolute w-40 h-40 rounded-full border border-white/30 warp-ring warp-ring-3" />
+          <div className="absolute w-40 h-40 rounded-full border border-white/25 warp-ring warp-ring-4" />
+          <div className="absolute w-40 h-40 rounded-full border border-white/20 warp-ring warp-ring-5" />
+          <div className="absolute w-40 h-40 rounded-full border border-white/15 warp-ring warp-ring-6" />
+
+          {/* Center focal point */}
+          <div className="w-4 h-4 rounded-full bg-white/80 center-pulse shadow-[0_0_20px_rgba(255,255,255,0.8)]" />
         </div>
+
         <p
-          className="text-white/60 text-sm tracking-[0.3em] uppercase mt-8"
+          className="text-white/60 text-sm tracking-[0.3em] uppercase mt-12 fade-in-up z-10"
           style={{ fontFamily: 'Futura, "Trebuchet MS", Arial, sans-serif' }}
         >
           Entering Museum
         </p>
         {/* Progress indicator */}
-        <div className="mt-4 w-32 h-1 bg-white/10 rounded-full overflow-hidden">
+        <div className="mt-4 w-32 h-1 bg-white/10 rounded-full overflow-hidden fade-in-up-delayed z-10">
           <div
             className="h-full bg-white/40 transition-all duration-300 ease-out"
             style={{ width: `${loadingProgress}%` }}
           />
         </div>
         <p
-          className="text-white/40 text-xs tracking-wider mt-2"
+          className="text-white/40 text-xs tracking-wider mt-2 fade-in-up-delayed z-10"
           style={{ fontFamily: 'Futura, "Trebuchet MS", Arial, sans-serif' }}
         >
           {loadingProgress}%
