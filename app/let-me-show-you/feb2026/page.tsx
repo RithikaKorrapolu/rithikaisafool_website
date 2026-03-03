@@ -295,14 +295,14 @@ export default function LMSYFeb2026Page() {
   if (!isAuthenticated) {
     return (
       <div
-        className="min-h-screen w-full flex items-center justify-center p-4 relative"
+        className="h-screen w-full flex items-center justify-center p-4 relative overflow-hidden"
         style={{
           backgroundImage: bgLoaded ? `url("/assets/CCP/Sample_Month/Feb2026/cover.jpg")` : undefined,
           backgroundColor: "#1a1a2e",
           backgroundSize: "cover",
-          backgroundPosition: isMobile ? "center" : undefined,
+          backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
-          animation: isMobile || !bgLoaded ? "none" : "floatBackground 120s linear infinite",
+          backgroundAttachment: "fixed",
         }}
       >
         {/* Loading overlay */}
@@ -373,7 +373,7 @@ export default function LMSYFeb2026Page() {
             transition: "opacity 1s ease-out, transform 1s ease-out",
           }}
         >
-          <h1 className="text-3xl font-bold text-white mb-3 font-[family-name:var(--font-abril-fatface)] text-center">
+          <h1 className="text-2xl font-bold text-white mb-3 font-[family-name:var(--font-abril-fatface)] text-center">
             LET ME SHOW YOU
           </h1>
           <div
@@ -385,7 +385,7 @@ export default function LMSYFeb2026Page() {
           >
             {/* Blurred pink version with pulse */}
             <p
-              className="text-2xl font-bold text-center font-[family-name:var(--font-inter)] select-none transition-opacity duration-300 opacity-100 group-hover:opacity-0 group-[.revealed]:opacity-0"
+              className="text-lg font-bold text-center font-[family-name:var(--font-inter)] select-none transition-opacity duration-300 opacity-100 group-hover:opacity-0 group-[.revealed]:opacity-0"
               style={{
                 animation: "pulseBlur 2s ease-in-out infinite",
                 color: "#ff69b4",
@@ -396,7 +396,7 @@ export default function LMSYFeb2026Page() {
             </p>
             {/* Clear version on hover */}
             <p
-              className="text-2xl font-bold text-center font-[family-name:var(--font-inter)] select-none transition-opacity duration-300 opacity-0 group-hover:opacity-100 group-[.revealed]:opacity-100 absolute inset-0"
+              className="text-lg font-bold text-center font-[family-name:var(--font-inter)] select-none transition-opacity duration-300 opacity-0 group-hover:opacity-100 group-[.revealed]:opacity-100 absolute inset-0"
               style={{
                 color: "#ff69b4",
                 textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
@@ -405,7 +405,7 @@ export default function LMSYFeb2026Page() {
               &ldquo;What Love Feels Like&rdquo;
             </p>
           </div>
-          <p className="text-white/70 text-center mb-7 font-[family-name:var(--font-inter)] font-medium text-lg">
+          <p className="text-white/70 text-center mb-6 font-[family-name:var(--font-inter)] font-medium text-sm">
             Enter the password to view this exhibit. If you're a subscriber, find the password in your email. If you're not, become one <a href="/shop/let-me-show-you" className="font-bold underline hover:text-white">here</a>.
           </p>
           <form onSubmit={handlePasswordSubmit}>
@@ -417,16 +417,16 @@ export default function LMSYFeb2026Page() {
                 setPasswordError("");
               }}
               placeholder="Password"
-              className="w-full px-5 py-4 border border-white/30 rounded-xl focus:border-white focus:outline-none font-[family-name:var(--font-inter)] mb-5 text-white placeholder-white/50 bg-white/10 text-lg"
+              className="w-full px-4 py-3 border border-white/30 rounded-xl focus:border-white focus:outline-none font-[family-name:var(--font-inter)] mb-4 text-white placeholder-white/50 bg-white/10 text-sm"
             />
             {passwordError && (
-              <p className="text-red-400 text-base mb-4 font-[family-name:var(--font-inter)]">
+              <p className="text-red-400 text-sm mb-3 font-[family-name:var(--font-inter)]">
                 {passwordError}
               </p>
             )}
             <button
               type="submit"
-              className="w-full bg-white/20 text-white font-bold py-4 rounded-xl hover:bg-white/30 transition-colors font-[family-name:var(--font-inter)] border border-white/30 text-lg"
+              className="w-full bg-white/20 text-white font-bold py-3 rounded-xl hover:bg-white/30 transition-colors font-[family-name:var(--font-inter)] border border-white/30 text-sm"
             >
               Enter
             </button>
@@ -540,7 +540,7 @@ export default function LMSYFeb2026Page() {
 
                     {/* Logo */}
                     <div className="mb-8">
-                      <h1 className="text-white/60 text-[20px] tracking-tight font-[family-name:var(--font-abril-fatface)]">LET ME SHOW YOU:</h1>
+                      <h1 className="text-white text-[20px] tracking-tight font-[family-name:var(--font-abril-fatface)]">LET ME SHOW YOU:</h1>
                       <p className="text-white text-[24px] font-bold mt-2 font-[family-name:var(--font-inter)]">&ldquo;What Love Feels Like&rdquo;</p>
                       <p className="text-gray-400 text-base font-medium mt-3 font-[family-name:var(--font-inter)]">Feb 2026 Theme</p>
                     </div>
@@ -622,7 +622,7 @@ export default function LMSYFeb2026Page() {
           >
             {/* Logo */}
             <div className="mb-8">
-              <h1 className="text-white/60 text-xl tracking-tight font-[family-name:var(--font-abril-fatface)]">LET ME SHOW YOU:</h1>
+              <h1 className="text-white text-xl tracking-tight font-[family-name:var(--font-abril-fatface)]">LET ME SHOW YOU:</h1>
               <div className="relative">
                 <p className="text-white text-3xl font-bold mt-2 font-[family-name:var(--font-inter)]">&ldquo;What Love Feels Like&rdquo;</p>
               </div>
@@ -698,7 +698,7 @@ export default function LMSYFeb2026Page() {
           <div ref={mainContentRef} className="flex-1 p-4 pt-2 lg:p-8 overflow-y-auto glass-scrollbar">
             {/* Mobile Header */}
             <div className="lg:hidden mb-4 pb-3 border-b border-white/20 text-center">
-              <p className="text-white/60 text-[14px] font-[family-name:var(--font-abril-fatface)]">LET ME SHOW YOU:</p>
+              <p className="text-white text-[14px] font-[family-name:var(--font-abril-fatface)]">LET ME SHOW YOU:</p>
               <p className="text-white text-[18px] font-bold font-[family-name:var(--font-inter)]">&ldquo;What Love Feels Like&rdquo;</p>
               <p className="text-gray-800 text-xs font-medium mt-1">Feb 2026 Theme</p>
             </div>
@@ -832,22 +832,22 @@ export default function LMSYFeb2026Page() {
                     boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
                   }}
                 >
-                  <p className="text-white/60 text-sm uppercase tracking-wider mb-2 font-semibold font-[family-name:var(--font-inter)]">Curator Notes</p>
-                  <p className="text-white text-lg md:text-xl italic font-[family-name:var(--font-inter)]" dangerouslySetInnerHTML={{ __html: `&ldquo;${selectedArtwork.note}&rdquo;` }} />
+                  <p className="text-white/60 text-xs uppercase tracking-wider mb-2 font-semibold font-[family-name:var(--font-inter)]">Curator Notes</p>
+                  <p className="text-white text-[15px] md:text-[18px] italic font-[family-name:var(--font-inter)]" dangerouslySetInnerHTML={{ __html: `&ldquo;${selectedArtwork.note}&rdquo;` }} />
                 </div>
               )}
 
               {/* Additional Info */}
               {selectedArtwork.additionalInfo && Array.isArray(selectedArtwork.additionalInfo) && (
                 <div
-                  className="mt-4 p-4 rounded-xl"
+                  className="mt-4 p-3 rounded-xl"
                   style={{
                     background: "rgba(0, 0, 0, 0.2)",
                     boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
                   }}
                 >
-                  <p className="text-white/60 text-sm uppercase tracking-wider mb-2 font-semibold font-[family-name:var(--font-inter)]">Additional Info</p>
-                  <ul className="text-white text-base md:text-lg space-y-2 font-[family-name:var(--font-inter)]">
+                  <p className="text-white/60 text-xs uppercase tracking-wider mb-2 font-semibold font-[family-name:var(--font-inter)]">Additional Info</p>
+                  <ul className="text-white text-[15px] md:text-[18px] space-y-2 font-[family-name:var(--font-inter)]">
                     {selectedArtwork.additionalInfo.map((info: string, index: number) => (
                       <li key={index} className="flex">
                         <span className="mr-2">•</span>
@@ -902,14 +902,14 @@ export default function LMSYFeb2026Page() {
               </svg>
             </button>
 
-            <h2 className="text-3xl text-white mb-5 font-[family-name:var(--font-abril-fatface)]">
+            <h2 className="text-xl text-white mb-4 font-[family-name:var(--font-abril-fatface)]">
               ABOUT THIS EXHIBIT
             </h2>
 
-            <p className="text-white/90 font-[family-name:var(--font-inter)] text-lg">
+            <p className="text-white/90 font-[family-name:var(--font-inter)] text-sm">
               Let Me Show You is a monthly digital art exhibit from Rithika is a Fool! Each month, we pick a theme and invite guests to share art that they love. You can learn more <a href="/shop/let-me-show-you" className="font-bold underline hover:opacity-70">here</a>.
             </p>
-            <p className="text-white/90 font-[family-name:var(--font-inter)] text-lg mt-4">
+            <p className="text-white/90 font-[family-name:var(--font-inter)] text-sm mt-3">
               Check out the full archive of exhibits <a href="/let-me-show-you-archive" className="font-bold underline hover:opacity-70">here</a>.
             </p>
           </div>

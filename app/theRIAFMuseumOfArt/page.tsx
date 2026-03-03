@@ -576,19 +576,6 @@ export default function TheRIAFMuseumOfArt() {
               opacity: 0;
             }
           }
-          @keyframes starZoom {
-            0% {
-              transform: translateZ(0) scale(0.1);
-              opacity: 0;
-            }
-            10% {
-              opacity: 1;
-            }
-            100% {
-              transform: translateZ(500px) scale(2);
-              opacity: 0;
-            }
-          }
           @keyframes pulse {
             0%, 100% {
               transform: scale(1);
@@ -621,14 +608,6 @@ export default function TheRIAFMuseumOfArt() {
           .center-pulse {
             animation: pulse 1.5s ease-in-out infinite;
           }
-          .star {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: white;
-            border-radius: 50%;
-            animation: starZoom 1.5s ease-in infinite;
-          }
           .fade-in-up {
             animation: fadeInUp 0.8s ease-out forwards;
             animation-delay: 0.5s;
@@ -640,20 +619,6 @@ export default function TheRIAFMuseumOfArt() {
             opacity: 0;
           }
         `}</style>
-
-        {/* Star field - particles zooming past */}
-        {[...Array(30)].map((_, i) => (
-          <div
-            key={i}
-            className="star"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 2}s`,
-              animationDuration: `${1 + Math.random() * 1}s`,
-            }}
-          />
-        ))}
 
         {/* Warp tunnel rings */}
         <div className="relative flex items-center justify-center" style={{ perspective: '500px' }}>
@@ -878,28 +843,6 @@ export default function TheRIAFMuseumOfArt() {
                 {/* Image wrapper for hover detection */}
                 <div
                   className="relative z-10 group cursor-pointer"
-                  onTouchStart={(e) => {
-                    const touch = e.touches[0];
-                    touchStartRef.current = { x: touch.clientX, y: touch.clientY, time: Date.now() };
-                  }}
-                  onTouchEnd={(e) => {
-                    e.stopPropagation();
-                    // Only trigger warning if it was a tap (not a scroll)
-                    if (touchStartRef.current) {
-                      const touch = e.changedTouches[0];
-                      const deltaX = Math.abs(touch.clientX - touchStartRef.current.x);
-                      const deltaY = Math.abs(touch.clientY - touchStartRef.current.y);
-                      const deltaTime = Date.now() - touchStartRef.current.time;
-                      // If touch moved less than 10px and lasted less than 300ms, it's a tap
-                      if (deltaX < 10 && deltaY < 10 && deltaTime < 300) {
-                        setShowWarningForId(artwork.id);
-                      }
-                    }
-                    touchStartRef.current = null;
-                  }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
                   onMouseEnter={() => {
                     // Only set hover state on devices with hover capability
                     if (window.matchMedia('(hover: hover)').matches) {
@@ -908,28 +851,55 @@ export default function TheRIAFMuseumOfArt() {
                   }}
                   onMouseLeave={() => setIsHoveringArt(false)}
                 >
-                  <Image
-                    src={artwork.image}
-                    alt={artwork.title}
-                    width={600}
-                    height={750}
-                    className="max-w-[265px] md:max-w-[500px] lg:max-w-[600px] h-auto"
-                    style={{ display: 'block' }}
-                    priority={idx < 6}
-                    unoptimized
-                  />
-                  {/* "Please Do Not Touch" Warning - Desktop hover, Mobile click */}
+                  {/* Image with touch handlers - only triggers on the actual image */}
                   <div
-                    className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none
-                      transition-all duration-150 ease-out
-                      ${showWarningForId === artwork.id ? 'opacity-100 scale-100' : 'opacity-0 scale-90 md:group-hover:opacity-100 md:group-hover:scale-100'}`}
-                    style={{ willChange: 'transform, opacity' }}
+                    className="relative"
+                    onTouchStart={(e) => {
+                      const touch = e.touches[0];
+                      touchStartRef.current = { x: touch.clientX, y: touch.clientY, time: Date.now() };
+                    }}
+                    onTouchEnd={(e) => {
+                      e.stopPropagation();
+                      // Only trigger warning if it was a tap (not a scroll)
+                      if (touchStartRef.current) {
+                        const touch = e.changedTouches[0];
+                        const deltaX = Math.abs(touch.clientX - touchStartRef.current.x);
+                        const deltaY = Math.abs(touch.clientY - touchStartRef.current.y);
+                        const deltaTime = Date.now() - touchStartRef.current.time;
+                        // If touch moved less than 10px and lasted less than 300ms, it's a tap
+                        if (deltaX < 10 && deltaY < 10 && deltaTime < 300) {
+                          setShowWarningForId(artwork.id);
+                        }
+                      }
+                      touchStartRef.current = null;
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
                   >
+                    <Image
+                      src={artwork.image}
+                      alt={artwork.title}
+                      width={600}
+                      height={750}
+                      className="max-w-[265px] md:max-w-[500px] lg:max-w-[600px] h-auto"
+                      style={{ display: 'block' }}
+                      priority={idx < 6}
+                      unoptimized
+                    />
+                    {/* "Please Do Not Touch" Warning - Desktop hover, Mobile click */}
                     <div
-                      className="bg-red-600 text-white px-4 py-2 md:px-6 md:py-3 rounded-lg shadow-lg text-center"
-                      style={{ fontFamily: 'Futura, "Trebuchet MS", Arial, sans-serif' }}
+                      className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none
+                        transition-all duration-150 ease-out
+                        ${showWarningForId === artwork.id ? 'opacity-100 scale-100' : 'opacity-0 scale-90 md:group-hover:opacity-100 md:group-hover:scale-100'}`}
+                      style={{ willChange: 'transform, opacity' }}
                     >
-                      <p className="text-xs md:text-sm font-bold tracking-wider">PLEASE DO NOT TOUCH</p>
+                      <div
+                        className="bg-red-600 text-white px-4 py-2 md:px-6 md:py-3 rounded-lg shadow-lg text-center"
+                        style={{ fontFamily: 'Futura, "Trebuchet MS", Arial, sans-serif' }}
+                      >
+                        <p className="text-xs md:text-sm font-bold tracking-wider">PLEASE DO NOT TOUCH</p>
+                      </div>
                     </div>
                   </div>
                   {/* Desktop Info Box - Bottom Right Corner */}

@@ -131,7 +131,7 @@ export default function LetMeShowYouArchive() {
             border: "0.5px solid rgba(255, 255, 255, 0.2)",
           }}
         >
-          <nav className="space-y-4">
+          <nav className="space-y-2">
             {EXHIBITS.map((exhibit) => (
               <button
                 key={exhibit.id}
@@ -141,7 +141,7 @@ export default function LetMeShowYouArchive() {
                   const element = document.getElementById(`exhibit-${exhibit.id}`);
                   element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }}
-                className={`block transition-all font-[family-name:var(--font-abril-fatface)] text-base leading-tight text-left ${
+                className={`block transition-all font-[family-name:var(--font-inter)] text-sm leading-tight text-left ${
                   activeExhibit === exhibit.id ? 'text-white font-bold' : 'text-white/50'
                 }`}
               >
@@ -160,7 +160,7 @@ export default function LetMeShowYouArchive() {
           transition: "opacity 1s ease-out",
         }}
       >
-        <nav className="space-y-3">
+        <nav className="space-y-1">
           {EXHIBITS.map((exhibit) => (
             <button
               key={exhibit.id}
@@ -169,7 +169,7 @@ export default function LetMeShowYouArchive() {
                 const element = document.getElementById(`exhibit-${exhibit.id}`);
                 element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
               }}
-              className={`block transition-all font-[family-name:var(--font-abril-fatface)] text-xl leading-tight text-left ${
+              className={`block transition-all font-[family-name:var(--font-inter)] text-sm leading-tight text-left ${
                 activeExhibit === exhibit.id ? 'text-white font-bold' : 'text-white/40 hover:text-white/70'
               }`}
             >
@@ -197,7 +197,7 @@ export default function LetMeShowYouArchive() {
               Archive
             </p>
             <p className="text-white/70 text-sm md:text-base font-[family-name:var(--font-inter)] mt-4">
-              a monthly digital art exhibit from Rithika is a Fool! Each month, we pick a theme and invite guests to share art that they love. This is an archive of all the exhibits. You can learn more <a href="/shop/let-me-show-you" className="font-bold underline hover:text-white">here</a>.
+              A monthly digital art exhibit from Rithika is a Fool! Each month, we pick a theme and invite guests to share art that they love. This is an archive of all the exhibits. You can learn more <a href="/shop/let-me-show-you" className="font-bold underline hover:text-white">here</a>.
             </p>
           </div>
 
