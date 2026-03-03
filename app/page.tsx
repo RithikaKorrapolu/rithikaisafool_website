@@ -52,6 +52,7 @@ export default function Home() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [gloryImageIndex, setGloryImageIndex] = useState(0);
   const [clientImageIndex, setClientImageIndex] = useState(0);
+  const [museumImageIndex, setMuseumImageIndex] = useState(0);
   const [ccpLayerIndex, setCcpLayerIndex] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -453,6 +454,14 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [amwyPosterVisible, pageVisible]);
 
+  // Rotate museum images
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMuseumImageIndex((prev) => (prev + 1) % 5);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
+
   useEffect(() => {
     // Set initial position to center of screen
     const centerX = typeof window !== 'undefined' ? window.innerWidth / 2 : 0;
@@ -643,8 +652,9 @@ export default function Home() {
           <div className="h-[110vw] sm:h-[26vw] lg:h-[26vw]"></div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 px-[2.5%] md:px-0">
-            {reversedPosters.map((poster) => {
+            {reversedPosters.map((poster, posterIndex) => {
               const isActive = isTouchDevice && activePosterIds.has(poster.id);
+              const isPriorityPoster = posterIndex < 3; // First 3 posters load with priority
               const PosterContent = (
                 <div
                   className={`poster-wrapper ${isActive ? 'mobile-active' : ''}`}
@@ -682,6 +692,7 @@ export default function Home() {
                           width={500}
                           height={625}
                           className="w-full h-full object-contain"
+                          priority={isPriorityPoster}
                         />
                         <motion.div
                           initial={{ opacity: 0 }}
@@ -716,6 +727,7 @@ export default function Home() {
                           height={625}
                           className="w-full h-full object-contain"
                           style={{ transform: 'scale(1.16)' }}
+                          priority={isPriorityPoster}
                         />
                         {/* Client cover no call fades in/out on top */}
                         <AnimatePresence>
@@ -880,6 +892,7 @@ export default function Home() {
                           width={500}
                           height={625}
                           className="w-full h-full object-contain"
+                          priority={isPriorityPoster}
                         />
                         {/* Overlay images 4-7 with crossfade */}
                         {amwyImages.map((imgNum) => (
@@ -921,6 +934,79 @@ export default function Home() {
                           <div className="w-full h-full bg-gray-800" />
                         )}
                       </div>
+                    ) : poster.id === 13 ? (
+                      <>
+                        {/* Spinning portal animation */}
+                        <div className="absolute inset-0 overflow-hidden flex items-start justify-center pt-2" style={{ backgroundColor: '#000000' }}>
+                          {/* Spinning outer ring */}
+                          <motion.div
+                            animate={{
+                              rotate: [0, 360],
+                            }}
+                            transition={{
+                              duration: 8,
+                              repeat: Infinity,
+                              ease: "linear",
+                            }}
+                            style={{
+                              position: 'absolute',
+                              width: '400px',
+                              height: '400px',
+                              borderRadius: '50%',
+                              background: 'conic-gradient(from 0deg, #000000, #aa3023, #7a2018, #000000, #aa3023, #000000)',
+                              filter: 'blur(30px)',
+                            }}
+                          />
+                          {/* Counter-spinning middle ring */}
+                          <motion.div
+                            animate={{
+                              rotate: [360, 0],
+                            }}
+                            transition={{
+                              duration: 6,
+                              repeat: Infinity,
+                              ease: "linear",
+                            }}
+                            style={{
+                              position: 'absolute',
+                              width: '280px',
+                              height: '280px',
+                              borderRadius: '50%',
+                              background: 'conic-gradient(from 180deg, #aa3023, #000000, #7a2018, #aa3023, #000000, #aa3023)',
+                              filter: 'blur(20px)',
+                            }}
+                          />
+                          {/* Spinning inner ring */}
+                          <motion.div
+                            animate={{
+                              rotate: [0, 360],
+                            }}
+                            transition={{
+                              duration: 4,
+                              repeat: Infinity,
+                              ease: "linear",
+                            }}
+                            style={{
+                              position: 'absolute',
+                              width: '160px',
+                              height: '160px',
+                              borderRadius: '50%',
+                              background: 'conic-gradient(from 90deg, #aa3023, #2a0a06, #aa3023, #2a0a06, #aa3023)',
+                              filter: 'blur(10px)',
+                            }}
+                          />
+                        </div>
+                        {/* Base image on top */}
+                        <Image
+                          src="/assets/museum/base11.png"
+                          alt="The RIAF Museum of Art"
+                          width={500}
+                          height={625}
+                          className="w-full h-full object-cover relative z-10"
+                          priority={isPriorityPoster}
+                          unoptimized
+                        />
+                      </>
                     ) : (
                       <>
                         <span
@@ -1080,8 +1166,8 @@ export default function Home() {
                   <Link
                     key={poster.id}
                     href={poster.link}
-                    target={poster.link.startsWith('http') ? '_blank' : undefined}
-                    rel={poster.link.startsWith('http') ? 'noopener noreferrer' : undefined}
+                    target={poster.link.startsWith('http') || poster.id === 13 ? '_blank' : undefined}
+                    rel={poster.link.startsWith('http') || poster.id === 13 ? 'noopener noreferrer' : undefined}
                   >
                     {PosterContent}
                   </Link>
@@ -1140,9 +1226,6 @@ export default function Home() {
               `}</style>
               <p className="mt-4 text-black font-[family-name:var(--font-inter)]">
                 They say if you want to win, study the winners. Every day, I share something a "successful" person once said. It's daily advice. And it ranges from Steve Jobs to Rihanna to Nathan Fielder to my friend who grew her first tomato. Dial in.
-              </p>
-              <p className="mt-2 text-black font-[family-name:var(--font-inter)] italic">
-                Launching 3/1/2026
               </p>
               {/* CALL NOW button - mobile only */}
               {isTouchDevice && (
@@ -1226,7 +1309,7 @@ export default function Home() {
                 By the end of the month, we all get to know someone new.
               </p>
               <p className="mt-4 text-black font-[family-name:var(--font-inter)] italic">
-                Launching 3/1/2026 on our instagram
+                Launching 4/1/2026 on our instagram
               </p>
               <a
                 href="https://www.instagram.com/rithikaisafool/"

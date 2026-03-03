@@ -323,7 +323,7 @@ export default function LMSYSamplePage() {
             </p>
           </div>
           <p className="text-white/70 text-center mb-7 font-[family-name:var(--font-inter)] font-medium text-lg">
-            Enter the password to view this exhibit
+            Enter the password to view this exhibit. If you're a subscriber, find the password in your email. If you're not, become one <a href="/shop/let-me-show-you" className="font-bold underline hover:text-white">here</a>.
           </p>
           <form onSubmit={handlePasswordSubmit}>
             <input
@@ -723,7 +723,7 @@ export default function LMSYSamplePage() {
 
       {/* Sample Banner */}
       <div className="fixed top-4 left-1/2 -translate-x-1/2 bg-black text-white px-5 py-1.5 rounded-full text-xs font-medium z-50">
-        This is a sample preview
+        This is a free sample.
       </div>
 
       {/* Info Button */}

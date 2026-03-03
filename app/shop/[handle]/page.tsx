@@ -496,7 +496,7 @@ export default function ProductDetailPage() {
                 {isLMSYProduct && (
                   <div className="lg:hidden absolute inset-y-0 -left-4 -right-4 flex justify-between items-center pointer-events-none z-20">
                     <button
-                      onClick={() => setLmsyImageIndex((prev) => (prev === 0 ? 2 : prev - 1))}
+                      onClick={() => setLmsyImageIndex((prev) => (prev === 0 ? 1 : prev - 1))}
                       className="w-10 h-10 rounded-full bg-white/80 flex items-center justify-center shadow-md pointer-events-auto"
                     >
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2">
@@ -504,7 +504,7 @@ export default function ProductDetailPage() {
                       </svg>
                     </button>
                     <button
-                      onClick={() => setLmsyImageIndex((prev) => (prev === 2 ? 0 : prev + 1))}
+                      onClick={() => setLmsyImageIndex((prev) => (prev === 1 ? 0 : prev + 1))}
                       className="w-10 h-10 rounded-full bg-white/80 flex items-center justify-center shadow-md pointer-events-auto"
                     >
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2">
@@ -544,18 +544,9 @@ export default function ProductDetailPage() {
                             </motion.div>
                           </AnimatePresence>
                         </div>
-                      ) : lmsyImageIndex === 1 ? (
-                        <video
-                          src="/assets/CCP/LMSU-sample_.mp4"
-                          autoPlay
-                          loop
-                          muted
-                          playsInline
-                          className="absolute inset-0 w-full h-full object-contain"
-                        />
                       ) : (
                         <video
-                          src="/assets/CCP/LMSU-sample_feb2026.mp4"
+                          src="/assets/CCP/LMSU-sample_.mp4"
                           autoPlay
                           loop
                           muted
@@ -720,16 +711,6 @@ export default function ProductDetailPage() {
                         className="w-full h-full object-contain"
                       />
                     </div>
-                    <div className="relative aspect-square rounded-lg overflow-hidden mt-4">
-                      <video
-                        src="/assets/CCP/LMSU-sample_feb2026.mp4"
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        className="w-full h-full object-contain"
-                      />
-                    </div>
                   </div>
                 )}
               </div>
@@ -881,18 +862,29 @@ export default function ProductDetailPage() {
                 </div>
               ) : isLMSYProduct ? (
                 <div>
-                  <p className="text-base text-black font-[family-name:var(--font-inter)] italic mb-4">
-                    &quot;The role of the artist is exactly the same as the role of the lover. If I love you, I have to make you conscious of the things you don&apos;t see.&quot;
-                    <br />— James Baldwin
+                  <p className="text-sm text-black font-[family-name:var(--font-inter)] mb-4">
+                    Let Me Show You is a <strong>curated digital art exhibit</strong> that unfolds over the course of a month. Each month revolves around a new theme and we <strong>invite guests to share a piece of art that moved them</strong> related to that theme. It might be a painting. A song. A voicemail. A screenshot. A poem. A text from their mom. Whatever they deem as art.
                   </p>
                   <p className="text-sm text-black font-[family-name:var(--font-inter)] mb-4">
-                    Let Me Show You is a <strong>monthly digital art exhibit</strong>. Each month, we pick a theme and <strong>invite guests to share art that they love.</strong> They share all kinds of things: paintings, songs, podcast excerpts, texts from their mom, whatever they deem as art and fits the theme.
+                    Each piece comes with an <strong>explanation from the guest explaining why it mattered to them</strong>.
                   </p>
                   <p className="text-sm text-black font-[family-name:var(--font-inter)] mb-4">
-                    Each exhibit will have it&apos;s own custom website and you will get a link and password to access it whenever you would like. Subscribers will get email notifications whenever we have new drops.
+                    Each exhibit has its own custom-designed website built for that theme. You&apos;ll receive a private link and password to access it anytime.
                   </p>
                   <p className="text-sm text-black font-[family-name:var(--font-inter)] mb-4">
-                    <span className="bg-[#dcff73] px-1">You can check out a sample <a href="/shop/let-me-show-you-sample" target="_blank" rel="noopener noreferrer" className="font-bold underline hover:opacity-70">here</a>.</span>
+                    We <strong>drop new pieces over the course of the month</strong> and subscribers will get notified via email whenever we do.
+                  </p>
+                  <p className="text-sm text-black font-[family-name:var(--font-inter)] mb-4">
+                    <strong>Subscribers receive:</strong>
+                  </p>
+                  <ul className="text-sm text-black font-[family-name:var(--font-inter)] mb-4 list-disc list-inside">
+                    <li>Private access to each new exhibit</li>
+                    <li>Curator notes and guest reflections</li>
+                    <li>A password-protected archive of past exhibits</li>
+                    <li>Email notifications when we have a new drop</li>
+                  </ul>
+                  <p className="text-sm text-black font-[family-name:var(--font-inter)] mb-4">
+                    <span className="bg-[#dcff73] px-1">You can check out a sample <a href="/shop/let-me-show-you-sample" target="_blank" rel="noopener noreferrer" className="font-bold underline hover:opacity-70">here</a>.</span> And the exhibit archive <a href="/let-me-show-you-archive" target="_blank" rel="noopener noreferrer" className="font-bold underline hover:opacity-70">here</a>.
                   </p>
                 </div>
               ) : (

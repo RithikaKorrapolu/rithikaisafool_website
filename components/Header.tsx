@@ -23,6 +23,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
   const pathname = usePathname();
   const { openCart, cartCount } = useCart();
   const isVoicemailPage = pathname === '/voicemail-show';
+  const isMuseumPage = pathname === '/theRIAFMuseumOfArt';
 
   const [showVideoPopup, setShowVideoPopup] = useState(false);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
@@ -101,9 +102,9 @@ export default function Header({ onMenuClick }: HeaderProps) {
 
   return (
     <>
-    <header className={`fixed top-0 left-0 w-full z-50 ${isVoicemailPage ? 'bg-[#ebf8fd]' : 'bg-white'}`}>
+    <header className={`fixed top-0 left-0 w-full z-50 ${isMuseumPage ? 'bg-transparent' : isVoicemailPage ? 'bg-[#ebf8fd]' : 'bg-white'}`}>
       {/* Top Header with Menu, Logo, Cart */}
-      <div className="flex items-center justify-between px-2 py-4 md:px-6 md:py-4 border-b border-gray-200">
+      <div className={`flex items-center justify-between px-2 py-4 md:px-6 md:py-4 ${isMuseumPage ? 'border-b border-white/20' : 'border-b border-gray-200'}`}>
         {/* Logo Button - Left (Opens Newsletter) */}
         <button
           onClick={() => setShowNewsletterPopup(true)}
@@ -202,7 +203,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
       </div>
 
       {/* Navigation Bar with Drop Shadow */}
-      <div className={`${isVoicemailPage ? 'bg-[#d4f1fa]' : 'bg-[#F2F2F2]'} text-black px-2 py-4 md:px-6 md:py-3.5`} style={{ boxShadow: '0px 4px 34px 0px rgba(0, 0, 0, 0.25)' }}>
+      <div className={`${isMuseumPage ? 'bg-transparent text-white' : isVoicemailPage ? 'bg-[#d4f1fa] text-black' : 'bg-[#F2F2F2] text-black'} px-2 py-4 md:px-6 md:py-3.5`} style={{ boxShadow: isMuseumPage ? 'none' : '0px 4px 34px 0px rgba(0, 0, 0, 0.25)' }}>
         <div className="flex gap-4 md:gap-12 justify-center">
           <Link href="/about" className="inline-block">
             <motion.div
@@ -212,7 +213,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
               animate="rest"
             >
               <motion.span
-                className={`text-[0.96rem] md:text-lg font-bold tracking-tighter inline-block ${pathname === '/about' ? 'text-[#F8330D]' : ''}`}
+                className={`text-[0.96rem] md:text-lg font-bold tracking-tighter inline-block ${pathname === '/about' ? 'text-[#F8330D]' : isMuseumPage ? 'text-white' : ''}`}
                 variants={{
                   rest: { rotate: pathname === '/about' ? 180 : 0 },
                   hover: { rotate: 180 }
@@ -231,14 +232,14 @@ export default function Header({ onMenuClick }: HeaderProps) {
               animate="rest"
             >
               <motion.span
-                className={`text-[0.96rem] md:text-lg font-bold tracking-tighter inline-block ${pathname === '/' ? 'text-[#F8330D]' : ''}`}
+                className={`text-[0.96rem] md:text-lg font-bold tracking-tighter inline-block ${pathname === '/' ? 'text-[#F8330D]' : isMuseumPage ? 'text-white' : ''}`}
                 variants={{
                   rest: { rotate: pathname === '/' ? 180 : 0 },
                   hover: { rotate: 180 }
                 }}
                 transition={{ duration: 0.3 }}
               >
-                Work!
+                Art!
               </motion.span>
             </motion.div>
           </Link>
@@ -250,7 +251,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
               animate="rest"
             >
               <motion.span
-                className={`text-[0.96rem] md:text-lg font-bold tracking-tighter inline-block ${pathname === '/shop' ? 'text-[#F8330D]' : ''}`}
+                className={`text-[0.96rem] md:text-lg font-bold tracking-tighter inline-block ${pathname === '/shop' ? 'text-[#F8330D]' : isMuseumPage ? 'text-white' : ''}`}
                 variants={{
                   rest: { rotate: pathname === '/shop' ? 180 : 0 },
                   hover: { rotate: 180 }
@@ -269,7 +270,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
               animate="rest"
             >
               <motion.span
-                className={`text-[0.96rem] md:text-lg font-bold tracking-tighter inline-block ${pathname === '/connect' ? 'text-[#F8330D]' : ''}`}
+                className={`text-[0.96rem] md:text-lg font-bold tracking-tighter inline-block ${pathname === '/connect' ? 'text-[#F8330D]' : isMuseumPage ? 'text-white' : ''}`}
                 variants={{
                   rest: { rotate: pathname === '/connect' ? 180 : 0 },
                   hover: { rotate: 180 }

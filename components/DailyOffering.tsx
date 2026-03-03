@@ -40,12 +40,6 @@ const DAILY_OFFERINGS = [
     category: "Website"
   },
   {
-    title: "Ask Polly",
-    description: "Advice column for the lost, the confused, and the hopeful.",
-    link: "https://www.ask-polly.com/",
-    category: "Website"
-  },
-  {
     title: "Radiooooo",
     description: "A musical time machine. Pick a decade, pick a country, listen.",
     link: "https://app.radiooooo.com/",
@@ -163,23 +157,30 @@ const DAILY_OFFERINGS = [
 
 export default function DailyOffering() {
   const [offering, setOffering] = useState<typeof DAILY_OFFERINGS[0] | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Get current time in EST
+    setMounted(true);
+
+    // Use UTC date to ensure consistency
     const now = new Date();
-    const estTime = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
-    const startOfYear = new Date(estTime.getFullYear(), 0, 0);
-    const diff = estTime.getTime() - startOfYear.getTime();
-    const oneDay = 1000 * 60 * 60 * 24;
-    const dayOfYear = Math.floor(diff / oneDay);
+    const utcYear = now.getUTCFullYear();
+    const utcMonth = now.getUTCMonth();
+    const utcDay = now.getUTCDate();
+
+    // Calculate day of year (Jan 1 = day 0)
+    const startOfYear = Date.UTC(utcYear, 0, 1);
+    const currentDate = Date.UTC(utcYear, utcMonth, utcDay);
+    const dayOfYear = Math.floor((currentDate - startOfYear) / (1000 * 60 * 60 * 24));
+
     setOffering(DAILY_OFFERINGS[dayOfYear % DAILY_OFFERINGS.length]);
   }, []);
 
-  if (!offering) {
+  if (!mounted || !offering) {
     return (
       <div
         className="inline-block border-4 border-dashed p-6"
-        style={{ borderColor: '#561DF1', maxWidth: '550px', width: '100%', height: '400px' }}
+        style={{ borderColor: '#561DF1', maxWidth: '550px', width: '100%', height: '180px' }}
       />
     );
   }
@@ -195,16 +196,8 @@ export default function DailyOffering() {
       style={{ borderColor: '#561DF1', boxShadow: '0 10px 40px rgba(86, 29, 241, 0.2)', maxWidth: '550px', width: '100%' }}
       onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.4)'}
       onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 10px 40px rgba(86, 29, 241, 0.2)'}
+      suppressHydrationWarning
     >
-      {/* Preview iframe */}
-      <div className="w-full h-72 mb-5 overflow-hidden rounded pointer-events-none">
-        <iframe
-          src={offering.link}
-          className="w-full h-full border-0"
-          style={{ transform: 'scale(0.5)', transformOrigin: 'top left', width: '200%', height: '200%' }}
-          title={`${offering.title} Preview`}
-        />
-      </div>
       <span className="text-sm uppercase tracking-wider text-[#561DF1] group-hover:text-[#561DF1] mb-3 block" style={{ fontFamily: 'Anek Bangla, sans-serif' }}>
         {offering.category}
       </span>

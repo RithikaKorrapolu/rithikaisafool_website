@@ -54,7 +54,7 @@ export default function Menu({ isOpen, onClose }: MenuProps) {
                 About!
               </Link>
               <Link href="/studio" onClick={onClose} className={`block text-base font-bold hover:text-[#F8330D] transition-colors ${pathname === '/studio' ? 'text-[#F8330D]' : 'text-black'}`}>
-                Work!
+                Art!
               </Link>
               <div>
                 <Link href="/shop" onClick={onClose} className={`block text-base font-bold hover:text-[#F8330D] transition-colors ${pathname === '/shop' ? 'text-[#F8330D]' : 'text-black'}`}>
