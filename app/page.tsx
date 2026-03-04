@@ -883,14 +883,14 @@ export default function Home() {
                         </div>
                       </>
                     ) : poster.id === 11 ? (
-                      <>
+                      <div className="w-full h-full pointer-events-none">
                         {/* Base image - always visible */}
                         <Image
                           src="/assets/A Month With you/A Month With You.png"
                           alt="A Month With You"
                           width={500}
                           height={625}
-                          className="w-full h-full object-contain"
+                          className="w-full h-full object-contain pointer-events-none"
                           priority={isPriorityPoster}
                         />
                         {/* Overlay images 4-7 with crossfade */}
@@ -900,6 +900,7 @@ export default function Home() {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: amwyOverlayIndex === imgNum ? 1 : 0 }}
                             transition={{ duration: 0.12 }}
+                            className="pointer-events-none"
                             style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
                           >
                             <Image
@@ -907,11 +908,11 @@ export default function Home() {
                               alt="A Month With You"
                               width={500}
                               height={625}
-                              className="w-full h-full object-contain"
+                              className="w-full h-full object-contain pointer-events-none"
                             />
                           </motion.div>
                         ))}
-                      </>
+                      </div>
                     ) : poster.id === 12 ? (
                       <div ref={quirksVideoRef} className="w-full h-full pointer-events-none">
                         {quirksVideoVisible ? (
@@ -1140,25 +1141,35 @@ export default function Home() {
                 // For poster 11 (A Month With You) - show popup
                 if (poster.id === 11) {
                   return (
-                    <div
+                    <button
                       key={poster.id}
                       onClick={() => setShowAMWYPopup(true)}
-                      className="cursor-pointer"
+                      onTouchEnd={(e) => {
+                        e.preventDefault();
+                        setShowAMWYPopup(true);
+                      }}
+                      className="cursor-pointer block w-full text-left"
+                      style={{ WebkitTapHighlightColor: 'transparent' }}
                     >
                       {PosterContent}
-                    </div>
+                    </button>
                   );
                 }
                 // For poster 12 (Quirks) - show popup
                 if (poster.id === 12) {
                   return (
-                    <div
+                    <button
                       key={poster.id}
                       onClick={() => setShowQuirksPopup(true)}
-                      className="cursor-pointer"
+                      onTouchEnd={(e) => {
+                        e.preventDefault();
+                        setShowQuirksPopup(true);
+                      }}
+                      className="cursor-pointer block w-full text-left"
+                      style={{ WebkitTapHighlightColor: 'transparent' }}
                     >
                       {PosterContent}
-                    </div>
+                    </button>
                   );
                 }
                 return (
