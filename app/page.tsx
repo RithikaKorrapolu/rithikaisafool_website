@@ -233,32 +233,33 @@ export default function Home() {
   }, []);
 
   // Lock body scroll when any popup is open to prevent mobile address bar jumping
+  const scrollPositionRef = useRef(0);
+
   useEffect(() => {
-    const isAnyPopupOpen = showPhonePopup || showClientPopup || showSTWLPopup || showComingSoonPopup;
+    const isAnyPopupOpen = showPhonePopup || showClientPopup || showSTWLPopup || showComingSoonPopup || showAMWYPopup || showQuirksPopup;
     if (isAnyPopupOpen) {
-      const scrollY = window.scrollY;
+      // Save current scroll position
+      scrollPositionRef.current = window.scrollY;
       document.body.style.position = 'fixed';
-      document.body.style.top = `-${scrollY}px`;
+      document.body.style.top = `-${scrollPositionRef.current}px`;
       document.body.style.width = '100%';
     } else {
-      const scrollY = document.body.style.top;
+      // Restore scroll position
+      const savedPosition = scrollPositionRef.current;
       document.body.style.position = '';
       document.body.style.top = '';
       document.body.style.width = '';
-      if (scrollY) {
-        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      if (savedPosition > 0) {
+        window.scrollTo(0, savedPosition);
       }
     }
     return () => {
-      const scrollY = document.body.style.top;
+      // Always clean up body styles when component unmounts (navigation)
       document.body.style.position = '';
       document.body.style.top = '';
       document.body.style.width = '';
-      if (scrollY) {
-        window.scrollTo(0, parseInt(scrollY || '0') * -1);
-      }
     };
-  }, [showPhonePopup, showClientPopup, showSTWLPopup, showComingSoonPopup]);
+  }, [showPhonePopup, showClientPopup, showSTWLPopup, showComingSoonPopup, showAMWYPopup, showQuirksPopup]);
 
   // Intersection Observer for mobile scroll hover effects
   useEffect(() => {
@@ -545,7 +546,12 @@ export default function Home() {
 
         .poster-wrapper {
           cursor: pointer;
-          animation: shake-bump 3s ease-in-out infinite;
+        }
+
+        @media (min-width: 768px) {
+          .poster-wrapper {
+            animation: shake-bump 3s ease-in-out infinite;
+          }
         }
 
         .poster-wrapper:nth-child(1) { animation-delay: 0s; animation-duration: 3.2s; }
@@ -573,37 +579,26 @@ export default function Home() {
           }
         }
 
-        .poster-wrapper:hover .poster-card {
-          transform: scale(1.1);
+        /* Only apply hover effects on devices that support hover */
+        @media (hover: hover) {
+          .poster-wrapper:hover .poster-card {
+            transform: scale(1.1);
+          }
+
+          .poster-wrapper:hover {
+            z-index: 10;
+            position: relative;
+          }
+
+          .shop-sticker {
+            transition: transform 0.6s ease-in-out;
+          }
+
+          .poster-wrapper:hover .shop-sticker {
+            transform: rotate(360deg);
+          }
         }
 
-        .poster-wrapper:hover {
-          z-index: 10;
-          position: relative;
-        }
-
-        .shop-sticker {
-          transition: transform 0.6s ease-in-out;
-        }
-
-        .poster-wrapper:hover .shop-sticker {
-          transform: rotate(360deg);
-        }
-
-        /* Mobile scroll-based hover effects */
-        .poster-wrapper.mobile-active {
-          animation-play-state: paused;
-          z-index: 10;
-          position: relative;
-        }
-
-        .poster-wrapper.mobile-active .poster-card {
-          transform: scale(1.0);
-        }
-
-        .poster-wrapper.mobile-active .shop-sticker {
-          transform: rotate(360deg);
-        }
       `}} />
       <main className="min-h-screen pt-[140px] md:pt-[145px] lg:pt-[155px] pb-20" style={{ backgroundColor: '#F2F2F2' }}>
         {/* Fixed Background Title and Subtitle */}
@@ -649,15 +644,19 @@ export default function Home() {
         {/* Scrollable Content */}
         <div className="container mx-auto px-6 relative z-10">
           {/* Spacer to account for fixed header height */}
-          <div className="h-[110vw] sm:h-[26vw] lg:h-[26vw]"></div>
+          <div className="h-[130vw] sm:h-[50vw] md:h-[26vw]"></div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 px-[2.5%] md:px-0">
+          <div className="
+            flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3
+            gap-0 md:gap-12
+            px-0 md:px-[2.5%]
+          ">
             {reversedPosters.map((poster, posterIndex) => {
               const isActive = isTouchDevice && activePosterIds.has(poster.id);
               const isPriorityPoster = posterIndex < 3; // First 3 posters load with priority
               const PosterContent = (
                 <div
-                  className={`poster-wrapper ${isActive ? 'mobile-active' : ''}`}
+                  className="poster-wrapper h-[108vw] md:h-auto md:min-h-0 flex items-center justify-center"
                   ref={(el) => {
                     if (el) {
                       posterRefs.current.set(poster.id, el);
@@ -676,12 +675,12 @@ export default function Home() {
                   data-poster-id={poster.id}
                 >
                   <div
-                    className="poster-card rounded-lg shadow-xl flex items-center justify-center overflow-hidden"
+                    className="poster-card rounded-lg shadow-xl flex items-center justify-center overflow-hidden w-[80vw] md:w-full"
                     style={{
                       aspectRatio: '4/5',
-                      width: '100%',
                       position: 'relative',
                       backgroundColor: '#F2F2F2',
+                      touchAction: 'manipulation',
                     }}
                   >
                     {poster.id === 9 ? (
@@ -1187,8 +1186,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed bg-black/50 flex items-center justify-center z-50 popup-backdrop"
-            style={{ top: '-200vh', bottom: '-200vh', left: 0, right: 0 }}
+            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
             onClick={() => setShowPhonePopup(false)}
           >
             <motion.div
@@ -1202,7 +1200,7 @@ export default function Home() {
               {/* X close button */}
               <button
                 onClick={() => setShowPhonePopup(false)}
-                className="absolute top-4 right-4 text-gray-500 hover:text-black transition-colors"
+                className="absolute top-3 right-3 text-gray-500 hover:text-black transition-colors p-2"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -1276,8 +1274,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed bg-black/50 flex items-center justify-center z-50 popup-backdrop"
-            style={{ top: '-200vh', bottom: '-200vh', left: 0, right: 0 }}
+            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
             onClick={() => setShowAMWYPopup(false)}
           >
             <motion.div
@@ -1291,7 +1288,7 @@ export default function Home() {
               {/* X close button */}
               <button
                 onClick={() => setShowAMWYPopup(false)}
-                className="absolute top-4 right-4 text-gray-500 hover:text-black transition-colors"
+                className="absolute top-3 right-3 text-gray-500 hover:text-black transition-colors p-2"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -1331,8 +1328,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed bg-black/50 flex items-center justify-center z-50 popup-backdrop"
-            style={{ top: '-200vh', bottom: '-200vh', left: 0, right: 0 }}
+            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
             onClick={() => setShowQuirksPopup(false)}
           >
             <motion.div
@@ -1346,7 +1342,7 @@ export default function Home() {
               {/* X close button */}
               <button
                 onClick={() => setShowQuirksPopup(false)}
-                className="absolute top-4 right-4 text-gray-500 hover:text-black transition-colors"
+                className="absolute top-3 right-3 text-gray-500 hover:text-black transition-colors p-2"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -1394,8 +1390,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed bg-black/50 flex items-center justify-center z-50 popup-backdrop"
-            style={{ top: '-200vh', bottom: '-200vh', left: 0, right: 0 }}
+            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
             onClick={() => setShowClientPopup(false)}
           >
             <motion.div
@@ -1408,7 +1403,7 @@ export default function Home() {
             >
               <button
                 onClick={() => setShowClientPopup(false)}
-                className="absolute top-4 right-4 text-3xl leading-none hover:text-[#F8330D] text-gray-400"
+                className="absolute top-3 right-3 text-3xl leading-none hover:text-[#F8330D] text-gray-400 p-2"
               >
                 &times;
               </button>
@@ -1473,8 +1468,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed bg-black/50 flex items-center justify-center z-50 popup-backdrop"
-            style={{ top: '-200vh', bottom: '-200vh', left: 0, right: 0 }}
+            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
             onClick={() => { setShowSTWLPopup(false); setSTWLName(''); setSTWLPhone(''); setSTWLMessage(''); }}
           >
             <motion.div
@@ -1487,7 +1481,7 @@ export default function Home() {
             >
               <button
                 onClick={() => { setShowSTWLPopup(false); setSTWLName(''); setSTWLPhone(''); setSTWLMessage(''); }}
-                className="absolute top-4 right-4 text-gray-500 hover:text-black transition-colors"
+                className="absolute top-3 right-3 text-gray-500 hover:text-black transition-colors p-2"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -1605,8 +1599,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed bg-black/50 flex items-center justify-center z-50 popup-backdrop"
-            style={{ top: '-200vh', bottom: '-200vh', left: 0, right: 0 }}
+            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
             onClick={() => { setShowComingSoonPopup(false); setComingSoonEmail(''); setComingSoonMessage(''); }}
           >
             <motion.div
@@ -1619,7 +1612,7 @@ export default function Home() {
             >
               <button
                 onClick={() => { setShowComingSoonPopup(false); setComingSoonEmail(''); setComingSoonMessage(''); }}
-                className="absolute top-4 right-4 text-gray-500 hover:text-black transition-colors"
+                className="absolute top-3 right-3 text-gray-500 hover:text-black transition-colors p-2"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

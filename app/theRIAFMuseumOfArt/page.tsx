@@ -314,8 +314,8 @@ const LOOPED_ARTWORKS = [...ARTWORKS, ...ARTWORKS, ...ARTWORKS];
 
 export default function TheRIAFMuseumOfArt() {
   const [isLoading, setIsLoading] = useState(true);
-  const [loadingProgress, setLoadingProgress] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
   const [showInfoPopup, setShowInfoPopup] = useState(false);
   const [showInfoForId, setShowInfoForId] = useState<number | null>(null);
   const [isFadingOut, setIsFadingOut] = useState(false);
@@ -343,46 +343,44 @@ export default function TheRIAFMuseumOfArt() {
   const currentArtwork = ARTWORKS[currentIndex];
   const useDarkText = isLightBackground(currentArtwork?.colors[0] || '#000000');
 
-  // Preload ALL images before showing content
+  // Preload first 3 images before showing content
   useEffect(() => {
-    const imagesToPreload = ARTWORKS.map(art => art.image);
+    const firstImages = ARTWORKS.slice(0, 3).map(art => art.image);
     let loadedCount = 0;
-    const totalImages = imagesToPreload.length;
 
-    const preloadImages = () => {
-      imagesToPreload.forEach(src => {
-        const img = new window.Image();
-        img.onload = () => {
-          loadedCount++;
-          setLoadingProgress(Math.round((loadedCount / totalImages) * 100));
-          if (loadedCount >= totalImages) {
-            setIsLoading(false);
-          }
-        };
-        img.onerror = () => {
-          loadedCount++;
-          setLoadingProgress(Math.round((loadedCount / totalImages) * 100));
-          if (loadedCount >= totalImages) {
-            setIsLoading(false);
-          }
-        };
-        img.src = src;
-      });
-    };
+    firstImages.forEach(src => {
+      const img = new window.Image();
+      img.onload = () => {
+        loadedCount++;
+        setLoadedImages(prev => new Set(prev).add(src));
+        // Show content once first image loads, continue loading others
+        if (loadedCount === 1) {
+          setIsLoading(false);
+        }
+      };
+      img.onerror = () => {
+        loadedCount++;
+        if (loadedCount === 1) {
+          setIsLoading(false);
+        }
+      };
+      img.src = src;
+    });
 
-    // Start preloading after a brief delay to show loading screen
-    const timer = setTimeout(preloadImages, 100);
-
-    // Fallback: hide loading screen after 8 seconds max (longer since we're loading all images)
+    // Fallback: hide loading screen after 4 seconds max (slower networks)
     const fallbackTimer = setTimeout(() => {
       setIsLoading(false);
-    }, 8000);
+    }, 4000);
 
     return () => {
-      clearTimeout(timer);
       clearTimeout(fallbackTimer);
     };
   }, []);
+
+  // Track when images load
+  const handleImageLoad = (src: string) => {
+    setLoadedImages(prev => new Set(prev).add(src));
+  };
 
   // Auto-hide info box after 3 seconds with fade out
   useEffect(() => {
@@ -522,7 +520,8 @@ export default function TheRIAFMuseumOfArt() {
       if (isScrollingRef.current) return;
 
       const scrollTop = container.scrollTop;
-      const itemHeight = window.innerHeight;
+      // Use container.clientHeight for consistency on mobile (not affected by address bar)
+      const itemHeight = container.clientHeight;
       const index = Math.round(scrollTop / itemHeight);
       // Ensure positive modulo result
       const actualIndex = ((index % ARTWORKS.length) + ARTWORKS.length) % ARTWORKS.length;
@@ -543,15 +542,31 @@ export default function TheRIAFMuseumOfArt() {
       }
     };
 
-    container.addEventListener('scroll', handleScroll);
+    // Start in the middle set at the first artwork (use element-based positioning for mobile reliability)
+    isScrollingRef.current = true;
+    // Use requestAnimationFrame to ensure DOM is ready
+    requestAnimationFrame(() => {
+      // Get the first artwork element in the middle set (index = ARTWORKS.length)
+      const middleSetFirstArtworkIndex = ARTWORKS.length;
+      const artworkElements = container.querySelectorAll('[data-artwork-item]');
+      const targetElement = artworkElements[middleSetFirstArtworkIndex] as HTMLElement;
 
-    // Start in the middle set and trigger initial index calculation
-    const initialScrollTop = ARTWORKS.length * window.innerHeight;
-    container.scrollTop = initialScrollTop;
-
-    // Set initial index
-    const initialIndex = Math.round(initialScrollTop / window.innerHeight) % ARTWORKS.length;
-    setCurrentIndex(initialIndex);
+      if (targetElement) {
+        // Scroll to the element directly - this is more reliable than calculating with window.innerHeight
+        targetElement.scrollIntoView({ behavior: 'instant', block: 'start' });
+      } else {
+        // Fallback to calculation if element not found
+        const containerHeight = container.clientHeight;
+        const initialScrollTop = ARTWORKS.length * containerHeight;
+        container.scrollTop = initialScrollTop;
+      }
+      setCurrentIndex(0);
+      // Allow scroll events after initial position is set
+      setTimeout(() => {
+        isScrollingRef.current = false;
+        container.addEventListener('scroll', handleScroll);
+      }, 100);
+    });
 
     return () => container.removeEventListener('scroll', handleScroll);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -613,11 +628,6 @@ export default function TheRIAFMuseumOfArt() {
             animation-delay: 0.5s;
             opacity: 0;
           }
-          .fade-in-up-delayed {
-            animation: fadeInUp 0.8s ease-out forwards;
-            animation-delay: 0.8s;
-            opacity: 0;
-          }
         `}</style>
 
         {/* Warp tunnel rings */}
@@ -638,19 +648,6 @@ export default function TheRIAFMuseumOfArt() {
           style={{ fontFamily: 'Futura, "Trebuchet MS", Arial, sans-serif' }}
         >
           Entering Museum
-        </p>
-        {/* Progress indicator */}
-        <div className="mt-4 w-32 h-1 bg-white/10 rounded-full overflow-hidden fade-in-up-delayed z-10">
-          <div
-            className="h-full bg-white/40 transition-all duration-300 ease-out"
-            style={{ width: `${loadingProgress}%` }}
-          />
-        </div>
-        <p
-          className="text-white/40 text-xs tracking-wider mt-2 fade-in-up-delayed z-10"
-          style={{ fontFamily: 'Futura, "Trebuchet MS", Arial, sans-serif' }}
-        >
-          {loadingProgress}%
         </p>
       </div>
     );
@@ -827,6 +824,7 @@ export default function TheRIAFMuseumOfArt() {
           {LOOPED_ARTWORKS.map((artwork, idx) => (
             <div
               key={`${artwork.id}-${idx}`}
+              data-artwork-item
               className="h-screen snap-start flex flex-col md:flex-row items-center justify-center py-8 md:py-0"
             >
               {/* Clickable Artwork Image with Spotlight */}
@@ -882,10 +880,14 @@ export default function TheRIAFMuseumOfArt() {
                       alt={artwork.title}
                       width={600}
                       height={750}
-                      className="max-w-[265px] md:max-w-[500px] lg:max-w-[600px] h-auto"
-                      style={{ display: 'block' }}
+                      className="max-w-[265px] md:max-w-[500px] lg:max-w-[600px] h-auto transition-opacity duration-500"
+                      style={{
+                        display: 'block',
+                        opacity: idx < 6 || loadedImages.has(artwork.image) ? 1 : 0
+                      }}
                       priority={idx < 6}
                       unoptimized
+                      onLoad={() => handleImageLoad(artwork.image)}
                     />
                     {/* "Please Do Not Touch" Warning - Desktop hover, Mobile click */}
                     <div
