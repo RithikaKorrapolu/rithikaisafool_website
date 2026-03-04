@@ -86,6 +86,7 @@ export default function Home() {
   const [quirksVideoVisible, setQuirksVideoVisible] = useState(false);
   const quirksVideoRef = useRef<HTMLDivElement>(null);
   const quirksVideoElementRef = useRef<HTMLVideoElement>(null);
+  const posterTouchStartRef = useRef<{ y: number } | null>(null);
 
   // Visibility states for pausing animations when off-screen
   const [winkVisible, setWinkVisible] = useState(false);
@@ -1144,9 +1145,19 @@ export default function Home() {
                     <button
                       key={poster.id}
                       onClick={() => setShowAMWYPopup(true)}
+                      onTouchStart={(e) => {
+                        posterTouchStartRef.current = { y: e.touches[0].clientY };
+                      }}
                       onTouchEnd={(e) => {
-                        e.preventDefault();
-                        setShowAMWYPopup(true);
+                        // Only trigger if it was a tap (not a scroll)
+                        if (posterTouchStartRef.current) {
+                          const deltaY = Math.abs(e.changedTouches[0].clientY - posterTouchStartRef.current.y);
+                          if (deltaY < 15) {
+                            e.preventDefault();
+                            setShowAMWYPopup(true);
+                          }
+                        }
+                        posterTouchStartRef.current = null;
                       }}
                       className="cursor-pointer block w-full text-left"
                       style={{ WebkitTapHighlightColor: 'transparent' }}
@@ -1161,9 +1172,19 @@ export default function Home() {
                     <button
                       key={poster.id}
                       onClick={() => setShowQuirksPopup(true)}
+                      onTouchStart={(e) => {
+                        posterTouchStartRef.current = { y: e.touches[0].clientY };
+                      }}
                       onTouchEnd={(e) => {
-                        e.preventDefault();
-                        setShowQuirksPopup(true);
+                        // Only trigger if it was a tap (not a scroll)
+                        if (posterTouchStartRef.current) {
+                          const deltaY = Math.abs(e.changedTouches[0].clientY - posterTouchStartRef.current.y);
+                          if (deltaY < 15) {
+                            e.preventDefault();
+                            setShowQuirksPopup(true);
+                          }
+                        }
+                        posterTouchStartRef.current = null;
                       }}
                       className="cursor-pointer block w-full text-left"
                       style={{ WebkitTapHighlightColor: 'transparent' }}
