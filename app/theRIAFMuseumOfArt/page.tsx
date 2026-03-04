@@ -880,6 +880,12 @@ export default function TheRIAFMuseumOfArt() {
                       e.stopPropagation();
                     }}
                   >
+                    {/* Loading spinner - shows while image is loading */}
+                    {idx >= 6 && !loadedImages.has(artwork.image) && (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-8 h-8 border-2 border-white/30 border-t-white/80 rounded-full animate-spin" />
+                      </div>
+                    )}
                     <Image
                       src={artwork.image}
                       alt={artwork.title}
