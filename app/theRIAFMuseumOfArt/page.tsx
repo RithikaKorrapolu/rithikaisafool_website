@@ -343,39 +343,30 @@ export default function TheRIAFMuseumOfArt() {
   const currentArtwork = ARTWORKS[currentIndex];
   const useDarkText = isLightBackground(currentArtwork?.colors[0] || '#000000');
 
-  // Preload first 3 images before showing content
+  // Preload first image before showing content (others load with spinner)
   useEffect(() => {
-    const firstImages = ARTWORKS.slice(0, 3).map(art => art.image);
-    let loadedCount = 0;
-    const totalToLoad = firstImages.length;
+    // Only need to wait for the first image (the one user sees first)
+    const firstImage = ARTWORKS[0].image;
 
-    const checkAllLoaded = () => {
-      if (loadedCount >= totalToLoad) {
-        // Add a small delay after all images load to ensure they render
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 300);
-      }
+    const img = new window.Image();
+    img.onload = () => {
+      setLoadedImages(prev => new Set(prev).add(firstImage));
+      // Add delay to ensure image renders on screen
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
     };
+    img.onerror = () => {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
+    };
+    img.src = firstImage;
 
-    firstImages.forEach(src => {
-      const img = new window.Image();
-      img.onload = () => {
-        loadedCount++;
-        setLoadedImages(prev => new Set(prev).add(src));
-        checkAllLoaded();
-      };
-      img.onerror = () => {
-        loadedCount++;
-        checkAllLoaded();
-      };
-      img.src = src;
-    });
-
-    // Fallback: hide loading screen after 6 seconds max (slower networks)
+    // Fallback: hide loading screen after 8 seconds max (slower networks)
     const fallbackTimer = setTimeout(() => {
       setIsLoading(false);
-    }, 6000);
+    }, 8000);
 
     return () => {
       clearTimeout(fallbackTimer);
@@ -881,7 +872,7 @@ export default function TheRIAFMuseumOfArt() {
                     }}
                   >
                     {/* Loading spinner - shows while image is loading */}
-                    {idx >= 6 && !loadedImages.has(artwork.image) && (
+                    {!loadedImages.has(artwork.image) && (
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="w-8 h-8 border-2 border-white/30 border-t-white/80 rounded-full animate-spin" />
                       </div>
@@ -894,9 +885,9 @@ export default function TheRIAFMuseumOfArt() {
                       className="max-w-[265px] md:max-w-[500px] lg:max-w-[600px] h-auto transition-opacity duration-500"
                       style={{
                         display: 'block',
-                        opacity: idx < 6 || loadedImages.has(artwork.image) ? 1 : 0
+                        opacity: loadedImages.has(artwork.image) ? 1 : 0
                       }}
-                      priority={idx < 6}
+                      priority={idx < 3}
                       unoptimized
                       onLoad={() => handleImageLoad(artwork.image)}
                     />
