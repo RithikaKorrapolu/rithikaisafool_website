@@ -1144,8 +1144,28 @@ export default function Home() {
                   return (
                     <div
                       key={poster.id}
-                      onClick={() => setShowAMWYPopup(true)}
+                      onClick={(e) => {
+                        // Only handle click on desktop (non-touch)
+                        if (!('ontouchstart' in window)) {
+                          setShowAMWYPopup(true);
+                        }
+                      }}
+                      onTouchStart={(e) => {
+                        posterTouchStartRef.current = { y: e.touches[0].clientY, time: Date.now() };
+                      }}
+                      onTouchEnd={(e) => {
+                        // Only trigger if it was a quick tap (< 300ms and moved < 20px)
+                        if (posterTouchStartRef.current) {
+                          const deltaY = Math.abs(e.changedTouches[0].clientY - posterTouchStartRef.current.y);
+                          const deltaTime = Date.now() - posterTouchStartRef.current.time;
+                          if (deltaY < 20 && deltaTime < 300) {
+                            setShowAMWYPopup(true);
+                          }
+                          posterTouchStartRef.current = null;
+                        }
+                      }}
                       className="cursor-pointer"
+                      style={{ WebkitTapHighlightColor: 'transparent' }}
                     >
                       {PosterContent}
                     </div>
@@ -1156,8 +1176,28 @@ export default function Home() {
                   return (
                     <div
                       key={poster.id}
-                      onClick={() => setShowQuirksPopup(true)}
+                      onClick={(e) => {
+                        // Only handle click on desktop (non-touch)
+                        if (!('ontouchstart' in window)) {
+                          setShowQuirksPopup(true);
+                        }
+                      }}
+                      onTouchStart={(e) => {
+                        posterTouchStartRef.current = { y: e.touches[0].clientY, time: Date.now() };
+                      }}
+                      onTouchEnd={(e) => {
+                        // Only trigger if it was a quick tap (< 300ms and moved < 20px)
+                        if (posterTouchStartRef.current) {
+                          const deltaY = Math.abs(e.changedTouches[0].clientY - posterTouchStartRef.current.y);
+                          const deltaTime = Date.now() - posterTouchStartRef.current.time;
+                          if (deltaY < 20 && deltaTime < 300) {
+                            setShowQuirksPopup(true);
+                          }
+                          posterTouchStartRef.current = null;
+                        }
+                      }}
                       className="cursor-pointer"
+                      style={{ WebkitTapHighlightColor: 'transparent' }}
                     >
                       {PosterContent}
                     </div>
