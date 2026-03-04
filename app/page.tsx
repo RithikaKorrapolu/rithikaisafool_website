@@ -86,7 +86,7 @@ export default function Home() {
   const [quirksVideoVisible, setQuirksVideoVisible] = useState(false);
   const quirksVideoRef = useRef<HTMLDivElement>(null);
   const quirksVideoElementRef = useRef<HTMLVideoElement>(null);
-  const posterTouchStartRef = useRef<{ y: number } | null>(null);
+  const posterTouchStartRef = useRef<{ y: number; time: number } | null>(null);
 
   // Visibility states for pausing animations when off-screen
   const [winkVisible, setWinkVisible] = useState(false);
@@ -1151,13 +1151,14 @@ export default function Home() {
                         }
                       }}
                       onTouchStart={(e) => {
-                        posterTouchStartRef.current = { y: e.touches[0].clientY };
+                        posterTouchStartRef.current = { y: e.touches[0].clientY, time: Date.now() };
                       }}
                       onTouchEnd={(e) => {
-                        // Only trigger if it was a tap (moved less than 30px)
+                        // Only trigger if it was a quick tap (< 300ms and moved < 20px)
                         if (posterTouchStartRef.current) {
                           const deltaY = Math.abs(e.changedTouches[0].clientY - posterTouchStartRef.current.y);
-                          if (deltaY < 30) {
+                          const deltaTime = Date.now() - posterTouchStartRef.current.time;
+                          if (deltaY < 20 && deltaTime < 300) {
                             setShowAMWYPopup(true);
                           }
                           posterTouchStartRef.current = null;
@@ -1182,13 +1183,14 @@ export default function Home() {
                         }
                       }}
                       onTouchStart={(e) => {
-                        posterTouchStartRef.current = { y: e.touches[0].clientY };
+                        posterTouchStartRef.current = { y: e.touches[0].clientY, time: Date.now() };
                       }}
                       onTouchEnd={(e) => {
-                        // Only trigger if it was a tap (moved less than 30px)
+                        // Only trigger if it was a quick tap (< 300ms and moved < 20px)
                         if (posterTouchStartRef.current) {
                           const deltaY = Math.abs(e.changedTouches[0].clientY - posterTouchStartRef.current.y);
-                          if (deltaY < 30) {
+                          const deltaTime = Date.now() - posterTouchStartRef.current.time;
+                          if (deltaY < 20 && deltaTime < 300) {
                             setShowQuirksPopup(true);
                           }
                           posterTouchStartRef.current = null;
