@@ -347,30 +347,35 @@ export default function TheRIAFMuseumOfArt() {
   useEffect(() => {
     const firstImages = ARTWORKS.slice(0, 3).map(art => art.image);
     let loadedCount = 0;
+    const totalToLoad = firstImages.length;
+
+    const checkAllLoaded = () => {
+      if (loadedCount >= totalToLoad) {
+        // Add a small delay after all images load to ensure they render
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 300);
+      }
+    };
 
     firstImages.forEach(src => {
       const img = new window.Image();
       img.onload = () => {
         loadedCount++;
         setLoadedImages(prev => new Set(prev).add(src));
-        // Show content once first image loads, continue loading others
-        if (loadedCount === 1) {
-          setIsLoading(false);
-        }
+        checkAllLoaded();
       };
       img.onerror = () => {
         loadedCount++;
-        if (loadedCount === 1) {
-          setIsLoading(false);
-        }
+        checkAllLoaded();
       };
       img.src = src;
     });
 
-    // Fallback: hide loading screen after 4 seconds max (slower networks)
+    // Fallback: hide loading screen after 6 seconds max (slower networks)
     const fallbackTimer = setTimeout(() => {
       setIsLoading(false);
-    }, 4000);
+    }, 6000);
 
     return () => {
       clearTimeout(fallbackTimer);
