@@ -913,7 +913,7 @@ export default function Home() {
                         ))}
                       </>
                     ) : poster.id === 12 ? (
-                      <div ref={quirksVideoRef} className="w-full h-full">
+                      <div ref={quirksVideoRef} className="w-full h-full pointer-events-none">
                         {quirksVideoVisible ? (
                           <video
                             ref={quirksVideoElementRef}
@@ -923,7 +923,7 @@ export default function Home() {
                             muted
                             playsInline
                             webkit-playsinline="true"
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-cover pointer-events-none"
                             onLoadedData={(e) => {
                               const video = e.currentTarget;
                               video.play().catch(() => {});
