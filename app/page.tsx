@@ -1142,55 +1142,63 @@ export default function Home() {
                 // For poster 11 (A Month With You) - show popup
                 if (poster.id === 11) {
                   return (
-                    <button
+                    <div
                       key={poster.id}
-                      onClick={() => setShowAMWYPopup(true)}
+                      onClick={(e) => {
+                        // Only handle click on desktop (non-touch)
+                        if (!('ontouchstart' in window)) {
+                          setShowAMWYPopup(true);
+                        }
+                      }}
                       onTouchStart={(e) => {
                         posterTouchStartRef.current = { y: e.touches[0].clientY };
                       }}
                       onTouchEnd={(e) => {
-                        // Only trigger if it was a tap (not a scroll)
+                        // Only trigger if it was a tap (moved less than 30px)
                         if (posterTouchStartRef.current) {
                           const deltaY = Math.abs(e.changedTouches[0].clientY - posterTouchStartRef.current.y);
-                          if (deltaY < 15) {
-                            e.preventDefault();
+                          if (deltaY < 30) {
                             setShowAMWYPopup(true);
                           }
+                          posterTouchStartRef.current = null;
                         }
-                        posterTouchStartRef.current = null;
                       }}
-                      className="cursor-pointer block w-full text-left"
+                      className="cursor-pointer"
                       style={{ WebkitTapHighlightColor: 'transparent' }}
                     >
                       {PosterContent}
-                    </button>
+                    </div>
                   );
                 }
                 // For poster 12 (Quirks) - show popup
                 if (poster.id === 12) {
                   return (
-                    <button
+                    <div
                       key={poster.id}
-                      onClick={() => setShowQuirksPopup(true)}
+                      onClick={(e) => {
+                        // Only handle click on desktop (non-touch)
+                        if (!('ontouchstart' in window)) {
+                          setShowQuirksPopup(true);
+                        }
+                      }}
                       onTouchStart={(e) => {
                         posterTouchStartRef.current = { y: e.touches[0].clientY };
                       }}
                       onTouchEnd={(e) => {
-                        // Only trigger if it was a tap (not a scroll)
+                        // Only trigger if it was a tap (moved less than 30px)
                         if (posterTouchStartRef.current) {
                           const deltaY = Math.abs(e.changedTouches[0].clientY - posterTouchStartRef.current.y);
-                          if (deltaY < 15) {
-                            e.preventDefault();
+                          if (deltaY < 30) {
                             setShowQuirksPopup(true);
                           }
+                          posterTouchStartRef.current = null;
                         }
-                        posterTouchStartRef.current = null;
                       }}
-                      className="cursor-pointer block w-full text-left"
+                      className="cursor-pointer"
                       style={{ WebkitTapHighlightColor: 'transparent' }}
                     >
                       {PosterContent}
-                    </button>
+                    </div>
                   );
                 }
                 return (
