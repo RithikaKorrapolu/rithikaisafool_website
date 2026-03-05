@@ -324,7 +324,6 @@ export default function TheRIAFMuseumOfArt() {
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<typeof ARTWORKS>([]);
-  const [isRandomResult, setIsRandomResult] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const touchStartRef = useRef<{ x: number; y: number; time: number } | null>(null);
@@ -486,10 +485,8 @@ export default function TheRIAFMuseumOfArt() {
     if (results.length === 0 && query.length > 0) {
       const randomArtwork = ARTWORKS[Math.floor(Math.random() * ARTWORKS.length)];
       setSearchResults([randomArtwork]);
-      setIsRandomResult(true);
     } else {
       setSearchResults(results);
-      setIsRandomResult(false);
     }
   }, [searchQuery]);
 
@@ -773,19 +770,9 @@ export default function TheRIAFMuseumOfArt() {
                     navigateToArtwork(searchResults[0].id);
                     setShowSearch(false);
                     setSearchQuery("");
-                    setIsRandomResult(false);
                   }
                 }}
               />
-              {/* No match message */}
-              {isRandomResult && searchQuery && (
-                <div
-                  className={`absolute top-full left-0 right-0 mt-2 px-4 py-2 rounded-lg text-xs backdrop-blur-md ${useDarkText ? 'bg-black/10 text-black/80' : 'bg-white/20 text-white/90'}`}
-                  style={{ fontFamily: 'Futura, "Trebuchet MS", Arial, sans-serif' }}
-                >
-                  No match found for this feeling, but here&apos;s something random.
-                </div>
-              )}
             </div>
           )}
           {/* Search Icon Button */}
