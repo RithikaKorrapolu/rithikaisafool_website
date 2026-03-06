@@ -55,6 +55,9 @@ export default function ProductDetailPage() {
     { id: 0, srcFront: 'main', srcBack: 'main', alt: 'Current Edition', title: 'Edition #01', description: 'The current mystery design. What will it be?' },
     { id: 1, srcFront: '/assets/Sweatshirt/Editions/1a.png', srcBack: '/assets/Sweatshirt/Editions/1b.png', alt: 'Edition 1', title: 'Edition #01', description: '"The dream behind this project is to get strangers to collect and share stories with each other. For the first one, I liked the idea of someone on the sweatshirt literally asking for one. I hope it works and the wearer gets to hear a lot of cool stories." - Rithika K. from NYC' },
     { id: 2, srcFront: '/assets/Sweatshirt/Editions/2a.png', srcBack: '/assets/Sweatshirt/Editions/2b.png', alt: 'Edition 2', title: 'Edition #02', description: '"I made this sweatshirt as a nod to my Telugu upbringing. I grew up with a loving, teasing extended family and on visits home to India, I would learn the swear words. Dunnapothu is one of my favorites. It literally means male buffalo but it\'s used when someone\'s being stubborn or foolish. Use it well." - Revanth K. from NYC' },
+    { id: 3, srcFront: '/assets/Sweatshirt/Editions/3a.png', srcBack: '/assets/Sweatshirt/Editions/3a.png', alt: 'Edition 3', title: 'Edition #03', description: '' },
+    { id: 4, srcFront: '/assets/Sweatshirt/Editions/4a.png', srcBack: '/assets/Sweatshirt/Editions/4b.png', alt: 'Edition 4', title: 'Edition #04', description: '' },
+    { id: 5, srcFront: '/assets/Sweatshirt/Editions/5a.png', srcBack: '/assets/Sweatshirt/Editions/5a.png', alt: 'Edition 5', title: 'Edition #05', description: '' },
   ];
 
   const [archiveIndex, setArchiveIndex] = useState(0);
