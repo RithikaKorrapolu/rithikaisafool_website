@@ -1401,8 +1401,8 @@ export default function ProductDetailPage() {
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
-            className="bg-white rounded-2xl p-6 shadow-2xl relative overflow-y-auto"
-            style={{ width: '90vw', maxWidth: '1100px', maxHeight: '90vh' }}
+            className="bg-white rounded-2xl p-6 shadow-2xl relative overflow-y-auto md:overflow-hidden"
+            style={{ width: '90vw', maxWidth: '1100px', height: '85vh', maxHeight: '850px' }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close X Button */}
@@ -1432,9 +1432,9 @@ export default function ProductDetailPage() {
             </AnimatePresence>
 
             {/* Carousel Content */}
-            <div className="flex flex-col">
+            <div className="flex flex-col h-[calc(100%-35px)] -mt-18">
               {/* Images with Arrows */}
-              <div className="flex items-center" style={{ minHeight: '350px', height: 'auto' }}>
+              <div className="flex items-center" style={{ height: '100%' }}>
                 {/* Left Arrow */}
                 <button
                   onClick={() => setArchiveIndex((prev) => (prev === 0 ? editionImages.length - 2 : prev - 1))}
@@ -1446,7 +1446,7 @@ export default function ProductDetailPage() {
                 </button>
 
                 {/* Images - Front and Back */}
-                <div className="flex-1 min-h-[300px] md:min-h-[400px] relative overflow-visible">
+                <div className="flex-1 h-full relative overflow-visible">
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={archiveIndex}
@@ -1454,7 +1454,7 @@ export default function ProductDetailPage() {
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -50 }}
                       transition={{ duration: 0.3 }}
-                      className="relative w-full flex flex-col md:flex-row gap-0 md:gap-4 justify-center md:items-center pt-4 md:pt-0"
+                      className="relative w-full h-full flex flex-col md:flex-row gap-0 md:gap-4 justify-center md:items-center pt-28 md:pt-0"
                     >
                       {/* Mobile: Single image (no rotation if front === back) */}
                       <div className="md:hidden relative w-full h-[300px] flex-shrink-0">
