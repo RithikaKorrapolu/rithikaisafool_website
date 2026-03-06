@@ -58,6 +58,7 @@ export default function ProductDetailPage() {
     { id: 3, srcFront: '/assets/Sweatshirt/Editions/3a.png', srcBack: '/assets/Sweatshirt/Editions/3a.png', alt: 'Edition 3', title: 'Edition #03', description: '' },
     { id: 4, srcFront: '/assets/Sweatshirt/Editions/4a.png', srcBack: '/assets/Sweatshirt/Editions/4b.png', alt: 'Edition 4', title: 'Edition #04', description: '' },
     { id: 5, srcFront: '/assets/Sweatshirt/Editions/5a.png', srcBack: '/assets/Sweatshirt/Editions/5a.png', alt: 'Edition 5', title: 'Edition #05', description: '' },
+    { id: 6, srcFront: '/assets/Sweatshirt/Editions/6a.png', srcBack: '/assets/Sweatshirt/Editions/6a.png', alt: 'Edition 6', title: 'Edition #06', description: '' },
   ];
 
   const [archiveIndex, setArchiveIndex] = useState(0);
