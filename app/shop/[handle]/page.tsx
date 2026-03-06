@@ -1401,8 +1401,8 @@ export default function ProductDetailPage() {
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
-            className="bg-white rounded-2xl p-6 shadow-2xl relative overflow-y-auto md:overflow-hidden"
-            style={{ width: '90vw', maxWidth: '1100px', height: '85vh', maxHeight: '850px' }}
+            className="bg-white rounded-2xl p-6 shadow-2xl relative overflow-y-auto"
+            style={{ width: '90vw', maxWidth: '1100px', height: 'auto', maxHeight: '90vh' }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close X Button */}
@@ -1432,9 +1432,9 @@ export default function ProductDetailPage() {
             </AnimatePresence>
 
             {/* Carousel Content */}
-            <div className="flex flex-col h-[calc(100%-35px)] -mt-18">
+            <div className="flex flex-col">
               {/* Images with Arrows */}
-              <div className="flex items-center" style={{ height: '100%' }}>
+              <div className="flex items-center" style={{ minHeight: '400px' }}>
                 {/* Left Arrow */}
                 <button
                   onClick={() => setArchiveIndex((prev) => (prev === 0 ? editionImages.length - 2 : prev - 1))}
@@ -1446,7 +1446,7 @@ export default function ProductDetailPage() {
                 </button>
 
                 {/* Images - Front and Back */}
-                <div className="flex-1 h-full relative overflow-visible">
+                <div className="flex-1 relative overflow-visible" style={{ minHeight: '350px' }}>
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={archiveIndex}
@@ -1454,7 +1454,7 @@ export default function ProductDetailPage() {
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -50 }}
                       transition={{ duration: 0.3 }}
-                      className="relative w-full h-full flex flex-col md:flex-row gap-0 md:gap-4 justify-center md:items-center pt-28 md:pt-0"
+                      className="relative w-full min-h-[350px] flex flex-col md:flex-row gap-0 md:gap-4 justify-center md:items-center pt-8 md:pt-0"
                     >
                       {/* Mobile: Single image (no rotation if front === back) */}
                       <div className="md:hidden relative w-full h-[300px] flex-shrink-0">
@@ -1528,7 +1528,7 @@ export default function ProductDetailPage() {
                       {/* Desktop: Show one centered image if front === back, otherwise both side by side */}
                       {editionImages[archiveIndex + 1].srcFront === editionImages[archiveIndex + 1].srcBack ? (
                         // Single image - centered
-                        <div className="hidden md:block relative w-full h-full md:w-[50%] flex-shrink-0 mx-auto">
+                        <div className="hidden md:block relative w-full md:w-[50%] flex-shrink-0 mx-auto" style={{ height: '350px' }}>
                           <Image
                             src={editionImages[archiveIndex + 1].srcFront}
                             alt={editionImages[archiveIndex + 1].alt}
@@ -1539,7 +1539,7 @@ export default function ProductDetailPage() {
                       ) : (
                         // Two images side by side
                         <>
-                          <div className="hidden md:block relative w-full h-full md:w-[50%] flex-shrink-0">
+                          <div className="hidden md:block relative w-full md:w-[50%] flex-shrink-0" style={{ height: '350px' }}>
                             {editionImages[archiveIndex + 1].srcFront === 'unlock' ? (
                               <div className="w-full h-full flex items-center justify-center">
                                 <div className="w-64 h-64 flex items-center justify-center bg-gray-100 rounded-lg">
@@ -1560,7 +1560,7 @@ export default function ProductDetailPage() {
                               />
                             )}
                           </div>
-                          <div className="hidden md:block relative w-full h-full md:w-[50%] flex-shrink-0">
+                          <div className="hidden md:block relative w-full md:w-[50%] flex-shrink-0" style={{ height: '350px' }}>
                             {editionImages[archiveIndex + 1].srcBack === 'unlock' ? (
                               <div className="w-full h-full flex items-center justify-center">
                                 <div className="w-64 h-64 flex items-center justify-center bg-gray-100 rounded-lg">
