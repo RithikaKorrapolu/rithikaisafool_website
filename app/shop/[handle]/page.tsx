@@ -48,22 +48,7 @@ export default function ProductDetailPage() {
   const [waitlistSubmitting, setWaitlistSubmitting] = useState(false);
   const [waitlistSuccess, setWaitlistSuccess] = useState(false);
   const [waitlistError, setWaitlistError] = useState('');
-  const [showArchivePopup, setShowArchivePopup] = useState(false);
   const [editionCount, setEditionCount] = useState(9);
-
-  const editionImages = [
-    { id: 0, srcFront: 'main', srcBack: 'main', alt: 'Current Edition', title: 'Edition #01', description: 'The current mystery design. What will it be?' },
-    { id: 1, srcFront: '/assets/Sweatshirt/Editions/1a.png', srcBack: '/assets/Sweatshirt/Editions/1b.png', alt: 'Edition 1', title: 'Edition #01', description: '"The dream behind this project is to get strangers to collect and share stories with each other. For the first one, I liked the idea of someone on the sweatshirt literally asking for one. I hope it works and the wearer gets to hear a lot of cool stories." - Rithika K. from NYC' },
-    { id: 2, srcFront: '/assets/Sweatshirt/Editions/2a.png', srcBack: '/assets/Sweatshirt/Editions/2b.png', alt: 'Edition 2', title: 'Edition #02', description: '"I made this sweatshirt as a nod to my Telugu upbringing. I grew up with a loving, teasing extended family and on visits home to India, I would learn the swear words. Dunnapothu is one of my favorites. It literally means male buffalo but it\'s used when someone\'s being stubborn or foolish. Use it well." - Revanth K. from NYC' },
-    { id: 3, srcFront: '/assets/Sweatshirt/Editions/3a.png', srcBack: '/assets/Sweatshirt/Editions/3a.png', alt: 'Edition 3', title: 'Edition #03', description: '' },
-    { id: 4, srcFront: '/assets/Sweatshirt/Editions/4a.png', srcBack: '/assets/Sweatshirt/Editions/4b.png', alt: 'Edition 4', title: 'Edition #04', description: '"\'The Duality of Man\' is a trope long explored in art; here, it is rendered anew. This piece explores Man as Doll: immaculate and legible from the front, only to be undone by a litany of unsavory truths trailing behind. The garment stages the collapse between how we present and how we are named, between the curated self and the unruly chorus of perception. To wear it is to inhabit that contradiction, and to reckon with the uneasy realization that identity is as much imposed as it is performed." - Ishaan' },
-    { id: 5, srcFront: '/assets/Sweatshirt/Editions/5a.png', srcBack: '/assets/Sweatshirt/Editions/5a.png', alt: 'Edition 5', title: 'Edition #05', description: '"Apple computers. Lay\'s Chips. Polo Bear (by Ralph Lauren). Every so often, we see art that doesn\'t seek external validation. Instead, it is an expression of what the artist wishes to see in the world; it is their truth. I won\'t claim that this sweatshirt represents my truth. I found it so hard to bring myself to sign the damn thing; is this really - of all the possible messages / themes / ideas / hopes - what I wanted to contribute? I\'m warming up to it. I think Polo is iconic. They\'re just so damn playful with that bear. I don\'t know who I am as an artist, but I know who inspires me - and whether or not this sweatshirt becomes a staple of your wardrobe, I hope it can be a reminder of the people and ideas who you aspire to, too." - Pranav' },
-    { id: 6, srcFront: '/assets/Sweatshirt/Editions/6a.png', srcBack: '/assets/Sweatshirt/Editions/6a.png', alt: 'Edition 6', title: 'Edition #06', description: '"My intention with this piece was to be a comment on… nay. A dialogue with… nay. A reflection of the sacred masculine spirit." - Jordan' },
-    { id: 7, srcFront: '/assets/Sweatshirt/Editions/7a.png', srcBack: '/assets/Sweatshirt/Editions/7b.png', alt: 'Edition 7', title: 'Edition #07', description: '"I added a tiger because I love tigers, and I especially like that they represent "graceful strength." they are powerful and self-assured, but they are not belligerent. I thought this particular tiger looked cute, and the mary oliver quote fit it well – about making the most of life, and not shying away from the wildness of it." - Kasra' },
-  ];
-
-  const [archiveIndex, setArchiveIndex] = useState(0);
-  const [archiveImageSide, setArchiveImageSide] = useState<'front' | 'back'>('front');
   const [cotmImageIndex, setCotmImageIndex] = useState(0);
   const [strangerImageIndex, setStrangerImageIndex] = useState(0);
 
@@ -75,7 +60,7 @@ export default function ProductDetailPage() {
 
   // Lock body scroll when any popup is open to prevent mobile address bar jumping
   useEffect(() => {
-    const isAnyPopupOpen = showWaitlistPopup || sizeChartOpen || showArchivePopup;
+    const isAnyPopupOpen = showWaitlistPopup || sizeChartOpen;
     if (isAnyPopupOpen) {
       document.body.classList.add('popup-open');
     } else {
@@ -84,16 +69,7 @@ export default function ProductDetailPage() {
     return () => {
       document.body.classList.remove('popup-open');
     };
-  }, [showWaitlistPopup, sizeChartOpen, showArchivePopup]);
-
-  // Toggle archive image side every 2 seconds on mobile
-  useEffect(() => {
-    if (!showArchivePopup) return;
-    const interval = setInterval(() => {
-      setArchiveImageSide(prev => prev === 'front' ? 'back' : 'front');
-    }, 2000);
-    return () => clearInterval(interval);
-  }, [showArchivePopup]);
+  }, [showWaitlistPopup, sizeChartOpen]);
 
   // Measure header height and set CSS variable for proper spacing
   useEffect(() => {
@@ -849,7 +825,7 @@ export default function ProductDetailPage() {
                     <strong>Each of these hoodies are custom-designed by a different person</strong> and you don't get to see it ahead of time. You pick your size but the design is a total mystery until it arrives. After you buy one, you get a design call with me (Rithika) where <strong>you help design the next hoodie for the next stranger.</strong> And so forth!
                   </p>
                   <p className="text-base text-black font-[family-name:var(--font-inter)] mt-4">
-                    <span className="bg-[#dcff73] px-1">You can check out the archive <button onClick={() => setShowArchivePopup(true)} className="font-bold underline hover:opacity-70">here</button></span>. Note: The archive updates about once a month, so you might not see some of the newest sweatshirts in there yet. If you're curious, we're on <strong>hoodie #{editionCount}</strong> right now. <em>And if you like reading the stories behind people's designs and don't want to miss new drops, you can <button onClick={() => window.dispatchEvent(new CustomEvent('openNewsletterPopup', { detail: { title: 'BREAKING NEWS', description: 'We have a newsletter, you can sign up below :)' } }))} className="font-bold underline hover:opacity-70">sign up for our newsletter</button>.</em>
+                    <span className="bg-[#dcff73] px-1">You can check out the archive <Link href="/shop/stranger-archive" className="font-bold underline hover:opacity-70">here</Link></span>. Note: The archive updates about once a month, so you might not see some of the newest sweatshirts in there yet. If you're curious, we're on <strong>hoodie #{editionCount}</strong> right now. <em>And if you like reading the stories behind people's designs and don't want to miss new drops, you can <button onClick={() => window.dispatchEvent(new CustomEvent('openNewsletterPopup', { detail: { title: 'BREAKING NEWS', description: 'We have a newsletter, you can sign up below :)' } }))} className="font-bold underline hover:opacity-70">sign up for our newsletter</button>.</em>
                   </p>
                 </div>
               ) : (product.title?.toLowerCase().includes('specific things') ||
@@ -1382,238 +1358,6 @@ export default function ProductDetailPage() {
                   </tr>
                 </tbody>
               </table>
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-
-    {/* Archive Popup */}
-    <AnimatePresence>
-      {showArchivePopup && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 popup-backdrop"
-          onClick={() => setShowArchivePopup(false)}
-        >
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            className="bg-white rounded-2xl p-6 shadow-2xl relative overflow-y-auto"
-            style={{ width: '90vw', maxWidth: '1100px', height: 'auto', maxHeight: '90vh' }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Close X Button */}
-            <button
-              onClick={() => setShowArchivePopup(false)}
-              className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center text-black hover:bg-gray-100 rounded-full transition-colors z-10"
-            >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M18 6L6 18M6 6l12 12"/>
-              </svg>
-            </button>
-
-            <h2 className="text-2xl font-bold mb-0 text-black font-[family-name:var(--font-inter)] uppercase text-center">
-              Hoodie Archive
-            </h2>
-            <AnimatePresence mode="wait">
-              <motion.h3
-                key={archiveIndex}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                className="text-xl font-bold text-black font-[family-name:var(--font-inter)] uppercase text-center mb-1"
-              >
-                {editionImages[archiveIndex + 1].title}
-              </motion.h3>
-            </AnimatePresence>
-
-            {/* Carousel Content */}
-            <div className="flex flex-col">
-              {/* Images with Arrows */}
-              <div className="flex items-center" style={{ minHeight: '400px' }}>
-                {/* Left Arrow */}
-                <button
-                  onClick={() => setArchiveIndex((prev) => (prev === 0 ? editionImages.length - 2 : prev - 1))}
-                  className="flex-shrink-0 w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors mr-4 z-10 relative"
-                >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2">
-                    <path d="M15 18l-6-6 6-6"/>
-                  </svg>
-                </button>
-
-                {/* Images - Front and Back */}
-                <div className="flex-1 relative overflow-visible" style={{ minHeight: '350px' }}>
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={archiveIndex}
-                      initial={{ opacity: 0, x: 50 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -50 }}
-                      transition={{ duration: 0.3 }}
-                      className="relative w-full min-h-[350px] flex flex-col md:flex-row gap-0 md:gap-4 justify-center md:items-center pt-8 md:pt-0"
-                    >
-                      {/* Mobile: Single image (no rotation if front === back) */}
-                      <div className="md:hidden relative w-full h-[300px] flex-shrink-0">
-                        {editionImages[archiveIndex + 1].srcFront === editionImages[archiveIndex + 1].srcBack ? (
-                          // Single image - no rotation needed
-                          <div className="absolute inset-0" style={{ transform: 'scale(1.30)' }}>
-                            <Image
-                              src={editionImages[archiveIndex + 1].srcFront}
-                              alt={editionImages[archiveIndex + 1].alt}
-                              fill
-                              className="object-contain"
-                            />
-                          </div>
-                        ) : (
-                          // Two different images - rotate between them
-                          <AnimatePresence>
-                            <motion.div
-                              key={archiveImageSide}
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              exit={{ opacity: 0 }}
-                              transition={{ duration: 0.5 }}
-                              className="absolute inset-0"
-                              style={{ transform: 'scale(1.30)' }}
-                            >
-                              {archiveImageSide === 'front' ? (
-                                editionImages[archiveIndex + 1].srcFront === 'unlock' ? (
-                                  <div className="w-full h-full flex items-center justify-center">
-                                    <div className="w-48 h-48 flex items-center justify-center bg-gray-100 rounded-lg">
-                                      <div className="text-center">
-                                        <svg className="w-12 h-12 mx-auto text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                        </svg>
-                                        <p className="text-gray-500 font-bold text-sm">COMING SOON</p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                ) : (
-                                  <Image
-                                    src={editionImages[archiveIndex + 1].srcFront}
-                                    alt={`${editionImages[archiveIndex + 1].alt} Front`}
-                                    fill
-                                    className="object-contain"
-                                  />
-                                )
-                              ) : (
-                                editionImages[archiveIndex + 1].srcBack === 'unlock' ? (
-                                  <div className="w-full h-full flex items-center justify-center">
-                                    <div className="w-48 h-48 flex items-center justify-center bg-gray-100 rounded-lg">
-                                      <div className="text-center">
-                                        <svg className="w-12 h-12 mx-auto text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                        </svg>
-                                        <p className="text-gray-500 font-bold text-sm">COMING SOON</p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                ) : (
-                                  <Image
-                                    src={editionImages[archiveIndex + 1].srcBack}
-                                    alt={`${editionImages[archiveIndex + 1].alt} Back`}
-                                    fill
-                                    className="object-contain"
-                                  />
-                                )
-                              )}
-                            </motion.div>
-                          </AnimatePresence>
-                        )}
-                      </div>
-                      {/* Desktop: Show one centered image if front === back, otherwise both side by side */}
-                      {editionImages[archiveIndex + 1].srcFront === editionImages[archiveIndex + 1].srcBack ? (
-                        // Single image - centered
-                        <div className="hidden md:block relative w-full md:w-[50%] flex-shrink-0 mx-auto" style={{ height: '350px' }}>
-                          <Image
-                            src={editionImages[archiveIndex + 1].srcFront}
-                            alt={editionImages[archiveIndex + 1].alt}
-                            fill
-                            className="object-contain"
-                          />
-                        </div>
-                      ) : (
-                        // Two images side by side
-                        <>
-                          <div className="hidden md:block relative w-full md:w-[50%] flex-shrink-0" style={{ height: '350px' }}>
-                            {editionImages[archiveIndex + 1].srcFront === 'unlock' ? (
-                              <div className="w-full h-full flex items-center justify-center">
-                                <div className="w-64 h-64 flex items-center justify-center bg-gray-100 rounded-lg">
-                                  <div className="text-center">
-                                    <svg className="w-12 h-12 mx-auto text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                    </svg>
-                                    <p className="text-gray-500 font-bold text-sm">COMING SOON</p>
-                                  </div>
-                                </div>
-                              </div>
-                            ) : (
-                              <Image
-                                src={editionImages[archiveIndex + 1].srcFront}
-                                alt={`${editionImages[archiveIndex + 1].alt} Front`}
-                                fill
-                                className="object-contain"
-                              />
-                            )}
-                          </div>
-                          <div className="hidden md:block relative w-full md:w-[50%] flex-shrink-0" style={{ height: '350px' }}>
-                            {editionImages[archiveIndex + 1].srcBack === 'unlock' ? (
-                              <div className="w-full h-full flex items-center justify-center">
-                                <div className="w-64 h-64 flex items-center justify-center bg-gray-100 rounded-lg">
-                                  <div className="text-center">
-                                    <svg className="w-12 h-12 mx-auto text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                    </svg>
-                                    <p className="text-gray-500 font-bold text-sm">COMING SOON</p>
-                                  </div>
-                                </div>
-                              </div>
-                            ) : (
-                              <Image
-                                src={editionImages[archiveIndex + 1].srcBack}
-                                alt={`${editionImages[archiveIndex + 1].alt} Back`}
-                                fill
-                                className="object-contain"
-                              />
-                            )}
-                          </div>
-                        </>
-                      )}
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
-
-                {/* Right Arrow */}
-                <button
-                  onClick={() => setArchiveIndex((prev) => (prev === editionImages.length - 2 ? 0 : prev + 1))}
-                  className="flex-shrink-0 w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors ml-4 z-10 relative"
-                >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2">
-                    <path d="M9 18l6-6-6-6"/>
-                  </svg>
-                </button>
-              </div>
-
-              {/* Text and Dots below images */}
-              <div className="text-center mt-6 md:-mt-10 mx-auto pb-8 md:pb-0" style={{ width: '80%' }}>
-                <AnimatePresence mode="wait">
-                  <motion.p
-                    key={archiveIndex}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.3 }}
-                    className="text-base md:text-lg text-black font-[family-name:var(--font-inter)]"
-                  >
-                    {editionImages[archiveIndex + 1].description}
-                  </motion.p>
-                </AnimatePresence>
-              </div>
             </div>
           </motion.div>
         </motion.div>
