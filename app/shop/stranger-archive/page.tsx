@@ -121,7 +121,8 @@ export default function StrangerArchivePage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center"
+            className="fixed z-50 flex items-center justify-center p-4 overflow-y-auto"
+            style={{ top: 0, left: 0, right: 0, bottom: 0, minHeight: '100dvh' }}
             onClick={() => setSelectedId(null)}
           >
             {/* Dark overlay */}
@@ -129,7 +130,8 @@ export default function StrangerArchivePage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/80"
+              className="fixed bg-black/80"
+              style={{ top: 0, left: 0, right: 0, bottom: 0, minHeight: '100dvh' }}
             />
 
             {/* Popup content */}
@@ -138,7 +140,7 @@ export default function StrangerArchivePage() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative z-10 bg-white rounded-2xl p-6 md:p-8 mx-4 max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+              className="relative z-10 bg-white rounded-2xl p-5 md:p-8 max-w-4xl w-[calc(100%-32px)] md:w-full max-h-[85vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Close button */}
