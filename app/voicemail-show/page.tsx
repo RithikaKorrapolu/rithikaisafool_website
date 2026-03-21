@@ -23,7 +23,7 @@ export default function VoicemailShow() {
         <div className="container mx-auto px-6">
           {/* Hero Section */}
           <div className="mb-2 lg:mb-6 mt-4 text-center max-w-[58rem] mx-auto">
-            <h2 className="text-black text-[2.0625rem] lg:text-5xl tracking-tight font-[family-name:var(--font-instrument-serif)]">
+            <h2 className="text-black text-[2.0625rem] lg:text-5xl tracking-tight leading-[1.1] lg:leading-[1.2] font-[family-name:var(--font-instrument-serif)]">
               <span style={{ textDecoration: 'underline', textDecorationStyle: 'wavy', textDecorationColor: '#F8330D', fontStyle: 'italic' }}>Voicemails for Friends</span> is a <span className="font-bold">phone number my friends can call</span> to hear the message I left them that day.
             </h2>
             <p className="text-black text-lg lg:text-xl mt-4 font-[family-name:var(--font-inter)] tracking-tight">

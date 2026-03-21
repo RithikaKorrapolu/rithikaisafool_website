@@ -7,6 +7,34 @@ import Image from "next/image";
 const TILE_SIZE_DESKTOP = 387;
 const GAP = 22;
 const DEFAULT_TILES = 58;
+const TARGET_ROWS_DESKTOP = 7; // Rows per page on desktop
+const TARGET_ROWS_MOBILE = 9; // Rows per page on mobile
+
+// Get number of columns based on screen dimensions (independent of tile count)
+const getGridCols = (screenWidth: number, screenHeight: number): number => {
+  const screenAspect = screenWidth / screenHeight;
+
+  if (screenAspect > 1) {
+    // Landscape (desktop): calculate based on ~64 tiles target
+    const targetTiles = 64;
+    let bestCols = 8;
+    let bestScore = Infinity;
+
+    for (let cols = 4; cols <= 12; cols++) {
+      const rows = Math.ceil(targetTiles / cols);
+      const gridAspect = cols / rows;
+      const score = Math.abs(gridAspect - screenAspect);
+      if (score < bestScore) {
+        bestScore = score;
+        bestCols = cols;
+      }
+    }
+    return bestCols;
+  } else {
+    // Portrait (mobile): force 7 columns for better width fill
+    return 7;
+  }
+};
 
 // Calculate tile size based on screen width (80% on mobile)
 const getTileSize = (windowWidth: number) => {
@@ -20,42 +48,9 @@ const getTileSize = (windowWidth: number) => {
 const getGridDimensions = (totalTiles: number, screenWidth: number = 1200, screenHeight: number = 800) => {
   const screenAspect = screenWidth / screenHeight;
 
-  // For landscape (desktop), prefer more columns
-  // For portrait (mobile), prefer more rows
-  if (screenAspect > 1) {
-    // Landscape: aim for grid aspect ratio similar to screen
-    // Try different column counts and pick the one that best matches screen aspect
-    let bestCols = Math.ceil(Math.sqrt(totalTiles));
-    let bestScore = Infinity;
-
-    for (let cols = 2; cols <= totalTiles; cols++) {
-      const rows = Math.ceil(totalTiles / cols);
-      const gridAspect = cols / rows;
-      const score = Math.abs(gridAspect - screenAspect);
-      if (score < bestScore) {
-        bestScore = score;
-        bestCols = cols;
-      }
-    }
-
-    return { cols: bestCols, rows: Math.ceil(totalTiles / bestCols) };
-  } else {
-    // Portrait: more rows than columns
-    let bestCols = Math.ceil(Math.sqrt(totalTiles));
-    let bestScore = Infinity;
-
-    for (let cols = 2; cols <= totalTiles; cols++) {
-      const rows = Math.ceil(totalTiles / cols);
-      const gridAspect = cols / rows;
-      const score = Math.abs(gridAspect - screenAspect);
-      if (score < bestScore) {
-        bestScore = score;
-        bestCols = cols;
-      }
-    }
-
-    return { cols: bestCols, rows: Math.ceil(totalTiles / bestCols) };
-  }
+  // Use consistent column count from getGridCols to ensure full rows
+  const cols = getGridCols(screenWidth, screenHeight);
+  return { cols, rows: Math.ceil(totalTiles / cols) };
 };
 
 // Type for song tile data
@@ -64,11 +59,11 @@ type SongTile = { albumCover: string; title: string; artist: string; memory: str
 // Default song data for tiles with album covers
 const defaultSongTiles: { [key: number]: SongTile } = {
   0: {
-    albumCover: 'https://i.scdn.co/image/ab67616d0000b2730ec8c8bbb4ae1157c4dbe75d',
-    title: "The Bride's Dad",
-    artist: 'Hamilton Leithauser',
-    memory: "I found this song a year after my dad passed away. It still makes me cry when I think about the fact he won't be at my wedding. But I can almost picture him as the dad in this song. It lets me imagine what it would've been like.",
-    youtubeId: 'Tygdn3w3nMQ',
+    albumCover: 'https://i.scdn.co/image/ab67616d0000b273db0917ddd4139153bc1d1a1a',
+    title: 'Modern Love',
+    artist: 'David Bowie',
+    memory: "This was from a school trip a bunch of us took when we were high school seniors, touring college campuses. The girl I had crushed on all through high school was there, and she danced with me in the aisle of the bus (for which we were scolded, and there's nothing like a little rule-breaking with a girl you love to cement a memory).",
+    youtubeId: 'HivQqTtiHVw',
   },
   1: {
     albumCover: 'https://i.scdn.co/image/ab67616d0000b27357a0868419086b576553c9f4',
@@ -155,11 +150,11 @@ const defaultSongTiles: { [key: number]: SongTile } = {
     youtubeId: 'ZxSSUX3MEJM',
   },
   13: {
-    albumCover: 'https://i.scdn.co/image/ab67616d0000b273db0917ddd4139153bc1d1a1a',
-    title: 'Modern Love',
-    artist: 'David Bowie',
-    memory: "This was from a school trip a bunch of us took when we were high school seniors, touring college campuses. The girl I had crushed on all through high school was there, and she danced with me in the aisle of the bus (for which we were scolded, and there's nothing like a little rule-breaking with a girl you love to cement a memory).",
-    youtubeId: 'HivQqTtiHVw',
+    albumCover: 'https://i.scdn.co/image/ab67616d0000b2730ec8c8bbb4ae1157c4dbe75d',
+    title: "The Bride's Dad",
+    artist: 'Hamilton Leithauser',
+    memory: "I found this song a year after my dad passed away. It still makes me cry when I think about the fact he won't be at my wedding. But I can almost picture him as the dad in this song. It lets me imagine what it would've been like.",
+    youtubeId: 'Tygdn3w3nMQ',
   },
   14: {
     albumCover: 'https://i.scdn.co/image/ab67616d0000b27389289af092e4b233c6165ebb',
@@ -186,7 +181,7 @@ const defaultSongTiles: { [key: number]: SongTile } = {
     albumCover: 'https://i.scdn.co/image/ab67616d0000b27349b5b0e43ad82f8b6d0379e4',
     title: 'Harvest Moon',
     artist: 'Neil Young',
-    memory: "I remember my very best friend showing it to me and it was also featured in one of our favorite shows. we went to hawaii together and we danced on the beach to this a little tipsy. the sun was setting, a full moon was out and we were going to hop in the ocean shortly after. we were both so sunkissed",
+    memory: "I remember my very best friend showing it to me and it was also featured in one of our favorite shows. we went to hawaii together and we danced on the beach to this a little tipsy. the sun was setting, a full moon was out and we were going to hop in the ocean shortly after. we were both so happy",
     youtubeId: 'n2MtEsrcTTs',
   },
   18: {
@@ -319,7 +314,7 @@ const defaultSongTiles: { [key: number]: SongTile } = {
     albumCover: 'https://i.scdn.co/image/ab67616d0000b2737a4c8c59851c88f6794c3cbf',
     title: 'Wonderwall',
     artist: 'Oasis',
-    memory: "Made out with a Scottish lad to this in a club in Hanoi, Vietnam",
+    memory: "Made out with a Scottish lad to this in a club in Hanoi, Vietnam. Great kiss.",
     youtubeId: '6hzrDeceEKc',
   },
   37: {
@@ -445,7 +440,7 @@ const defaultSongTiles: { [key: number]: SongTile } = {
     albumCover: 'https://i.scdn.co/image/ab67616d0000b273a6f6056c9ded5242ca245c56',
     title: 'Sweden',
     artist: 'C418',
-    memory: "Whenever I hear it, I'm instantly reminded of the first time I played Minecraft with my best friend at her house in December 2012. I can still picture us sitting on her living room floor, surrounded by snacks while she patiently guided me through the game, even though I had no clue what I was doing. The music played softly in the background, and I can vividly recall the excitement we felt.",
+    memory: "Whenever I hear this, I'm instantly reminded of the first time I played Minecraft with my best friend at her house in December 2012. I can still picture us sitting on her living room floor, surrounded by snacks while she patiently guided me through the game, even though I had no clue what I was doing. The music played softly and I can vividly recall the excitement we felt.",
     youtubeId: 'aBkTkxKDduc',
   },
   55: {
@@ -594,12 +589,11 @@ export default function SongsThatHoldMemoriesExhibit() {
     setMounted(true);
 
     if (mobile) {
-      // On mobile: no animations, start directly zoomed into a random tile
+      // On mobile: no animations, start in grid view
       setShowIntro(false);
-      setShowFullQuilt(false);
-      const randomTile = Math.floor(Math.random() * DEFAULT_TILES);
-      setActiveTile(randomTile);
-      setShowMemoryText(true);
+      setShowFullQuilt(true);
+      setActiveTile(0);
+      setShowMemoryText(false);
 
       // Lock body scroll on mobile
       document.body.style.overflow = 'hidden';
@@ -628,19 +622,30 @@ export default function SongsThatHoldMemoriesExhibit() {
   const [searchResults, setSearchResults] = useState<number[]>([]);
   const [showResults, setShowResults] = useState(false);
   const [flippedTile, setFlippedTile] = useState<number | null>(null);
+  const [mobileVideoPopup, setMobileVideoPopup] = useState<{ index: number; youtubeId: string; title: string; artist: string } | null>(null);
   const [showFullQuilt, setShowFullQuilt] = useState(true);
+  const [lastActiveTile, setLastActiveTile] = useState<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Popup and form state
   const [showPopup, setShowPopup] = useState(false);
-  const [formTitle, setFormTitle] = useState('');
-  const [formArtist, setFormArtist] = useState('');
   const [formMemory, setFormMemory] = useState('');
   const [formYoutubeUrl, setFormYoutubeUrl] = useState('');
   const [formError, setFormError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Spotify search state
+  const [spotifyQuery, setSpotifyQuery] = useState('');
+  const [spotifyResults, setSpotifyResults] = useState<{ id: string; title: string; artist: string; albumCover: string }[]>([]);
+  const [selectedTrack, setSelectedTrack] = useState<{ id: string; title: string; artist: string; albumCover: string } | null>(null);
+  const [isSearching, setIsSearching] = useState(false);
+  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [songTiles, setSongTiles] = useState<{ [key: number]: SongTile }>(defaultSongTiles);
   const [totalTiles, setTotalTiles] = useState(DEFAULT_TILES);
+  const [failedImages, setFailedImages] = useState<Set<number>>(new Set());
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(0);
 
   // Window dimensions for quilt view and responsive tile size
   const [windowSize, setWindowSize] = useState({ width: 1200, height: 800 });
@@ -653,8 +658,20 @@ export default function SongsThatHoldMemoriesExhibit() {
     return url;
   };
 
-  // Calculate current grid dimensions based on screen size
-  const gridDimensions = getGridDimensions(totalTiles, windowSize.width, windowSize.height);
+  // Calculate tiles per page dynamically based on screen dimensions
+  const gridCols = getGridCols(windowSize.width, windowSize.height);
+  const targetRows = isMobile ? TARGET_ROWS_MOBILE : TARGET_ROWS_DESKTOP;
+  const tilesPerPage = gridCols * targetRows;
+
+  // Pagination calculations
+  const totalPages = Math.ceil(totalTiles / tilesPerPage);
+  const pageStartIndex = currentPage * tilesPerPage;
+  const pageEndIndex = Math.min(pageStartIndex + tilesPerPage, totalTiles);
+  const tilesOnCurrentPage = pageEndIndex - pageStartIndex;
+  const currentPageTileIndices = Array.from({ length: tilesOnCurrentPage }, (_, i) => pageStartIndex + i);
+
+  // Calculate current grid dimensions based on tiles per page (not total tiles)
+  const gridDimensions = getGridDimensions(tilesOnCurrentPage, windowSize.width, windowSize.height);
 
   // Calculate responsive tile size
   const tileSize = getTileSize(windowSize.width);
@@ -672,10 +689,28 @@ export default function SongsThatHoldMemoriesExhibit() {
   // Account for header space (more on mobile due to stacked layout)
   const headerOffset = windowSize.width < 768 ? 140 : 60;
   const availableHeight = windowSize.height - headerOffset;
-  const quiltScale = Math.min(
-    (windowSize.width * 0.9) / gridWidth,
-    (availableHeight * 0.85) / gridHeight
-  );
+
+  const quiltScale = isMobile
+    ? Math.min(
+        (windowSize.width * 0.85) / gridWidth,
+        (availableHeight * 0.80) / gridHeight
+      )
+    : Math.min(
+        (windowSize.width * 0.9) / gridWidth,
+        (availableHeight * 0.85) / gridHeight
+      );
+
+  // Lock body scroll when popup is open
+  useEffect(() => {
+    if (showPopup) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [showPopup]);
 
   // Load user-submitted tiles from API on mount
   useEffect(() => {
@@ -699,6 +734,44 @@ export default function SongsThatHoldMemoriesExhibit() {
     };
     fetchSubmittedSongs();
   }, []);
+
+  // Debounced Spotify search
+  useEffect(() => {
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+
+    if (!spotifyQuery.trim() || spotifyQuery.length < 2) {
+      setSpotifyResults([]);
+      setIsSearching(false);
+      return;
+    }
+
+    setIsSearching(true);
+
+    searchTimeoutRef.current = setTimeout(async () => {
+      try {
+        const response = await fetch(`/api/spotify/search?q=${encodeURIComponent(spotifyQuery)}&limit=5`);
+        if (response.ok) {
+          const data = await response.json();
+          setSpotifyResults(data.tracks || []);
+        } else {
+          setSpotifyResults([]);
+        }
+      } catch (error) {
+        console.error('Spotify search error:', error);
+        setSpotifyResults([]);
+      } finally {
+        setIsSearching(false);
+      }
+    }, 300);
+
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+    };
+  }, [spotifyQuery]);
 
   // Extract YouTube video ID from URL
   const extractYoutubeId = (url: string): string | null => {
@@ -725,13 +798,8 @@ export default function SongsThatHoldMemoriesExhibit() {
     setFormError('');
 
     // Validate required fields
-    if (!formTitle.trim()) {
-      setFormError('Please enter a song title');
-      return;
-    }
-
-    if (!formArtist.trim()) {
-      setFormError('Please enter an artist name');
+    if (!selectedTrack) {
+      setFormError('Please search and select a song');
       return;
     }
 
@@ -753,8 +821,8 @@ export default function SongsThatHoldMemoriesExhibit() {
     }
 
     // Validate memory length
-    if (formMemory.length > 300) {
-      setFormError('Memory must be 300 characters or less');
+    if (formMemory.length > 360) {
+      setFormError('Memory must be 360 characters or less');
       return;
     }
 
@@ -765,24 +833,13 @@ export default function SongsThatHoldMemoriesExhibit() {
 
     setIsSubmitting(true);
 
-    // Try to fetch album cover from Spotify
-    let albumCover = `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`;
-    try {
-      const response = await fetch(`/api/spotify/search?title=${encodeURIComponent(formTitle.trim())}&artist=${encodeURIComponent(formArtist.trim())}`);
-      if (response.ok) {
-        const data = await response.json();
-        if (data.albumCover) {
-          albumCover = data.albumCover;
-        }
-      }
-    } catch {
-      // Fall back to YouTube thumbnail if Spotify fails
-    }
+    // Use album cover from selected track, fallback to YouTube thumbnail
+    const albumCover = selectedTrack.albumCover || `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`;
 
     const newTile: SongTile = {
       albumCover,
-      title: formTitle.trim(),
-      artist: formArtist.trim(),
+      title: selectedTrack.title,
+      artist: selectedTrack.artist,
       memory: formMemory.trim(),
       youtubeId: youtubeId,
     };
@@ -804,8 +861,9 @@ export default function SongsThatHoldMemoriesExhibit() {
       setSongTiles(updatedTiles);
       setTotalTiles(newIndex + 1);
       // Reset form and close popup
-      setFormTitle('');
-      setFormArtist('');
+      setSpotifyQuery('');
+      setSpotifyResults([]);
+      setSelectedTrack(null);
       setFormMemory('');
       setFormYoutubeUrl('');
       setFormError('');
@@ -856,6 +914,9 @@ export default function SongsThatHoldMemoriesExhibit() {
     setIsTransitioning(true);
     setShowMemoryText(false);
     setActiveTile(tileIndex);
+    // Update page to show the tile
+    setCurrentPage(Math.floor(tileIndex / tilesPerPage));
+    setShowFullQuilt(false); // Zoom into the tile
     setShowResults(false);
     setSearchQuery('');
     setTimeout(() => {
@@ -864,8 +925,9 @@ export default function SongsThatHoldMemoriesExhibit() {
     }, 800);
   };
 
-  // Calculate camera position to center on active tile
-  const activePos = getTilePosition(activeTile, gridDimensions.cols, tileSize);
+  // Calculate camera position to center on active tile (relative to current page)
+  const tileIndexOnPage = activeTile - pageStartIndex;
+  const activePos = getTilePosition(tileIndexOnPage, gridDimensions.cols, tileSize);
 
   const handleNext = useCallback(() => {
     if (isTransitioning) return;
@@ -883,6 +945,8 @@ export default function SongsThatHoldMemoriesExhibit() {
     }
 
     setActiveTile(newTile);
+    // Update page to show the new tile
+    setCurrentPage(Math.floor(newTile / tilesPerPage));
 
     // Reset transition state after animation
     setTimeout(() => {
@@ -907,8 +971,7 @@ export default function SongsThatHoldMemoriesExhibit() {
     const hideTimer = setTimeout(() => {
       setShowIntro(false);
       // Pick a random tile from default tiles (0 to DEFAULT_TILES-1)
-      const randomTile = Math.floor(Math.random() * DEFAULT_TILES);
-      setActiveTile(randomTile);
+      setActiveTile(0);
       setShowFullQuilt(false);
     }, 2600);
 
@@ -929,6 +992,9 @@ export default function SongsThatHoldMemoriesExhibit() {
   const activeTileRef = useRef(activeTile);
   const isTransitioningRef = useRef(isTransitioning);
   const totalTilesRef = useRef(totalTiles);
+  const currentPageRef = useRef(currentPage);
+  const tilesOnCurrentPageRef = useRef(tilesOnCurrentPage);
+  const tilesPerPageRef = useRef(tilesPerPage);
 
   useEffect(() => {
     activeTileRef.current = activeTile;
@@ -942,6 +1008,18 @@ export default function SongsThatHoldMemoriesExhibit() {
     totalTilesRef.current = totalTiles;
   }, [totalTiles]);
 
+  useEffect(() => {
+    currentPageRef.current = currentPage;
+  }, [currentPage]);
+
+  useEffect(() => {
+    tilesOnCurrentPageRef.current = tilesOnCurrentPage;
+  }, [tilesOnCurrentPage]);
+
+  useEffect(() => {
+    tilesPerPageRef.current = tilesPerPage;
+  }, [tilesPerPage]);
+
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -950,19 +1028,30 @@ export default function SongsThatHoldMemoriesExhibit() {
       if (isTransitioningRef.current) return;
 
       const currentTile = activeTileRef.current;
-      const total = totalTilesRef.current;
-      const { cols: gridCols } = getGridDimensions(total, window.innerWidth, window.innerHeight);
-      let newTile = currentTile;
-      const col = currentTile % gridCols;
-      const row = Math.floor(currentTile / gridCols);
+      const page = currentPageRef.current;
+      const tilesOnPage = tilesOnCurrentPageRef.current;
 
-      if (e.key === 'ArrowRight' && currentTile + 1 < total && col < gridCols - 1) {
+      // Calculate page boundaries
+      const pageStart = page * tilesPerPageRef.current;
+      const pageEnd = pageStart + tilesOnPage;
+
+      // Grid dimensions based on tiles on current page
+      const { cols: gridCols } = getGridDimensions(tilesOnPage, window.innerWidth, window.innerHeight);
+
+      // Calculate position relative to page start
+      const tileOnPage = currentTile - pageStart;
+      const col = tileOnPage % gridCols;
+      const row = Math.floor(tileOnPage / gridCols);
+
+      let newTile = currentTile;
+
+      if (e.key === 'ArrowRight' && col < gridCols - 1 && currentTile + 1 < pageEnd) {
         e.preventDefault();
         newTile = currentTile + 1;
       } else if (e.key === 'ArrowLeft' && col > 0) {
         e.preventDefault();
         newTile = currentTile - 1;
-      } else if (e.key === 'ArrowDown' && currentTile + gridCols < total) {
+      } else if (e.key === 'ArrowDown' && currentTile + gridCols < pageEnd) {
         e.preventDefault();
         newTile = currentTile + gridCols;
       } else if (e.key === 'ArrowUp' && row > 0) {
@@ -974,7 +1063,7 @@ export default function SongsThatHoldMemoriesExhibit() {
         return;
       }
 
-      if (newTile !== currentTile && newTile >= 0 && newTile < total) {
+      if (newTile !== currentTile && newTile >= pageStart && newTile < pageEnd) {
         setIsTransitioning(true);
         setShowMemoryText(false);
         setFlippedTile(null);
@@ -1009,18 +1098,22 @@ export default function SongsThatHoldMemoriesExhibit() {
       const deltaY = touchEndY - touchStartY;
 
       const minSwipeDistance = 50;
-      const total = totalTilesRef.current;
-      const { cols: gridCols } = getGridDimensions(total, window.innerWidth, window.innerHeight);
+      const page = currentPageRef.current;
+      const tilesOnPage = tilesOnCurrentPageRef.current;
+      const pageStart = page * tilesPerPageRef.current;
+      const pageEnd = pageStart + tilesOnPage;
+      const { cols: gridCols } = getGridDimensions(tilesOnPage, window.innerWidth, window.innerHeight);
 
       // Determine if horizontal or vertical swipe
       if (Math.abs(deltaX) > Math.abs(deltaY)) {
         // Horizontal swipe
         if (Math.abs(deltaX) > minSwipeDistance) {
           const currentTile = activeTileRef.current;
-          const col = currentTile % gridCols;
+          const tileOnPage = currentTile - pageStart;
+          const col = tileOnPage % gridCols;
           let newTile = currentTile;
 
-          if (deltaX < 0 && currentTile + 1 < total && col < gridCols - 1) {
+          if (deltaX < 0 && col < gridCols - 1 && currentTile + 1 < pageEnd) {
             // Swipe left = move right
             newTile = currentTile + 1;
           } else if (deltaX > 0 && col > 0) {
@@ -1028,7 +1121,7 @@ export default function SongsThatHoldMemoriesExhibit() {
             newTile = currentTile - 1;
           }
 
-          if (newTile !== currentTile && newTile >= 0 && newTile < total) {
+          if (newTile !== currentTile && newTile >= pageStart && newTile < pageEnd) {
             setIsTransitioning(true);
             setFlippedTile(null);
             setShowMemoryText(false);
@@ -1046,10 +1139,11 @@ export default function SongsThatHoldMemoriesExhibit() {
         // Vertical swipe
         if (Math.abs(deltaY) > minSwipeDistance) {
           const currentTile = activeTileRef.current;
-          const row = Math.floor(currentTile / gridCols);
+          const tileOnPage = currentTile - pageStart;
+          const row = Math.floor(tileOnPage / gridCols);
           let newTile = currentTile;
 
-          if (deltaY < 0 && currentTile + gridCols < total) {
+          if (deltaY < 0 && currentTile + gridCols < pageEnd) {
             // Swipe up = move down
             newTile = currentTile + gridCols;
           } else if (deltaY > 0 && row > 0) {
@@ -1057,7 +1151,7 @@ export default function SongsThatHoldMemoriesExhibit() {
             newTile = currentTile - gridCols;
           }
 
-          if (newTile !== currentTile && newTile >= 0 && newTile < total) {
+          if (newTile !== currentTile && newTile >= pageStart && newTile < pageEnd) {
             setIsTransitioning(true);
             setFlippedTile(null);
             setShowMemoryText(false);
@@ -1098,31 +1192,36 @@ export default function SongsThatHoldMemoriesExhibit() {
       if (now - lastWheelTime < wheelThrottle) return;
 
       const currentTile = activeTileRef.current;
-      const total = totalTilesRef.current;
-      const { cols: gridCols } = getGridDimensions(total, window.innerWidth, window.innerHeight);
-      const col = currentTile % gridCols;
-      const row = Math.floor(currentTile / gridCols);
+      const page = currentPageRef.current;
+      const tilesOnPage = tilesOnCurrentPageRef.current;
+      const pageStart = page * tilesPerPageRef.current;
+      const pageEnd = pageStart + tilesOnPage;
+      const { cols: gridCols } = getGridDimensions(tilesOnPage, window.innerWidth, window.innerHeight);
+
+      const tileOnPage = currentTile - pageStart;
+      const col = tileOnPage % gridCols;
+      const row = Math.floor(tileOnPage / gridCols);
       let newTile = currentTile;
 
       // Determine primary scroll direction
       const threshold = 10;
       if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
         // Horizontal scroll
-        if (e.deltaX > threshold && currentTile + 1 < total && col < gridCols - 1) {
+        if (e.deltaX > threshold && col < gridCols - 1 && currentTile + 1 < pageEnd) {
           newTile = currentTile + 1;
         } else if (e.deltaX < -threshold && col > 0) {
           newTile = currentTile - 1;
         }
       } else {
         // Vertical scroll
-        if (e.deltaY > threshold && currentTile + gridCols < total) {
+        if (e.deltaY > threshold && currentTile + gridCols < pageEnd) {
           newTile = currentTile + gridCols;
         } else if (e.deltaY < -threshold && row > 0) {
           newTile = currentTile - gridCols;
         }
       }
 
-      if (newTile !== currentTile && newTile >= 0 && newTile < total) {
+      if (newTile !== currentTile && newTile >= pageStart && newTile < pageEnd) {
         lastWheelTime = now;
         setIsTransitioning(true);
         setShowMemoryText(false);
@@ -1246,7 +1345,7 @@ export default function SongsThatHoldMemoriesExhibit() {
         className="h-screen w-screen overflow-hidden bg-[#0a0a0a] relative"
         style={{
           height: '100dvh',
-          touchAction: isMobile ? 'none' : 'auto',
+          touchAction: isMobile ? 'manipulation' : 'auto',
           overscrollBehavior: 'none',
         }}
       >
@@ -1272,8 +1371,7 @@ export default function SongsThatHoldMemoriesExhibit() {
               </span>
             ))}
           </h1>
-
-          {/* Controls row */}
+                    {/* Controls row */}
           <div className="flex flex-col-reverse md:flex-row items-center gap-2 md:gap-3 w-full md:w-auto">
           {/* Search bar - last on desktop */}
           <div className="relative flex-1 md:flex-none md:order-3">
@@ -1343,9 +1441,10 @@ export default function SongsThatHoldMemoriesExhibit() {
         </div>
 
         {/* Submit Button - Top Right */}
+        {/* Share a memory button - desktop only (mobile version is in header) */}
         <button
           onClick={() => setShowPopup(true)}
-          className="fixed bottom-6 left-6 md:bottom-auto md:top-6 md:right-6 md:left-auto z-[60] px-3 md:px-4 py-2 bg-white text-black text-xs md:text-sm font-bold rounded-full hover:bg-black hover:text-white transition-all font-[family-name:var(--font-inter)] jiggle-hover"
+          className="hidden md:block fixed top-6 right-6 z-[60] px-4 py-2 bg-white text-black text-sm font-bold rounded-full hover:bg-black hover:text-white transition-all font-[family-name:var(--font-inter)] jiggle-hover"
           style={{ boxShadow: '0 4px 20px rgba(255,255,255,0.2), inset 0 0 0 0.5px rgba(255,255,255,0.3)' }}
         >
           Share a memory
@@ -1368,44 +1467,118 @@ export default function SongsThatHoldMemoriesExhibit() {
                 </svg>
               </button>
 
-              <h2 className="text-white text-2xl md:text-2xl font-bold mb-4 md:mb-6 font-[family-name:var(--font-instrument-serif)] italic">
+              <h2 className="text-white text-2xl md:text-2xl font-bold mb-2 font-[family-name:var(--font-instrument-serif)] italic">
                 Share a song memory
               </h2>
-              <p className="text-white/60 text-sm md:text-base mb-4 -mt-2 italic font-[family-name:var(--font-inter)]">
+              <p className="text-white/60 text-sm md:text-base mb-4 font-[family-name:var(--font-inter)]">
+                Do you ever hear a song and it takes you back to a specific moment?
+              </p>
+              <p className="text-white/60 text-xs md:text-sm mb-4 -mt-2 italic font-[family-name:var(--font-inter)]">
                 Tip: The more specific you are, the more special this feels. Go for it!
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
-                <div>
-                  <label className="block text-white/70 text-sm mb-1 font-[family-name:var(--font-inter)]">Song Title <span className="text-red-500">*</span></label>
-                  <input
-                    type="text"
-                    value={formTitle}
-                    onChange={(e) => setFormTitle(e.target.value)}
-                    className="w-full px-4 py-2 bg-white/10 text-white rounded-lg border border-white/20 focus:border-white/40 focus:outline-none font-[family-name:var(--font-inter)]"
-                    placeholder="e.g. Strawberry Swing"
-                  />
-                </div>
+                {/* Spotify Song Search */}
+                <div className="relative">
+                  <label className="block text-white/70 text-sm mb-1 font-[family-name:var(--font-inter)]">
+                    Search for a song <span className="text-white/40">(pulled from Spotify)</span> <span className="text-red-500">*</span>
+                  </label>
 
-                <div>
-                  <label className="block text-white/70 text-sm mb-1 font-[family-name:var(--font-inter)]">Artist <span className="text-red-500">*</span></label>
-                  <input
-                    type="text"
-                    value={formArtist}
-                    onChange={(e) => setFormArtist(e.target.value)}
-                    className="w-full px-4 py-2 bg-white/10 text-white rounded-lg border border-white/20 focus:border-white/40 focus:outline-none font-[family-name:var(--font-inter)]"
-                    placeholder="e.g. Coldplay"
-                  />
+                  {selectedTrack ? (
+                    // Show selected track
+                    <div className="flex items-center gap-3 px-4 py-3 bg-white/10 rounded-lg border border-white/30">
+                      {selectedTrack.albumCover && (
+                        <img
+                          src={selectedTrack.albumCover}
+                          alt=""
+                          className="w-10 h-10 rounded object-cover"
+                        />
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <p className="text-white font-medium truncate font-[family-name:var(--font-inter)]">
+                          {selectedTrack.title}
+                        </p>
+                        <p className="text-white/60 text-sm truncate font-[family-name:var(--font-inter)]">
+                          {selectedTrack.artist}
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedTrack(null);
+                          setSpotifyQuery('');
+                          setSpotifyResults([]);
+                        }}
+                        className="text-white/60 hover:text-white p-1"
+                      >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+                  ) : (
+                    // Show search input
+                    <>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          value={spotifyQuery}
+                          onChange={(e) => setSpotifyQuery(e.target.value)}
+                          className="w-full px-4 py-2 bg-white/10 text-white rounded-lg border border-white/20 focus:border-white/40 focus:outline-none font-[family-name:var(--font-inter)]"
+                          placeholder="Search by song or artist..."
+                        />
+                        {isSearching && (
+                          <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                            <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Search Results Dropdown */}
+                      {spotifyResults.length > 0 && (
+                        <div className="absolute z-50 w-full mt-1 bg-[#1a1a1a] border border-white/20 rounded-lg overflow-hidden shadow-xl">
+                          {spotifyResults.map((track) => (
+                            <button
+                              key={track.id}
+                              type="button"
+                              onClick={() => {
+                                setSelectedTrack(track);
+                                setSpotifyQuery('');
+                                setSpotifyResults([]);
+                              }}
+                              className="w-full flex items-center gap-3 px-4 py-2 hover:bg-white/10 transition-colors text-left"
+                            >
+                              {track.albumCover && (
+                                <img
+                                  src={track.albumCover}
+                                  alt=""
+                                  className="w-10 h-10 rounded object-cover flex-shrink-0"
+                                />
+                              )}
+                              <div className="min-w-0 flex-1">
+                                <p className="text-white font-medium truncate text-sm font-[family-name:var(--font-inter)]">
+                                  {track.title}
+                                </p>
+                                <p className="text-white/60 text-xs truncate font-[family-name:var(--font-inter)]">
+                                  {track.artist}
+                                </p>
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  )}
                 </div>
 
                 <div>
                   <label className="block text-white/70 text-sm mb-1 font-[family-name:var(--font-inter)]">
-                    Memory <span className="text-red-500">*</span> <span className="text-white/40">({300 - formMemory.length} characters left)</span>
+                    Memory <span className="text-red-500">*</span> <span className="text-white/40">({360 - formMemory.length} characters left)</span>
                   </label>
                   <textarea
                     value={formMemory}
-                    onChange={(e) => setFormMemory(e.target.value.slice(0, 300))}
-                    maxLength={300}
+                    onChange={(e) => setFormMemory(e.target.value.slice(0, 360))}
+                    maxLength={360}
                     rows={4}
                     className="w-full px-4 py-2 bg-white/10 text-white rounded-lg border border-white/20 focus:border-white/40 focus:outline-none resize-none font-[family-name:var(--font-inter)]"
                     placeholder="What memory does this song hold for you?"
@@ -1461,7 +1634,7 @@ export default function SongsThatHoldMemoriesExhibit() {
           style={{
             opacity: mounted ? 1 : 0,
             transform: showFullQuilt
-              ? `translate(${(windowSize.width - gridWidth * quiltScale) / 2}px, ${headerOffset + (availableHeight - gridHeight * quiltScale) / 2}px) scale(${quiltScale})`
+              ? `translate(${(windowSize.width - gridWidth * quiltScale) / 2}px, ${headerOffset + (availableHeight - gridHeight * quiltScale) / (isMobile ? 4 : 2)}px) scale(${quiltScale})`
               : `translate(
                   calc(50vw - ${activePos.x}px),
                   calc(50vh - ${activePos.y}px)
@@ -1478,15 +1651,15 @@ export default function SongsThatHoldMemoriesExhibit() {
               gap: `${GAP}px`,
             }}
           >
-            {Array.from({ length: totalTiles }).map((_, index) => {
-              const tileData = tiles[index % tiles.length];
-              const isActive = index === activeTile;
-              const songData = songTiles[index];
-              const isFlipped = flippedTile === index;
+            {currentPageTileIndices.map((tileIndex) => {
+              const tileData = tiles[tileIndex % tiles.length];
+              const isActive = tileIndex === activeTile;
+              const songData = songTiles[tileIndex];
+              const isFlipped = flippedTile === tileIndex;
 
               return (
                 <div
-                  key={index}
+                  key={tileIndex}
                   className="flip-card rounded-xl overflow-hidden"
                   style={{
                     width: `${tileSize}px`,
@@ -1510,19 +1683,29 @@ export default function SongsThatHoldMemoriesExhibit() {
                       setShowFullQuilt(false);
                       setIsTransitioning(true);
                       setShowMemoryText(false);
-                      setActiveTile(index);
+                      setActiveTile(tileIndex);
                       setFlippedTile(null);
                       setTimeout(() => {
                         setIsTransitioning(false);
                         setShowMemoryText(true);
                       }, 800);
                     } else if (isActive && songData) {
-                      // Flip the active tile
-                      setFlippedTile(isFlipped ? null : index);
-                    } else if (!isTransitioning && index !== activeTile) {
+                      // On mobile, show popup instead of flipping
+                      if (isMobile) {
+                        setMobileVideoPopup({
+                          index: tileIndex,
+                          youtubeId: songData.youtubeId,
+                          title: songData.title,
+                          artist: songData.artist
+                        });
+                      } else {
+                        // Desktop: flip the tile
+                        setFlippedTile(isFlipped ? null : tileIndex);
+                      }
+                    } else if (!isTransitioning && tileIndex !== activeTile) {
                       setIsTransitioning(true);
                       setShowMemoryText(false);
-                      setActiveTile(index);
+                      setActiveTile(tileIndex);
                       setFlippedTile(null);
                       setTimeout(() => {
                         setIsTransitioning(false);
@@ -1541,17 +1724,20 @@ export default function SongsThatHoldMemoriesExhibit() {
                       }}
                     >
                       {/* Tile number */}
-                      <span className="absolute top-2 right-2 text-white/40 text-[1.05rem] font-mono z-10">#{index + 1}</span>
+                      <span className="absolute top-2 right-2 text-white/40 text-[1.05rem] font-mono z-10">#{tileIndex + 1}</span>
                       {/* Album cover for song tiles */}
                       {songData && (
                         <>
-                          <Image
-                            src={getMobileOptimizedImage(songData.albumCover)}
-                            alt={`${songData.title} by ${songData.artist}`}
-                            fill
-                            className={`object-cover transition-all duration-500 ${showMemoryText && isActive && !showFullQuilt ? 'blur-[10px]' : 'blur-0'}`}
-                            unoptimized
-                          />
+                          {!failedImages.has(tileIndex) && (
+                            <Image
+                              src={getMobileOptimizedImage(songData.albumCover)}
+                              alt={`${songData.title} by ${songData.artist}`}
+                              fill
+                              className={`object-cover transition-all duration-500 ${showMemoryText && isActive && !showFullQuilt ? 'blur-[10px]' : 'blur-0'}`}
+                              unoptimized
+                              onError={() => setFailedImages(prev => new Set([...prev, tileIndex]))}
+                            />
+                          )}
                                                     {/* Memory text */}
                           <div className={`absolute inset-0 flex items-center justify-center px-4 md:px-12 py-4 md:py-6 text-gray-200 transition-opacity duration-500 bg-black/40 md:bg-black/30 md:backdrop-blur-[2px] ${showMemoryText && isActive && !showFullQuilt ? 'opacity-100' : 'opacity-0'}`}>
                             <div className="flex flex-col items-center gap-2 md:gap-4">
@@ -1581,10 +1767,11 @@ export default function SongsThatHoldMemoriesExhibit() {
                       className="flip-card-back absolute inset-0 rounded-xl overflow-hidden bg-black"
                       onClick={(e) => e.stopPropagation()}
                     >
-                      {songData && isFlipped && (
+                      {/* Desktop only: flip shows iframe */}
+                      {songData && isFlipped && !isMobile && (
                         <iframe
-                          key={`youtube-${index}-${songData.youtubeId}`}
-                          src={`https://www.youtube.com/embed/${songData.youtubeId}?autoplay=1&rel=0&modestbranding=1`}
+                          key={`youtube-${tileIndex}-${songData.youtubeId}`}
+                          src={`https://www.youtube.com/embed/${songData.youtubeId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
                           width="100%"
                           height="100%"
                           frameBorder="0"
@@ -1603,15 +1790,148 @@ export default function SongsThatHoldMemoriesExhibit() {
           </div>
         </div>
 
-        {/* Full Quilt Button - Bottom Right */}
+        {/* Mobile Bottom Bar - All buttons in one row with even spacing */}
+        <div className="md:hidden fixed bottom-6 left-4 right-4 z-[60] flex items-center justify-between">
+          {/* Share a memory */}
+          <button
+            onClick={() => setShowPopup(true)}
+            className="px-3 py-2 bg-white text-black text-xs font-bold rounded-full hover:bg-black hover:text-white transition-all font-[family-name:var(--font-inter)] jiggle-hover"
+            style={{ boxShadow: '0 4px 20px rgba(255,255,255,0.2), inset 0 0 0 0.5px rgba(255,255,255,0.3)' }}
+          >
+            Share a memory
+          </button>
+
+          {/* Pagination - center */}
+          {showFullQuilt && totalPages > 1 && (
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setCurrentPage(p => Math.max(0, p - 1))}
+                disabled={currentPage === 0}
+                className="px-3 py-2 bg-white text-black text-base font-black rounded-full disabled:opacity-30 disabled:cursor-not-allowed transition-all font-[family-name:var(--font-inter)]"
+                style={{ boxShadow: '0 4px 20px rgba(255,255,255,0.2)' }}
+              >
+                ←
+              </button>
+              <span className="text-white text-sm font-[family-name:var(--font-inter)]">
+                {currentPage + 1} / {totalPages}
+              </span>
+              <button
+                onClick={() => setCurrentPage(p => Math.min(totalPages - 1, p + 1))}
+                disabled={currentPage === totalPages - 1}
+                className="px-3 py-2 bg-white text-black text-base font-black rounded-full disabled:opacity-30 disabled:cursor-not-allowed transition-all font-[family-name:var(--font-inter)]"
+                style={{ boxShadow: '0 4px 20px rgba(255,255,255,0.2)' }}
+              >
+                →
+              </button>
+            </div>
+          )}
+
+          {/* Tile View */}
+          <button
+            onClick={() => {
+              const goingToTileView = showFullQuilt;
+              if (goingToTileView) {
+                setActiveTile(lastActiveTile);
+                setCurrentPage(Math.floor(lastActiveTile / tilesPerPage));
+                setShowFullQuilt(false);
+                setShowMemoryText(false);
+                setTimeout(() => setShowMemoryText(true), 100);
+              } else {
+                setLastActiveTile(activeTile);
+                setCurrentPage(Math.floor(activeTile / tilesPerPage));
+                setShowFullQuilt(true);
+              }
+            }}
+            className="px-3 py-2 bg-white text-black text-xs font-bold rounded-full hover:bg-black hover:text-white transition-all font-[family-name:var(--font-inter)]"
+            style={{ boxShadow: '0 4px 20px rgba(255,255,255,0.2), inset 0 0 0 0.5px rgba(255,255,255,0.3)' }}
+          >
+            {showFullQuilt ? 'Tile View' : 'Grid View'}
+          </button>
+        </div>
+
+        {/* Desktop Pagination Controls - Bottom Center */}
+        {showFullQuilt && totalPages > 1 && (
+          <div className="hidden md:flex fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] items-center gap-4">
+            <button
+              onClick={() => setCurrentPage(p => Math.max(0, p - 1))}
+              disabled={currentPage === 0}
+              className="px-4 py-2 bg-white text-black text-sm font-bold rounded-full disabled:opacity-30 disabled:cursor-not-allowed hover:bg-black hover:text-white transition-all font-[family-name:var(--font-inter)]"
+              style={{ boxShadow: '0 4px 20px rgba(255,255,255,0.2)' }}
+            >
+              ← Prev
+            </button>
+            <span className="text-white text-sm font-[family-name:var(--font-inter)]">
+              {currentPage + 1} / {totalPages}
+            </span>
+            <button
+              onClick={() => setCurrentPage(p => Math.min(totalPages - 1, p + 1))}
+              disabled={currentPage === totalPages - 1}
+              className="px-4 py-2 bg-white text-black text-sm font-bold rounded-full disabled:opacity-30 disabled:cursor-not-allowed hover:bg-black hover:text-white transition-all font-[family-name:var(--font-inter)]"
+              style={{ boxShadow: '0 4px 20px rgba(255,255,255,0.2)' }}
+            >
+              Next →
+            </button>
+          </div>
+        )}
+
+        {/* Desktop Tile View / Grid View - Bottom Right */}
         <button
-          onClick={() => setShowFullQuilt(!showFullQuilt)}
-          className="fixed bottom-6 right-6 z-[60] px-3 md:px-4 py-2 bg-white text-black text-xs md:text-sm font-bold rounded-full hover:bg-black hover:text-white transition-all font-[family-name:var(--font-inter)]"
+          onClick={() => {
+            const goingToTileView = showFullQuilt;
+            if (goingToTileView) {
+              setActiveTile(lastActiveTile);
+              setCurrentPage(Math.floor(lastActiveTile / tilesPerPage));
+              setShowFullQuilt(false);
+              setShowMemoryText(false);
+              setTimeout(() => setShowMemoryText(true), isMobile ? 100 : 800);
+            } else {
+              setLastActiveTile(activeTile);
+              setCurrentPage(Math.floor(activeTile / tilesPerPage));
+              setShowFullQuilt(true);
+            }
+          }}
+          className="hidden md:block fixed bottom-6 right-6 z-[60] px-4 py-2 bg-white text-black text-sm font-bold rounded-full hover:bg-black hover:text-white transition-all font-[family-name:var(--font-inter)]"
           style={{ boxShadow: '0 4px 20px rgba(255,255,255,0.2), inset 0 0 0 0.5px rgba(255,255,255,0.3)' }}
         >
           {showFullQuilt ? 'Tile View' : 'Full Grid View'}
         </button>
 
+
+        {/* Mobile Video Popup */}
+        {mobileVideoPopup && (
+          <div
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90"
+            onClick={() => setMobileVideoPopup(null)}
+          >
+            <div
+              className="relative w-[90vw] max-w-lg"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Video title */}
+              <p className="text-white text-center mb-3 text-base leading-snug">
+                <span className="font-bold">{mobileVideoPopup.title}</span> <span className="text-white/70">by {mobileVideoPopup.artist}</span>
+              </p>
+
+              {/* YouTube iframe */}
+              <div className="relative w-full aspect-video rounded-xl overflow-hidden">
+                <iframe
+                  src={`https://www.youtube.com/embed/${mobileVideoPopup.youtubeId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
+                  width="100%"
+                  height="100%"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="absolute inset-0"
+                />
+              </div>
+
+              {/* Swipe hint */}
+              <p className="text-white/50 text-[0.825rem] text-center mt-4">
+                Tap outside video to keep exploring
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Vignette overlay */}
         <div

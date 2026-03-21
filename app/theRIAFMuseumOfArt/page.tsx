@@ -1163,7 +1163,7 @@ export default function TheRIAFMuseumOfArt() {
       </a>
 
       {/* Search - Top Right */}
-      <div className="fixed top-6 left-16 right-4 md:left-auto md:right-6 z-50 flex flex-col items-end">
+      <div className="fixed top-6 left-20 right-4 md:left-auto md:right-6 z-50 flex flex-col items-end">
         <div className="w-full md:w-96">
           {/* Search Input - Always visible */}
           <input

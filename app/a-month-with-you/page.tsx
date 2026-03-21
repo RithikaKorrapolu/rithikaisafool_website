@@ -21,7 +21,7 @@ export default function AMonthWithYou() {
         <div className="container mx-auto px-6">
           {/* Hero Section */}
           <div className="mb-0 lg:mb-6 mt-4 text-center max-w-[58rem] mx-auto">
-            <h2 className="text-black text-[2.0625rem] lg:text-5xl tracking-tight font-[family-name:var(--font-instrument-serif)]">
+            <h2 className="text-black text-[2.0625rem] lg:text-5xl tracking-tight leading-[1.1] lg:leading-[1.2] font-[family-name:var(--font-instrument-serif)]">
               <span style={{ textDecoration: 'underline', textDecorationStyle: 'wavy', textDecorationColor: '#F8330D', fontStyle: 'italic' }}>A Month With You</span> is a show where every month we pick a new guest and ask them one question a day.<br /><span className="font-bold">You decide the questions.</span>
             </h2>
                       </div>
@@ -44,7 +44,7 @@ export default function AMonthWithYou() {
               <p className="text-black text-2xl lg:text-3xl font-[family-name:var(--font-inter)] tracking-tight">
                 Let&apos;s get to know someone, <span className="italic">together</span>.
               </p>
-              <p className="text-black text-4xl lg:text-6xl font-[family-name:var(--font-instrument-serif)] tracking-tight font-bold mt-4">
+              <p className="text-black text-4xl lg:text-6xl font-[family-name:var(--font-instrument-serif)] tracking-tight leading-[1.1] lg:leading-[1.2] font-bold mt-4">
                 Launching 4/1/2026.
               </p>
               <p className="text-black text-2xl lg:text-4xl font-[family-name:var(--font-inter)] tracking-tight mt-2">

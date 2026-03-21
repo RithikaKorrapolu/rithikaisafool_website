@@ -14,7 +14,7 @@ export default function Museum() {
         <div className="container mx-auto px-6">
           {/* Hero Section */}
           <div className="mb-6 mt-4 text-center max-w-[58rem] mx-auto">
-            <h2 className="text-black text-[2.0625rem] lg:text-5xl tracking-tight font-[family-name:var(--font-instrument-serif)]">
+            <h2 className="text-black text-[2.0625rem] lg:text-5xl tracking-tight leading-[1.1] lg:leading-[1.2] font-[family-name:var(--font-instrument-serif)]">
               <span style={{ textDecoration: 'underline', textDecorationStyle: 'wavy', textDecorationColor: '#F8330D', fontStyle: 'italic' }}>The RIAF! Museum of Art</span> is a digital museum that lets you <span className="font-bold">explore art by <em>vibe.</em></span>
             </h2>
           </div>

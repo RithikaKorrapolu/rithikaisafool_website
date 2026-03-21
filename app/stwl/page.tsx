@@ -78,7 +78,7 @@ export default function STWL() {
         <div className="container mx-auto px-6">
           {/* Hero Section */}
           <div className="mb-6 mt-4 text-center max-w-[58rem] mx-auto">
-            <h2 className="text-black text-[2.0625rem] lg:text-5xl tracking-tight font-[family-name:var(--font-instrument-serif)]">
+            <h2 className="text-black text-[2.0625rem] lg:text-5xl tracking-tight leading-[1.1] lg:leading-[1.2] font-[family-name:var(--font-instrument-serif)]">
               <span style={{ textDecoration: 'underline', textDecorationStyle: 'wavy', textDecorationColor: '#F8330D', fontStyle: 'italic' }}>Specific Things We Like</span> is a weekly text about the <span className="font-bold">small things that make people happy.</span>
             </h2>
           </div>
@@ -86,7 +86,7 @@ export default function STWL() {
           {/* Two Column Layout - Image + Form */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8 max-w-[58rem] mx-auto">
             {/* Image Animation - Left */}
-            <div className="flex flex-col justify-center lg:items-end items-center order-2 lg:order-1">
+            <div className="flex flex-col justify-center lg:items-end items-center order-1">
               <p className="text-black text-sm lg:text-base font-[family-name:var(--font-inter)] tracking-tight mb-4 text-center w-full">
                 A dose of someone else's joy.
               </p>
@@ -113,7 +113,7 @@ export default function STWL() {
             </div>
 
             {/* Form Column - Right */}
-            <div className="flex flex-col justify-center order-1 lg:order-2">
+            <div className="flex flex-col justify-center order-2">
               <p className="text-black text-base lg:text-xl font-[family-name:var(--font-inter)] tracking-tight mb-4">
                 Once a week, we share a few small things that brought someone joy. And that's it.
               </p>

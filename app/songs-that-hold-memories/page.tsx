@@ -14,18 +14,18 @@ export default function SongsThatHoldMemories() {
         <div className="container mx-auto px-6">
           {/* Hero Section */}
           <div className="mb-6 mt-4 text-center max-w-[58rem] mx-auto">
-            <h2 className="text-black text-[2.0625rem] lg:text-5xl tracking-tight font-[family-name:var(--font-instrument-serif)]">
+            <h2 className="text-black text-[2.0625rem] lg:text-5xl tracking-tight leading-[1.1] lg:leading-[1.2] font-[family-name:var(--font-instrument-serif)]">
               <span style={{ textDecoration: 'underline', textDecorationStyle: 'wavy', textDecorationColor: '#F8330D', fontStyle: 'italic' }}>Songs That Hold Memories</span> is a living collection of <span className="font-bold">songs and the memories people associate</span> with them.
             </h2>
-            <p className="text-black text-xl lg:text-2xl mt-4 font-[family-name:var(--font-inter)] tracking-tighter">
-              Do you ever hear a song and it takes you back to a specific moment?<br />That&apos;s what this is, but for everybody.
+            <p className="hidden lg:block text-black text-xl lg:text-2xl mt-4 font-[family-name:var(--font-inter)] tracking-tighter">
+              Do you ever hear a song and it takes you back to a specific moment?<br />This is a collection of those.
             </p>
           </div>
 
           {/* Video with Button Overlay */}
           <Link
             href="/songs-that-hold-memories-exhibit"
-            className="block w-full max-w-2xl mx-auto mt-8 mb-8 relative cursor-pointer"
+            className="block w-full max-w-2xl mx-auto mt-4 lg:mt-8 mb-4 lg:mb-8 relative cursor-pointer"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
@@ -75,6 +75,11 @@ export default function SongsThatHoldMemories() {
               </div>
             </div>
           </Link>
+
+          {/* Mobile only subtitle - appears under video */}
+          <p className="lg:hidden text-black text-xl mt-4 mb-6 font-[family-name:var(--font-inter)] tracking-tighter text-center max-w-[58rem] mx-auto">
+            Do you ever hear a song and it takes you back to a specific moment?<br />This is a collection of those.
+          </p>
 
           {/* What was I thinking? Section */}
           <motion.div

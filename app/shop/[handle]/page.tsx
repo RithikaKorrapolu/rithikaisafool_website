@@ -662,7 +662,7 @@ export default function ProductDetailPage() {
         {/* LMSY Full-Width Header */}
         {isLMSYProduct && (
           <div className="mb-6 mt-4 text-center max-w-[58rem] mx-auto">
-            <h2 className="text-black text-3xl lg:text-5xl tracking-tight font-[family-name:var(--font-instrument-serif)]">
+            <h2 className="text-black text-3xl lg:text-5xl tracking-tight leading-[1.1] lg:leading-[1.2] font-[family-name:var(--font-instrument-serif)]">
               <span className="font-[family-name:var(--font-instrument-serif)] italic" style={{ textDecoration: 'underline', textDecorationStyle: 'wavy', textDecorationColor: '#F8330D' }}>Let Me Show You</span> is a monthly digital exhibit where everyday people <span className="font-bold">share art they love</span> and what it <span className="font-bold">means to them.</span>
             </h2>
             <div ref={mainButtonsRef} className="flex flex-col items-center gap-3 mt-6">
@@ -701,7 +701,7 @@ export default function ProductDetailPage() {
               }}
             >
               {/* Free Sample Label - Corner Banner */}
-              <div className="absolute top-0 right-0 z-10 overflow-hidden w-72 h-72">
+              <div className="absolute top-0 right-0 z-10 overflow-hidden w-72 h-72 pointer-events-none">
                 <div className="absolute top-12 right-[-70px] rotate-45 bg-[#dcff73] text-black text-sm font-normal font-[family-name:var(--font-inter)] uppercase tracking-wider py-3 w-96 text-center shadow-md">
                   &nbsp;&nbsp;&nbsp;Click For <span className="font-black">Free Sample</span>
                 </div>
@@ -995,7 +995,7 @@ export default function ProductDetailPage() {
         {/* COTM Full-Width Header */}
         {isCOTMProduct && (
           <div className="mb-6 mt-4 text-center max-w-[58rem] mx-auto">
-            <h2 className="text-black text-4xl lg:text-6xl tracking-tight font-[family-name:var(--font-instrument-serif)]">
+            <h2 className="text-black text-4xl lg:text-6xl tracking-tight leading-[1.1] lg:leading-[1.2] font-[family-name:var(--font-instrument-serif)]">
               Every month, we feature a new <span className="italic font-bold"><SplitFlapText text="condition" delay={0} cycleTime={4000} /></span> and make <span className="italic font-bold"><SplitFlapText text="merch" delay={1000} cycleTime={4000} /></span> for it.
             </h2>
           </div>
@@ -1211,10 +1211,10 @@ export default function ProductDetailPage() {
         {/* Stranger Full-Width Header */}
         {isStrangerProduct && (
           <div className="mb-6 mt-4 text-center max-w-[58rem] mx-auto">
-            <h2 className="text-black text-4xl lg:text-6xl tracking-tight font-[family-name:var(--font-instrument-serif)] font-bold">
+            <h2 className="text-black text-4xl lg:text-6xl tracking-tight leading-[1.1] lg:leading-[1.2] font-[family-name:var(--font-instrument-serif)] font-bold">
               Can you trust a <span className="italic">stranger</span> to design your sweatshirt?
             </h2>
-            <p className="text-black text-3xl lg:text-5xl tracking-tight font-[family-name:var(--font-instrument-serif)] mt-2">
+            <p className="text-black text-3xl lg:text-5xl tracking-tight leading-[1.1] lg:leading-[1.2] font-[family-name:var(--font-instrument-serif)] mt-2">
               So far, <span className="inline-block bg-[#dcff73] px-2 py-0.5 rounded font-bold min-w-[2.5rem] text-center">
                 <motion.span
                   key={slotNumber}

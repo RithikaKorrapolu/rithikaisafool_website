@@ -1,4 +1,4 @@
-import { put, list } from '@vercel/blob';
+import { put, list, del } from '@vercel/blob';
 import { NextRequest, NextResponse } from 'next/server';
 
 type SongTile = {
@@ -21,9 +21,11 @@ export async function POST(request: NextRequest) {
 
     // Get current songs from blob
     let songs: SongTile[] = [];
+    let existingBlobUrl: string | null = null;
     try {
       const { blobs } = await list({ prefix: 'songs-data' });
       if (blobs.length > 0) {
+        existingBlobUrl = blobs[0].url;
         const response = await fetch(blobs[0].url);
         songs = await response.json();
       }
@@ -43,10 +45,18 @@ export async function POST(request: NextRequest) {
 
     songs.push(newSong);
 
-    // Save to blob
-    await put('songs-data/submitted-songs.json', JSON.stringify(songs), {
+    // Delete old blob if exists (to avoid conflicts)
+    if (existingBlobUrl) {
+      try {
+        await del(existingBlobUrl);
+      } catch {
+        // Ignore delete errors
+      }
+    }
+
+    // Save to blob with new name each time
+    await put(`songs-data/submitted-songs-${Date.now()}.json`, JSON.stringify(songs), {
       access: 'public',
-      addRandomSuffix: false,
     });
 
     return NextResponse.json({ success: true, index: songs.length - 1 });
