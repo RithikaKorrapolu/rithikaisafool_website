@@ -1041,10 +1041,12 @@ export default function SongsThatHoldMemoriesExhibit() {
 
       let newTile = currentTile;
 
-      if (e.key === 'ArrowRight' && col < gridCols - 1 && currentTile + 1 < pageEnd) {
+      if (e.key === 'ArrowRight' && currentTile + 1 < pageEnd) {
+        // Move right, wrapping to next row if at end of row
         e.preventDefault();
         newTile = currentTile + 1;
-      } else if (e.key === 'ArrowLeft' && col > 0) {
+      } else if (e.key === 'ArrowLeft' && currentTile > pageStart) {
+        // Move left, wrapping to previous row if at start of row
         e.preventDefault();
         newTile = currentTile - 1;
       } else if (e.key === 'ArrowDown' && currentTile + gridCols < pageEnd) {
@@ -1202,10 +1204,10 @@ export default function SongsThatHoldMemoriesExhibit() {
       // Determine primary scroll direction
       const threshold = 10;
       if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-        // Horizontal scroll
-        if (e.deltaX > threshold && col < gridCols - 1 && currentTile + 1 < pageEnd) {
+        // Horizontal scroll - wrap between rows
+        if (e.deltaX > threshold && currentTile + 1 < pageEnd) {
           newTile = currentTile + 1;
-        } else if (e.deltaX < -threshold && col > 0) {
+        } else if (e.deltaX < -threshold && currentTile > pageStart) {
           newTile = currentTile - 1;
         }
       } else {
