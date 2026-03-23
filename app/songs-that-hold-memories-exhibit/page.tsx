@@ -1797,8 +1797,8 @@ export default function SongsThatHoldMemoriesExhibit() {
             Share a memory
           </button>
 
-          {/* Pagination - center */}
-          {showFullQuilt && totalPages > 1 && (
+          {/* Pagination - center (hidden during intro) */}
+          {showFullQuilt && totalPages > 1 && isMobile !== null && !showIntro && (
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setCurrentPage(p => Math.max(0, p - 1))}
@@ -1845,8 +1845,8 @@ export default function SongsThatHoldMemoriesExhibit() {
           </button>
         </div>
 
-        {/* Desktop Pagination Controls - Bottom Center */}
-        {showFullQuilt && totalPages > 1 && (
+        {/* Desktop Pagination Controls - Bottom Center (hidden during intro) */}
+        {showFullQuilt && totalPages > 1 && isMobile !== null && !showIntro && (
           <div className="hidden md:flex fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] items-center gap-4">
             <button
               onClick={() => setCurrentPage(p => Math.max(0, p - 1))}
