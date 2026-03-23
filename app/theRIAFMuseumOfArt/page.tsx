@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -767,12 +767,128 @@ const ARTWORKS = [
     feelings: ["warm", "nostalgic", "joyful", "familial"],
     colors: ["#c2a1b1", "#651825"]
   },
+  {
+    id: 85,
+    title: "Untitled",
+    artist: "Ben Zank",
+    year: "",
+    medium: "",
+    image: "/assets/museum/artgallery/85.webp",
+    feelings: ["contemplative", "surreal", "solitary", "dreamlike"],
+    colors: ["#768ca4", "#716a5e"]
+  },
+  {
+    id: 86,
+    title: "Alterego",
+    artist: "Ben Zank",
+    year: "",
+    medium: "",
+    image: "/assets/museum/artgallery/86.webp",
+    feelings: ["introspective", "surreal", "mysterious", "identity"],
+    colors: ["#917f46", "#5a681c"]
+  },
+  {
+    id: 87,
+    title: "Untitled",
+    artist: "Ben Zank",
+    year: "",
+    medium: "",
+    image: "/assets/museum/artgallery/87.webp",
+    feelings: ["ethereal", "minimalist", "contemplative", "serene"],
+    colors: ["#efe5d6", "#706961"]
+  },
+  {
+    id: 88,
+    title: "Please Ignore The Reptile",
+    artist: "Elliot Wair",
+    year: "",
+    medium: "",
+    image: "/assets/museum/artgallery/88.webp",
+    feelings: ["surreal", "absurd", "humorous", "uncanny"],
+    colors: ["#141217", "#858e95"]
+  },
+  {
+    id: 89,
+    title: "The Courtyard of Sleepy Dread",
+    artist: "Elliot Wair",
+    year: "",
+    medium: "",
+    image: "/assets/museum/artgallery/89.webp",
+    feelings: ["mysterious", "eerie", "atmospheric", "dreamlike"],
+    colors: ["#c7c7b8", "#c7c7b8"]
+  },
+  {
+    id: 90,
+    title: "Sorry To Bother You",
+    artist: "Elliot Wair",
+    year: "",
+    medium: "",
+    image: "/assets/museum/artgallery/90.webp",
+    feelings: ["awkward", "surreal", "uncomfortable", "curious"],
+    colors: ["#9aa5a8", "#5e0b05"]
+  },
+  {
+    id: 91,
+    title: "Why Are They So Afraid Of Each Other?",
+    artist: "Elliot Wair",
+    year: "",
+    medium: "",
+    image: "/assets/museum/artgallery/91.webp",
+    feelings: ["contemplative", "social", "mysterious", "melancholy"],
+    colors: ["#7297c3", "#778f96"]
+  },
+  {
+    id: 92,
+    title: "When the Tenderest Parts of You Become the Reason Others Find Their Way Home",
+    artist: "Aunia Kahn",
+    year: "",
+    medium: "",
+    image: "/assets/museum/artgallery/92.webp",
+    feelings: ["vulnerable", "tender", "nurturing", "emotional"],
+    colors: ["#0B0B0B", "#151C26"]
+  },
+  {
+    id: 93,
+    title: "WHAT REMAINS WHEN THE SHOW ENDS",
+    artist: "Aunia Kahn",
+    year: "",
+    medium: "",
+    image: "/assets/museum/artgallery/93.webp",
+    feelings: ["introspective", "melancholy", "vulnerable", "raw"],
+    colors: ["#151514", "#EBA1AE"]
+  },
+  {
+    id: 94,
+    title: "We Holds Every Goodbye in Our Body Like a Landscape",
+    artist: "Aunia Kahn",
+    year: "",
+    medium: "",
+    image: "/assets/museum/artgallery/94.webp",
+    feelings: ["nostalgic", "emotional", "bittersweet", "profound"],
+    colors: ["#151513", "#3F331B"]
+  },
 ];
 
-// Triple the artworks for seamless looping
-const LOOPED_ARTWORKS = [...ARTWORKS, ...ARTWORKS, ...ARTWORKS];
+// Shuffle function using Fisher-Yates algorithm
+const shuffleArray = <T,>(array: T[]): T[] => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
 
 export default function TheRIAFMuseumOfArt() {
+  // Shuffle artworks once on mount for random order each visit
+  const [shuffledArtworks] = useState(() => shuffleArray(ARTWORKS));
+
+  // Triple the artworks for seamless looping
+  const loopedArtworks = useMemo(() =>
+    [...shuffledArtworks, ...shuffledArtworks, ...shuffledArtworks],
+    [shuffledArtworks]
+  );
+
   const [isLoading, setIsLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
@@ -801,13 +917,13 @@ export default function TheRIAFMuseumOfArt() {
   };
 
   // Check if current artwork has light background (use first color of gradient)
-  const currentArtwork = ARTWORKS[currentIndex];
+  const currentArtwork = shuffledArtworks[currentIndex];
   const useDarkText = isLightBackground(currentArtwork?.colors[0] || '#000000');
 
   // Preload first image before showing content (others load with spinner)
   useEffect(() => {
     // Only need to wait for the first image (the one user sees first)
-    const firstImage = ARTWORKS[0].image;
+    const firstImage = shuffledArtworks[0].image;
 
     const img = new window.Image();
     img.onload = () => {
@@ -876,26 +992,28 @@ export default function TheRIAFMuseumOfArt() {
 
   // Generate random suggested feelings on mount - one from each of 6 different paintings
   useEffect(() => {
-    const shuffledArtworks = [...ARTWORKS].sort(() => Math.random() - 0.5);
+    // Filter out artworks with empty feelings arrays
+    const artworksWithFeelings = shuffledArtworks.filter(a => a.feelings.length > 0);
+    const randomizedArtworks = [...artworksWithFeelings].sort(() => Math.random() - 0.5);
     const selectedFeelings: string[] = [];
 
-    for (const artwork of shuffledArtworks) {
+    for (const artwork of randomizedArtworks) {
       if (selectedFeelings.length >= 8) break;
       // Pick a random feeling from this artwork
       const randomFeeling = artwork.feelings[Math.floor(Math.random() * artwork.feelings.length)];
       // Only add if we don't already have this feeling
-      if (!selectedFeelings.includes(randomFeeling)) {
+      if (randomFeeling && !selectedFeelings.includes(randomFeeling)) {
         selectedFeelings.push(randomFeeling);
       }
     }
 
     setSuggestedFeelings(selectedFeelings);
-  }, []);
+  }, [shuffledArtworks]);
 
   // Handle clicking a suggested feeling
   const handleFeelingClick = (feeling: string) => {
     setSelectedFeeling(feeling);
-    const matchingArtwork = ARTWORKS.find(artwork =>
+    const matchingArtwork = shuffledArtworks.find(artwork =>
       artwork.feelings.some(f => f.toLowerCase() === feeling.toLowerCase())
     );
     if (matchingArtwork) {
@@ -939,7 +1057,7 @@ export default function TheRIAFMuseumOfArt() {
     const relatedFeelings = emotionMap[query] || [];
 
     // Score each artwork based on how well it matches
-    const scoredArtworks = ARTWORKS.map(artwork => {
+    const scoredArtworks = shuffledArtworks.map(artwork => {
       let score = 0;
 
       // Direct match in feelings (highest priority)
@@ -973,19 +1091,19 @@ export default function TheRIAFMuseumOfArt() {
 
     // If no matches found, return a random artwork as a suggestion
     if (results.length === 0 && query.length > 0) {
-      const randomArtwork = ARTWORKS[Math.floor(Math.random() * ARTWORKS.length)];
+      const randomArtwork = shuffledArtworks[Math.floor(Math.random() * shuffledArtworks.length)];
       setSearchResults([randomArtwork]);
     } else {
       setSearchResults(results);
     }
-  }, [searchQuery]);
+  }, [searchQuery, shuffledArtworks]);
 
   const navigateToArtwork = (artworkId: number) => {
     const container = scrollContainerRef.current;
     if (container) {
-      const artworkIndex = ARTWORKS.findIndex(a => a.id === artworkId);
+      const artworkIndex = shuffledArtworks.findIndex(a => a.id === artworkId);
       if (artworkIndex !== -1) {
-        const targetScroll = (ARTWORKS.length + artworkIndex) * window.innerHeight;
+        const targetScroll = (shuffledArtworks.length + artworkIndex) * window.innerHeight;
         container.scrollTo({ top: targetScroll, behavior: 'smooth' });
       }
     }
@@ -1008,12 +1126,12 @@ export default function TheRIAFMuseumOfArt() {
       const itemHeight = container.clientHeight;
       const index = Math.round(scrollTop / itemHeight);
       // Ensure positive modulo result
-      const actualIndex = ((index % ARTWORKS.length) + ARTWORKS.length) % ARTWORKS.length;
+      const actualIndex = ((index % shuffledArtworks.length) + shuffledArtworks.length) % shuffledArtworks.length;
       setCurrentIndex(actualIndex);
 
       // Loop back when reaching the end or beginning of the tripled list
-      const totalHeight = LOOPED_ARTWORKS.length * itemHeight;
-      const oneSetHeight = ARTWORKS.length * itemHeight;
+      const totalHeight = loopedArtworks.length * itemHeight;
+      const oneSetHeight = shuffledArtworks.length * itemHeight;
 
       if (scrollTop >= totalHeight - itemHeight) {
         isScrollingRef.current = true;
@@ -1030,8 +1148,8 @@ export default function TheRIAFMuseumOfArt() {
     isScrollingRef.current = true;
     // Use requestAnimationFrame to ensure DOM is ready
     requestAnimationFrame(() => {
-      // Get the first artwork element in the middle set (index = ARTWORKS.length)
-      const middleSetFirstArtworkIndex = ARTWORKS.length;
+      // Get the first artwork element in the middle set (index = shuffledArtworks.length)
+      const middleSetFirstArtworkIndex = shuffledArtworks.length;
       const artworkElements = container.querySelectorAll('[data-artwork-item]');
       const targetElement = artworkElements[middleSetFirstArtworkIndex] as HTMLElement;
 
@@ -1041,7 +1159,7 @@ export default function TheRIAFMuseumOfArt() {
       } else {
         // Fallback to calculation if element not found
         const containerHeight = container.clientHeight;
-        const initialScrollTop = ARTWORKS.length * containerHeight;
+        const initialScrollTop = shuffledArtworks.length * containerHeight;
         container.scrollTop = initialScrollTop;
       }
       setCurrentIndex(0);
@@ -1143,7 +1261,7 @@ export default function TheRIAFMuseumOfArt() {
       style={{
         background: (isHoveringArt || showWarningForId !== null)
           ? 'linear-gradient(180deg, #dc2626 0%, #991b1b 100%)'
-          : `linear-gradient(180deg, ${ARTWORKS[currentIndex].colors[0]} 0%, ${ARTWORKS[currentIndex].colors[1]} 100%)`
+          : `linear-gradient(180deg, ${shuffledArtworks[currentIndex].colors[0]} 0%, ${shuffledArtworks[currentIndex].colors[1]} 100%)`
       }}
       onClick={() => setShowWarningForId(null)}
     >
@@ -1185,9 +1303,9 @@ export default function TheRIAFMuseumOfArt() {
         {/* Suggested feelings - separate container */}
         <div className="w-full md:w-96 mt-2 flex flex-col gap-1.5">
           <div className="flex gap-1.5 md:gap-2 justify-end">
-            {suggestedFeelings.slice(0, 4).map((feeling) => (
+            {suggestedFeelings.slice(0, 4).map((feeling, idx) => (
               <button
-                key={feeling}
+                key={`${feeling}-${idx}`}
                 onTouchEnd={(e) => {
                   e.preventDefault();
                   handleFeelingClick(feeling);
@@ -1209,9 +1327,9 @@ export default function TheRIAFMuseumOfArt() {
             ))}
           </div>
           <div className="flex gap-1.5 md:gap-2 justify-end">
-            {suggestedFeelings.slice(4, 8).map((feeling) => (
+            {suggestedFeelings.slice(4, 8).map((feeling, idx) => (
               <button
-                key={feeling}
+                key={`${feeling}-${idx}`}
                 onTouchEnd={(e) => {
                   e.preventDefault();
                   handleFeelingClick(feeling);
@@ -1248,7 +1366,7 @@ export default function TheRIAFMuseumOfArt() {
             }
           `}</style>
 
-          {LOOPED_ARTWORKS.map((artwork, idx) => (
+          {loopedArtworks.map((artwork, idx) => (
             <div
               key={`${artwork.id}-${idx}`}
               data-artwork-item
