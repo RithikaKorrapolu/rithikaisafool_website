@@ -7,8 +7,8 @@ import Image from "next/image";
 const TILE_SIZE_DESKTOP = 387;
 const GAP = 22;
 const DEFAULT_TILES = 58;
-const TARGET_ROWS_DESKTOP = 7; // Rows per page on desktop
-const TARGET_ROWS_MOBILE = 9; // Rows per page on mobile
+const TILES_PER_PAGE_DESKTOP = 35; // Fixed 7x5 grid on desktop
+const TILES_PER_PAGE_MOBILE = 28; // Fixed 7x4 grid on mobile
 
 // Get number of columns based on screen dimensions (independent of tile count)
 const getGridCols = (screenWidth: number, screenHeight: number): number => {
@@ -44,12 +44,9 @@ const getTileSize = (windowWidth: number) => {
   return TILE_SIZE_DESKTOP;
 };
 
-// Calculate optimal grid dimensions based on screen aspect ratio
+// Calculate grid dimensions - fixed 7 columns for consistent layout
 const getGridDimensions = (totalTiles: number, screenWidth: number = 1200, screenHeight: number = 800) => {
-  const screenAspect = screenWidth / screenHeight;
-
-  // Use consistent column count from getGridCols to ensure full rows
-  const cols = getGridCols(screenWidth, screenHeight);
+  const cols = 7; // Fixed 7 columns for simplicity and performance
   return { cols, rows: Math.ceil(totalTiles / cols) };
 };
 
@@ -650,18 +647,14 @@ export default function SongsThatHoldMemoriesExhibit() {
   // Window dimensions for quilt view and responsive tile size
   const [windowSize, setWindowSize] = useState({ width: 1200, height: 800 });
 
-  // Helper to get smaller image on mobile (300x300 instead of 640x640)
-  const getMobileOptimizedImage = (url: string) => {
-    if (isMobile) {
-      return url.replace('ab67616d0000b273', 'ab67616d00001e02');
-    }
-    return url;
+  // Helper to get smaller image (300x300 instead of 640x640) for better performance
+  const getOptimizedImage = (url: string) => {
+    // Always use smaller images for better performance
+    return url.replace('ab67616d0000b273', 'ab67616d00001e02');
   };
 
-  // Calculate tiles per page dynamically based on screen dimensions
-  const gridCols = getGridCols(windowSize.width, windowSize.height);
-  const targetRows = isMobile ? TARGET_ROWS_MOBILE : TARGET_ROWS_DESKTOP;
-  const tilesPerPage = gridCols * targetRows;
+  // Fixed tiles per page for consistent performance
+  const tilesPerPage = isMobile ? TILES_PER_PAGE_MOBILE : TILES_PER_PAGE_DESKTOP;
 
   // Pagination calculations
   const totalPages = Math.ceil(totalTiles / tilesPerPage);
@@ -670,8 +663,10 @@ export default function SongsThatHoldMemoriesExhibit() {
   const tilesOnCurrentPage = pageEndIndex - pageStartIndex;
   const currentPageTileIndices = Array.from({ length: tilesOnCurrentPage }, (_, i) => pageStartIndex + i);
 
-  // Calculate current grid dimensions based on tiles per page (not total tiles)
-  const gridDimensions = getGridDimensions(tilesOnCurrentPage, windowSize.width, windowSize.height);
+  // Fixed grid dimensions: 7 columns
+  const gridCols = 7;
+  const gridRows = Math.ceil(tilesOnCurrentPage / gridCols);
+  const gridDimensions = { cols: gridCols, rows: gridRows };
 
   // Calculate responsive tile size
   const tileSize = getTileSize(windowSize.width);
@@ -1730,7 +1725,7 @@ export default function SongsThatHoldMemoriesExhibit() {
                         <>
                           {!failedImages.has(tileIndex) && (
                             <Image
-                              src={getMobileOptimizedImage(songData.albumCover)}
+                              src={getOptimizedImage(songData.albumCover)}
                               alt={`${songData.title} by ${songData.artist}`}
                               fill
                               className={`object-cover transition-all duration-500 ${showMemoryText && isActive && !showFullQuilt ? 'blur-[10px]' : 'blur-0'}`}
