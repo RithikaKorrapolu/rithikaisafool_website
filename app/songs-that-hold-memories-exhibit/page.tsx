@@ -917,7 +917,7 @@ export default function SongsThatHoldMemoriesExhibit() {
     setTimeout(() => {
       setIsTransitioning(false);
       setShowMemoryText(true);
-    }, 800);
+    }, 400);
   };
 
   // Calculate camera position to center on active tile (relative to current page)
@@ -947,7 +947,7 @@ export default function SongsThatHoldMemoriesExhibit() {
     setTimeout(() => {
       setIsTransitioning(false);
       setShowMemoryText(true);
-    }, 800);
+    }, 400);
   }, [activeTile, isTransitioning, songTiles]);
 
   useEffect(() => {
@@ -1066,7 +1066,7 @@ export default function SongsThatHoldMemoriesExhibit() {
         setTimeout(() => {
           setIsTransitioning(false);
           setShowMemoryText(true);
-        }, 800);
+        }, 400);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -1225,7 +1225,7 @@ export default function SongsThatHoldMemoriesExhibit() {
         setTimeout(() => {
           setIsTransitioning(false);
           setShowMemoryText(true);
-        }, 800);
+        }, 400);
       }
     };
 
@@ -1683,7 +1683,7 @@ export default function SongsThatHoldMemoriesExhibit() {
                       setTimeout(() => {
                         setIsTransitioning(false);
                         setShowMemoryText(true);
-                      }, 800);
+                      }, 400);
                     } else if (isActive && songData) {
                       // On mobile, show popup instead of flipping
                       if (isMobile) {
@@ -1705,7 +1705,7 @@ export default function SongsThatHoldMemoriesExhibit() {
                       setTimeout(() => {
                         setIsTransitioning(false);
                         setShowMemoryText(true);
-                      }, 800);
+                      }, 400);
                     }
                   }}
                 >
