@@ -8,7 +8,7 @@ const TILE_SIZE_DESKTOP = 387;
 const GAP = 22;
 const DEFAULT_TILES = 58;
 const TILES_PER_PAGE_DESKTOP = 35; // Fixed 7x5 grid on desktop
-const TILES_PER_PAGE_MOBILE = 28; // Fixed 7x4 grid on mobile
+const TILES_PER_PAGE_MOBILE = 35; // Fixed 5x7 grid on mobile
 
 // Get number of columns based on screen dimensions (independent of tile count)
 const getGridCols = (screenWidth: number, screenHeight: number): number => {
@@ -44,9 +44,9 @@ const getTileSize = (windowWidth: number) => {
   return TILE_SIZE_DESKTOP;
 };
 
-// Calculate grid dimensions - fixed 7 columns for consistent layout
+// Calculate grid dimensions - 5 columns on mobile, 7 on desktop
 const getGridDimensions = (totalTiles: number, screenWidth: number = 1200, screenHeight: number = 800) => {
-  const cols = 7; // Fixed 7 columns for simplicity and performance
+  const cols = screenWidth < 768 ? 5 : 7; // 5 cols mobile, 7 cols desktop
   return { cols, rows: Math.ceil(totalTiles / cols) };
 };
 
@@ -663,8 +663,8 @@ export default function SongsThatHoldMemoriesExhibit() {
   const tilesOnCurrentPage = pageEndIndex - pageStartIndex;
   const currentPageTileIndices = Array.from({ length: tilesOnCurrentPage }, (_, i) => pageStartIndex + i);
 
-  // Fixed grid dimensions: 7 columns
-  const gridCols = 7;
+  // Fixed grid dimensions: 5 columns mobile, 7 columns desktop
+  const gridCols = isMobile ? 5 : 7;
   const gridRows = Math.ceil(tilesOnCurrentPage / gridCols);
   const gridDimensions = { cols: gridCols, rows: gridRows };
 
