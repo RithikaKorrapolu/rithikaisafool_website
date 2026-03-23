@@ -664,9 +664,10 @@ export default function SongsThatHoldMemoriesExhibit() {
   const currentPageTileIndices = Array.from({ length: tilesOnCurrentPage }, (_, i) => pageStartIndex + i);
 
   // Fixed grid dimensions: 5 columns mobile, 7 columns desktop
+  // Always use full page dimensions for consistent layout (even on last page with fewer tiles)
   const gridCols = isMobile ? 5 : 7;
-  const gridRows = Math.ceil(tilesOnCurrentPage / gridCols);
-  const gridDimensions = { cols: gridCols, rows: gridRows };
+  const fullPageRows = isMobile ? 7 : 5; // 5x7 mobile, 7x5 desktop
+  const gridDimensions = { cols: gridCols, rows: fullPageRows };
 
   // Calculate responsive tile size
   const tileSize = getTileSize(windowSize.width);
