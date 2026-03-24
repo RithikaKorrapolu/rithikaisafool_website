@@ -55,7 +55,7 @@ export async function getProducts() {
           'X-Shopify-Storefront-Access-Token': process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN!,
         },
         body: JSON.stringify({ query }),
-        cache: 'no-store', // Don't cache - always fetch fresh inventory data
+        next: { revalidate: 3600 }, // Cache for 1 hour, then revalidate
       }
     );
 
@@ -179,7 +179,7 @@ export async function getProductByHandle(handle: string) {
           'X-Shopify-Storefront-Access-Token': process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN!,
         },
         body: JSON.stringify({ query }),
-        cache: 'no-store', // Don't cache - always fetch fresh inventory data
+        next: { revalidate: 3600 }, // Cache for 1 hour, then revalidate
       }
     );
 

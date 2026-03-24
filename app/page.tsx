@@ -228,6 +228,7 @@ export default function Home() {
                           <img
                             src="/assets/COTM/coverreal.png"
                             alt="Condition of the Month Hat"
+                            loading="lazy"
                             className="absolute inset-0 w-full h-full object-contain"
                           />
                         </div>
@@ -292,7 +293,7 @@ export default function Home() {
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="relative" style={{ width: '85%', height: '85%' }}>
                           <img
-                            src="/assets/Client/1.png"
+                            src="/assets/Client/1.webp"
                             alt="Client Work"
                             className="absolute inset-0 w-full h-full object-contain"
                             style={{ transform: 'scale(1.16)' }}
@@ -307,7 +308,7 @@ export default function Home() {
                                 className="absolute inset-0"
                               >
                                 <img
-                                  src="/assets/Client/2.png"
+                                  src="/assets/Client/2.webp"
                                   alt="Client Work"
                                   className="w-full h-full object-contain"
                                   style={{ transform: 'scale(1.16)' }}
@@ -328,6 +329,7 @@ export default function Home() {
                       <img
                         src="/assets/quirks/base.png"
                         alt="Quirks Background"
+                        loading="lazy"
                         className="absolute inset-0 w-full h-full object-cover"
                       />
                       <div className="relative z-10 flex flex-col items-center">
@@ -397,6 +399,7 @@ export default function Home() {
                         <img
                           src="/assets/A Month With you/coverV2_3.png"
                           alt="A Month With You"
+                          loading="lazy"
                           className="w-full h-full object-cover animate-zoom-out"
                         />
                       </div>
