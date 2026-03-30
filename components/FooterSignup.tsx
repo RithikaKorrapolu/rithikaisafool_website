@@ -12,8 +12,8 @@ export default function FooterSignup() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!email && !phone) {
-      setErrorMsg("Please enter an email or phone number");
+    if (!email) {
+      setErrorMsg("Please enter your email");
       return;
     }
 
@@ -44,7 +44,7 @@ export default function FooterSignup() {
       <div className="mb-6 flex justify-center">
         <div className="border border-white/30 rounded-xl p-5 py-6 w-full max-w-5xl">
           <p className="text-[#dcff73] font-bold text-lg text-center">
-            Thank you! You're now part of the world.
+            Thank you for being part of my world.
           </p>
         </div>
       </div>
@@ -68,14 +68,14 @@ export default function FooterSignup() {
               type="text"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
-              placeholder="First name"
-              className="w-full md:flex-1 px-4 py-3 md:py-3 border border-white outline-none text-white placeholder:text-white/50 text-base rounded-full bg-transparent"
+              placeholder="First name *"
+              className="w-full md:flex-1 px-4 py-3 md:py-3 border border-white outline-none text-white placeholder:text-white/50 [&::placeholder]:after:text-red-500 text-base rounded-full bg-transparent"
             />
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
+              placeholder="Email *"
               className="w-full md:flex-1 px-4 py-3 md:py-3 border border-white outline-none text-white placeholder:text-white/50 text-base rounded-full bg-transparent"
             />
             <div className="flex items-center px-4 py-3 border border-white rounded-full bg-transparent">
@@ -85,7 +85,7 @@ export default function FooterSignup() {
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder="Phone (optional)"
+                placeholder="Phone"
                 className="flex-1 md:w-24 text-white placeholder:text-white/50 text-base focus:outline-none bg-transparent"
               />
             </div>

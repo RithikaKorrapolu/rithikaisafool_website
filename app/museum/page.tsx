@@ -28,7 +28,8 @@ export default function Museum() {
           >
             <div className="rounded-2xl overflow-hidden shadow-xl relative" style={{ boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)' }}>
               <video
-                src="/assets/museum/museumRec.mov"
+                src="/assets/museum/museumRec.mp4"
+                poster="/assets/museum/museumRec-poster.webp"
                 autoPlay
                 loop
                 muted

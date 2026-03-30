@@ -28,7 +28,7 @@ const ARTWORKS = [
     artist: "Marc Chagall",
     date: "1915",
     medium: "Oil in cardboard painting",
-    image: "/assets/CCP/Sample_Month/Feb2026/birthday.jpg",
+    image: "/assets/CCP/Sample_Month/Feb2026/birthday.webp",
     curator: "Sam",
     note: "Now this is what I'm talking about. We're afraid to double text. Look at this guy - he's contorting his entire body, probably breaking his back just to give his lady a smooch on her birthday. Love requires sacrifice and humility. When you're willing to love like this, so shamelessly, you will get superpowers. You will fly.",
     additionalInfo: [
@@ -56,7 +56,7 @@ const ARTWORKS = [
     artist: "Andrew Wyeth",
     date: "1948",
     medium: "Painting",
-    image: "/assets/CCP/Sample_Month/Feb2026/christinaworld.jpg",
+    image: "/assets/CCP/Sample_Month/Feb2026/christinaworld.webp",
     curator: "Lucy",
     note: "I'm going through a break up so this is what love feels like to me now. I think about the home in the painting as the symbol for the relationship my partner and I built together. Like the home, the relationship was not even that shiny or special - it was pretty worn out by the end. But I still feel longing and grief thinking about it even though I don't really want to go back.",
     additionalInfo: [
@@ -98,7 +98,7 @@ const ARTWORKS = [
     artist: "Pablo Picasso",
     date: "1903-1904",
     medium: "Oil painting",
-    image: "/assets/CCP/Sample_Month/Feb2026/Old_guitarist.jpg",
+    image: "/assets/CCP/Sample_Month/Feb2026/Old_guitarist.webp",
     curator: "",
     note: "My interpretation of this theme was love as a devotion to a craft. This painting shows an old, impoverished man who is showing little signs of life. He looks so close to death that even moving seems painful and yet he continues to play his guitar. This expresses the loneliness and obsessiveness an artist can feel towards their craft. And the desperation to make something beautiful. This is true love of a craft.",
     additionalInfo: [
@@ -112,7 +112,7 @@ const ARTWORKS = [
     artist: "Matthew Olzmann",
     date: "2013",
     medium: "Poetry",
-    image: "/assets/CCP/Sample_Month/Feb2026/mountaindew.jpg",
+    image: "/assets/CCP/Sample_Month/Feb2026/mountaindew.webp",
     curator: "",
     note: "People think love is this big, grand, ambiguous cloud of a thing. It is but at the end of the day, it's just made up of small, specific things. That's what this poem shows.",
     additionalInfo: [
@@ -125,7 +125,7 @@ const ARTWORKS = [
     artist: "Egon Schiele",
     date: "1914",
     medium: "Watercolor and pencil painting",
-    image: "/assets/CCP/Sample_Month/Feb2026/lovers.jpg",
+    image: "/assets/CCP/Sample_Month/Feb2026/lovers.webp",
     curator: "",
     note: "As someone who's anxiously attached, I gotta tell you, this one really speaks to me. You can see the desparation and kind of manic energy in the woman's face and the heaviness and resigned look in the man's. It's literally me anytime my boyfriend has a \"guys night out\". Damn, I feel so seen.",
     additionalInfo: [
@@ -141,7 +141,7 @@ const ARTWORKS = [
     medium: "Plaster",
     images: [
       "/assets/CCP/Sample_Month/Feb2026/thekiss.webp",
-      "/assets/CCP/Sample_Month/Feb2026/thekiss2.jpg",
+      "/assets/CCP/Sample_Month/Feb2026/thekiss2.webp",
     ],
     curator: "",
     note: "They truly look like they're one. From a distance it's hard to see where one person starts and the other ends. They look like they are blending together. It symbolizes what real love is. The death of ego and self and full harmony with another. It also feels almost innocent and child-like, like a stick figure drawing.",
@@ -197,7 +197,7 @@ export default function LMSYFeb2026Page() {
   // Preload background image
   useEffect(() => {
     const img = new window.Image();
-    img.src = "/assets/CCP/Sample_Month/Feb2026/cover.jpg";
+    img.src = "/assets/CCP/Sample_Month/Feb2026/cover.webp";
     img.onload = () => setBgLoaded(true);
   }, []);
 
@@ -297,7 +297,7 @@ export default function LMSYFeb2026Page() {
       <div
         className="h-screen w-full flex items-center justify-center p-4 relative overflow-hidden"
         style={{
-          backgroundImage: bgLoaded ? `url("/assets/CCP/Sample_Month/Feb2026/cover.jpg")` : undefined,
+          backgroundImage: bgLoaded ? `url("/assets/CCP/Sample_Month/Feb2026/cover.webp")` : undefined,
           backgroundColor: "#1a1a2e",
           backgroundSize: "cover",
           backgroundPosition: "center",
@@ -440,7 +440,7 @@ export default function LMSYFeb2026Page() {
     <div
       className="h-[100dvh] w-full flex items-center justify-center p-2 md:p-8 overflow-hidden fixed inset-0"
       style={{
-        backgroundImage: `url("/assets/CCP/Sample_Month/Feb2026/cover.jpg")`,
+        backgroundImage: `url("/assets/CCP/Sample_Month/Feb2026/cover.webp")`,
         backgroundSize: "cover",
         backgroundPosition: isMobile ? "center" : undefined,
         backgroundRepeat: "no-repeat",

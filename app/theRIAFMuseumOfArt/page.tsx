@@ -867,6 +867,26 @@ const ARTWORKS = [
     feelings: ["nostalgic", "emotional", "bittersweet", "profound"],
     colors: ["#151513", "#3F331B"]
   },
+  {
+    id: 95,
+    title: "Kabuki II (the performance)",
+    artist: "Toni Hamel",
+    year: "",
+    medium: "",
+    image: "/assets/museum/artgallery/95.webp",
+    feelings: ["whimsical", "playful", "surreal", "imaginative"],
+    colors: ["#4B7093", "#5A7D3A"]
+  },
+  {
+    id: 96,
+    title: "In Bed (Le Lit)",
+    artist: "Henri de Toulouse-Lautrec",
+    year: "",
+    medium: "",
+    image: "/assets/museum/artgallery/96.webp",
+    feelings: ["intimate", "tender", "peaceful", "warm"],
+    colors: ["#bd7d5a", "#793d3b"]
+  },
 ];
 
 // Shuffle function using Fisher-Yates algorithm

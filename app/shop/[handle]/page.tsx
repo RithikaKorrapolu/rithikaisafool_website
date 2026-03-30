@@ -78,10 +78,10 @@ function SplitFlapText({ text, className = '', delay = 0, cycleTime = 6000 }: { 
 }
 
 const GLORY_IMAGES = [
-  "/assets/STIL Cards/14.png",
-  "/assets/STIL Cards/15.png",
-  "/assets/STIL Cards/16.png",
-  "/assets/STIL Cards/17.png",
+  "/assets/STIL Cards/14.webp",
+  "/assets/STIL Cards/15.webp",
+  "/assets/STIL Cards/16.webp",
+  "/assets/STIL Cards/17.webp",
 ];
 
 // Define which transitions to use
@@ -146,7 +146,7 @@ export default function ProductDetailPage() {
       artist: "Remedios Varo",
       date: "1959",
       medium: "Oil-on-canvas painting",
-      image: "/assets/CCP/Sample_Month/Meeting_Varo.jpg",
+      image: "/assets/CCP/Sample_Month/Meeting_Varo.webp",
       curator: "Nina",
       note: "I always get a feeling of loneliness when looking at this piece. To me, it looks like a woman keeping some parts of herself locked up because maybe she's ashamed or afraid to embody them fully. It feels like she's been hiding some parts of herself for a long, long time and has given up on the chance to be fully seen by others and the world.",
       additionalInfo: [
@@ -220,7 +220,7 @@ export default function ProductDetailPage() {
       artist: "Jane Stembridge",
       date: "1966",
       medium: "Poetry",
-      image: "/assets/CCP/Sample_Month/loving_jane.jpg",
+      image: "/assets/CCP/Sample_Month/loving_jane.webp",
       curator: "Cal",
       note: "This reminds me of my first relationship. Everything felt so serious and intense and heavy. I was always doubting whether my partner liked me and replaying conversations to actually enjoy it. I was exhausted all the time. I wish I could go back and be a lot more light in it. I wish I knew that it was going to end and that I would be fine and that I should let myself be free.",
       additionalInfo: [
@@ -234,7 +234,7 @@ export default function ProductDetailPage() {
       artist: "Edward Hopper",
       date: "1939",
       medium: "Oil-on-canvas painting",
-      image: "/assets/CCP/Sample_Month/nycmovie.jpg",
+      image: "/assets/CCP/Sample_Month/nycmovie.webp",
       curator: "Robert",
       note: "If I had to guess the story behind this painting, I'd say that the usher, the woman is an aspiring actress who is starting to give up on her dreams. I get the sense she initially got this job for her love of movies, but overtime, she got jaded after getting many rejections. Now, she stands off the side in the same spot night after night. She doesn't watch anymore. The magic is gone.",
       additionalInfo: [
@@ -278,7 +278,7 @@ export default function ProductDetailPage() {
       artist: "Raymond Carver",
       date: "1989",
       medium: "Poem",
-      image: "/assets/CCP/Sample_Month/latefragment_raymond.jpeg",
+      image: "/assets/CCP/Sample_Month/latefragment_raymond.webp",
       curator: "Rithika K.",
       note: "This was the last poem in the last book that Carver ever wrote. He was dying of cancer when he wrote it. It's what's written on his tombstone. You can have such a shitty life (alcoholism, abuse, depression, illness, divorce) and still say you've gotten what you wanted out of life if you felt loved even once. If you felt beloved even once on this Earth, you got the greatest thing you can in life. I read and re-read this poem a lot when my dad was dying of cancer. I felt really useless and hopeless because he was in chronic pain and I couldn't do anything. But I guess the point of this poem is the best, most honorable thing you can do is just to make someone feel loved.",
       additionalInfo: [
@@ -296,9 +296,9 @@ export default function ProductDetailPage() {
   }, [selectedArtwork]);
 
   const COTM_IMAGES = [
-    { src: '/assets/COTM/coverreal.png', alt: 'Condition of the Month Hat', style: { transform: 'scale(0.765) translateY(-5%)' }, className: 'object-contain' },
+    { src: '/assets/COTM/coverreal.webp', alt: 'Condition of the Month Hat', style: { transform: 'scale(0.765) translateY(-5%)' }, className: 'object-contain' },
     { src: '/assets/COTM/backhat2.png', alt: 'Condition of the Month Hat Back', style: { transform: 'scale(0.765) translateY(-5%)' }, className: 'object-contain' },
-    { src: '/assets/COTM/sidehat.png', alt: 'Condition of the Month Hat Side', style: { transform: 'scale(0.9) translateX(-10%)' }, className: 'object-cover' },
+    { src: '/assets/COTM/sidehat.webp', alt: 'Condition of the Month Hat Side', style: { transform: 'scale(0.9) translateX(-10%)' }, className: 'object-cover' },
   ];
 
   // Lock body scroll when any popup is open to prevent mobile address bar jumping
@@ -694,7 +694,7 @@ export default function ProductDetailPage() {
             <div
               className="w-full h-[480px] lg:h-[620px] rounded-2xl overflow-hidden relative"
               style={{
-                backgroundImage: `url("/assets/CCP/bglmsu.jpg")`,
+                backgroundImage: `url("/assets/CCP/bglmsu.webp")`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 boxShadow: "0 25px 60px -10px rgba(0, 0, 0, 0.5), 0 10px 30px -5px rgba(0, 0, 0, 0.3)",
@@ -883,7 +883,7 @@ export default function ProductDetailPage() {
             <div className="flex flex-col order-1 lg:order-2">
               <div className="relative aspect-square" style={{ borderRadius: '16px', overflow: 'hidden' }}>
                 <video
-                  src="/assets/CCP/mailRec.mov"
+                  src="/assets/CCP/mailRec.mp4"
                   autoPlay
                   loop
                   muted
@@ -919,7 +919,7 @@ export default function ProductDetailPage() {
             <div className="flex flex-col">
               <div className="relative aspect-square" style={{ borderRadius: '16px', overflow: 'hidden' }}>
                 <video
-                  src="/assets/CCP/archiveRec.mov"
+                  src="/assets/CCP/archiveRec.mp4"
                   autoPlay
                   loop
                   muted
@@ -1437,7 +1437,7 @@ export default function ProductDetailPage() {
             <div className="flex flex-col items-center justify-center">
               <div className="relative aspect-square w-full" style={{ borderRadius: '16px', overflow: 'hidden' }}>
                 <video
-                  src="/assets/glory_sweatshirt.mov"
+                  src="/assets/glory_sweatshirt.mp4"
                   autoPlay
                   loop
                   muted
@@ -1686,7 +1686,7 @@ export default function ProductDetailPage() {
                 transition={{ type: "spring", damping: 25, stiffness: 300 }}
                 className="w-full max-w-5xl h-[80vh] rounded-2xl overflow-hidden relative"
                 style={{
-                  backgroundImage: `url("/assets/CCP/bglmsu.jpg")`,
+                  backgroundImage: `url("/assets/CCP/bglmsu.webp")`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   boxShadow: "0 25px 60px -10px rgba(0, 0, 0, 0.5), 0 10px 30px -5px rgba(0, 0, 0, 0.3)",
@@ -2019,7 +2019,7 @@ export default function ProductDetailPage() {
                         className="w-full h-full"
                       >
                         <video
-                          src="/assets/glory_sweatshirt.mov"
+                          src="/assets/glory_sweatshirt.mp4"
                           autoPlay
                           loop
                           muted
@@ -2067,7 +2067,7 @@ export default function ProductDetailPage() {
                   {/* Glory Sweatshirt Video */}
                   <div className="relative aspect-square mt-4">
                     <video
-                      src="/assets/glory_sweatshirt.mov"
+                      src="/assets/glory_sweatshirt.mp4"
                       autoPlay
                       loop
                       muted
@@ -2134,7 +2134,7 @@ export default function ProductDetailPage() {
                         <div style={{ transform: 'scale(1.15)', transformOrigin: 'center center', position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
                           {/* Base layer - Image 30 (always visible) */}
                           <Image
-                            src="/assets/CCP/30.png"
+                            src="/assets/CCP/30.webp"
                             alt="Let Me Show You"
                             fill
                             className="object-contain"
@@ -2257,7 +2257,7 @@ export default function ProductDetailPage() {
                       {/* Desktop - First Image Only */}
                       <div className="hidden lg:block w-full h-full">
                         <Image
-                          src="/assets/COTM/coverreal.png"
+                          src="/assets/COTM/coverreal.webp"
                           alt={product.title}
                           fill
                           className="object-contain"
@@ -2294,7 +2294,7 @@ export default function ProductDetailPage() {
                   <div className="hidden lg:block">
                     <div className="relative aspect-square rounded-lg overflow-hidden -mt-16">
                       <Image
-                        src="/assets/COTM/backhat.png"
+                        src="/assets/COTM/backhat.webp"
                         alt="Condition of the Month Hat Back"
                         fill
                         className="object-contain"
@@ -2303,7 +2303,7 @@ export default function ProductDetailPage() {
                     </div>
                     <div className="relative aspect-square rounded-lg overflow-hidden -mt-16">
                       <Image
-                        src="/assets/COTM/sidehat.png"
+                        src="/assets/COTM/sidehat.webp"
                         alt="Condition of the Month Hat Side"
                         fill
                         className="object-cover"

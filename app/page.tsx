@@ -31,6 +31,7 @@ export default function Home() {
   const [stwlImageIndex, setStwlImageIndex] = useState(0);
   const [quirksTypedText, setQuirksTypedText] = useState("");
   const [lmsyImageIndex, setLmsyImageIndex] = useState(0);
+  const [visibleTiles, setVisibleTiles] = useState<Set<number>>(new Set());
   const cellRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // Mouse tracking for spotlight effect
@@ -74,6 +75,30 @@ export default function Home() {
 
     return () => observer.disconnect();
   }, [isTouchDevice]);
+
+  // Intersection observer for lazy loading videos (all devices)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = cellRefs.current.findIndex(ref => ref === entry.target);
+            if (index !== -1) {
+              setVisibleTiles(prev => new Set(prev).add(index));
+            }
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '100px' }
+    );
+
+    const refs = cellRefs.current.filter(Boolean);
+    refs.forEach((ref) => observer.observe(ref!));
+
+    return () => observer.disconnect();
+  }, []);
 
   // Client work image rotation
   useEffect(() => {
@@ -146,12 +171,7 @@ export default function Home() {
         >
           <div className="container mx-auto px-6">
             {/* Large Title Section */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-center mb-0 mt-3 flex justify-start sm:justify-center"
-            >
+            <div className="text-center mb-0 mt-3 flex justify-start sm:justify-center">
               <h1 className="text-[36vw] sm:text-[19vw] font-bold leading-[0.85] sm:leading-none tracking-tight font-[family-name:var(--font-abril-fatface)] text-left sm:text-center" style={{ color: '#F8330D' }}>
                 {/* Mobile layout */}
                 <span className="sm:hidden block">
@@ -161,17 +181,12 @@ export default function Home() {
                 {/* Desktop layout */}
                 <span className="hidden sm:inline whitespace-nowrap">THIS IS IT!</span>
               </h1>
-            </motion.div>
+            </div>
 
             {/* Subtitles */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-left sm:text-center mb-12 mt-2"
-            >
+            <div className="text-left sm:text-center mb-12 mt-2">
               <h2 className="text-[22px] sm:text-3xl lg:text-[33px] font-bold text-black font-[family-name:var(--font-abril-fatface)]">a chance to be fools</h2>
-            </motion.div>
+            </div>
           </div>
         </div>
 
@@ -204,10 +219,10 @@ export default function Home() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
-                  className={`group aspect-[4/5] border-transparent flex items-center justify-center p-6 cursor-pointer bg-[#F2F2F2] hover:bg-white transition-all relative overflow-hidden ${visibleCell === index && isTouchDevice ? 'mobile-in-view' : ''}`}
+                  className={`group aspect-[4/5] border-transparent flex items-center justify-center p-6 cursor-pointer bg-[#F2F2F2] hover:bg-white transition-colors duration-150 ease-out relative overflow-hidden ${visibleCell === index && isTouchDevice ? 'mobile-in-view' : ''}`}
                   style={{
                     filter: !isTouchDevice && hoveredCell && (hoveredCell.row !== Math.floor(index / 3) || hoveredCell.col !== index % 3) ? 'brightness(0.7)' : 'brightness(1)',
-                    transition: 'filter 0.3s ease, background-color 0.3s ease'
+                    transition: 'filter 0.15s ease-out'
                   }}
                   onMouseEnter={() => setHoveredCell({ row: Math.floor(index / 3), col: index % 3 })}
                   onMouseLeave={() => setHoveredCell(null)}
@@ -216,7 +231,7 @@ export default function Home() {
                     <div className="absolute inset-0">
                       <BouncingBallPoster imageScale={85} showLogo={true} />
                       <div className="absolute inset-x-0 top-0 flex justify-start pointer-events-none pt-8 px-6">
-                        <span className="text-[1rem] sm:text-[1.3rem] md:text-[1.5rem] lg:text-[1.1rem] xl:text-[1.1rem] font-normal group-hover:font-bold text-black text-left max-w-[70%] font-[family-name:var(--font-inter)] tracking-tighter bg-white px-3 py-2 rounded-lg leading-tight shadow-md transition-all group-hover-dance" style={{ fontStretch: 'condensed' }}>
+                        <span className="text-[1rem] sm:text-[1.3rem] md:text-[1.5rem] lg:text-[1.1rem] xl:text-[1.1rem] font-normal group-hover:font-bold text-black text-left max-w-[70%] font-[family-name:var(--font-inter)] tracking-tighter bg-white px-3 py-2 rounded-lg leading-tight shadow-md transition-[font-weight] duration-100 ease-out group-hover-dance" style={{ fontStretch: 'condensed' }}>
                           {project.title}
                         </span>
                       </div>
@@ -226,9 +241,10 @@ export default function Home() {
                       <div className="absolute inset-0 flex items-end justify-center">
                         <div className="relative" style={{ width: '85%', height: '85%' }}>
                           <img
-                            src="/assets/COTM/coverreal.png"
+                            src="/assets/COTM/coverreal.webp"
                             alt="Condition of the Month Hat"
-                            loading="lazy"
+                            loading={index < 3 ? "eager" : "lazy"}
+                            fetchPriority={index < 3 ? "high" : "auto"}
                             className="absolute inset-0 w-full h-full object-contain"
                           />
                         </div>
@@ -239,7 +255,7 @@ export default function Home() {
                         className="absolute top-4 right-4 w-18 h-18 md:w-22 md:h-22 object-contain"
                       />
                       <div className="absolute inset-x-0 top-0 flex justify-start pointer-events-none pt-8 px-6">
-                        <span className="text-[1rem] sm:text-[1.3rem] md:text-[1.5rem] lg:text-[1.1rem] xl:text-[1.1rem] font-normal group-hover:font-bold text-black text-left max-w-[70%] font-[family-name:var(--font-inter)] tracking-tighter bg-white px-3 py-2 rounded-lg leading-tight shadow-md transition-all group-hover-dance" style={{ fontStretch: 'condensed' }}>
+                        <span className="text-[1rem] sm:text-[1.3rem] md:text-[1.5rem] lg:text-[1.1rem] xl:text-[1.1rem] font-normal group-hover:font-bold text-black text-left max-w-[70%] font-[family-name:var(--font-inter)] tracking-tighter bg-white px-3 py-2 rounded-lg leading-tight shadow-md transition-[font-weight] duration-100 ease-out group-hover-dance" style={{ fontStretch: 'condensed' }}>
                           {project.title}
                         </span>
                       </div>
@@ -249,14 +265,14 @@ export default function Home() {
                       <div className="absolute inset-0 flex items-end justify-center">
                         <div className="relative" style={{ width: '85%', height: '85%' }}>
                           <img
-                            src={`/assets/QuoteLine/voicemailcover/${voicemailImageIndex}.png`}
+                            src={`/assets/QuoteLine/voicemailcover/${voicemailImageIndex}.webp`}
                             alt="Voicemail Show Phone"
                             className="w-full h-full object-contain object-bottom"
                           />
                         </div>
                       </div>
                       <div className="absolute inset-x-0 top-0 flex justify-start pointer-events-none pt-8 px-6">
-                        <span className="text-[1rem] sm:text-[1.3rem] md:text-[1.5rem] lg:text-[1.1rem] xl:text-[1.1rem] font-normal group-hover:font-bold text-black text-left max-w-[70%] font-[family-name:var(--font-inter)] tracking-tighter bg-white px-3 py-2 rounded-lg leading-tight shadow-md transition-all group-hover-dance" style={{ fontStretch: 'condensed' }}>
+                        <span className="text-[1rem] sm:text-[1.3rem] md:text-[1.5rem] lg:text-[1.1rem] xl:text-[1.1rem] font-normal group-hover:font-bold text-black text-left max-w-[70%] font-[family-name:var(--font-inter)] tracking-tighter bg-white px-3 py-2 rounded-lg leading-tight shadow-md transition-[font-weight] duration-100 ease-out group-hover-dance" style={{ fontStretch: 'condensed' }}>
                           {project.title}
                         </span>
                       </div>
@@ -267,7 +283,7 @@ export default function Home() {
                         <AnimatePresence mode="sync">
                           <motion.img
                             key={lmsyImageIndex}
-                            src={`/assets/CCP/${lmsyImageIndex + 68}.png`}
+                            src={`/assets/CCP/${lmsyImageIndex + 68}.webp`}
                             alt="Let Me Show You"
                             className="absolute w-[80%] h-[80%] object-contain object-bottom"
                             initial={{ opacity: 0 }}
@@ -283,7 +299,7 @@ export default function Home() {
                         className="absolute top-4 right-4 w-18 h-18 md:w-22 md:h-22 object-contain"
                       />
                       <div className="absolute inset-x-0 top-0 flex justify-start pointer-events-none pt-8 px-6">
-                        <span className="text-[1rem] sm:text-[1.3rem] md:text-[1.5rem] lg:text-[1.1rem] xl:text-[1.1rem] font-normal group-hover:font-bold text-black text-left max-w-[70%] font-[family-name:var(--font-inter)] tracking-tighter bg-white px-3 py-2 rounded-lg leading-tight shadow-md transition-all group-hover-dance" style={{ fontStretch: 'condensed' }}>
+                        <span className="text-[1rem] sm:text-[1.3rem] md:text-[1.5rem] lg:text-[1.1rem] xl:text-[1.1rem] font-normal group-hover:font-bold text-black text-left max-w-[70%] font-[family-name:var(--font-inter)] tracking-tighter bg-white px-3 py-2 rounded-lg leading-tight shadow-md transition-[font-weight] duration-100 ease-out group-hover-dance" style={{ fontStretch: 'condensed' }}>
                           {project.title}
                         </span>
                       </div>
@@ -319,7 +335,7 @@ export default function Home() {
                         </div>
                       </div>
                       <div className="absolute inset-x-0 top-0 flex justify-start pointer-events-none pt-8 px-6">
-                        <span className="text-[1rem] sm:text-[1.3rem] md:text-[1.5rem] lg:text-[1.1rem] xl:text-[1.1rem] font-normal group-hover:font-bold text-black text-left max-w-[70%] font-[family-name:var(--font-inter)] tracking-tighter bg-white px-3 py-2 rounded-lg leading-tight shadow-md transition-all group-hover-dance" style={{ fontStretch: 'condensed' }}>
+                        <span className="text-[1rem] sm:text-[1.3rem] md:text-[1.5rem] lg:text-[1.1rem] xl:text-[1.1rem] font-normal group-hover:font-bold text-black text-left max-w-[70%] font-[family-name:var(--font-inter)] tracking-tighter bg-white px-3 py-2 rounded-lg leading-tight shadow-md transition-[font-weight] duration-100 ease-out group-hover-dance" style={{ fontStretch: 'condensed' }}>
                           {project.title}
                         </span>
                       </div>
@@ -327,7 +343,7 @@ export default function Home() {
                   ) : project.hasCover === "quirks" ? (
                     <div className="absolute inset-0 flex flex-col justify-center items-center p-8">
                       <img
-                        src="/assets/quirks/base.png"
+                        src="/assets/quirks/base.webp"
                         alt="Quirks Background"
                         loading="lazy"
                         className="absolute inset-0 w-full h-full object-cover"
@@ -341,39 +357,61 @@ export default function Home() {
                         </pre>
                       </div>
                       <div className="absolute inset-x-0 top-0 flex justify-start pointer-events-none pt-8 px-6 z-10">
-                        <span className="text-[1rem] sm:text-[1.3rem] md:text-[1.5rem] lg:text-[1.1rem] xl:text-[1.1rem] font-normal group-hover:font-bold text-black text-left max-w-[70%] font-[family-name:var(--font-inter)] tracking-tighter bg-white px-3 py-2 rounded-lg leading-tight shadow-md transition-all group-hover-dance" style={{ fontStretch: 'condensed' }}>
+                        <span className="text-[1rem] sm:text-[1.3rem] md:text-[1.5rem] lg:text-[1.1rem] xl:text-[1.1rem] font-normal group-hover:font-bold text-black text-left max-w-[70%] font-[family-name:var(--font-inter)] tracking-tighter bg-white px-3 py-2 rounded-lg leading-tight shadow-md transition-[font-weight] duration-100 ease-out group-hover-dance" style={{ fontStretch: 'condensed' }}>
                           {project.title}
                         </span>
                       </div>
                     </div>
                   ) : project.hasCover === "museum" ? (
                     <div className="absolute inset-0">
-                      <video
-                        src="/assets/museum/museumRec.mov"
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        className="w-full h-full object-cover"
-                      />
+                      {visibleTiles.has(index) ? (
+                        <video
+                          src="/assets/museum/museumRec.mp4"
+                          poster="/assets/museum/museumRec-poster.webp"
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <img
+                          src="/assets/museum/museumRec-poster.webp"
+                          alt="Museum"
+                          loading={index < 6 ? "eager" : "lazy"}
+                          fetchPriority={index < 6 ? "high" : "auto"}
+                          className="w-full h-full object-cover"
+                        />
+                      )}
                       <div className="absolute inset-x-0 top-0 flex justify-start pointer-events-none pt-8 px-6">
-                        <span className="text-[1rem] sm:text-[1.3rem] md:text-[1.5rem] lg:text-[1.1rem] xl:text-[1.1rem] font-normal group-hover:font-bold text-black text-left max-w-[70%] font-[family-name:var(--font-inter)] tracking-tighter bg-white px-3 py-2 rounded-lg leading-tight shadow-md transition-all group-hover-dance" style={{ fontStretch: 'condensed' }}>
+                        <span className="text-[1rem] sm:text-[1.3rem] md:text-[1.5rem] lg:text-[1.1rem] xl:text-[1.1rem] font-normal group-hover:font-bold text-black text-left max-w-[70%] font-[family-name:var(--font-inter)] tracking-tighter bg-white px-3 py-2 rounded-lg leading-tight shadow-md transition-[font-weight] duration-100 ease-out group-hover-dance" style={{ fontStretch: 'condensed' }}>
                           {project.title}
                         </span>
                       </div>
                     </div>
                   ) : project.hasCover === "sthm" ? (
                     <div className="absolute inset-0">
-                      <video
-                        src="/assets/SongsThatHoldMemories/democover_compressed.mp4"
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        className="w-full h-full object-cover"
-                      />
+                      {visibleTiles.has(index) ? (
+                        <video
+                          src="/assets/SongsThatHoldMemories/democover_compressed.mp4"
+                          poster="/assets/SongsThatHoldMemories/democover-poster.webp"
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <img
+                          src="/assets/SongsThatHoldMemories/democover-poster.webp"
+                          alt="Songs That Hold Memories"
+                          loading="eager"
+                          fetchPriority="high"
+                          className="w-full h-full object-cover"
+                        />
+                      )}
                       <div className="absolute inset-x-0 top-0 flex justify-start pointer-events-none pt-8 px-6">
-                        <span className="text-[1rem] sm:text-[1.3rem] md:text-[1.5rem] lg:text-[1.1rem] xl:text-[1.1rem] font-normal group-hover:font-bold text-black text-left max-w-[70%] font-[family-name:var(--font-inter)] tracking-tighter bg-white px-3 py-2 rounded-lg leading-tight shadow-md transition-all group-hover-dance" style={{ fontStretch: 'condensed' }}>
+                        <span className="text-[1rem] sm:text-[1.3rem] md:text-[1.5rem] lg:text-[1.1rem] xl:text-[1.1rem] font-normal group-hover:font-bold text-black text-left max-w-[70%] font-[family-name:var(--font-inter)] tracking-tighter bg-white px-3 py-2 rounded-lg leading-tight shadow-md transition-[font-weight] duration-100 ease-out group-hover-dance" style={{ fontStretch: 'condensed' }}>
                           {project.title}
                         </span>
                       </div>
@@ -382,13 +420,13 @@ export default function Home() {
                     <div className="absolute inset-0">
                       <div className="absolute inset-0">
                         <img
-                          src={`/assets/STWL/covers/${stwlImageIndex + 38}.png`}
+                          src={`/assets/STWL/covers/${stwlImageIndex + 38}.webp`}
                           alt="Specific Things We Like"
                           className="w-full h-full object-cover"
                         />
                       </div>
                       <div className="absolute inset-x-0 top-0 flex justify-start pointer-events-none pt-8 px-6">
-                        <span className="text-[1rem] sm:text-[1.3rem] md:text-[1.5rem] lg:text-[1.1rem] xl:text-[1.1rem] font-normal group-hover:font-bold text-black text-left max-w-[70%] font-[family-name:var(--font-inter)] tracking-tighter bg-white px-3 py-2 rounded-lg leading-tight shadow-md transition-all group-hover-dance" style={{ fontStretch: 'condensed' }}>
+                        <span className="text-[1rem] sm:text-[1.3rem] md:text-[1.5rem] lg:text-[1.1rem] xl:text-[1.1rem] font-normal group-hover:font-bold text-black text-left max-w-[70%] font-[family-name:var(--font-inter)] tracking-tighter bg-white px-3 py-2 rounded-lg leading-tight shadow-md transition-[font-weight] duration-100 ease-out group-hover-dance" style={{ fontStretch: 'condensed' }}>
                           {project.title}
                         </span>
                       </div>
@@ -397,20 +435,20 @@ export default function Home() {
                     <div className="absolute inset-0 overflow-hidden">
                       <div className="absolute inset-0">
                         <img
-                          src="/assets/A Month With you/coverV2_3.png"
+                          src="/assets/A Month With you/coverV2_3.webp"
                           alt="A Month With You"
                           loading="lazy"
                           className="w-full h-full object-cover animate-zoom-out"
                         />
                       </div>
                       <div className="absolute inset-x-0 top-0 flex justify-start pointer-events-none pt-8 px-6">
-                        <span className="text-[1rem] sm:text-[1.3rem] md:text-[1.5rem] lg:text-[1.1rem] xl:text-[1.1rem] font-normal group-hover:font-bold text-black text-left max-w-[70%] font-[family-name:var(--font-inter)] tracking-tighter bg-white px-3 py-2 rounded-lg leading-tight shadow-md transition-all group-hover-dance" style={{ fontStretch: 'condensed' }}>
+                        <span className="text-[1rem] sm:text-[1.3rem] md:text-[1.5rem] lg:text-[1.1rem] xl:text-[1.1rem] font-normal group-hover:font-bold text-black text-left max-w-[70%] font-[family-name:var(--font-inter)] tracking-tighter bg-white px-3 py-2 rounded-lg leading-tight shadow-md transition-[font-weight] duration-100 ease-out group-hover-dance" style={{ fontStretch: 'condensed' }}>
                           {project.title}
                         </span>
                       </div>
                     </div>
                   ) : (
-                    <span className="text-[1rem] sm:text-[1.3rem] md:text-[1.5rem] lg:text-[1.1rem] xl:text-[1.1rem] font-normal group-hover:font-bold text-black text-left max-w-[70%] font-[family-name:var(--font-inter)] tracking-tighter transition-all group-hover-dance" style={{ fontStretch: 'condensed' }}>
+                    <span className="text-[1rem] sm:text-[1.3rem] md:text-[1.5rem] lg:text-[1.1rem] xl:text-[1.1rem] font-normal group-hover:font-bold text-black text-left max-w-[70%] font-[family-name:var(--font-inter)] tracking-tighter transition-[font-weight] duration-100 ease-out group-hover-dance" style={{ fontStretch: 'condensed' }}>
                       {project.title}
                     </span>
                   )}

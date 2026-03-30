@@ -28,7 +28,7 @@ const ARTWORKS = [
     artist: "Remedios Varo",
     date: "1959",
     medium: "Oil-on-canvas painting",
-    image: "/assets/CCP/Sample_Month/Meeting_Varo.jpg",
+    image: "/assets/CCP/Sample_Month/Meeting_Varo.webp",
     curator: "Nina",
     note: "I always get a feeling of loneliness when looking at this piece. To me, it looks like a woman keeping some parts of herself locked up because maybe she's ashamed or afraid to embody them fully. It feels like she's been hiding some parts of herself for a long, long time and has given up on the chance to be fully seen by others and the world.",
     additionalInfo: [
@@ -102,7 +102,7 @@ const ARTWORKS = [
     artist: "Jane Stembridge",
     date: "1966",
     medium: "Poetry",
-    image: "/assets/CCP/Sample_Month/loving_jane.jpg",
+    image: "/assets/CCP/Sample_Month/loving_jane.webp",
     curator: "Cal",
     note: "This reminds me of my first relationship. Everything felt so serious and intense and heavy. I was always doubting whether my partner liked me and replaying conversations to actually enjoy it. I was exhausted all the time. I wish I could go back and be a lot more light in it. I wish I knew that it was going to end and that I would be fine and that I should let myself be free.",
     additionalInfo: [
@@ -116,7 +116,7 @@ const ARTWORKS = [
     artist: "Edward Hopper",
     date: "1939",
     medium: "Oil-on-canvas painting",
-    image: "/assets/CCP/Sample_Month/nycmovie.jpg",
+    image: "/assets/CCP/Sample_Month/nycmovie.webp",
     curator: "Robert",
     note: "If I had to guess the story behind this painting, I'd say that the usher, the woman is an aspiring actress who is starting to give up on her dreams. I get the sense she initially got this job for her love of movies, but overtime, she got jaded after getting many rejections. Now, she stands off the side in the same spot night after night. She doesn't watch anymore. The magic is gone.",
     additionalInfo: [
@@ -160,7 +160,7 @@ const ARTWORKS = [
     artist: "Raymond Carver",
     date: "1989",
     medium: "Poem",
-    image: "/assets/CCP/Sample_Month/latefragment_raymond.jpeg",
+    image: "/assets/CCP/Sample_Month/latefragment_raymond.webp",
     curator: "Rithika K.",
     note: "This was the last poem in the last book that Carver ever wrote. He was dying of cancer when he wrote it. It's what's written on his tombstone. You can have such a shitty life (alcoholism, abuse, depression, illness, divorce) and still say you've gotten what you wanted out of life if you felt loved even once. If you felt beloved even once on this Earth, you got the greatest thing you can in life. I read and re-read this poem a lot when my dad was dying of cancer. I felt really useless and hopeless because he was in chronic pain and I couldn't do anything. But I guess the point of this poem is the best, most honorable thing you can do is just to make someone feel loved.",
     additionalInfo: [

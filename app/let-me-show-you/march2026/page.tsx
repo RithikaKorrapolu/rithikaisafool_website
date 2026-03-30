@@ -47,7 +47,7 @@ const ARTWORKS = [
     artist: "David Hockney",
     date: "1977",
     medium: "Oil on Canvas",
-    image: "/assets/CCP/Sample_Month/March2026/parents_david.jpg",
+    image: "/assets/CCP/Sample_Month/March2026/parents_david.webp",
     curator: "",
     note: "I've been thinking a lot about my parents dying. They're getting older and weaker and their memory is fading. They're melting away. I remember as a kid my parents throwing so many parties and being so alive and bright. Reminded me of this painting by Hockney. If I was to paint my parents now, it would be much less colorful, much more faded.",
     additionalInfo: [
@@ -75,7 +75,7 @@ const ARTWORKS = [
     artist: "Inka Essenhigh",
     date: "",
     medium: "Oil on canvas",
-    image: "/assets/CCP/Sample_Month/March2026/spring_inka.jpeg",
+    image: "/assets/CCP/Sample_Month/March2026/spring_inka.webp",
     curator: "",
     note: "I saw an interview with Inka where she described this painting as \"a depiction of Spring that has happened so suddenly, that it's happened instantaneously, that this person walking through the forest is still wearing his winter coat and whistling along.\" Starting to feel this way about all the seasons, about all of life. Where does the time go. This is how death happens, I suppose. One moment we are here and the other, in an instant, gone. Where do our souls go? Where does our energy go?",
     additionalInfo: [
@@ -126,6 +126,50 @@ const ARTWORKS = [
     ]
   },
   {
+    id: 5,
+    title: "Birth of a Grasstronaut",
+    artist: "Ben Zank",
+    date: "",
+    medium: "Photography",
+    image: "/assets/CCP/Sample_Month/March2026/grasstronaut.webp",
+    curator: "",
+    note: "Man is born from the soil of the Earth, explores the world and space, discovers new beings, but must always return back to where he's from. Melting back into the ground and his energy that will feed something new.",
+    additionalInfo: [
+      "Ben Zank was born and raised in NYC and began photography at the age of eighteen when he discovered a Pentax ME Super (a camera) in his grandmother's attic.",
+      "His work is often a spontaneous reaction to his immediate environment and is used as a catalyst for expressing emotions when words fail."
+    ]
+  },
+  {
+    id: 10,
+    title: "Rudolf Stingel Wax Sculpture",
+    artist: "Urs Fischer",
+    date: "",
+    medium: "Wax Sculptures",
+    images: [
+      "/assets/CCP/Sample_Month/March2026/fischer1.webp",
+      "/assets/CCP/Sample_Month/March2026/fischer2.webp",
+    ],
+    curator: "",
+    note: "Fischer designed a whole exhibit of wax sculptures that was meant to dissolve by the end. This was my favorite as it was an effigy of her friend Rudolf Stingel, who was also an artist. It must have been ridiculous and exciting for him to see himself burn. I pictured what it would feel like for myself, I think it's important for us to remind ourselves how fragile we all are. Help reduce the ego.",
+    additionalInfo: [
+      "Many of Fischer's wax candle work involves the continuous melting of her pieces by flame. You can visit at different points of the exhibit and see completely different versions of the piece."
+    ]
+  },
+  {
+    id: 11,
+    title: "Portrait of George Dyer in the Mirror",
+    artist: "Francis Bacon",
+    date: "",
+    medium: "Oil on Canvas",
+    image: "/assets/CCP/Sample_Month/March2026/george.webp",
+    curator: "",
+    note: "There was a period where I loathed looking in the mirror. I was ashamed of what I am and who I see and this painting really spoke to me. It reflects to me the psychological pain this individual may be in, isolated and secluded and drowning.",
+    additionalInfo: [
+      "Isolation in Bacon's work reveals his profound exploration of the human condition. His paintings often depict figures in states of anguish or vulnerability, capturing the pain of existing in a world where true connection feels out of reach. <a href=\"https://www.playforthoughts.com/blog/francis-bacon\" target=\"_blank\" class=\"text-white/60 hover:text-white\">(source)</a>",
+      "\"My painting is not violent; it's life that is violent.\" — Francis Bacon"
+    ]
+  },
+  {
     id: 9,
     title: "More Coming Soon",
     artist: "",
@@ -159,7 +203,7 @@ export default function LMSYMarch2026Page() {
   // Preload background image
   useEffect(() => {
     const img = new window.Image();
-    img.src = "/assets/CCP/Sample_Month/March2026/marchcover.jpg";
+    img.src = "/assets/CCP/Sample_Month/March2026/marchcover.webp";
     img.onload = () => setBgLoaded(true);
   }, []);
 
@@ -259,7 +303,7 @@ export default function LMSYMarch2026Page() {
       <div
         className="h-screen w-full flex items-center justify-center p-4 relative overflow-hidden"
         style={{
-          backgroundImage: bgLoaded ? `url("/assets/CCP/Sample_Month/March2026/marchcover.jpg")` : undefined,
+          backgroundImage: bgLoaded ? `url("/assets/CCP/Sample_Month/March2026/marchcover.webp")` : undefined,
           backgroundColor: "#1E3A5F",
           backgroundSize: "cover",
           backgroundPosition: "center",
@@ -402,7 +446,7 @@ export default function LMSYMarch2026Page() {
     <div
       className="h-[100dvh] w-full flex items-center justify-center p-2 md:p-8 overflow-hidden fixed inset-0"
       style={{
-        backgroundImage: `url("/assets/CCP/Sample_Month/March2026/marchcover.jpg")`,
+        backgroundImage: `url("/assets/CCP/Sample_Month/March2026/marchcover.webp")`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",

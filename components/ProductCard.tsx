@@ -7,10 +7,10 @@ import { useState, useEffect } from "react";
 import { BouncingBallPoster } from "./BouncingBallPoster";
 
 const GLORY_IMAGES = [
-  "/assets/STIL Cards/14.png",
-  "/assets/STIL Cards/15.png",
-  "/assets/STIL Cards/16.png",
-  "/assets/STIL Cards/17.png",
+  "/assets/STIL Cards/14.webp",
+  "/assets/STIL Cards/15.webp",
+  "/assets/STIL Cards/16.webp",
+  "/assets/STIL Cards/17.webp",
 ];
 
 // Define which transitions to use
@@ -101,7 +101,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               <AnimatePresence mode="sync">
                 <motion.img
                   key={ccpLayerIndex}
-                  src={`/assets/CCP/${68 + ccpLayerIndex}.png`}
+                  src={`/assets/CCP/${68 + ccpLayerIndex}.webp`}
                   alt="Let Me Show You"
                   className="absolute w-[80%] h-[80%] object-contain object-bottom"
                   initial={{ opacity: 0 }}
@@ -177,7 +177,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           ) : (product.title?.toLowerCase().includes('condition') ||
                product.title?.toLowerCase().includes('month')) ? (
             <Image
-              src="/assets/COTM/coverreal.png"
+              src="/assets/COTM/coverreal.webp"
               alt={product.title}
               fill
               className="object-contain"

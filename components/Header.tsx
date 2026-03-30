@@ -272,7 +272,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
                   rest: { rotate: pathname === '/about' ? 180 : 0 },
                   hover: { rotate: 180 }
                 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.15, ease: "easeOut" }}
               >
                 About!
               </motion.span>
@@ -291,7 +291,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
                   rest: { rotate: pathname === '/' ? 180 : 0 },
                   hover: { rotate: 180 }
                 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.15, ease: "easeOut" }}
               >
                 Art!
               </motion.span>
@@ -310,7 +310,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
                   rest: { rotate: pathname === '/shop' ? 180 : 0 },
                   hover: { rotate: 180 }
                 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.15, ease: "easeOut" }}
               >
                 Shop!
               </motion.span>
@@ -329,7 +329,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
                   rest: { rotate: pathname === '/connect' ? 180 : 0 },
                   hover: { rotate: 180 }
                 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.15, ease: "easeOut" }}
               >
                 Connect!
               </motion.span>
