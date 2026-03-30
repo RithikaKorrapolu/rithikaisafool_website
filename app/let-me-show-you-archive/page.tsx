@@ -9,6 +9,14 @@ const BACKGROUND_IMAGE = "/assets/CCP/Sample_Month/archive/lib2.avif";
 // Archive of past exhibits (newest first)
 const EXHIBITS = [
   {
+    id: 3,
+    title: "The Art of Waiting",
+    month: "April 2026",
+    description: "",
+    path: "/let-me-show-you/april2026",
+    image: "/assets/CCP/Sample_Month/April2026/peoplesun.webp",
+  },
+  {
     id: 2,
     title: "Beginning to Melt",
     month: "March 2026",
