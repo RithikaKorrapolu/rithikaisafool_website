@@ -17,6 +17,11 @@ export default function FooterSignup() {
       return;
     }
 
+    if (!phone) {
+      setErrorMsg("Please enter your phone number");
+      return;
+    }
+
     setStatus("loading");
     setErrorMsg("");
 
@@ -85,7 +90,7 @@ export default function FooterSignup() {
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder="Phone"
+                placeholder="Phone *"
                 className="flex-1 md:w-24 text-white placeholder:text-white/50 text-base focus:outline-none bg-transparent"
               />
             </div>
