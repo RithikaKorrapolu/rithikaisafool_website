@@ -47,15 +47,20 @@ export default function Connect() {
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Custom email validation
-    if (!email && !phone) {
+    // Custom validation
+    if (!email) {
       setSubscribeStatus("error");
-      setSubscribeMessage("Please enter an email or phone number");
+      setSubscribeMessage("Please enter an email address");
       return;
     }
-    if (email && (!email.includes('@') || !email.includes('.'))) {
+    if (!email.includes('@') || !email.includes('.')) {
       setSubscribeStatus("error");
       setSubscribeMessage("Please enter a valid email address");
+      return;
+    }
+    if (!phone) {
+      setSubscribeStatus("error");
+      setSubscribeMessage("Please enter your phone number");
       return;
     }
 
@@ -372,7 +377,7 @@ export default function Connect() {
                   <span className="text-black text-base md:text-lg mr-2" style={{ fontFamily: 'Anek Bangla, sans-serif' }}>+1</span>
                   <input
                     type="tel"
-                    placeholder="phone (optional)"
+                    placeholder="phone *"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     className="flex-1 text-black text-base md:text-lg focus:outline-none bg-transparent"
