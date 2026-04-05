@@ -54,6 +54,7 @@ export default function Home() {
     }
   }, []);
 
+
   // Intersection observer for mobile dance animation (only on touch devices)
   useEffect(() => {
     if (typeof window === 'undefined' || !isTouchDevice) return;
@@ -184,14 +185,14 @@ export default function Home() {
             </div>
 
             {/* Subtitles */}
-            <div className="text-left sm:text-center mb-12 mt-2">
-              <h2 className="text-[22px] sm:text-3xl lg:text-[33px] font-bold text-black font-[family-name:var(--font-abril-fatface)]">a chance to be fools</h2>
+            <div className="text-left sm:text-center mb-20 sm:mb-12 mt-2">
+              <h2 className="text-[22px] sm:text-3xl lg:text-[33px] font-bold text-black font-[family-name:var(--font-abril-fatface)]">go for it</h2>
             </div>
           </div>
         </div>
 
         {/* Spacer to account for fixed header height */}
-        <div className="container mx-auto px-6 relative z-10">
+        <div className="container mx-auto px-6 relative z-10 pointer-events-none">
           <div className="h-[110vw] sm:h-[32vw] md:h-[32vw] lg:h-[26vw]"></div>
         </div>
 
@@ -535,6 +536,7 @@ export default function Home() {
           </div>
         </div>
       </footer>
+
     </>
   );
 }
