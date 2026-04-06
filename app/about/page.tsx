@@ -60,7 +60,7 @@ export default function About() {
   const [slideDistance, setSlideDistance] = useState(0);
   const slideWrapperRef = useRef<HTMLDivElement>(null);
   const slideTextRef = useRef<HTMLParagraphElement>(null);
-  const [expandedSections, setExpandedSections] = useState<string[]>(['origin', 'people', 'art', 'dreams']);
+  const [expandedSections, setExpandedSections] = useState<string[]>([]);
 
   const toggleSection = (section: string) => {
     setExpandedSections(prev =>
@@ -73,12 +73,8 @@ export default function About() {
   useEffect(() => {
     const mobile = window.innerWidth < 768;
     setIsMobile(mobile);
-    // Open sections by default on desktop, closed on mobile
-    if (mobile) {
-      setExpandedSections([]);
-    } else {
-      setExpandedSections(['origin', 'people', 'art', 'dreams']);
-    }
+    // Sections collapsed by default on both mobile and desktop
+    setExpandedSections([]);
 
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
@@ -181,8 +177,8 @@ export default function About() {
   return (
     <div className="flex flex-col min-h-screen" style={{ backgroundColor: '#F2F2F2' }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap');
-        .drop-cap::first-letter {
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Indie+Flower&family=Shadows+Into+Light&family=Kalam:wght@400;700&family=Gloria+Hallelujah&family=Satisfy&family=Loved+by+the+King&display=swap');
+                .drop-cap::first-letter {
           float: left;
           font-size: 5.5rem;
           line-height: 0.8;
@@ -209,6 +205,9 @@ export default function About() {
             max-width: 80%;
             margin-top: 0.5rem !important;
             margin-bottom: 1rem !important;
+          }
+          .in-ways-text {
+            font-size: 0.57em !important;
           }
         }
         @media (max-width: 1024px) {
@@ -255,8 +254,11 @@ export default function About() {
             font-size: clamp(0.85rem, 1.89vw, 1.18rem) !important;
           }
           .world-better-line {
-            margin-top: 2rem !important;
+            margin-top: 1.5rem !important;
             font-size: clamp(1.14rem, 3.05vw, 1.91rem) !important;
+          }
+          .people-connect-text {
+            font-size: 1.32em !important;
           }
           .mobile-line-break {
             display: block;
@@ -355,7 +357,7 @@ export default function About() {
                 textTransform: 'uppercase',
               }}
             >
-              An <span style={{ backgroundColor: '#dcff73', padding: '0 4px' }}>ART & TECH</span> COMPANY TRYING TO
+              AN ART AND TECH COMPANY HELPING
             </p>
             <h1
               className="main-headline"
@@ -369,7 +371,7 @@ export default function About() {
                 textTransform: 'uppercase',
               }}
             >
-              CONNECT PEOPLE IN NEW AND REFRESHING WAYS.
+              <span className="people-connect-text" style={{ fontSize: '1.19em' }}>PEOPLE CONNECT*</span><span className="in-ways-text" style={{ display: 'block', fontSize: '0.63em', marginTop: '0.1em', fontStyle: 'italic', color: '#000', textTransform: 'none' }}>*in ways they normally wouldn&apos;t</span>
             </h1>
             <p
               className="mt-2 world-better-line"
@@ -381,7 +383,7 @@ export default function About() {
                 letterSpacing: '-0.02em',
               }}
             >
-              The world is better when we&apos;re doing bits and opening up to each other. We make products and experiences that bring that out in people.
+              The world gets better if we&apos;re more <span style={{ backgroundColor: '#dcff73', padding: '0 4px' }}>playful and open and free with each other</span>.<br/>We try to make things that bring that out in people.
             </p>
 
           </div>
@@ -401,13 +403,13 @@ export default function About() {
               <h2
                 className="section-header text-2xl font-bold mb-2 cursor-pointer flex items-center gap-2"
                 style={{
-                  color: '#F8330D',
+                  color: '#000',
                   letterSpacing: '0.08em',
                   fontFamily: '"Iowan Old Style", "Palatino Linotype", Georgia, serif',
                 }}
                 onClick={() => toggleSection('origin')}
               >
-                <span style={{ transform: expandedSections.includes('origin') ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s', color: '#F8330D' }}>▶︎</span>
+                <span style={{ transform: expandedSections.includes('origin') ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s', color: '#000' }}>▶︎</span>
                 ORIGIN STORY
               </h2>
               <AnimatePresence>
@@ -467,13 +469,13 @@ export default function About() {
               <h2
                 className="section-header text-2xl font-bold mb-2 cursor-pointer flex items-center gap-2"
                 style={{
-                  color: '#F8330D',
+                  color: '#000',
                   letterSpacing: '0.08em',
                   fontFamily: '"Iowan Old Style", "Palatino Linotype", Georgia, serif',
                 }}
                 onClick={() => toggleSection('people')}
               >
-                <span style={{ transform: expandedSections.includes('people') ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s', color: '#F8330D' }}>▶︎</span>
+                <span style={{ transform: expandedSections.includes('people') ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s', color: '#000' }}>▶︎</span>
                 PEOPLE ARE AWESOME
               </h2>
               <AnimatePresence>
@@ -539,13 +541,13 @@ export default function About() {
               <h2
                 className="section-header text-2xl font-bold mb-2 cursor-pointer flex items-center gap-2"
                 style={{
-                  color: '#F8330D',
+                  color: '#000',
                   letterSpacing: '0.08em',
                   fontFamily: '"Iowan Old Style", "Palatino Linotype", Georgia, serif',
                 }}
                 onClick={() => toggleSection('art')}
               >
-                <span style={{ transform: expandedSections.includes('art') ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s', color: '#F8330D' }}>▶︎</span>
+                <span style={{ transform: expandedSections.includes('art') ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s', color: '#000' }}>▶︎</span>
                 THIS STUFF IS WEIRD
               </h2>
               <AnimatePresence>
@@ -585,13 +587,13 @@ export default function About() {
               <h2
                 className="section-header text-2xl font-bold mb-2 cursor-pointer flex items-center gap-2"
                 style={{
-                  color: '#F8330D',
+                  color: '#000',
                   letterSpacing: '0.08em',
                   fontFamily: '"Iowan Old Style", "Palatino Linotype", Georgia, serif',
                 }}
                 onClick={() => toggleSection('dreams')}
               >
-                <span style={{ transform: expandedSections.includes('dreams') ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s', color: '#F8330D' }}>▶︎</span>
+                <span style={{ transform: expandedSections.includes('dreams') ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s', color: '#000' }}>▶︎</span>
                 IT TOOK ME A LONG TIME
               </h2>
               <AnimatePresence>
@@ -652,7 +654,6 @@ export default function About() {
             </div>
             <div className="flex gap-6">
               <a href="/" className="text-white text-sm font-semibold hover:text-[#F8330D] transition-colors font-[family-name:var(--font-inter)]">Home</a>
-              <a href="/shop" className="text-white text-sm font-semibold hover:text-[#F8330D] transition-colors font-[family-name:var(--font-inter)]">Store</a>
               <a href="/connect" className="text-white text-sm font-semibold hover:text-[#F8330D] transition-colors font-[family-name:var(--font-inter)]">Contact</a>
               <a href="/legal" className="text-white text-sm font-semibold hover:text-[#F8330D] transition-colors font-[family-name:var(--font-inter)]">Legal</a>
             </div>
@@ -665,7 +666,6 @@ export default function About() {
               <div className="flex gap-12">
                 <div className="flex flex-col">
                   <a href="/" className="text-white text-base font-semibold hover:text-[#F8330D] transition-colors font-[family-name:var(--font-inter)]">Home</a>
-                  <a href="/shop" className="text-white text-base font-semibold hover:text-[#F8330D] transition-colors font-[family-name:var(--font-inter)]">Store</a>
                 </div>
                 <div className="flex flex-col">
                   <a href="/connect" className="text-white text-base font-semibold hover:text-[#F8330D] transition-colors font-[family-name:var(--font-inter)]">Contact</a>

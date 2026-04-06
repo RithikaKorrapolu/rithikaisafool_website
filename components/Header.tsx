@@ -293,26 +293,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
                 }}
                 transition={{ duration: 0.15, ease: "easeOut" }}
               >
-                Art!
-              </motion.span>
-            </motion.div>
-          </Link>
-          <Link href="/shop" className="inline-block">
-            <motion.div
-              className="px-2 py-1"
-              whileHover="hover"
-              initial="rest"
-              animate="rest"
-            >
-              <motion.span
-                className={`text-[0.96rem] md:text-lg font-bold tracking-tighter inline-block ${pathname === '/shop' ? 'text-[#F8330D]' : isMuseumPage ? 'text-white' : ''}`}
-                variants={{
-                  rest: { rotate: pathname === '/shop' ? 180 : 0 },
-                  hover: { rotate: 180 }
-                }}
-                transition={{ duration: 0.15, ease: "easeOut" }}
-              >
-                Shop!
+                Things!
               </motion.span>
             </motion.div>
           </Link>
