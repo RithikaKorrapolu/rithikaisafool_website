@@ -159,9 +159,9 @@ export default function Header({ onMenuClick }: HeaderProps) {
     <header className={`fixed top-0 left-0 w-full z-50 ${isMuseumPage ? 'bg-transparent' : 'bg-white'}`}>
       {/* Top Header with Menu, Logo, Cart */}
       <div className={`flex items-center justify-between px-2 py-4 md:px-6 md:py-4 ${isMuseumPage ? 'border-b border-white/20' : 'border-b border-gray-200'}`}>
-        {/* Logo Button - Left (Opens Newsletter) */}
-        <button
-          onClick={() => setShowNewsletterPopup(true)}
+        {/* Logo Button - Left (Goes to Home) */}
+        <Link
+          href="/"
           className="cursor-pointer ml-4 md:ml-8"
         >
           <motion.div
@@ -171,14 +171,14 @@ export default function Header({ onMenuClick }: HeaderProps) {
           >
             <Image
               src="/assets/shorthome_logo.png"
-              alt="Newsletter"
+              alt="Home"
               width={72}
               height={72}
               priority
               className="w-[41px] md:w-[58px] h-auto object-contain home-logo-shadow"
             />
           </motion.div>
-        </button>
+        </Link>
 
         {/* Logo - Center */}
         <a
@@ -293,7 +293,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
                 }}
                 transition={{ duration: 0.15, ease: "easeOut" }}
               >
-                Things!
+                Stuff!
               </motion.span>
             </motion.div>
           </Link>

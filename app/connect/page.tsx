@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import FooterSignup from "@/components/FooterSignup";
+import DailyOffering from "@/components/DailyOffering";
 
 interface CalendarEvent {
   month: string;
@@ -303,7 +304,7 @@ export default function Connect() {
             {/* REACH OUT Header */}
             <div className="text-left py-3 mb-2">
               <h2 className="font-bold text-[#561DF1]" style={{ fontFamily: 'Anek Bangla, sans-serif', fontSize: '1.8rem', letterSpacing: '-0.05em', WebkitTextStroke: '0.1px black' }}>
-                LET US SEND BEAUTIFUL EMAILS
+                EMAILS CAN BE BEAUTIFUL
               </h2>
             </div>
 
@@ -562,6 +563,17 @@ export default function Connect() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Daily Offering Section */}
+      <div className="w-full px-6 mt-12 mb-8 flex flex-col items-center">
+        <h2 className="font-bold text-[#561DF1] mb-1 text-center text-[2.16rem] md:text-[2.59rem]" style={{ fontFamily: 'Anek Bangla, sans-serif', letterSpacing: '-0.05em', WebkitTextStroke: '0.1px black' }}>
+          A DAILY OFFERING
+        </h2>
+        <p className="text-black mb-4 text-center text-[1.17rem] md:text-[1.3rem]" style={{ fontFamily: 'Anek Bangla, sans-serif' }}>
+          Something we&apos;re a fan of. Updated daily.
+        </p>
+        <DailyOffering />
       </div>
 
     </main>

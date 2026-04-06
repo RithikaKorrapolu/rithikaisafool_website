@@ -85,7 +85,7 @@ export function BouncingBallPoster({ showLogo = false, isHovered = false, imageS
       <div className="absolute inset-0 flex items-end justify-center">
         <div className={`relative ${imageScale < 100 ? '' : 'w-full h-full'}`} style={imageScale < 100 ? { width: `${imageScale}%`, height: `${imageScale}%` } : {}}>
           <img
-            src="/assets/Sweatshirt/redcover.png"
+            src="/assets/Sweatshirt/redcover.webp"
             alt="Red Hoodie"
             className="absolute inset-0 w-full h-full object-contain"
           />
@@ -114,7 +114,7 @@ export function BouncingBallPoster({ showLogo = false, isHovered = false, imageS
       >
         <div className={`relative ${imageScale < 100 ? '' : 'w-full h-full'}`} style={imageScale < 100 ? { width: `${imageScale}%`, height: `${imageScale}%` } : {}}>
           <img
-            src="/assets/Sweatshirt/blackcover.png"
+            src="/assets/Sweatshirt/blackcover.webp"
             alt="Black Hoodie"
             className="absolute inset-0 w-full h-full object-contain"
           />
