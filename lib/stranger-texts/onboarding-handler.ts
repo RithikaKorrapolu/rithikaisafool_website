@@ -40,7 +40,7 @@ async function handleNameStep(
 
   // React to their name with a heart
   if (messageId) {
-    await sendReaction(messageId, '❤️');
+    await sendReaction(messageId, 'love');
   }
 
   // Check if this is the first person with this name
@@ -109,7 +109,7 @@ async function handleQuestionStep(
 
   // React to their answer with a heart
   if (messageId) {
-    await sendReaction(messageId, '❤️');
+    await sendReaction(messageId, 'love');
   }
 
   // Store the answer

@@ -46,16 +46,23 @@ export async function sendMessage({ to, message }: SendMessageOptions): Promise<
   }
 }
 
-export async function sendReaction(messageId: string, reaction: string): Promise<LinqResponse> {
+// Reaction types: love, like, dislike, laugh, emphasize, question
+type ReactionType = 'love' | 'like' | 'dislike' | 'laugh' | 'emphasize' | 'question';
+
+const LINQ_MESSAGES_URL = 'https://api.linqapp.com/api/partner/v3/messages';
+
+export async function sendReaction(messageId: string, reactionType: ReactionType = 'love'): Promise<LinqResponse> {
   try {
-    const response = await fetch(`${LINQ_API_URL}/${messageId}/reactions`, {
+    const response = await fetch(`${LINQ_MESSAGES_URL}/${messageId}/reactions`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${LINQ_API_TOKEN}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        reaction: reaction
+        operation: 'add',
+        type: reactionType,
+        part_index: 0
       }),
     });
 

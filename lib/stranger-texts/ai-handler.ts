@@ -55,7 +55,7 @@ export async function handleAIConversation(
 
   // React to their message sometimes
   if (messageId && shouldReact(message)) {
-    await sendReaction(messageId, '❤️');
+    await sendReaction(messageId, 'love');
   }
 
   // Send the response
