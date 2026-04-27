@@ -78,3 +78,85 @@ export function formatPhoneNumber(phone: string): string {
     ? `+${cleanNumber}`
     : `+1${cleanNumber}`;
 }
+
+// Contact Card - Sets up iMessage Name and Photo Sharing
+const LINQ_CONTACT_CARD_URL = 'https://api.linqapp.com/api/partner/v3/contact_card';
+
+interface ContactCardOptions {
+  firstName: string;
+  lastName?: string;
+  imageUrl?: string;
+}
+
+export async function setupContactCard(options: ContactCardOptions): Promise<LinqResponse> {
+  try {
+    const body: Record<string, unknown> = {
+      phone_number: LINQ_PHONE_NUMBER,
+      first_name: options.firstName,
+    };
+
+    if (options.lastName) {
+      body.last_name = options.lastName;
+    }
+    if (options.imageUrl) {
+      body.image_url = options.imageUrl;
+    }
+
+    const response = await fetch(LINQ_CONTACT_CARD_URL, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${LINQ_API_TOKEN}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error('Linq contact card error:', errorData);
+      return { success: false, error: errorData };
+    }
+
+    const data = await response.json();
+    return { success: true, messageId: data.id };
+  } catch (error) {
+    console.error('Linq contact card error:', error);
+    return { success: false, error: String(error) };
+  }
+}
+
+export async function updateContactCard(options: Partial<ContactCardOptions>): Promise<LinqResponse> {
+  try {
+    const body: Record<string, unknown> = {};
+
+    if (options.firstName) {
+      body.first_name = options.firstName;
+    }
+    if (options.lastName) {
+      body.last_name = options.lastName;
+    }
+    if (options.imageUrl) {
+      body.image_url = options.imageUrl;
+    }
+
+    const response = await fetch(`${LINQ_CONTACT_CARD_URL}?phone_number=${encodeURIComponent(LINQ_PHONE_NUMBER)}`, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `Bearer ${LINQ_API_TOKEN}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error('Linq contact card update error:', errorData);
+      return { success: false, error: errorData };
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error('Linq contact card update error:', error);
+    return { success: false, error: String(error) };
+  }
+}
