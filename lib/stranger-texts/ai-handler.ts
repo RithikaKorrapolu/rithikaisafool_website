@@ -146,3 +146,45 @@ Give a brief, warm reaction and maybe a follow-up question to keep the conversat
   const textBlock = response.content.find(block => block.type === 'text');
   return textBlock?.text || "That's really cool, thanks for sharing!";
 }
+
+export async function generateOnboardingResponse(
+  name: string,
+  questionAsked: string,
+  theirAnswer: string,
+  nextQuestion?: string,
+  isComplete?: boolean
+): Promise<string> {
+  let instructions = `You're onboarding a new member named ${name} to the Stranger Texts Club.
+
+You just asked them: "${questionAsked}"
+They answered: "${theirAnswer}"
+
+React genuinely to their answer in 1-2 short sentences. Be warm, curious, maybe playful. Text like a friend would.`;
+
+  if (isComplete) {
+    instructions += `
+
+Then let them know they're all set! Their first match is coming soon. Keep it brief and exciting.`;
+  } else if (nextQuestion) {
+    instructions += `
+
+After your reaction, smoothly transition to this next question: "${nextQuestion}"
+Don't just ask it robotically - weave it in naturally.`;
+  }
+
+  instructions += `
+
+Keep it SHORT. Like actual texts. No long paragraphs.`;
+
+  const response = await anthropic.messages.create({
+    model: 'claude-sonnet-4-20250514',
+    max_tokens: 150,
+    system: instructions,
+    messages: [
+      { role: 'user', content: theirAnswer }
+    ],
+  });
+
+  const textBlock = response.content.find(block => block.type === 'text');
+  return textBlock?.text || (isComplete ? "You're all set! First match coming soon." : nextQuestion || "Thanks for sharing!");
+}

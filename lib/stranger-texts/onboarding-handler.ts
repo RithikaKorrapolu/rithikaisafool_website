@@ -2,7 +2,7 @@ import { supabase } from '@/lib/supabase';
 import { sendMessage, sendReaction } from './linq-client';
 import { MESSAGES, ONBOARDING_QUESTIONS, NAME_REACTIONS, TRIAL_DURATION_DAYS } from './constants';
 import { Contact, OnboardingStep } from './types';
-import { generateNameReaction } from './ai-handler';
+import { generateNameReaction, generateOnboardingResponse } from './ai-handler';
 
 interface OnboardingResult {
   success: boolean;
@@ -106,6 +106,7 @@ async function handleQuestionStep(
   const question = ONBOARDING_QUESTIONS[questionIndex];
   const nextQuestionIndex = questionIndex + 1;
   const isLastQuestion = nextQuestionIndex >= ONBOARDING_QUESTIONS.length;
+  const nextQuestion = isLastQuestion ? undefined : ONBOARDING_QUESTIONS[nextQuestionIndex];
 
   // React to their answer with a heart
   if (messageId) {
@@ -117,6 +118,24 @@ async function handleQuestionStep(
     ...contact.onboarding_answers,
     [question.key]: answer.trim(),
   };
+
+  // Generate AI response that reacts + transitions to next question (or completion)
+  let aiResponse: string;
+  try {
+    aiResponse = await generateOnboardingResponse(
+      contact.name || 'friend',
+      question.question,
+      answer,
+      nextQuestion?.question,
+      isLastQuestion
+    );
+  } catch (error) {
+    console.error('AI response error:', error);
+    // Fallback to simple response
+    aiResponse = isLastQuestion
+      ? MESSAGES.onboardingComplete
+      : nextQuestion?.question || "Thanks for sharing!";
+  }
 
   if (isLastQuestion) {
     // Complete onboarding, start trial
@@ -135,12 +154,12 @@ async function handleQuestionStep(
       })
       .eq('id', contact.id);
 
-    // Send completion message
-    await sendMessage({ to: contact.phone, message: MESSAGES.onboardingComplete });
+    // Send AI-generated completion message
+    await sendMessage({ to: contact.phone, message: aiResponse });
 
     await supabase.from('messages').insert({
       contact_id: contact.id,
-      prompt: MESSAGES.onboardingComplete,
+      prompt: aiResponse,
       direction: 'outbound',
       message_type: 'onboarding_complete',
     });
@@ -149,7 +168,6 @@ async function handleQuestionStep(
   } else {
     // Move to next question
     const nextStep = `awaiting_q${nextQuestionIndex + 1}` as OnboardingStep;
-    const nextQuestion = ONBOARDING_QUESTIONS[nextQuestionIndex];
 
     await supabase
       .from('contacts')
@@ -160,13 +178,12 @@ async function handleQuestionStep(
       })
       .eq('id', contact.id);
 
-    // Small delay then send next question
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    await sendMessage({ to: contact.phone, message: nextQuestion.question });
+    // Send AI-generated response (includes reaction + next question)
+    await sendMessage({ to: contact.phone, message: aiResponse });
 
     await supabase.from('messages').insert({
       contact_id: contact.id,
-      prompt: nextQuestion.question,
+      prompt: aiResponse,
       direction: 'outbound',
       message_type: 'onboarding',
     });
