@@ -887,6 +887,56 @@ const ARTWORKS = [
     feelings: ["intimate", "tender", "peaceful", "warm"],
     colors: ["#bd7d5a", "#793d3b"]
   },
+  {
+    id: 97,
+    title: "The Magic Flower Game",
+    artist: "Dorothea Tanning",
+    year: "",
+    medium: "",
+    image: "/assets/museum/artgallery/97.webp",
+    feelings: ["surreal", "dreamlike", "mystical", "fantastical"],
+    colors: ["#83b3c9", "#867d46"]
+  },
+  {
+    id: 98,
+    title: "The Courtship",
+    artist: "Gertrude Abercrombie",
+    year: "",
+    medium: "",
+    image: "/assets/museum/artgallery/98.webp",
+    feelings: ["mysterious", "surreal", "romantic", "dreamlike"],
+    colors: ["#2a2a2a", "#514941"]
+  },
+  {
+    id: 99,
+    title: "Music for a Ballerina",
+    artist: "Honoré Sharrer",
+    year: "",
+    medium: "",
+    image: "/assets/museum/artgallery/99.webp",
+    feelings: ["graceful", "whimsical", "dreamlike", "enchanting"],
+    colors: ["#912b0b", "#c6b693"]
+  },
+  {
+    id: 100,
+    title: "Esperando la llegada (Waiting for the Arrival)",
+    artist: "Julio Galán",
+    year: "",
+    medium: "",
+    image: "/assets/museum/artgallery/100.webp",
+    feelings: ["contemplative", "mysterious", "nostalgic", "melancholy"],
+    colors: ["#5c728f", "#969291"]
+  },
+  {
+    id: 101,
+    title: "As He Watched Him Walk Away",
+    artist: "Toyin Ojih Odutola",
+    year: "",
+    medium: "",
+    image: "/assets/museum/artgallery/101.webp",
+    feelings: ["emotional", "intimate", "contemplative", "bittersweet"],
+    colors: ["#e2e3e3", "#95a9a9"]
+  },
 ];
 
 // Shuffle function using Fisher-Yates algorithm

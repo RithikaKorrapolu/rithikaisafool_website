@@ -156,7 +156,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
 
   return (
     <>
-    <header className={`fixed top-0 left-0 w-full z-50 ${isMuseumPage ? 'bg-transparent' : 'bg-white'}`}>
+    <header className={`fixed top-0 left-0 w-full z-50 print:hidden ${isMuseumPage ? 'bg-transparent' : 'bg-white'}`}>
       {/* Top Header with Menu, Logo, Cart */}
       <div className={`flex items-center justify-between px-2 py-4 md:px-6 md:py-4 ${isMuseumPage ? 'border-b border-white/20' : 'border-b border-gray-200'}`}>
         {/* Logo Button - Left (Goes to Home) */}
@@ -293,7 +293,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
                 }}
                 transition={{ duration: 0.15, ease: "easeOut" }}
               >
-                Stuff!
+                Things!
               </motion.span>
             </motion.div>
           </Link>

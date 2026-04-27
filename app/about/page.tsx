@@ -203,7 +203,7 @@ export default function About() {
           .main-headline {
             font-size: clamp(1.84rem, 5.5vw, 4.14rem) !important;
             max-width: 80%;
-            margin-top: 0.5rem !important;
+            margin-top: -0.2em !important;
             margin-bottom: 1rem !important;
           }
           .in-ways-text {
@@ -228,7 +228,7 @@ export default function About() {
           }
           .main-headline {
             line-height: 1.1 !important;
-            margin-top: 0.5rem !important;
+            margin-top: -0.2em !important;
             font-size: clamp(1.76rem, 5.28vw, 3.96rem) !important;
           }
           .and-good-annotation {
@@ -340,14 +340,14 @@ export default function About() {
           50% { transform: rotateX(-90deg); }
           100% { transform: rotateX(0deg); }
         }
-      `}</style>
+              `}</style>
 
       <main className="pt-[160px] md:pt-[160px] lg:pt-[180px] flex-grow" style={{ backgroundColor: '#F2F2F2' }}>
         <div className="mx-auto px-6 lg:px-12 xl:px-16" style={{ maxWidth: '95%' }}>
           {/* Headline */}
           <div className="text-left mb-8">
             <p
-              className="mb-2 art-tech-line"
+              className="art-tech-line"
               style={{
                 fontFamily: '"Iowan Old Style", "Palatino Linotype", Georgia, serif',
                 fontSize: 'clamp(0.9rem, 2vw, 1.25rem)',
@@ -355,23 +355,25 @@ export default function About() {
                 color: '#000',
                 letterSpacing: '0.15em',
                 textTransform: 'uppercase',
+                margin: 0,
               }}
             >
-              AN ART AND TECH COMPANY HELPING
+              AN <span style={{ color: '#000' }}>ART & TECH</span> COMPANY CREATING
             </p>
             <h1
               className="main-headline"
               style={{
                 fontFamily: '"Iowan Old Style", "Palatino Linotype", Georgia, serif',
-                fontSize: 'clamp(1.6rem, 4.8vw, 3.6rem)',
+                fontSize: 'clamp(2.2rem, 6vw, 5rem)',
                 fontWeight: '700',
                 color: '#000',
-                letterSpacing: '0.02em',
-                lineHeight: '1.1',
-                textTransform: 'uppercase',
+                letterSpacing: '-0.02em',
+                lineHeight: '1.0',
               }}
             >
-              <span className="people-connect-text" style={{ fontSize: '1.19em' }}>PEOPLE CONNECT*</span><span className="in-ways-text" style={{ display: 'block', fontSize: '0.63em', marginTop: '0.1em', fontStyle: 'italic', color: '#000', textTransform: 'none' }}>*in ways they normally wouldn&apos;t</span>
+              <span style={{ fontWeight: '700', fontSize: '0.58em', fontStyle: 'italic' }}>NEW & INTERESTING WAYS</span>
+              <br />
+              <span className="people-connect-text" style={{ fontSize: '1.3em' }}>FOR PEOPLE TO<br />CONNECT.</span>
             </h1>
             <p
               className="mt-2 world-better-line"
@@ -401,15 +403,15 @@ export default function About() {
             {/* Origin Story */}
             <div className="section-1" style={{ marginBottom: '1rem' }}>
               <h2
-                className="section-header text-2xl font-bold mb-2 cursor-pointer flex items-center gap-2"
+                className="section-header section-button text-2xl font-bold mb-2 cursor-pointer flex items-center gap-2"
                 style={{
-                  color: '#000',
+                  color: '#F8330D',
                   letterSpacing: '0.08em',
                   fontFamily: '"Iowan Old Style", "Palatino Linotype", Georgia, serif',
                 }}
                 onClick={() => toggleSection('origin')}
               >
-                <span style={{ transform: expandedSections.includes('origin') ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s', color: '#000' }}>▶︎</span>
+                <span style={{ transform: expandedSections.includes('origin') ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s', color: '#F8330D' }}>▶︎</span>
                 ORIGIN STORY
               </h2>
               <AnimatePresence>
@@ -467,15 +469,15 @@ export default function About() {
             {/* People are awesome */}
             <div className="section-2" style={{ marginBottom: '1rem' }}>
               <h2
-                className="section-header text-2xl font-bold mb-2 cursor-pointer flex items-center gap-2"
+                className="section-header section-button text-2xl font-bold mb-2 cursor-pointer flex items-center gap-2"
                 style={{
-                  color: '#000',
+                  color: '#F8330D',
                   letterSpacing: '0.08em',
                   fontFamily: '"Iowan Old Style", "Palatino Linotype", Georgia, serif',
                 }}
                 onClick={() => toggleSection('people')}
               >
-                <span style={{ transform: expandedSections.includes('people') ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s', color: '#000' }}>▶︎</span>
+                <span style={{ transform: expandedSections.includes('people') ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s', color: '#F8330D' }}>▶︎</span>
                 PEOPLE ARE AWESOME
               </h2>
               <AnimatePresence>
@@ -539,15 +541,15 @@ export default function About() {
             {/* I want to make Art */}
             <div className="section-3" style={{ marginBottom: '1rem' }}>
               <h2
-                className="section-header text-2xl font-bold mb-2 cursor-pointer flex items-center gap-2"
+                className="section-header section-button text-2xl font-bold mb-2 cursor-pointer flex items-center gap-2"
                 style={{
-                  color: '#000',
+                  color: '#F8330D',
                   letterSpacing: '0.08em',
                   fontFamily: '"Iowan Old Style", "Palatino Linotype", Georgia, serif',
                 }}
                 onClick={() => toggleSection('art')}
               >
-                <span style={{ transform: expandedSections.includes('art') ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s', color: '#000' }}>▶︎</span>
+                <span style={{ transform: expandedSections.includes('art') ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s', color: '#F8330D' }}>▶︎</span>
                 THIS STUFF IS WEIRD
               </h2>
               <AnimatePresence>
@@ -585,15 +587,15 @@ export default function About() {
             {/* Sometimes, dreams come true */}
             <div style={{ marginBottom: '1rem' }}>
               <h2
-                className="section-header text-2xl font-bold mb-2 cursor-pointer flex items-center gap-2"
+                className="section-header section-button text-2xl font-bold mb-2 cursor-pointer flex items-center gap-2"
                 style={{
-                  color: '#000',
+                  color: '#F8330D',
                   letterSpacing: '0.08em',
                   fontFamily: '"Iowan Old Style", "Palatino Linotype", Georgia, serif',
                 }}
                 onClick={() => toggleSection('dreams')}
               >
-                <span style={{ transform: expandedSections.includes('dreams') ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s', color: '#000' }}>▶︎</span>
+                <span style={{ transform: expandedSections.includes('dreams') ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s', color: '#F8330D' }}>▶︎</span>
                 IT TOOK ME A LONG TIME
               </h2>
               <AnimatePresence>
