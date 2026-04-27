@@ -1,47 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { routeIncomingMessage } from '@/lib/stranger-texts/message-router';
-
-const LINQ_WEBHOOK_SECRET = process.env.LINQ_WEBHOOK_SECRET;
+import { supabase } from '@/lib/supabase';
 
 export async function POST(request: NextRequest) {
   try {
-    // Verify webhook signature if secret is configured
-    if (LINQ_WEBHOOK_SECRET) {
-      const signature = request.headers.get('x-linq-signature');
-      // TODO: Implement proper signature verification when Linq provides documentation
-      if (!signature) {
-        console.warn('Missing webhook signature');
-      }
-    }
-
     const body = await request.json();
     console.log('Linq webhook received:', JSON.stringify(body, null, 2));
 
-    // Parse the incoming message
-    // Linq webhook format may vary - adjust based on their documentation
-    const {
-      from,
-      message,
-      id: messageId,
-    } = parseLinqWebhook(body);
+    // Determine event type
+    const eventType = body.event || body.type || detectEventType(body);
 
-    if (!from || !message) {
-      console.error('Missing required fields:', { from, message });
-      return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
-      );
+    switch (eventType) {
+      case 'message.received':
+        return handleMessageReceived(body);
+      case 'message.delivered':
+        return handleMessageDelivered(body);
+      case 'message.read':
+        return handleMessageRead(body);
+      case 'message.failed':
+        return handleMessageFailed(body);
+      default:
+        // Try to handle as incoming message if no event type
+        return handleMessageReceived(body);
     }
-
-    // Route the message to appropriate handler
-    const result = await routeIncomingMessage(from, message, messageId ?? undefined);
-
-    console.log('Message routed:', result);
-
-    return NextResponse.json({
-      success: true,
-      action: result.action,
-    });
 
   } catch (error) {
     console.error('Webhook error:', error);
@@ -52,15 +33,109 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Parse Linq webhook payload
-// Adjust this based on actual Linq webhook format
-function parseLinqWebhook(body: Record<string, unknown>): {
+async function handleMessageReceived(body: Record<string, unknown>) {
+  const { from, message, id: messageId } = parseIncomingMessage(body);
+
+  if (!from || !message) {
+    console.error('Missing required fields:', { from, message });
+    return NextResponse.json(
+      { error: 'Missing required fields' },
+      { status: 400 }
+    );
+  }
+
+  const result = await routeIncomingMessage(from, message, messageId ?? undefined);
+  console.log('Message routed:', result);
+
+  return NextResponse.json({
+    success: true,
+    action: result.action,
+  });
+}
+
+async function handleMessageDelivered(body: Record<string, unknown>) {
+  const messageId = extractMessageId(body);
+
+  if (messageId) {
+    await supabase
+      .from('messages')
+      .update({
+        delivery_status: 'delivered',
+        delivered_at: new Date().toISOString(),
+      })
+      .eq('linq_message_id', messageId);
+
+    console.log('Message delivered:', messageId);
+  }
+
+  return NextResponse.json({ success: true, action: 'delivered' });
+}
+
+async function handleMessageRead(body: Record<string, unknown>) {
+  const messageId = extractMessageId(body);
+
+  if (messageId) {
+    await supabase
+      .from('messages')
+      .update({
+        delivery_status: 'read',
+        read_at: new Date().toISOString(),
+      })
+      .eq('linq_message_id', messageId);
+
+    console.log('Message read:', messageId);
+  }
+
+  return NextResponse.json({ success: true, action: 'read' });
+}
+
+async function handleMessageFailed(body: Record<string, unknown>) {
+  const messageId = extractMessageId(body);
+  const error = (body.error as string) || (body.reason as string) || 'Unknown error';
+
+  if (messageId) {
+    await supabase
+      .from('messages')
+      .update({
+        delivery_status: 'failed',
+      })
+      .eq('linq_message_id', messageId);
+
+    console.error('Message failed:', messageId, error);
+  }
+
+  return NextResponse.json({ success: true, action: 'failed' });
+}
+
+function detectEventType(body: Record<string, unknown>): string {
+  // Try to detect event type from payload structure
+  if (body.delivered_at) return 'message.delivered';
+  if (body.read_at) return 'message.read';
+  if (body.failed || body.error) return 'message.failed';
+  if (body.from && body.message) return 'message.received';
+  return 'unknown';
+}
+
+function extractMessageId(body: Record<string, unknown>): string | null {
+  // Try various places where message ID might be
+  if (body.message_id) return body.message_id as string;
+  if (body.id) return body.id as string;
+  if (body.data && typeof body.data === 'object') {
+    const data = body.data as Record<string, unknown>;
+    return (data.message_id as string) || (data.id as string) || null;
+  }
+  if (body.payload && typeof body.payload === 'object') {
+    const payload = body.payload as Record<string, unknown>;
+    return (payload.message_id as string) || (payload.id as string) || null;
+  }
+  return null;
+}
+
+function parseIncomingMessage(body: Record<string, unknown>): {
   from: string | null;
   message: string | null;
   id: string | null;
 } {
-  // Handle different possible Linq webhook formats
-
   // Format 1: Direct fields
   if (body.from && body.message) {
     const messageContent = typeof body.message === 'string'
@@ -88,8 +163,8 @@ function parseLinqWebhook(body: Record<string, unknown>): {
     };
   }
 
-  // Format 3: Chat/message event
-  if (body.event === 'message.received' && body.payload) {
+  // Format 3: Event payload
+  if (body.payload && typeof body.payload === 'object') {
     const payload = body.payload as Record<string, unknown>;
     const messageContent = extractTextFromParts(payload.message);
 
@@ -117,7 +192,7 @@ function extractTextFromParts(message: unknown): string | null {
   return null;
 }
 
-// Also handle GET for webhook verification (if Linq requires it)
+// Handle GET for webhook verification
 export async function GET(request: NextRequest) {
   const challenge = request.nextUrl.searchParams.get('challenge');
 
