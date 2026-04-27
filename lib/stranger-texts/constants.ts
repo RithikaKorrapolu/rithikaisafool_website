@@ -5,7 +5,7 @@ export const LINQ_API_URL = 'https://api.linqapp.com/api/partner/v3/chats';
 export const TRIAL_DURATION_DAYS = 7;
 
 export const MESSAGES = {
-  welcome: "Nice, you made it. Welcome to Stranger Texts.",
+  welcome: "Hell yeah, you made it. Welcome to Stranger Texts.",
   askName: "What should we call you?",
   firstWithName: (name: string) => `You're our first ${name}!`,
   nameReaction: (name: string) => `${name}. That's a classic. Love it.`,
