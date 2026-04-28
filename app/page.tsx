@@ -1021,12 +1021,51 @@ export default function Home() {
                       }}
                       className="flex flex-wrap items-center gap-3"
                     >
-                      <input
-                        type="tel"
-                        name="phone"
-                        placeholder="Your phone number"
-                        className="px-5 py-3 text-[17px] rounded-full border-2 border-black/20 focus:border-black focus:outline-none font-[family-name:var(--font-inter)] w-[200px]"
-                      />
+                      <div className="relative">
+                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[17px]">🇺🇸</span>
+                        <input
+                          type="tel"
+                          name="phone"
+                          placeholder="(000) 000-0000"
+                          maxLength={14}
+                          onKeyDown={(e) => {
+                            const input = e.target as HTMLInputElement;
+                            if (e.key === 'Backspace') {
+                              const pos = input.selectionStart || 0;
+                              // If cursor is right after a formatting character, move it back
+                              if (pos > 0 && [') ', ' ', '-', '('].includes(input.value.substring(pos - 1, pos + 1).trim() ? input.value[pos - 1] : '')) {
+                                // Let default backspace handle it
+                              }
+                            }
+                          }}
+                          onChange={(e) => {
+                            const input = e.target;
+                            const cursorPos = input.selectionStart || 0;
+                            const prevLen = input.value.length;
+
+                            let value = input.value.replace(/\D/g, '');
+                            if (value.length > 10) value = value.slice(0, 10);
+
+                            let formatted = '';
+                            if (value.length >= 6) {
+                              formatted = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6)}`;
+                            } else if (value.length >= 3) {
+                              formatted = `(${value.slice(0, 3)}) ${value.slice(3)}`;
+                            } else if (value.length > 0) {
+                              formatted = `(${value}`;
+                            }
+
+                            input.value = formatted;
+
+                            // Adjust cursor position
+                            const newLen = formatted.length;
+                            const diff = newLen - prevLen;
+                            const newPos = Math.max(0, cursorPos + diff);
+                            input.setSelectionRange(newPos, newPos);
+                          }}
+                          className="pl-12 pr-5 py-3 text-[17px] text-black rounded-full border-2 border-black/20 focus:border-black focus:outline-none font-[family-name:var(--font-inter)] w-[220px]"
+                        />
+                      </div>
                       <button
                         type="submit"
                         className="inline-flex items-center justify-center px-7 py-3 text-[17px] font-semibold rounded-full transition-all font-[family-name:var(--font-inter)] text-black bg-[#dcff73] hover:bg-black hover:text-white"
