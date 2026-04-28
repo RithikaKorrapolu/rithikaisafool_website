@@ -981,18 +981,60 @@ export default function Home() {
                 </p>
                 <div className="flex flex-col gap-3">
                   <div className="inline-block">
-                    {/* CTA Row */}
-                    <div className="flex flex-wrap items-center gap-3">
-                      <a
-                        href="sms:+13322604354&body=Hey, I just got here"
+                    {/* Waitlist Form */}
+                    <form
+                      onSubmit={async (e) => {
+                        e.preventDefault();
+                        const form = e.target as HTMLFormElement;
+                        const phoneInput = form.querySelector('input[name="phone"]') as HTMLInputElement;
+                        const button = form.querySelector('button') as HTMLButtonElement;
+                        const messageEl = form.querySelector('.waitlist-message') as HTMLParagraphElement;
+
+                        if (!phoneInput.value) return;
+
+                        button.disabled = true;
+                        button.textContent = '...';
+
+                        try {
+                          const res = await fetch('/api/linq/onboard', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ phoneNumber: phoneInput.value }),
+                          });
+                          const data = await res.json();
+
+                          if (data.success) {
+                            phoneInput.value = '';
+                            button.textContent = "You're in!";
+                            button.className = button.className.replace('bg-[#dcff73]', 'bg-green-400');
+                            if (messageEl) messageEl.textContent = data.message;
+                          } else {
+                            button.textContent = 'Join Waitlist';
+                            button.disabled = false;
+                            if (messageEl) messageEl.textContent = data.error || 'Something went wrong';
+                          }
+                        } catch {
+                          button.textContent = 'Join Waitlist';
+                          button.disabled = false;
+                          if (messageEl) messageEl.textContent = 'Something went wrong';
+                        }
+                      }}
+                      className="flex flex-wrap items-center gap-3"
+                    >
+                      <input
+                        type="tel"
+                        name="phone"
+                        placeholder="Your phone number"
+                        className="px-5 py-3 text-[17px] rounded-full border-2 border-black/20 focus:border-black focus:outline-none font-[family-name:var(--font-inter)] w-[200px]"
+                      />
+                      <button
+                        type="submit"
                         className="inline-flex items-center justify-center px-7 py-3 text-[17px] font-semibold rounded-full transition-all font-[family-name:var(--font-inter)] text-black bg-[#dcff73] hover:bg-black hover:text-white"
                       >
-                        Open Messages
-                      </a>
-                      <p className="text-[18px] text-black font-[family-name:var(--font-inter)]">
-                        or text <span className="font-semibold bg-[#dcff73] px-2 py-0.5 rounded">+1 (332) 260-4354</span> directly
-                      </p>
-                    </div>
+                        Join Waitlist
+                      </button>
+                    </form>
+                    <p className="waitlist-message text-[14px] text-black/70 mt-2 font-[family-name:var(--font-inter)]"></p>
                     <p className="text-[12px] leading-[16px] text-black/60 italic mt-3">
                       By continuing, you agree to our <a href="/legal/mobile-terms" className="underline hover:text-black/80">Terms of Service</a> and <a href="/legal/privacy-policy" className="underline hover:text-black/80">Privacy Policy</a>.
                     </p>
