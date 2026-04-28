@@ -37,12 +37,17 @@ export async function POST(request: NextRequest) {
 async function handleMessageReceived(body: Record<string, unknown>) {
   const { from, message, id: messageId, chatId } = parseIncomingMessage(body);
 
+  // Log raw payload to debug Linq's format
   if (!from || !message) {
-    console.error('Missing required fields:', { from, message });
-    return NextResponse.json(
-      { error: 'Missing required fields' },
-      { status: 400 }
-    );
+    console.error('Missing required fields. Raw payload:', JSON.stringify(body));
+    // Store raw payload in Supabase for debugging
+    await supabase.from('messages').insert({
+      prompt: 'DEBUG: ' + JSON.stringify(body),
+      direction: 'inbound',
+      message_type: 'debug_payload',
+    });
+    // Return 200 to prevent Linq from marking as failed
+    return NextResponse.json({ success: true, action: 'logged_for_debug' });
   }
 
   // Send read receipt so user sees "Read" under their message
