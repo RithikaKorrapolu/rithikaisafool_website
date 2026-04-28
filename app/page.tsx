@@ -121,8 +121,8 @@ function OptionsBubble({ options, selectedOption, animateIn, onSelect }: { optio
     return (
       <div className="px-3 py-1">
         {/* Options presented indicator */}
-        <div className="flex items-center gap-1.5 mb-1.5 text-[13px] text-black/40">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <div className="flex items-center gap-1.5 mb-1.5 text-[11px] sm:text-[13px] text-black/40">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
             <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5" fill="none"/>
             <path d="M5 8L7 10L11 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
           </svg>
@@ -130,7 +130,7 @@ function OptionsBubble({ options, selectedOption, animateIn, onSelect }: { optio
         </div>
         {/* Selected option bubble */}
         <div
-          className="inline-block px-4 py-2.5 rounded-[18px] bg-[#E9E9EB]"
+          className="inline-block px-3 py-2 rounded-[16px] bg-[#E9E9EB]"
           style={{
             transform: appeared ? 'scale(1) translateY(0)' : 'scale(0.3) translate(-40px, 30px)',
             opacity: appeared ? 1 : 0,
@@ -138,10 +138,10 @@ function OptionsBubble({ options, selectedOption, animateIn, onSelect }: { optio
             transformOrigin: 'bottom left',
           }}
         >
-          <div className="text-[17px] leading-[22px] text-black font-medium" style={{ letterSpacing: '-0.24px' }}>
+          <div className="text-[14px] sm:text-[15px] leading-[18px] sm:leading-[20px] text-black font-medium" style={{ letterSpacing: '-0.24px' }}>
             {selectedOption}
           </div>
-          <div className="text-[13px] text-black/50 mt-0.5">
+          <div className="text-[11px] sm:text-[12px] text-black/50 mt-0.5">
             Selected Option
           </div>
         </div>
@@ -159,12 +159,12 @@ function OptionsBubble({ options, selectedOption, animateIn, onSelect }: { optio
         transition: 'all 320ms cubic-bezier(0.22, 1.2, 0.36, 1)',
       }}
     >
-      <div className="bg-[#E8E8ED] rounded-[18px] overflow-hidden">
+      <div className="bg-[#E8E8ED] rounded-[16px] overflow-hidden">
         {options.map((option, idx) => (
           <button
             key={idx}
             onClick={() => onSelect?.(option)}
-            className="w-full px-4 py-3 text-[17px] leading-[22px] text-left text-[#007AFF] hover:bg-[#D8D8DD] transition-colors cursor-pointer"
+            className="w-full px-3 py-2.5 text-[14px] sm:text-[15px] leading-[18px] sm:leading-[20px] text-left text-[#007AFF] hover:bg-[#D8D8DD] transition-colors cursor-pointer"
             style={{
               letterSpacing: '-0.24px',
               borderBottom: idx < options.length - 1 ? '1px solid rgba(60, 60, 67, 0.12)' : 'none',
@@ -458,7 +458,7 @@ function MessageBubble({ item }: { item: MessageItem }) {
   return (
     <div className={`flex ${isMe ? 'justify-end' : 'justify-start'} px-3 py-0.5`}>
       <div
-        className="max-w-[82%] px-4 py-2.5 rounded-[22px] relative text-[20px] leading-[25px]"
+        className="max-w-[82%] px-3 py-2 rounded-[20px] relative text-[15px] sm:text-[17px] leading-[19px] sm:leading-[22px]"
         style={{
           background: isMe
             ? 'linear-gradient(180deg, #2B8AFA, #0A7CFF)'
@@ -970,13 +970,13 @@ export default function Home() {
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 max-w-[1400px] mx-auto items-center">
 
               {/* Left Column - Header */}
-              <div className="flex flex-col items-center xl:items-start justify-center">
+              <div className="flex flex-col items-start justify-center">
                 <div className="mb-2">
                   <p className="text-xl sm:text-2xl md:text-3xl font-[family-name:var(--font-instrument-serif)] text-black tracking-wide text-left ml-1">The</p>
-                  <h2 className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] xl:text-[6.6rem] 2xl:text-9xl font-bold font-[family-name:var(--font-instrument-serif)] text-black tracking-wide -mt-2 text-left">Stranger Texts Club</h2>
+                  <h2 className="text-[3.3rem] sm:text-[4.1rem] md:text-[4.9rem] lg:text-[6rem] xl:text-[7.3rem] 2xl:text-[9rem] font-bold font-[family-name:var(--font-instrument-serif)] text-black tracking-wide -mt-2 text-left">Stranger Texts Club</h2>
                 </div>
-                <p className="text-xl text-black/70 italic font-[family-name:var(--font-inter)] mb-4 text-center xl:text-left">Try it for free • Cancel anytime</p>
-                <p className="text-[18px] sm:text-[22px] md:text-[22px] lg:text-[27px] font-[family-name:var(--font-inter)] text-black/70 text-center xl:text-left mb-6" style={{ letterSpacing: '-0.5px' }}>
+                <p className="text-base sm:text-xl text-black/70 italic font-[family-name:var(--font-inter)] mb-4 text-left">Try it for free • Cancel anytime</p>
+                <p className="text-[18px] sm:text-[22px] md:text-[22px] lg:text-[27px] font-[family-name:var(--font-inter)] text-black/70 text-left mb-6" style={{ letterSpacing: '-0.5px' }}>
                   Every week, you're <b>paired with a stranger to share art, stories, and meaningful moments</b> from your lives.
                 </p>
                 <div className="flex flex-col gap-3">
@@ -1083,9 +1083,9 @@ export default function Home() {
               {/* Right Column - Phone Mockup */}
               <div className="w-full flex flex-col items-center">
                 <p className="text-xl font-[family-name:var(--font-inter)] text-black/50 mb-4">Give it a try ↓</p>
-                <div className="flex justify-center">
+                <div className="flex justify-center w-full px-4 sm:px-0">
                 {/* iPhone Frame */}
-                <div className="rounded-[2.2rem] shadow-xl w-[436px] sm:w-[508px] md:w-[581px]">
+                <div className="rounded-[2.2rem] shadow-xl w-full max-w-[373px] sm:max-w-[418px] md:max-w-[495px] lg:max-w-[572px]">
                   {/* iPhone Notch Area */}
                   <div className="bg-[#f5f5f5] rounded-[2rem] overflow-hidden">
                     {/* Header with back, avatar, facetime */}
@@ -1131,7 +1131,7 @@ export default function Home() {
           </div>
 
           {/* How Does This Work Section */}
-          <div className="py-12 md:py-16 px-6 sm:px-8 md:px-12" style={{ backgroundColor: '#F2F2F2' }}>
+          <div className="pt-6 pb-12 md:py-16 px-6 sm:px-8 md:px-12" style={{ backgroundColor: '#F2F2F2' }}>
             <button
               onClick={() => setHowItWorksOpen(!howItWorksOpen)}
               className="w-full flex items-center justify-center gap-4 mb-12 cursor-pointer"
@@ -1173,7 +1173,7 @@ export default function Home() {
                     transition={{ duration: 0.4 }}
                   >
                     <div className="bg-[#E9E9EB] rounded-[24px] px-6 py-5 max-w-[90%]">
-                      <p className="text-[19px] text-black leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
+                      <p className="text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
                         We're pretty excited you're here and we want to get to know you.
                       </p>
                     </div>
@@ -1207,7 +1207,7 @@ export default function Home() {
                           ))}
                         </div>
                       ) : (
-                        <p className="text-[19px] text-black leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
+                        <p className="text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
                           {rotatingQuestions[questionIndex]}
                         </p>
                       )}
@@ -1235,15 +1235,15 @@ export default function Home() {
                     transition={{ duration: 0.4 }}
                   >
                     <div className="bg-[#E9E9EB] rounded-[24px] px-6 py-5 max-w-[90%]">
-                      <p className="text-[19px] text-black leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
+                      <p className="text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
                         This week, you've been matched with someone who:
                       </p>
-                      <p className="text-[19px] text-black leading-relaxed mt-2 italic" style={{ letterSpacing: '-0.24px' }}>
+                      <p className="text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed mt-2 italic" style={{ letterSpacing: '-0.24px' }}>
                         - is 48 and an ER nurse in Philadelphia<br />
                         - once drove 6 hours for a sandwich<br />
                         - has married the same person twice
                       </p>
-                      <p className="text-[19px] text-black leading-relaxed mt-2" style={{ letterSpacing: '-0.24px' }}>
+                      <p className="text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed mt-2" style={{ letterSpacing: '-0.24px' }}>
                         They'll be your partner for the week.
                       </p>
                     </div>
@@ -1278,13 +1278,13 @@ export default function Home() {
                     transition={{ duration: 0.4, delay: 0.1 }}
                   >
                     <div className="bg-[#E9E9EB] rounded-[24px] px-6 py-5 max-w-[90%]">
-                      <p className="text-[19px] text-black leading-relaxed font-semibold" style={{ letterSpacing: '-0.24px' }}>
+                      <p className="text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed font-semibold" style={{ letterSpacing: '-0.24px' }}>
                         Today's Prompt:
                       </p>
-                      <p className="text-[19px] text-black leading-relaxed mt-2" style={{ letterSpacing: '-0.24px' }}>
+                      <p className="text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed mt-2" style={{ letterSpacing: '-0.24px' }}>
                         Bob Marley once said <i>"One good thing about music, when it hits you, you feel no pain."</i> Tell us about a <b>song that's helped you process something hard</b> in your life.
                       </p>
-                      <p className="text-[19px] text-black leading-relaxed mt-3" style={{ letterSpacing: '-0.24px' }}>
+                      <p className="text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed mt-3" style={{ letterSpacing: '-0.24px' }}>
                         Reply within 24 hours to receive a response.
                       </p>
                     </div>
@@ -1311,7 +1311,7 @@ export default function Home() {
                     transition={{ duration: 0.4 }}
                   >
                     <div className="rounded-[20px] px-5 py-2.5" style={{ background: 'linear-gradient(180deg, #2B8AFA, #0A7CFF)' }}>
-                      <p className="text-[19px] text-white" style={{ letterSpacing: '-0.24px' }}>
+                      <p className="text-[15px] sm:text-[19px] text-white leading-[19px] sm:leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
                         Blah blah, just give me theirs.
                       </p>
                     </div>
@@ -1324,7 +1324,7 @@ export default function Home() {
                     transition={{ duration: 0.4, delay: 0.2 }}
                   >
                     <div className="bg-[#E9E9EB] rounded-[24px] px-6 py-5 max-w-[90%]">
-                      <p className="text-[19px] text-black leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
+                      <p className="text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
                         Hmm, this doesn't seem like it answers the prompt. Can you try again?
                       </p>
                     </div>
@@ -1359,7 +1359,7 @@ export default function Home() {
                     transition={{ duration: 0.4, delay: 0.1 }}
                   >
                     <div className="bg-[#E9E9EB] rounded-[24px] px-6 py-5 max-w-[90%]">
-                      <p className="text-[19px] text-black leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
+                      <p className="text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
                         Here's your match's response:
                       </p>
                     </div>
@@ -1398,7 +1398,7 @@ export default function Home() {
                     transition={{ duration: 0.4, delay: 0.5 }}
                   >
                     <div className="bg-[#E9E9EB] rounded-[24px] px-6 py-5 max-w-[90%]">
-                      <p className="text-[19px] text-black leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
+                      <p className="text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
                         I was 21 the first time I saw a patient die on my shift. You could just tell that they were a good person. She kept thanking me for small things like bringing her water. I was numb and I kept listening to this song on repeat. It helped.
                       </p>
                     </div>
@@ -1433,7 +1433,7 @@ export default function Home() {
                     transition={{ duration: 0.4, delay: 0.1 }}
                   >
                     <div className="bg-[#E9E9EB] rounded-[24px] px-6 py-5 max-w-[90%]">
-                      <p className="text-[19px] text-black leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
+                      <p className="text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
                         That's it for this week. Want to share your contact if they feel the same?
                       </p>
                     </div>
@@ -1484,7 +1484,7 @@ export default function Home() {
                     transition={{ duration: 0.4, delay: 0.1 }}
                   >
                     <div className="bg-[#E9E9EB] rounded-[24px] px-6 py-5 max-w-[90%]">
-                      <p className="text-[19px] text-black leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
+                      <p className="text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
                         We'll be back tomorrow with next week's match.
                       </p>
                     </div>
@@ -1527,17 +1527,17 @@ export default function Home() {
               />
               <div className="space-y-3">
                 <div className="bg-[#E9E9EB] rounded-[24px] px-6 py-5">
-                  <p className="text-[17px] sm:text-[19px] text-black leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
+                  <p className="text-[17px] sm:text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
                     Other people make us better.
                   </p>
                 </div>
                 <div className="bg-[#E9E9EB] rounded-[24px] px-6 py-5">
-                  <p className="text-[17px] sm:text-[19px] text-black leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
+                  <p className="text-[17px] sm:text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
                     And I wanted a <b>different way to meet and feel connected to them</b>. Social media can be overwhelming and addictive and demanding. This is my attempt at creating something that feels spontaneous and light but also impactful.
                   </p>
                 </div>
                 <div className="bg-[#E9E9EB] rounded-[24px] px-6 py-5">
-                  <p className="text-[17px] sm:text-[19px] text-black leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
+                  <p className="text-[17px] sm:text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
                     <span className="bg-[#dcff73] px-1 rounded"><b>If you have ideas</b></span> on how to make this better, please do <b>send me <a href="/connect" className="text-blue-600 hover:text-blue-800">feedback</a></b>. I would be grateful.
                   </p>
                 </div>
