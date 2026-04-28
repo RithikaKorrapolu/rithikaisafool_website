@@ -8,8 +8,8 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     console.log('Linq webhook received:', JSON.stringify(body, null, 2));
 
-    // Determine event type
-    const eventType = body.event || body.type || detectEventType(body);
+    // Determine event type - Linq uses event_type field
+    const eventType = body.event_type || body.event || body.type || detectEventType(body);
 
     switch (eventType) {
       case 'message.received':
@@ -148,7 +148,40 @@ function parseIncomingMessage(body: Record<string, unknown>): {
   id: string | null;
   chatId: string | null;
 } {
-  // Format 1: Direct fields
+  // Linq v3 format: data.sender_handle.handle, data.parts[], data.chat.id
+  if (body.data && typeof body.data === 'object') {
+    const data = body.data as Record<string, unknown>;
+
+    // Extract sender phone from sender_handle.handle
+    let from: string | null = null;
+    if (data.sender_handle && typeof data.sender_handle === 'object') {
+      const senderHandle = data.sender_handle as Record<string, unknown>;
+      from = (senderHandle.handle as string) || null;
+    }
+
+    // Extract message text from parts array
+    let message: string | null = null;
+    if (data.parts && Array.isArray(data.parts)) {
+      const textPart = data.parts.find((p: { type?: string; value?: string }) => p.type === 'text');
+      message = textPart?.value || null;
+    }
+
+    // Extract chat ID from chat.id
+    let chatId: string | null = null;
+    if (data.chat && typeof data.chat === 'object') {
+      const chat = data.chat as Record<string, unknown>;
+      chatId = (chat.id as string) || null;
+    }
+
+    // Message ID is at data.id
+    const id = (data.id as string) || null;
+
+    if (from && message) {
+      return { from, message, id, chatId };
+    }
+  }
+
+  // Fallback: Direct fields (legacy format)
   if (body.from && body.message) {
     const messageContent = typeof body.message === 'string'
       ? body.message
@@ -159,34 +192,6 @@ function parseIncomingMessage(body: Record<string, unknown>): {
       message: messageContent,
       id: (body.id as string) || null,
       chatId: (body.chat_id as string) || (body.chatId as string) || null,
-    };
-  }
-
-  // Format 2: Nested data object
-  if (body.data && typeof body.data === 'object') {
-    const data = body.data as Record<string, unknown>;
-    const messageContent = typeof data.message === 'string'
-      ? data.message
-      : extractTextFromParts(data.message);
-
-    return {
-      from: (data.from as string) || null,
-      message: messageContent,
-      id: (data.id as string) || null,
-      chatId: (data.chat_id as string) || (data.chatId as string) || null,
-    };
-  }
-
-  // Format 3: Event payload
-  if (body.payload && typeof body.payload === 'object') {
-    const payload = body.payload as Record<string, unknown>;
-    const messageContent = extractTextFromParts(payload.message);
-
-    return {
-      from: (payload.from as string) || null,
-      message: messageContent,
-      id: (payload.id as string) || null,
-      chatId: (payload.chat_id as string) || (payload.chatId as string) || null,
     };
   }
 
