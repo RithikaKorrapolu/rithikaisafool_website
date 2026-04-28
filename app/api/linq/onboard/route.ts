@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
-import { startOnboarding } from '@/lib/stranger-texts/onboarding-handler';
 import { formatPhoneNumber } from '@/lib/stranger-texts/linq-client';
 
 export async function POST(request: NextRequest) {
@@ -24,27 +23,23 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (existingContact) {
-      // Returning contact
-      const name = existingContact.name || 'friend';
       return NextResponse.json({
         success: true,
         isNewContact: false,
-        message: `Hey ${name}! You're already part of the club.`,
+        message: "You're already on the waitlist!",
       });
     }
 
-    // New contact - create in database
-    const { data: newContact, error: insertError } = await supabase
+    // Add to waitlist
+    const { error: insertError } = await supabase
       .from('contacts')
       .insert({
         phone: formattedNumber,
-        source: 'website-android',
-        status: 'new',
-      })
-      .select()
-      .single();
+        source: 'website-waitlist',
+        status: 'waitlist',
+      });
 
-    if (insertError || !newContact) {
+    if (insertError) {
       console.error('Supabase insert error:', insertError);
       return NextResponse.json(
         { error: 'Failed to save contact' },
@@ -52,17 +47,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Start onboarding - sends "Nice, you made it..." and "What should we call you?"
-    await startOnboarding(newContact);
-
     return NextResponse.json({
       success: true,
       isNewContact: true,
-      message: 'Welcome message sent!',
+      message: "You're on the waitlist! We'll text you when we launch.",
     });
 
   } catch (error) {
-    console.error('Error sending Linq message:', error);
+    console.error('Waitlist signup error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
