@@ -1,9 +1,19 @@
 import { supabase } from '@/lib/supabase';
 import { formatPhoneNumber, sendMessage } from './linq-client';
 import { handleOnboarding, startOnboarding } from './onboarding-handler';
-import { handleAIConversation } from './ai-handler';
+import { handleAIConversation, answerQuestion } from './ai-handler';
 import { MESSAGES } from './constants';
 import { Contact } from './types';
+
+// Detect if a message is a question
+function isQuestion(message: string): boolean {
+  const trimmed = message.trim().toLowerCase();
+  // Ends with question mark
+  if (trimmed.endsWith('?')) return true;
+  // Starts with question words
+  const questionStarters = ['what', 'how', 'who', 'where', 'when', 'why', 'is this', 'can i', 'do you', 'does', 'are you', 'will'];
+  return questionStarters.some(q => trimmed.startsWith(q));
+}
 
 interface RouteResult {
   success: boolean;
@@ -102,6 +112,14 @@ async function handleNewContact(
     linq_message_id: messageId,
     responded_at: new Date().toISOString(),
   });
+
+  // If their first message is a question, answer it first then start onboarding
+  if (isQuestion(message)) {
+    await answerQuestion(newContact, message);
+    // Still start onboarding after answering
+    await startOnboarding(newContact);
+    return { success: true, action: 'answered_question_then_onboarding' };
+  }
 
   // Start onboarding
   await startOnboarding(newContact);

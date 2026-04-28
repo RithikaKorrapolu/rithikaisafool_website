@@ -147,6 +147,43 @@ Give a brief, warm reaction and maybe a follow-up question to keep the conversat
   return textBlock?.text || "That's really cool, thanks for sharing!";
 }
 
+export async function answerQuestion(
+  contact: Contact,
+  question: string
+): Promise<void> {
+  const response = await anthropic.messages.create({
+    model: 'claude-sonnet-4-20250514',
+    max_tokens: 200,
+    system: `You're the Stranger Texts Club - an SMS service that connects strangers through weekly conversations about art, music, stories, and life.
+
+Someone just texted you a question. Answer it helpfully and briefly, like a friendly human would over text.
+
+Key info about the service:
+- It pairs strangers weekly for conversations around shared prompts
+- Topics include art, music, memories, life experiences
+- It's meant to help people connect and discover new perspectives
+- We send a few texts a week, always from real people sharing real things
+
+Keep your answer SHORT - 1-3 sentences max. Be warm and helpful.`,
+    messages: [
+      { role: 'user', content: question }
+    ],
+  });
+
+  const textBlock = response.content.find(block => block.type === 'text');
+  const answer = textBlock?.text || "Good question! We're a texting club that connects you with strangers through weekly conversations about art, music, and life.";
+
+  await sendMessage({ to: contact.phone, message: answer });
+
+  // Log the response
+  await supabase.from('messages').insert({
+    contact_id: contact.id,
+    prompt: answer,
+    direction: 'outbound',
+    message_type: 'question_answer',
+  });
+}
+
 export async function generateOnboardingResponse(
   name: string,
   questionAsked: string,

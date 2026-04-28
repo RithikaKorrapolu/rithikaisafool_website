@@ -22,35 +22,34 @@ const projects = [
 // Animation scripts for the texting mockup (multiple sequences)
 // Response content for each option - supports multiple messages including images
 const OPTION_RESPONSES: Record<string, Array<{ text?: string; html?: string; image?: string; link?: { url: string; title: string; subtitle: string; thumbnail: string }; phoneInput?: boolean; sendButton?: boolean; orangeBubble?: string }>> = {
-  'An artist\'s favorite painting': [
+  'When\'s the last time you felt proud?': [
+    { text: "My 8 year old wrote this and won 2nd place in his poetry class. I cried reading it. I couldn't even make something this beautiful." },
+    { html: `<b>A List of Objects and What They Need</b>
+
+Dishwasher – Dirty Plates
+Backpack – Homework
+Gross Shoes – To Be Cleaned
+My Friend Alice – Snacks
+Long Giraffe – To Be Shorter
+Lost Sock – To Be Found
+My Mom – Hugs
+My Dad – Love` },
+    { text: 'Want more of this? Join the club' }
+  ],
+  'Has anything inspired you to create lately?': [
     { text: 'This is called "Kabuki II (the performance)" by Toni Hamel.' },
     { image: '/assets/kabuki.jpg' },
-    { text: `"To me, this painting represents what it feels like to be an artist. That's why it's one of my favorites. When you're in it, trying to make something real and good and beautiful, it's just hard work and it feels impossible and you're putting things in places that don't make sense. Like fish hanging from the sky. You have to be okay with it not making sense while you're in the creative process. But you have to keep going. These guys can't see the full beauty of what they're putting together but we can. We can."
+    { text: `"To me, this painting represents what it feels like to be an artist. Whenever I'm blocked, I come back to it. When you're in it, trying to make something real and good and beautiful, it's just hard work and it feels impossible and you're putting things in places that don't make sense. Like fish hanging from the sky. You have to be okay with it not making sense while you're in the creative process. But you have to keep going. These guys can't see the full beauty of what they're putting together but we can. We can."
 
 - BK, age 42` },
-    { text: 'We send things like this a few times a week. Always from a real person.' }
+    { text: 'Want more of this? Join the club' }
   ],
-  'A memory and song about freedom': [
+  'What\'s a song you associate with a specific memory?': [
     { link: { url: 'https://www.youtube.com/watch?v=cdxE4QtUz-8', title: 'Everyday Hustle', subtitle: 'Future', thumbnail: 'https://img.youtube.com/vi/cdxE4QtUz-8/hqdefault.jpg' } },
-    { text: `"I majored in Finance and worked as an Investment Banker on Wall Street for 2 years. I thought that was the dream. My parents were so proud of me. It was hell. I was working 70 hours a week and having panic attacks every month. One day, I woke up and just decided I'm going to quit. I listened to this song on repeat and walked the 2 miles home. I felt so free."
+    { text: `"I majored in Finance and worked as an Investment Banker on Wall Street for 2 years. I thought that was the dream. My parents were so proud of me but it was hell. I was working 70 hours a week and having panic attacks every month. One day, I woke up and just decided I'm going to quit. I listened to this song on repeat and walked the 2 miles home. I felt so free."
 
 - TA, aged 25` },
-    { text: 'We send things like this a few times a week. Always from a real person.' }
-  ],
-  'A sweet poem from a kid': [
-    { text: "This poem is from Jamie, 8 years old." },
-    { html: `<b>A List of Endangered Animals and Their Needs</b>
-
-Lost Panda – Bamboo
-Bold Eagle – A Mountain
-Blind Cat – Love
-Grey Elephant – Security
-Lonely Dog – Someone Nice
-Striped Tiger – Food
-Puzzled Penguin – Help
-Terrified Seal – Peace
-Long Giraffe – To be Shorter` },
-    { text: 'We send things like this a few times a week. Always from a real person.' }
+    { text: 'Want more of this? Join the club' }
   ]
 };
 
@@ -73,7 +72,7 @@ const SCRIPTS: ScriptStep[][] = [
     { side: 'them', text: "The best things in life come from other people." },
     { side: 'them', text: "You get inspired, you feel seen, you fall in love." },
     { side: 'them', text: "pick one and we'll show you" },
-    { side: 'them', options: ['An artist\'s favorite painting', 'A memory and song about freedom', 'A sweet poem from a kid'], selectIndex: 1 },
+    { side: 'them', options: ['When\'s the last time you felt proud?', 'Has anything inspired you to create lately?', 'What\'s a song you associate with a specific memory?'], selectIndex: 1 },
     // Response will be dynamically inserted based on selection
   ],
 ];
@@ -906,7 +905,7 @@ export default function Home() {
 
             {/* Subtitle */}
             <div className="text-left sm:text-center mb-4 sm:mb-3 -mt-2 py-2">
-              <h2 className="text-[22px] sm:text-3xl lg:text-[33px] font-bold text-black font-[family-name:var(--font-abril-fatface)]">a sort of art company</h2>
+              <h2 className="text-[22px] sm:text-3xl lg:text-[33px] font-bold text-black font-[family-name:var(--font-abril-fatface)]">some things we made</h2>
             </div>
 
           </div>
@@ -916,7 +915,7 @@ export default function Home() {
         <div
           className="fixed left-0 right-0 px-6 sm:px-12 z-0"
           style={{
-            top: heroHeight > 0 ? `${heroHeight + 180}px` : '45vh',
+            top: heroHeight > 0 ? `${heroHeight + (typeof window !== 'undefined' && window.innerWidth < 640 ? 170 : 180)}px` : '40vh',
           }}
         >
           <div className="flex justify-center items-center pb-4">
@@ -973,7 +972,7 @@ export default function Home() {
               <div className="flex flex-col items-start justify-center">
                 <div className="mb-2">
                   <p className="text-xl sm:text-2xl md:text-3xl font-[family-name:var(--font-instrument-serif)] text-black tracking-wide text-left ml-1">The</p>
-                  <h2 className="text-[3.3rem] sm:text-[4.1rem] md:text-[4.9rem] lg:text-[5.4rem] xl:text-[6.6rem] 2xl:text-[8.1rem] leading-[0.9] font-black sm:font-bold font-[family-name:var(--font-instrument-serif)] text-black tracking-wide -mt-2 text-left">Stranger Texts Club</h2>
+                  <h2 className="text-[3.6rem] sm:text-[4.1rem] md:text-[4.9rem] lg:text-[5.4rem] xl:text-[6.6rem] 2xl:text-[8.1rem] leading-[0.9] font-black sm:font-bold font-[family-name:var(--font-instrument-serif)] text-black tracking-wide -mt-2 text-left">Stranger Texts Club</h2>
                 </div>
                 <p className="text-base sm:text-xl text-black/70 italic font-[family-name:var(--font-inter)] mb-4 text-left">Try it for free • Cancel anytime</p>
                 <p className="text-[18px] sm:text-[22px] md:text-[22px] lg:text-[27px] font-[family-name:var(--font-inter)] text-black/70 text-left mb-6" style={{ letterSpacing: '-0.5px' }}>
@@ -1033,19 +1032,37 @@ export default function Home() {
                             const input = e.target as HTMLInputElement;
                             if (e.key === 'Backspace') {
                               const pos = input.selectionStart || 0;
-                              if (pos > 0 && [') ', ' ', '-', '('].includes(input.value.substring(pos - 1, pos + 1).trim() ? input.value[pos - 1] : '')) {
-                                // Let default backspace handle it
+                              // If cursor is right after a formatting char, delete extra
+                              if (pos > 0) {
+                                const charBefore = input.value[pos - 1];
+                                if (['-', ' ', ')', '('].includes(charBefore)) {
+                                  e.preventDefault();
+                                  // Get digits, remove last one
+                                  const digits = input.value.replace(/\D/g, '');
+                                  const newDigits = digits.slice(0, -1);
+                                  // Reformat
+                                  let formatted = '';
+                                  if (newDigits.length >= 6) {
+                                    formatted = `(${newDigits.slice(0, 3)}) ${newDigits.slice(3, 6)}-${newDigits.slice(6)}`;
+                                  } else if (newDigits.length >= 3) {
+                                    formatted = `(${newDigits.slice(0, 3)}) ${newDigits.slice(3)}`;
+                                  } else if (newDigits.length > 0) {
+                                    formatted = `(${newDigits}`;
+                                  }
+                                  input.value = formatted;
+                                  input.setSelectionRange(formatted.length, formatted.length);
+                                }
                               }
                             }
                           }}
                           onChange={(e) => {
                             const input = e.target;
-                            const cursorPos = input.selectionStart || 0;
-                            const prevLen = input.value.length;
 
+                            // Get only digits
                             let value = input.value.replace(/\D/g, '');
                             if (value.length > 10) value = value.slice(0, 10);
 
+                            // Format the number
                             let formatted = '';
                             if (value.length >= 6) {
                               formatted = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6)}`;
@@ -1057,10 +1074,8 @@ export default function Home() {
 
                             input.value = formatted;
 
-                            const newLen = formatted.length;
-                            const diff = newLen - prevLen;
-                            const newPos = Math.max(0, cursorPos + diff);
-                            input.setSelectionRange(newPos, newPos);
+                            // Move cursor to end
+                            input.setSelectionRange(formatted.length, formatted.length);
                           }}
                           className="w-[187px] sm:w-[156px] text-[17px] text-black placeholder:text-black/50 focus:outline-none bg-transparent font-[family-name:var(--font-inter)]"
                         />
@@ -1612,7 +1627,7 @@ export default function Home() {
                 <span className="bg-[#dcff73] px-1 rounded"><b>Pretty sweet of you</b></span> to look through our digital things. If you're feeling extra sweet, check out our <b>physical products</b> too.
               </p>
               <button
-                onClick={() => { setActiveTab('physical'); window.scrollTo({ top: 0, left: 0, behavior: 'smooth' }); }}
+                onClick={() => { setActiveTab('physical'); setTimeout(() => window.scrollTo({ top: heroHeight + 200, left: 0, behavior: 'smooth' }), 50); }}
                 className="px-10 py-4 text-[17px] font-semibold rounded-full transition-all font-[family-name:var(--font-inter)] text-black bg-[#dcff73] hover:bg-black hover:text-white"
               >
                 Check them out
@@ -1684,7 +1699,7 @@ export default function Home() {
                   Woo! Look at you browsing all our physical products. We've got <b>digital stuff</b> too, <span className="bg-[#dcff73] px-1 rounded"><b>if you're curious</b></span>.
                 </p>
                 <button
-                  onClick={() => { setActiveTab('digital'); window.scrollTo({ top: 0, left: 0, behavior: 'smooth' }); }}
+                  onClick={() => { setActiveTab('digital'); setTimeout(() => window.scrollTo({ top: heroHeight + 200, left: 0, behavior: 'smooth' }), 50); }}
                   className="px-10 py-4 text-[17px] font-semibold rounded-full transition-all font-[family-name:var(--font-inter)] text-black bg-[#dcff73] hover:bg-black hover:text-white"
                 >
                   I'm curious

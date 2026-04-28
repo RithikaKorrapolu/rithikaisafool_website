@@ -12,6 +12,7 @@ export type OnboardingStep =
   | 'awaiting_q1'
   | 'awaiting_q2'
   | 'awaiting_q3'
+  | 'in_progress'
   | 'complete';
 
 export type MessageDirection = 'inbound' | 'outbound';
