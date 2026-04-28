@@ -973,7 +973,7 @@ export default function Home() {
               <div className="flex flex-col items-start justify-center">
                 <div className="mb-2">
                   <p className="text-xl sm:text-2xl md:text-3xl font-[family-name:var(--font-instrument-serif)] text-black tracking-wide text-left ml-1">The</p>
-                  <h2 className="text-[3.3rem] sm:text-[4.1rem] md:text-[4.9rem] lg:text-[6rem] xl:text-[7.3rem] 2xl:text-[9rem] font-bold font-[family-name:var(--font-instrument-serif)] text-black tracking-wide -mt-2 text-left">Stranger Texts Club</h2>
+                  <h2 className="text-[3.3rem] sm:text-[4.1rem] md:text-[4.9rem] lg:text-[5.4rem] xl:text-[6.6rem] 2xl:text-[8.1rem] leading-[0.9] font-black sm:font-bold font-[family-name:var(--font-instrument-serif)] text-black tracking-wide -mt-2 text-left">Stranger Texts Club</h2>
                 </div>
                 <p className="text-base sm:text-xl text-black/70 italic font-[family-name:var(--font-inter)] mb-4 text-left">Try it for free • Cancel anytime</p>
                 <p className="text-[18px] sm:text-[22px] md:text-[22px] lg:text-[27px] font-[family-name:var(--font-inter)] text-black/70 text-left mb-6" style={{ letterSpacing: '-0.5px' }}>
@@ -1062,7 +1062,7 @@ export default function Home() {
                             const newPos = Math.max(0, cursorPos + diff);
                             input.setSelectionRange(newPos, newPos);
                           }}
-                          className="w-[156px] text-[17px] text-black placeholder:text-black/50 focus:outline-none bg-transparent font-[family-name:var(--font-inter)]"
+                          className="w-[187px] sm:w-[156px] text-[17px] text-black placeholder:text-black/50 focus:outline-none bg-transparent font-[family-name:var(--font-inter)]"
                         />
                       </div>
                       <button
@@ -1134,10 +1134,10 @@ export default function Home() {
           <div className="pt-6 pb-12 md:py-16 px-6 sm:px-8 md:px-12" style={{ backgroundColor: '#F2F2F2' }}>
             <button
               onClick={() => setHowItWorksOpen(!howItWorksOpen)}
-              className="w-full flex items-center justify-center gap-4 mb-12 cursor-pointer"
+              className="w-full flex items-center justify-center gap-4 mb-4 sm:mb-12 cursor-pointer"
             >
-              <h2 className="text-[3rem] sm:text-[3.75rem] md:text-[4.5rem] font-bold font-[family-name:var(--font-instrument-serif)] text-black text-center">
-                <i>Woah</i>, how does this work?
+              <h2 className="text-[2.7rem] sm:text-[3.75rem] md:text-[4.5rem] font-bold font-[family-name:var(--font-instrument-serif)] text-black text-center">
+                How does this thing work?
               </h2>
               <motion.span
                 animate={{ rotate: howItWorksOpen ? 180 : 0 }}
