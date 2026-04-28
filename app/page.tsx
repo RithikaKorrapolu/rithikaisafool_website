@@ -1006,7 +1006,7 @@ export default function Home() {
                           if (data.success) {
                             phoneInput.value = '';
                             button.textContent = "You're in!";
-                            button.className = button.className.replace('bg-[#dcff73]', 'bg-green-400');
+                            button.className = "inline-flex items-center justify-center px-7 py-3 text-[17px] font-semibold rounded-full transition-all font-[family-name:var(--font-inter)] text-white bg-black";
                             if (messageEl) messageEl.textContent = data.message;
                           } else {
                             button.textContent = 'Join Waitlist';
@@ -1021,8 +1021,9 @@ export default function Home() {
                       }}
                       className="flex flex-wrap items-center gap-3"
                     >
-                      <div className="relative">
-                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[17px]">🇺🇸</span>
+                      <div className="flex items-center px-4 py-3 border-2 border-black/20 rounded-full bg-transparent focus-within:border-black">
+                        <span className="mr-1 text-[17px]">🇺🇸</span>
+                        <span className="text-black text-[17px] mr-1 font-[family-name:var(--font-inter)]">+1</span>
                         <input
                           type="tel"
                           name="phone"
@@ -1032,7 +1033,6 @@ export default function Home() {
                             const input = e.target as HTMLInputElement;
                             if (e.key === 'Backspace') {
                               const pos = input.selectionStart || 0;
-                              // If cursor is right after a formatting character, move it back
                               if (pos > 0 && [') ', ' ', '-', '('].includes(input.value.substring(pos - 1, pos + 1).trim() ? input.value[pos - 1] : '')) {
                                 // Let default backspace handle it
                               }
@@ -1057,13 +1057,12 @@ export default function Home() {
 
                             input.value = formatted;
 
-                            // Adjust cursor position
                             const newLen = formatted.length;
                             const diff = newLen - prevLen;
                             const newPos = Math.max(0, cursorPos + diff);
                             input.setSelectionRange(newPos, newPos);
                           }}
-                          className="pl-12 pr-5 py-3 text-[17px] text-black rounded-full border-2 border-black/20 focus:border-black focus:outline-none font-[family-name:var(--font-inter)] w-[220px]"
+                          className="w-[130px] text-[17px] text-black placeholder:text-black/50 focus:outline-none bg-transparent font-[family-name:var(--font-inter)]"
                         />
                       </div>
                       <button
@@ -1075,7 +1074,7 @@ export default function Home() {
                     </form>
                     <p className="waitlist-message text-[14px] text-black/70 mt-2 font-[family-name:var(--font-inter)]"></p>
                     <p className="text-[12px] leading-[16px] text-black/60 italic mt-3">
-                      By continuing, you agree to our <a href="/legal/mobile-terms" className="underline hover:text-black/80">Terms of Service</a> and <a href="/legal/privacy-policy" className="underline hover:text-black/80">Privacy Policy</a>.
+                      By joining, you agree to our <a href="/legal/mobile-terms" className="underline hover:text-black/80">Terms of Service</a> and <a href="/legal/privacy-policy" className="underline hover:text-black/80">Privacy Policy</a>.
                     </p>
                   </div>
                 </div>
