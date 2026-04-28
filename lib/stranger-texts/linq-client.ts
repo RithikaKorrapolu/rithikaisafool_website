@@ -132,6 +132,32 @@ export async function setupContactCard(options: ContactCardOptions): Promise<Lin
   }
 }
 
+// Mark all messages in a chat as read (sends read receipt to user)
+const LINQ_CHATS_URL = 'https://api.linqapp.com/api/partner/v3/chats';
+
+export async function markChatAsRead(chatId: string): Promise<LinqResponse> {
+  try {
+    const response = await fetch(`${LINQ_CHATS_URL}/${chatId}/read`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${LINQ_API_TOKEN}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok && response.status !== 204) {
+      const errorData = await response.text();
+      console.error('Linq mark read error:', errorData);
+      return { success: false, error: errorData };
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error('Linq mark read error:', error);
+    return { success: false, error: String(error) };
+  }
+}
+
 export async function updateContactCard(options: Partial<ContactCardOptions>): Promise<LinqResponse> {
   try {
     const body: Record<string, unknown> = {};

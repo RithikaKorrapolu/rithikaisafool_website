@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { routeIncomingMessage } from '@/lib/stranger-texts/message-router';
+import { markChatAsRead } from '@/lib/stranger-texts/linq-client';
 import { supabase } from '@/lib/supabase';
 
 export async function POST(request: NextRequest) {
@@ -34,7 +35,7 @@ export async function POST(request: NextRequest) {
 }
 
 async function handleMessageReceived(body: Record<string, unknown>) {
-  const { from, message, id: messageId } = parseIncomingMessage(body);
+  const { from, message, id: messageId, chatId } = parseIncomingMessage(body);
 
   if (!from || !message) {
     console.error('Missing required fields:', { from, message });
@@ -42,6 +43,11 @@ async function handleMessageReceived(body: Record<string, unknown>) {
       { error: 'Missing required fields' },
       { status: 400 }
     );
+  }
+
+  // Send read receipt so user sees "Read" under their message
+  if (chatId) {
+    await markChatAsRead(chatId);
   }
 
   const result = await routeIncomingMessage(from, message, messageId ?? undefined);
@@ -135,6 +141,7 @@ function parseIncomingMessage(body: Record<string, unknown>): {
   from: string | null;
   message: string | null;
   id: string | null;
+  chatId: string | null;
 } {
   // Format 1: Direct fields
   if (body.from && body.message) {
@@ -146,6 +153,7 @@ function parseIncomingMessage(body: Record<string, unknown>): {
       from: body.from as string,
       message: messageContent,
       id: (body.id as string) || null,
+      chatId: (body.chat_id as string) || (body.chatId as string) || null,
     };
   }
 
@@ -160,6 +168,7 @@ function parseIncomingMessage(body: Record<string, unknown>): {
       from: (data.from as string) || null,
       message: messageContent,
       id: (data.id as string) || null,
+      chatId: (data.chat_id as string) || (data.chatId as string) || null,
     };
   }
 
@@ -172,10 +181,11 @@ function parseIncomingMessage(body: Record<string, unknown>): {
       from: (payload.from as string) || null,
       message: messageContent,
       id: (payload.id as string) || null,
+      chatId: (payload.chat_id as string) || (payload.chatId as string) || null,
     };
   }
 
-  return { from: null, message: null, id: null };
+  return { from: null, message: null, id: null, chatId: null };
 }
 
 function extractTextFromParts(message: unknown): string | null {
