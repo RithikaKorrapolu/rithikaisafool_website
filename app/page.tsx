@@ -70,8 +70,8 @@ interface ScriptStep {
 
 const SCRIPTS: ScriptStep[][] = [
   [
-    { side: 'them', text: "Every week, we pair you up with a stranger" },
-    { side: 'them', text: 'and guide you to share art, stories, and cool moments from your lives' },
+    { side: 'them', text: "The best things in life come from other people." },
+    { side: 'them', text: "You get inspired, you feel seen, you fall in love." },
     { side: 'them', text: "pick one and we'll show you" },
     { side: 'them', options: ['An artist\'s favorite painting', 'A memory and song about freedom', 'A sweet poem from a kid'], selectIndex: 1 },
     // Response will be dynamically inserted based on selection
@@ -977,7 +977,7 @@ export default function Home() {
                 </div>
                 <p className="text-xl text-black/70 italic font-[family-name:var(--font-inter)] mb-4 text-center xl:text-left">Try it for free • Cancel anytime</p>
                 <p className="text-[18px] sm:text-[22px] md:text-[22px] lg:text-[27px] font-[family-name:var(--font-inter)] text-black/70 text-center xl:text-left mb-6" style={{ letterSpacing: '-0.5px' }}>
-                  The best things in life come from other people. <b>You get inspired, you feel seen, you fall in love.</b> Try us and we'll show you.
+                  Every week, you're <b>paired with a stranger to share art, stories, and meaningful moments</b> from your lives.
                 </p>
                 <div className="flex flex-col gap-3">
                   <div className="inline-block">
@@ -1062,7 +1062,7 @@ export default function Home() {
                             const newPos = Math.max(0, cursorPos + diff);
                             input.setSelectionRange(newPos, newPos);
                           }}
-                          className="w-[130px] text-[17px] text-black placeholder:text-black/50 focus:outline-none bg-transparent font-[family-name:var(--font-inter)]"
+                          className="w-[156px] text-[17px] text-black placeholder:text-black/50 focus:outline-none bg-transparent font-[family-name:var(--font-inter)]"
                         />
                       </div>
                       <button
