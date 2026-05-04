@@ -5,7 +5,8 @@ export type ContactStatus =
   | 'trial_expired'
   | 'active'
   | 'cancelled'
-  | 'paused';
+  | 'paused'
+  | 'waitlist';
 
 export type OnboardingStep =
   | 'awaiting_name'
@@ -13,7 +14,22 @@ export type OnboardingStep =
   | 'awaiting_q2'
   | 'awaiting_q3'
   | 'in_progress'
-  | 'complete';
+  | 'complete'
+  // V2 onboarding states
+  | 'initial_welcome'
+  | 'ask_name'
+  | 'name_reaction'
+  | 'explain_how_it_works'
+  | 'ask_start_confirmation'
+  | 'q_best_compliment'
+  | 'q_random_moment'
+  | 'q_oddly_proud'
+  | 'q_didnt_make_sense'
+  | 'q_two_things'
+  | 'q_anything_else'
+  | 'onboarding_complete'
+  | 'paused'
+  | 'waitlist';
 
 export type MessageDirection = 'inbound' | 'outbound';
 
@@ -33,9 +49,13 @@ export interface Contact {
   trial_ends_at: string | null;
   stripe_customer_id: string | null;
   subscription_id: string | null;
+  subscription_status: string | null;
   payment_link_sent_at: string | null;
   last_message_at: string | null;
   current_match_id: string | null;
+  current_pairing_id: string | null;
+  admin_notes: string | null;
+  pending_response_since: string | null;
   onboarding_answers: Record<string, string>;
 }
 

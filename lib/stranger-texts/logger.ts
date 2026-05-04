@@ -89,6 +89,27 @@ export async function logInboundMessage(
 }
 
 // ============================================
+// HELPER: Log outbound message
+// ============================================
+
+export async function logOutboundMessage(
+  contactId: string,
+  phone: string,
+  messageText: string,
+  messageType: string,
+  dryRun: boolean = false
+): Promise<void> {
+  await logMessage({
+    contactId,
+    phone,
+    direction: 'outbound',
+    messageText,
+    messageType,
+    dryRun,
+  });
+}
+
+// ============================================
 // HELPER: Get message history for contact
 // ============================================
 

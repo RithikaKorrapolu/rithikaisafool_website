@@ -56,3 +56,17 @@ export const NAME_REACTIONS = [
   "Great name.",
   "I dig it.",
 ];
+
+// Prompts for weekly pairings (3 prompts per week)
+export const PAIRING_PROMPTS = [
+  "What's something you've been thinking about a lot lately?",
+  "What's a small moment from this week that stuck with you?",
+  "What's something you wish more people knew about you?",
+  "What's the last thing that genuinely surprised you?",
+  "What's something you're looking forward to?",
+  "What's a question you've been sitting with?",
+  "What's something you recently changed your mind about?",
+  "What's a piece of advice you'd give your younger self?",
+  "What's something that made you laugh recently?",
+  "What's the best conversation you've had this month?",
+];

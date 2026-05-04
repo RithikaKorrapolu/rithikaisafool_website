@@ -1,4 +1,5 @@
 import { LINQ_API_URL } from './constants';
+import { logOutboundMessage } from './logger';
 
 const LINQ_API_TOKEN = process.env.LINQ_API_TOKEN!;
 const LINQ_PHONE_NUMBER = process.env.LINQ_PHONE_NUMBER!;
@@ -7,6 +8,13 @@ interface SendMessageOptions {
   to: string;
   message: string;
   reaction?: string;
+  screenEffect?: 'fireworks' | 'confetti' | 'lasers' | 'celebration' | 'balloons' | 'spotlight' | 'echo' | 'love' | 'invisible-ink' | 'gentle' | 'loud' | 'slam';
+  imageUrl?: string;
+}
+
+interface SendMessageSafeOptions extends SendMessageOptions {
+  messageType?: string;
+  contactId?: string;
 }
 
 interface LinqResponse {
@@ -15,8 +23,15 @@ interface LinqResponse {
   error?: string;
 }
 
-export async function sendMessage({ to, message }: SendMessageOptions): Promise<LinqResponse> {
+export async function sendMessage({ to, message, imageUrl }: SendMessageOptions): Promise<LinqResponse> {
   try {
+    // Build message parts
+    const parts: Array<{ type: string; value?: string; url?: string }> = [];
+    parts.push({ type: 'text', value: message });
+    if (imageUrl) {
+      parts.push({ type: 'image', url: imageUrl });
+    }
+
     const response = await fetch(LINQ_API_URL, {
       method: 'POST',
       headers: {
@@ -26,9 +41,7 @@ export async function sendMessage({ to, message }: SendMessageOptions): Promise<
       body: JSON.stringify({
         from: LINQ_PHONE_NUMBER,
         to: [to],
-        message: {
-          parts: [{ type: 'text', value: message }]
-        }
+        message: { parts }
       }),
     });
 
@@ -44,6 +57,29 @@ export async function sendMessage({ to, message }: SendMessageOptions): Promise<
     console.error('Linq send error:', error);
     return { success: false, error: String(error) };
   }
+}
+
+// Safe version that logs and respects DRY_RUN mode
+export async function sendMessageSafe(options: SendMessageSafeOptions): Promise<LinqResponse> {
+  const isDryRun = process.env.DRY_RUN_SMS === 'true';
+
+  // Always log outbound messages
+  if (options.contactId) {
+    await logOutboundMessage(
+      options.contactId,
+      options.to,
+      options.message,
+      options.messageType || 'unknown',
+      isDryRun
+    );
+  }
+
+  if (isDryRun) {
+    console.log(`[DRY RUN] Would send to ${options.to}: ${options.message}`);
+    return { success: true, messageId: 'dry-run' };
+  }
+
+  return sendMessage({ to: options.to, message: options.message });
 }
 
 // Reaction types: love, like, dislike, laugh, emphasize, question
