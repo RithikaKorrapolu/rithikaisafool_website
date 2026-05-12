@@ -42,6 +42,9 @@ interface SpeechRecognitionConstructor {
   new (): SpeechRecognitionInstance;
 }
 
+// Type alias for use in component
+type SpeechRecognition = SpeechRecognitionInstance;
+
 declare global {
   interface Window {
     SpeechRecognition: SpeechRecognitionConstructor;
