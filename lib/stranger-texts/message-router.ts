@@ -1,9 +1,13 @@
 import { supabase } from '@/lib/supabase';
 import { formatPhoneNumber, sendMessage } from './linq-client';
 import { handleOnboarding, startOnboarding } from './onboarding-handler';
+import { handleWaitlistSignup, handleWaitlistMessage } from './waitlist-handler';
 import { handleAIConversation, answerQuestion } from './ai-handler';
 import { MESSAGES } from './constants';
 import { Contact } from './types';
+
+// Set to true to use waitlist mode, false for full onboarding
+const WAITLIST_MODE = true;
 
 // Detect if a message is a question
 function isQuestion(message: string): boolean {
@@ -66,6 +70,8 @@ export async function routeIncomingMessage(
   switch (contact.status) {
     case 'new':
       return handleNewStatus(contact, message, messageId);
+    case 'waitlist':
+      return handleWaitlistStatus(contact, message, messageId);
     case 'onboarding':
       return handleOnboardingStatus(contact, message, messageId);
     case 'trial':
@@ -94,7 +100,7 @@ async function handleNewContact(
     .insert({
       phone,
       source: 'inbound-sms',
-      status: 'new',
+      status: WAITLIST_MODE ? 'waitlist' : 'new',
     })
     .select()
     .single();
@@ -112,6 +118,12 @@ async function handleNewContact(
     linq_message_id: messageId,
     responded_at: new Date().toISOString(),
   });
+
+  // WAITLIST MODE: Just add to waitlist with a painting
+  if (WAITLIST_MODE) {
+    await handleWaitlistSignup(newContact, message);
+    return { success: true, action: 'waitlist_signup' };
+  }
 
   // If their first message is a question, answer it first then start onboarding
   if (isQuestion(message)) {
@@ -133,8 +145,22 @@ async function handleNewStatus(
   messageId?: string
 ): Promise<RouteResult> {
   // They were created but haven't started onboarding yet
+  if (WAITLIST_MODE) {
+    await handleWaitlistSignup(contact, message);
+    return { success: true, action: 'waitlist_signup' };
+  }
   await startOnboarding(contact);
   return { success: true, action: 'started_onboarding' };
+}
+
+async function handleWaitlistStatus(
+  contact: Contact,
+  message: string,
+  messageId?: string
+): Promise<RouteResult> {
+  // Already on waitlist - send reminder
+  await handleWaitlistMessage(contact, message, messageId);
+  return { success: true, action: 'waitlist_reminder' };
 }
 
 async function handleOnboardingStatus(

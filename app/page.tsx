@@ -9,14 +9,10 @@ import FooterSignup from "@/components/FooterSignup";
 
 // Project titles for each grid cell
 const projects = [
-  { title: "Discover the memories people carry with songs.", link: "/songs-that-hold-memories", hasCover: "sthm", category: "digital" },
-  { title: "Rep your conditions.", link: "/shop/condition-of-the-month-hat-1", hasCover: "hat", category: "physical" },
-  { title: "Call if we're friends.", link: "/voicemail-show", hasCover: "phone", category: "digital" },
   { title: "Trust a stranger to design your sweatshirt.", link: "/shop/a-stranger-designed-my-sweatshirt", hasCover: true, category: "physical" },
-  { title: "Experience art through someone else's eyes.", link: "/shop/let-me-show-you", hasCover: "lmsy", category: "digital" },
+  { title: "Rep your conditions to find others like you.", link: "/shop/condition-of-the-month-hat-1", hasCover: "hat", category: "physical" },
+  { title: "Discover the memories people carry with songs.", link: "/songs-that-hold-memories", hasCover: "sthm", category: "digital" },
   { title: "Explore art by vibe.", link: "/museum", hasCover: "museum", category: "digital" },
-  { title: "Get a weekly dose of someone else's joy.", link: "/stwl", hasCover: "stwl", category: "digital" },
-  { title: "Remember that we're all a little odd.", link: "/quirks", hasCover: "quirks", category: "digital" },
 ];
 
 // Animation scripts for the texting mockup (multiple sequences)
@@ -529,20 +525,23 @@ function AnimatedMessages() {
 
         // Handle options specially
         if (step.options) {
-          // First show the options and wait for user selection
+          // First show the options
           const optionsKey = nextKey();
-          const selectedOption = await new Promise<string>((resolve) => {
-            setItems(prev => recomputeTails([
-              ...prev,
-              {
-                _key: optionsKey,
-                side: 'left',
-                options: step.options,
-                animateIn: true,
-                onSelect: (option: string) => resolve(option)
-              },
-            ]));
-          });
+          const autoSelectIndex = step.selectIndex ?? 0;
+
+          // Show options briefly then auto-select
+          setItems(prev => recomputeTails([
+            ...prev,
+            {
+              _key: optionsKey,
+              side: 'left',
+              options: step.options,
+              animateIn: true,
+            },
+          ]));
+
+          await sleep(1500); // Show options for 1.5 seconds
+          const selectedOption = step.options[autoSelectIndex];
 
           // Show the selected option
           setItems(prev => {
@@ -630,7 +629,12 @@ function AnimatedMessages() {
       }
     }
 
-    setIsRunning(false);
+    // Wait then loop
+    await sleep(3000);
+    setItems([]);
+    keyRef.current = 0;
+    await sleep(500);
+    runAllSequences();
   };
 
   // Start all sequences on mount (with guard to prevent double execution in Strict Mode)
@@ -672,7 +676,7 @@ function AnimatedMessages() {
 }
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<'digital' | 'physical'>('digital');
+  const [activeTab, setActiveTab] = useState<'all' | 'digital' | 'physical'>('all');
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const [hoveredCell, setHoveredCell] = useState<{ row: number; col: number } | null>(null);
   const [visibleCell, setVisibleCell] = useState<number | null>(null);
@@ -689,6 +693,8 @@ export default function Home() {
   const [howItWorksOpen, setHowItWorksOpen] = useState(true);
   const [whyOpen, setWhyOpen] = useState(true);
   const [faqsOpen, setFaqsOpen] = useState(true);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isMouseInViewport, setIsMouseInViewport] = useState(false);
   const cellRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const rotatingQuestions = [
@@ -707,6 +713,28 @@ export default function Home() {
     const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     setIsTouchDevice(isTouch);
   }, []);
+
+  // Track mouse position for spotlight effect (desktop only)
+  useEffect(() => {
+    if (isTouchDevice) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+      setIsMouseInViewport(true);
+    };
+
+    const handleMouseLeave = () => {
+      setIsMouseInViewport(false);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, [isTouchDevice]);
 
   // Rotate through onboarding questions
   useEffect(() => {
@@ -880,7 +908,17 @@ export default function Home() {
   
   return (
     <>
-      <main className="min-h-screen" style={{ backgroundColor: '#F2F2F2' }}>
+      <main style={{ backgroundColor: '#F2F2F2' }}>
+        {/* Cursor Spotlight Effect - Desktop Only */}
+        {!isTouchDevice && (
+          <div
+            className="fixed inset-0 pointer-events-none z-[100] hidden md:block"
+            style={{
+              background: `radial-gradient(circle 300px at ${mousePosition.x}px ${mousePosition.y}px, transparent 0%, transparent 50%, rgba(0,0,0,0.12) 100%)`,
+            }}
+          />
+        )}
+
         {/* Hero Section - THIS IS IT! (Fixed Background) */}
         <div
           className="fixed top-0 left-0 right-0 w-full h-screen pt-[130px] md:pt-[135px] lg:pt-[145px] pb-12"
@@ -922,16 +960,22 @@ export default function Home() {
             {/* Tab buttons - centered */}
             <div className="flex gap-3 sm:gap-4 items-center">
               <button
-                onClick={() => setActiveTab('digital')}
-                className={`px-5 py-2.5 sm:px-6 sm:py-3 text-[14px] sm:text-[15px] font-semibold transition-colors font-[family-name:var(--font-inter)] rounded-full ${activeTab === 'digital' ? 'bg-black text-white' : 'bg-[#E9E9EB] text-black hover:bg-[#DDDDE0]'}`}
+                onClick={() => setActiveTab('all')}
+                className={`px-6 py-3 sm:px-6 sm:py-3 text-[16px] sm:text-[15px] font-semibold transition-colors font-[family-name:var(--font-inter)] rounded-full ${activeTab === 'all' ? 'bg-black text-white' : 'bg-[#E9E9EB] text-black hover:bg-[#DDDDE0]'}`}
               >
-                Digital Things
+                All Of It
+              </button>
+              <button
+                onClick={() => setActiveTab('digital')}
+                className={`px-6 py-3 sm:px-6 sm:py-3 text-[16px] sm:text-[15px] font-semibold transition-colors font-[family-name:var(--font-inter)] rounded-full ${activeTab === 'digital' ? 'bg-black text-white' : 'bg-[#E9E9EB] text-black hover:bg-[#DDDDE0]'}`}
+              >
+                Digital
               </button>
               <button
                 onClick={() => setActiveTab('physical')}
-                className={`px-5 py-2.5 sm:px-6 sm:py-3 text-[14px] sm:text-[15px] font-semibold transition-colors font-[family-name:var(--font-inter)] rounded-full ${activeTab === 'physical' ? 'bg-black text-white' : 'bg-[#E9E9EB] text-black hover:bg-[#DDDDE0]'}`}
+                className={`px-6 py-3 sm:px-6 sm:py-3 text-[16px] sm:text-[15px] font-semibold transition-colors font-[family-name:var(--font-inter)] rounded-full ${activeTab === 'physical' ? 'bg-black text-white' : 'bg-[#E9E9EB] text-black hover:bg-[#DDDDE0]'}`}
               >
-                Physical Things
+                Physical
               </button>
             </div>
           </div>
@@ -939,17 +983,16 @@ export default function Home() {
 
         {/* Scrolling Content Container */}
         <div
-          className="relative pt-6"
+          className="relative"
           style={{
             backgroundColor: '#F2F2F2',
             zIndex: 1,
-            minHeight: '100vh',
             marginTop: heroHeight > 0 ? `${heroHeight + 260}px` : '53vh',
           }}
         >
           {/* Squiggly line at top of container */}
           <svg
-            className="absolute -top-2 left-0 w-full h-6 overflow-visible z-10"
+            className="absolute -top-2 left-0 w-full h-6 overflow-visible z-20"
             preserveAspectRatio="none"
             viewBox="0 0 1920 20"
           >
@@ -963,751 +1006,132 @@ export default function Home() {
             />
           </svg>
 
-        {/* Tab Content Container */}
-        {activeTab === 'digital' && (
-          <div ref={hotlineSectionRef} className="container mx-auto px-6 sm:px-8 md:px-12 py-6 md:py-8" style={{ backgroundColor: '#F2F2F2' }}>
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 max-w-[1400px] mx-auto items-center">
-
-              {/* Left Column - Header */}
-              <div className="flex flex-col items-start justify-center">
-                <div className="mb-2">
-                  <p className="text-xl sm:text-2xl md:text-3xl font-[family-name:var(--font-instrument-serif)] text-black tracking-wide text-left ml-1">The</p>
-                  <h2 className="text-[3.6rem] sm:text-[4.1rem] md:text-[4.9rem] lg:text-[5.4rem] xl:text-[6.6rem] 2xl:text-[8.1rem] leading-[0.9] font-black sm:font-bold font-[family-name:var(--font-instrument-serif)] text-black tracking-wide -mt-2 text-left">Stranger Texts Club</h2>
-                </div>
-                <p className="text-base sm:text-xl text-black/70 italic font-[family-name:var(--font-inter)] mb-4 text-left">Try it for free • Cancel anytime</p>
-                <p className="text-[18px] sm:text-[22px] md:text-[22px] lg:text-[27px] font-[family-name:var(--font-inter)] text-black/70 text-left mb-6" style={{ letterSpacing: '-0.5px' }}>
-                  Every week, you're <b>paired with a stranger to share art, stories, and meaningful moments</b> from your lives.
-                </p>
-                <div className="flex flex-col gap-3">
-                  <div className="inline-block">
-                    {/* Waitlist Form */}
-                    <form
-                      onSubmit={async (e) => {
-                        e.preventDefault();
-                        const form = e.target as HTMLFormElement;
-                        const phoneInput = form.querySelector('input[name="phone"]') as HTMLInputElement;
-                        const button = form.querySelector('button') as HTMLButtonElement;
-                        const messageEl = form.querySelector('.waitlist-message') as HTMLParagraphElement;
-
-                        if (!phoneInput.value) return;
-
-                        button.disabled = true;
-                        button.textContent = '...';
-
-                        try {
-                          const res = await fetch('/api/linq/onboard', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ phoneNumber: phoneInput.value }),
-                          });
-                          const data = await res.json();
-
-                          if (data.success) {
-                            phoneInput.value = '';
-                            button.textContent = "You're in!";
-                            button.className = "inline-flex items-center justify-center px-7 py-3 text-[17px] font-semibold rounded-full transition-all font-[family-name:var(--font-inter)] text-white bg-black";
-                            if (messageEl) messageEl.textContent = data.message;
-                          } else {
-                            button.textContent = 'Join Waitlist';
-                            button.disabled = false;
-                            if (messageEl) messageEl.textContent = data.error || 'Something went wrong';
-                          }
-                        } catch {
-                          button.textContent = 'Join Waitlist';
-                          button.disabled = false;
-                          if (messageEl) messageEl.textContent = 'Something went wrong';
-                        }
-                      }}
-                      className="flex flex-wrap items-center gap-3"
-                    >
-                      <div className="flex items-center px-4 py-3 border-2 border-black/20 rounded-full bg-transparent focus-within:border-black">
-                        <span className="mr-1 text-[17px]">🇺🇸</span>
-                        <span className="text-black text-[17px] mr-1 font-[family-name:var(--font-inter)]">+1</span>
-                        <input
-                          type="tel"
-                          name="phone"
-                          placeholder="(000) 000-0000"
-                          maxLength={14}
-                          onKeyDown={(e) => {
-                            const input = e.target as HTMLInputElement;
-                            if (e.key === 'Backspace') {
-                              const pos = input.selectionStart || 0;
-                              // If cursor is right after a formatting char, delete extra
-                              if (pos > 0) {
-                                const charBefore = input.value[pos - 1];
-                                if (['-', ' ', ')', '('].includes(charBefore)) {
-                                  e.preventDefault();
-                                  // Get digits, remove last one
-                                  const digits = input.value.replace(/\D/g, '');
-                                  const newDigits = digits.slice(0, -1);
-                                  // Reformat
-                                  let formatted = '';
-                                  if (newDigits.length >= 6) {
-                                    formatted = `(${newDigits.slice(0, 3)}) ${newDigits.slice(3, 6)}-${newDigits.slice(6)}`;
-                                  } else if (newDigits.length >= 3) {
-                                    formatted = `(${newDigits.slice(0, 3)}) ${newDigits.slice(3)}`;
-                                  } else if (newDigits.length > 0) {
-                                    formatted = `(${newDigits}`;
-                                  }
-                                  input.value = formatted;
-                                  input.setSelectionRange(formatted.length, formatted.length);
-                                }
-                              }
-                            }
-                          }}
-                          onChange={(e) => {
-                            const input = e.target;
-
-                            // Get only digits
-                            let value = input.value.replace(/\D/g, '');
-                            if (value.length > 10) value = value.slice(0, 10);
-
-                            // Format the number
-                            let formatted = '';
-                            if (value.length >= 6) {
-                              formatted = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6)}`;
-                            } else if (value.length >= 3) {
-                              formatted = `(${value.slice(0, 3)}) ${value.slice(3)}`;
-                            } else if (value.length > 0) {
-                              formatted = `(${value}`;
-                            }
-
-                            input.value = formatted;
-
-                            // Move cursor to end
-                            input.setSelectionRange(formatted.length, formatted.length);
-                          }}
-                          className="w-[187px] sm:w-[156px] text-[17px] text-black placeholder:text-black/50 focus:outline-none bg-transparent font-[family-name:var(--font-inter)]"
-                        />
-                      </div>
-                      <button
-                        type="submit"
-                        className="inline-flex items-center justify-center px-7 py-3 text-[17px] font-semibold rounded-full transition-all font-[family-name:var(--font-inter)] text-black bg-[#dcff73] hover:bg-black hover:text-white"
-                      >
-                        Join Waitlist
-                      </button>
-                    </form>
-                    <p className="waitlist-message text-[14px] text-black/70 mt-2 font-[family-name:var(--font-inter)]"></p>
-                    <p className="text-[12px] leading-[16px] text-black/60 italic mt-3">
-                      By joining, you agree to our <a href="/legal/mobile-terms" className="underline hover:text-black/80">Terms of Service</a> and <a href="/legal/privacy-policy" className="underline hover:text-black/80">Privacy Policy</a>.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right Column - Phone Mockup */}
-              <div className="w-full flex flex-col items-center">
-                <p className="text-xl font-[family-name:var(--font-inter)] text-black/50 mb-4">Give it a try ↓</p>
-                <div className="flex justify-center w-full px-4 sm:px-0">
-                {/* iPhone Frame */}
-                <div className="rounded-[2.2rem] shadow-xl w-full max-w-[373px] sm:max-w-[418px] md:max-w-[495px] lg:max-w-[572px]">
-                  {/* iPhone Notch Area */}
-                  <div className="bg-[#f5f5f5] rounded-[2rem] overflow-hidden">
-                    {/* Header with back, avatar, facetime */}
-                    <div className="flex justify-between items-center px-4 py-3">
-                      {/* Left: Blue chevron + 24 badge */}
-                      <div className="flex items-center gap-1">
-                        <svg width="12" height="20" viewBox="0 0 12 20" fill="none">
-                          <path d="M10 2L2 10L10 18" stroke="#0A7CFF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                        <span className="bg-[#0A7CFF] text-white px-2 py-0.5 rounded-full text-[11px] font-semibold">24</span>
-                      </div>
-                      {/* Center: Logo */}
-                      <div className="flex items-center gap-2">
-                        <div className="w-[52px] h-[52px] rounded-full overflow-hidden border-2 border-[#F8330D]">
-                          <img src="/assets/logo.png" alt="RIAF!" className="w-full h-full object-cover" />
-                        </div>
-                      </div>
-                      {/* Right: FaceTime icon */}
-                      <svg width="28" height="20" viewBox="0 0 28 20" fill="none">
-                        <rect x="1" y="2" width="18" height="16" rx="4" stroke="#0A7CFF" strokeWidth="2" fill="none"/>
-                        <path d="M19 7L26 3V17L19 13" stroke="#0A7CFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-                      </svg>
-                    </div>
-
-                    {/* Contact Name */}
-                    <div className="text-center py-1 border-b border-black/10">
-                      <div className="flex items-center justify-center gap-1">
-                        <p className="font-semibold text-[13px] text-black">Rithika is a Fool!</p>
-                        <svg width="8" height="12" viewBox="0 0 8 12" fill="none">
-                          <path d="M2 2L6 6L2 10" stroke="#C7C7CC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                      </div>
-                    </div>
-
-                    {/* Animated Messages Area */}
-                    <AnimatedMessages />
-                  </div>
-                </div>
-                </div>
-              </div>
-
-
-          </div>
-
-          {/* How Does This Work Section */}
-          <div className="pt-6 pb-12 md:py-16 px-6 sm:px-8 md:px-12" style={{ backgroundColor: '#F2F2F2' }}>
-            <button
-              onClick={() => setHowItWorksOpen(!howItWorksOpen)}
-              className="w-full flex items-center justify-center gap-4 mb-4 sm:mb-12 cursor-pointer"
-            >
-              <h2 className="text-[2.7rem] sm:text-[3.75rem] md:text-[4.5rem] font-bold font-[family-name:var(--font-instrument-serif)] text-black text-center">
-                How does this thing work?
-              </h2>
-              <motion.span
-                animate={{ rotate: howItWorksOpen ? 180 : 0 }}
-                transition={{ duration: 0.3 }}
-                className="text-3xl text-[#F8330D]"
-              >
-                ▼
-              </motion.span>
-            </button>
-
-            <motion.div
-              initial={false}
-              animate={{ height: howItWorksOpen ? "auto" : 0, opacity: howItWorksOpen ? 1 : 0 }}
-              transition={{ duration: 0.3 }}
-              className="overflow-hidden"
-            >
-            <div className="max-w-[1400px] mx-auto space-y-12">
-              {/* Row 1: Step 1 + Welcome message */}
-              <div className="bg-white/20 rounded-2xl p-6 md:p-8 shadow-sm">
-              <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 xl:gap-16 items-start">
-                <div>
-                  <p className="text-xl font-semibold text-black/50 mb-1 font-[family-name:var(--font-inter)]">Step 1</p>
-                  <p className="text-base sm:text-xl font-[family-name:var(--font-inter)] text-black tracking-tight">
-                  When you sign up, we first try to <span className="bg-[#dcff73] px-1 rounded"><b>get to know you</b></span>. This helps us create your profile and match you.
-                </p>
-                </div>
-                <div>
-                  <motion.div
-                    className="flex justify-start mb-3"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.4 }}
-                  >
-                    <div className="bg-[#E9E9EB] rounded-[24px] px-6 py-5 max-w-[90%]">
-                      <p className="text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
-                        We're pretty excited you're here and we want to get to know you.
-                      </p>
-                    </div>
-                  </motion.div>
-                  <motion.div
-                    className="flex justify-start mb-3"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.4, delay: 0.2 }}
-                  >
-                    <motion.div
-                      key={questionIndex}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className={`bg-[#E9E9EB] rounded-[24px] max-w-[90%] ${rotatingQuestions[questionIndex] === "..." ? "px-4 py-4" : "px-6 py-5"}`}
-                    >
-                      {rotatingQuestions[questionIndex] === "..." ? (
-                        <div className="flex gap-1.5">
-                          {[0, 1, 2].map(i => (
-                            <span
-                              key={i}
-                              className="w-2.5 h-2.5 rounded-full bg-black/40"
-                              style={{
-                                animation: 'typingDot 1.2s infinite ease-in-out',
-                                animationDelay: `${i * 0.18}s`,
-                              }}
-                            />
-                          ))}
-                        </div>
-                      ) : (
-                        <p className="text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
-                          {rotatingQuestions[questionIndex]}
-                        </p>
-                      )}
-                    </motion.div>
-                  </motion.div>
-                </div>
-              </div>
-              </div>
-
-              {/* Row 2: Step 2 + Sunday matching message */}
-              <div className="bg-white/20 rounded-2xl p-6 md:p-8 shadow-sm">
-              <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 xl:gap-16 items-start">
-                <div>
-                  <p className="text-xl font-semibold text-black/50 mb-1 font-[family-name:var(--font-inter)]">Step 2</p>
-                  <p className="text-base sm:text-xl font-[family-name:var(--font-inter)] text-black tracking-tight">
-                  Each week, you're <span className="bg-[#dcff73] px-1 rounded"><b>paired with a new stranger</b></span> and get a little glimpse of who they are.
-                </p>
-                </div>
-                <div>
-                  <motion.div
-                    className="flex justify-start"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.4 }}
-                  >
-                    <div className="bg-[#E9E9EB] rounded-[24px] px-6 py-5 max-w-[90%]">
-                      <p className="text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
-                        This week, you've been matched with someone who:
-                      </p>
-                      <p className="text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed mt-2 italic" style={{ letterSpacing: '-0.24px' }}>
-                        - is 48 and an ER nurse in Philadelphia<br />
-                        - once drove 6 hours for a sandwich<br />
-                        - has married the same person twice
-                      </p>
-                      <p className="text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed mt-2" style={{ letterSpacing: '-0.24px' }}>
-                        They'll be your partner for the week.
-                      </p>
-                    </div>
-                  </motion.div>
-                </div>
-              </div>
-              </div>
-
-              {/* Row 3: Step 3 + Monday prompt */}
-              <div className="bg-white/20 rounded-2xl p-6 md:p-8 shadow-sm">
-              <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 xl:gap-16 items-start">
-                <div>
-                  <p className="text-xl font-semibold text-black/50 mb-1 font-[family-name:var(--font-inter)]">Step 3</p>
-                  <p className="text-base sm:text-xl font-[family-name:var(--font-inter)] text-black tracking-tight">
-                  Through the week, we <span className="bg-[#dcff73] px-1 rounded"><b>guide you through three creative prompts</b></span>. For each one, you'll have 24 hours to reply.
-                </p>
-                </div>
-                <div>
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <p className="text-center text-[13px] text-black/40 mb-2">Monday 9:00 AM</p>
-                  </motion.div>
-                  <motion.div
-                    className="flex justify-start"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.4, delay: 0.1 }}
-                  >
-                    <div className="bg-[#E9E9EB] rounded-[24px] px-6 py-5 max-w-[90%]">
-                      <p className="text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed font-semibold" style={{ letterSpacing: '-0.24px' }}>
-                        Today's Prompt:
-                      </p>
-                      <p className="text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed mt-2" style={{ letterSpacing: '-0.24px' }}>
-                        Bob Marley once said <i>"One good thing about music, when it hits you, you feel no pain."</i> Tell us about a <b>song that's helped you process something hard</b> in your life.
-                      </p>
-                      <p className="text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed mt-3" style={{ letterSpacing: '-0.24px' }}>
-                        Reply within 24 hours to receive a response.
-                      </p>
-                    </div>
-                  </motion.div>
-                </div>
-              </div>
-              </div>
-
-              {/* Row 4: Step 4 + Review messages */}
-              <div className="bg-white/20 rounded-2xl p-6 md:p-8 shadow-sm">
-              <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 xl:gap-16 items-start">
-                <div>
-                  <p className="text-xl font-semibold text-black/50 mb-1 font-[family-name:var(--font-inter)]">Step 4</p>
-                  <p className="text-base sm:text-xl font-[family-name:var(--font-inter)] text-black tracking-tight">
-                  We <span className="bg-[#dcff73] px-1 rounded"><b>review responses</b></span> to try to keep things thoughtful and safe from a quality perspective.
-                </p>
-                </div>
-                <div>
-                  <motion.div
-                    className="flex justify-end mb-3"
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.4 }}
-                  >
-                    <div className="rounded-[20px] px-5 py-2.5" style={{ background: 'linear-gradient(180deg, #2B8AFA, #0A7CFF)' }}>
-                      <p className="text-[15px] sm:text-[19px] text-white leading-[19px] sm:leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
-                        Blah blah, just give me theirs.
-                      </p>
-                    </div>
-                  </motion.div>
-                  <motion.div
-                    className="flex justify-start"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.4, delay: 0.2 }}
-                  >
-                    <div className="bg-[#E9E9EB] rounded-[24px] px-6 py-5 max-w-[90%]">
-                      <p className="text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
-                        Hmm, this doesn't seem like it answers the prompt. Can you try again?
-                      </p>
-                    </div>
-                  </motion.div>
-                </div>
-              </div>
-              </div>
-
-              {/* Row 5: Step 5 + Their response */}
-              <div className="bg-white/20 rounded-2xl p-6 md:p-8 shadow-sm">
-              <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 xl:gap-16 items-start">
-                <div>
-                  <p className="text-xl font-semibold text-black/50 mb-1 font-[family-name:var(--font-inter)]">Step 5</p>
-                  <p className="text-base sm:text-xl font-[family-name:var(--font-inter)] text-black tracking-tight">
-                  We <span className="bg-[#dcff73] px-1 rounded"><b>send you their response</b></span>. If your match didn't reply, we'll still send you something meaningful.
-                </p>
-                </div>
-                <div>
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <p className="text-center text-[13px] text-black/40 mb-2">Tuesday 9:00 AM</p>
-                  </motion.div>
-                  <motion.div
-                    className="flex justify-start mb-3"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.4, delay: 0.1 }}
-                  >
-                    <div className="bg-[#E9E9EB] rounded-[24px] px-6 py-5 max-w-[90%]">
-                      <p className="text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
-                        Here's your match's response:
-                      </p>
-                    </div>
-                  </motion.div>
-                  <motion.div
-                    className="flex justify-start mb-3"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.4, delay: 0.3 }}
-                  >
-                    <a
-                      href="https://www.youtube.com/watch?v=8xinW_OKLeY"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block rounded-[18px] overflow-hidden bg-[#E9E9EB] hover:bg-[#DDDDE0] transition-colors cursor-pointer"
-                      style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}
-                    >
-                      <img
-                        src="https://img.youtube.com/vi/8xinW_OKLeY/hqdefault.jpg"
-                        alt="Where Are You Now"
-                        className="block w-[300px] h-[168px] object-cover"
-                      />
-                      <div className="px-3 py-2">
-                        <p className="text-[15px] font-semibold text-black leading-tight">Where Are You Now</p>
-                        <p className="text-[13px] text-black/60">Mumford & Sons</p>
-                        <p className="text-[12px] text-black/40 mt-0.5">youtube.com</p>
-                      </div>
-                    </a>
-                  </motion.div>
-                  <motion.div
-                    className="flex justify-start"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.4, delay: 0.5 }}
-                  >
-                    <div className="bg-[#E9E9EB] rounded-[24px] px-6 py-5 max-w-[90%]">
-                      <p className="text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
-                        I was 21 the first time I saw a patient die on my shift. You could just tell that they were a good person. She kept thanking me for small things like bringing her water. I was numb and I kept listening to this song on repeat. It helped.
-                      </p>
-                    </div>
-                  </motion.div>
-                </div>
-              </div>
-              </div>
-
-              {/* Row 6: Step 6 + Friday poll */}
-              <div className="bg-white/20 rounded-2xl p-6 md:p-8 shadow-sm">
-              <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 xl:gap-16 items-start">
-                <div>
-                  <p className="text-xl font-semibold text-black/50 mb-1 font-[family-name:var(--font-inter)]">Step 6</p>
-                  <p className="text-base sm:text-xl font-[family-name:var(--font-inter)] text-black tracking-tight">
-                  At the end of the week, you can <span className="bg-[#dcff73] px-1 rounded"><b>choose to connect for real</b></span>. We'll only share contact information if you <b>both agree</b>.
-                </p>
-                </div>
-                <div>
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <p className="text-center text-[13px] text-black/40 mb-2">Friday 9:00 AM</p>
-                  </motion.div>
-                  <motion.div
-                    className="flex justify-start mb-3"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.4, delay: 0.1 }}
-                  >
-                    <div className="bg-[#E9E9EB] rounded-[24px] px-6 py-5 max-w-[90%]">
-                      <p className="text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
-                        That's it for this week. Want to share your contact if they feel the same?
-                      </p>
-                    </div>
-                  </motion.div>
-                  <motion.div
-                    className="flex justify-start"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.4, delay: 0.3 }}
-                  >
-                    <div className="bg-[#E8E8ED] rounded-[18px] overflow-hidden">
-                      <button className="w-full px-4 py-3 text-[17px] text-left text-[#007AFF] border-b border-black/10 hover:bg-[#D8D8DD] transition-colors cursor-pointer" style={{ letterSpacing: '-0.24px' }}>
-                        Yes, they're cool
-                      </button>
-                      <button className="w-full px-4 py-3 text-[17px] text-left text-[#007AFF] hover:bg-[#D8D8DD] transition-colors cursor-pointer" style={{ letterSpacing: '-0.24px' }}>
-                        Nah, not feeling it this week
-                      </button>
-                    </div>
-                  </motion.div>
-                </div>
-              </div>
-              </div>
-
-              {/* Row 7: Step 7 + Next week message */}
-              <div className="bg-white/20 rounded-2xl p-6 md:p-8 shadow-sm">
-              <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 xl:gap-16 items-start">
-                <div>
-                  <p className="text-xl font-semibold text-black/50 mb-1 font-[family-name:var(--font-inter)]">Step 7</p>
-                  <p className="text-base sm:text-xl font-[family-name:var(--font-inter)] text-black tracking-tight">
-                  Then we <b>do it again!</b>
-                </p>
-                </div>
-                <div>
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <p className="text-center text-[13px] text-black/40 mb-2">Saturday 11:00 AM</p>
-                  </motion.div>
-                  <motion.div
-                    className="flex justify-start"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.4, delay: 0.1 }}
-                  >
-                    <div className="bg-[#E9E9EB] rounded-[24px] px-6 py-5 max-w-[90%]">
-                      <p className="text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
-                        We'll be back tomorrow with next week's match.
-                      </p>
-                    </div>
-                  </motion.div>
-                </div>
-              </div>
-              </div>
-            </div>
-            </motion.div>
-          </div>
-
-          {/* Why Section */}
-          <div className="pt-2 pb-12 md:pt-4 md:pb-16 px-6 sm:px-8 md:px-12" style={{ backgroundColor: '#F2F2F2' }}>
-            <button
-              onClick={() => setWhyOpen(!whyOpen)}
-              className="w-full flex items-center justify-center gap-4 mb-12 cursor-pointer"
-            >
-              <h2 className="text-[3rem] sm:text-[3.75rem] md:text-[4.5rem] font-bold font-[family-name:var(--font-instrument-serif)] text-black text-center">
-                Why?
-              </h2>
-              <motion.span
-                animate={{ rotate: whyOpen ? 180 : 0 }}
-                transition={{ duration: 0.3 }}
-                className="text-3xl text-[#F8330D]"
-              >
-                ▼
-              </motion.span>
-            </button>
-            <motion.div
-              initial={false}
-              animate={{ height: whyOpen ? "auto" : 0, opacity: whyOpen ? 1 : 0 }}
-              transition={{ duration: 0.3 }}
-              className="overflow-hidden"
-            >
-            <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
-              <img
-                src="/assets/shakes.png"
-                alt="Shakespeare"
-                className="w-full max-w-[484px] h-auto rounded-2xl mx-auto"
-              />
-              <div className="space-y-3">
-                <div className="bg-[#E9E9EB] rounded-[24px] px-6 py-5">
-                  <p className="text-[17px] sm:text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
-                    Other people make us better.
-                  </p>
-                </div>
-                <div className="bg-[#E9E9EB] rounded-[24px] px-6 py-5">
-                  <p className="text-[17px] sm:text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
-                    And I wanted a <b>different way to meet and feel connected to them</b>. Social media can be overwhelming and addictive and demanding. This is my attempt at creating something that feels spontaneous and light but also impactful.
-                  </p>
-                </div>
-                <div className="bg-[#E9E9EB] rounded-[24px] px-6 py-5">
-                  <p className="text-[17px] sm:text-[15px] sm:text-[19px] text-black leading-[19px] sm:leading-relaxed" style={{ letterSpacing: '-0.24px' }}>
-                    <span className="bg-[#dcff73] px-1 rounded"><b>If you have ideas</b></span> on how to make this better, please do <b>send me <a href="/connect" className="text-blue-600 hover:text-blue-800">feedback</a></b>. I would be grateful.
-                  </p>
-                </div>
-              </div>
-            </div>
-            </motion.div>
-          </div>
-
-          {/* FAQs Section */}
-          <div className="pt-2 pb-12 md:pt-4 md:pb-16 px-6 sm:px-8 md:px-12" style={{ backgroundColor: '#F2F2F2' }}>
-            <button
-              onClick={() => setFaqsOpen(!faqsOpen)}
-              className="w-full flex items-center justify-center gap-4 mb-12 cursor-pointer"
-            >
-              <h2 className="text-[3rem] sm:text-[3.75rem] md:text-[4.5rem] font-bold font-[family-name:var(--font-instrument-serif)] text-black text-center">
-                FAQs
-              </h2>
-              <motion.span
-                animate={{ rotate: faqsOpen ? 180 : 0 }}
-                transition={{ duration: 0.3 }}
-                className="text-3xl text-[#F8330D]"
-              >
-                ▼
-              </motion.span>
-            </button>
-            <motion.div
-              initial={false}
-              animate={{ height: faqsOpen ? "auto" : 0, opacity: faqsOpen ? 1 : 0 }}
-              transition={{ duration: 0.3 }}
-              className="overflow-hidden"
-            >
-            <div className="max-w-[800px] mx-auto space-y-4">
-              <div className="bg-white rounded-2xl p-6">
-                <h3 className="text-lg font-bold font-[family-name:var(--font-inter)] text-black mb-2">How much does it cost?</h3>
-                <p className="text-base font-[family-name:var(--font-inter)] text-black/70">There's a 14 day free trial to start. After that, you will be charged $5 a month and you can cancel anytime.</p>
-              </div>
-              <div className="bg-white rounded-2xl p-6">
-                <h3 className="text-lg font-bold font-[family-name:var(--font-inter)] text-black mb-2">How do I get matched?</h3>
-                <p className="text-base font-[family-name:var(--font-inter)] text-black/70">You are always matched with a real person who also signed up. We try to match you with someone who has different perspectives but shared interests. We also try to vary your match as often as possible.</p>
-              </div>
-              <div className="bg-white rounded-2xl p-6">
-                <h3 className="text-lg font-bold font-[family-name:var(--font-inter)] text-black mb-2">What if my match doesn't reply?</h3>
-                <p className="text-base font-[family-name:var(--font-inter)] text-black/70">We'll always be transparent if your match didn't reply but we'll still send you something meaningful. Often, it will be a thoughtful response from another member. You'll never be left hanging.</p>
-              </div>
-              <div className="bg-white rounded-2xl p-6">
-                <h3 className="text-lg font-bold font-[family-name:var(--font-inter)] text-black mb-2">Is my information private?</h3>
-                <p className="text-base font-[family-name:var(--font-inter)] text-black/70">Yes. Your personal details and phone number are stored securely and only used to run this experience. We never sell your data or share it without your explicit consent.</p>
-              </div>
-              <div className="bg-white rounded-2xl p-6">
-                <h3 className="text-lg font-bold font-[family-name:var(--font-inter)] text-black mb-2">How do I cancel?</h3>
-                <p className="text-base font-[family-name:var(--font-inter)] text-black/70">You can text STOP anytime to trigger the cancellation flow. Or you can email us at support@rithikaisafool.com requesting to cancel.</p>
-              </div>
-              <div className="bg-white rounded-2xl p-6">
-                <h3 className="text-lg font-bold font-[family-name:var(--font-inter)] text-black mb-2">I have more questions. What can I do?</h3>
-                <p className="text-base font-[family-name:var(--font-inter)] text-black/70">Email support@rithikaisafool.com. We'll try to get back to you as soon as we can.</p>
-              </div>
-            </div>
-            </motion.div>
-          </div>
-
-          {/* Squiggly line divider */}
-          <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen py-8">
-            <svg width="100%" height="20" viewBox="0 0 1200 20" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0 10 Q 15 0, 30 10 T 60 10 T 90 10 T 120 10 T 150 10 T 180 10 T 210 10 T 240 10 T 270 10 T 300 10 T 330 10 T 360 10 T 390 10 T 420 10 T 450 10 T 480 10 T 510 10 T 540 10 T 570 10 T 600 10 T 630 10 T 660 10 T 690 10 T 720 10 T 750 10 T 780 10 T 810 10 T 840 10 T 870 10 T 900 10 T 930 10 T 960 10 T 990 10 T 1020 10 T 1050 10 T 1080 10 T 1110 10 T 1140 10 T 1170 10 T 1200 10" stroke="white" strokeWidth="3" fill="none" strokeLinecap="round"/>
-            </svg>
-          </div>
-
-          {/* Physical Things CTA */}
-          <div className="pt-6 md:pt-8 pb-16 md:pb-24 px-6 text-center" style={{ backgroundColor: '#F2F2F2' }}>
-            <div className="flex flex-col items-center">
-              <p className="text-xl sm:text-2xl font-[family-name:var(--font-inter)] text-black/80 mb-8 max-w-[600px] mx-auto italic">
-                <span className="bg-[#dcff73] px-1 rounded"><b>Pretty sweet of you</b></span> to look through our digital things. If you're feeling extra sweet, check out our <b>physical products</b> too.
-              </p>
-              <button
-                onClick={() => { setActiveTab('physical'); setTimeout(() => window.scrollTo({ top: heroHeight + 200, left: 0, behavior: 'smooth' }), 50); }}
-                className="px-10 py-4 text-[17px] font-semibold rounded-full transition-all font-[family-name:var(--font-inter)] text-black bg-[#dcff73] hover:bg-black hover:text-white"
-              >
-                Check them out
-              </button>
-            </div>
-          </div>
-        </div>
-        )}
-
-        {/* Physical Things Tab Content */}
-        {activeTab === 'physical' && (
-          <div className="relative" style={{ backgroundColor: '#F2F2F2' }}>
-            <div className="grid grid-cols-1 lg:grid-cols-3 relative z-10">
-              {projects.filter(p => p.category === 'physical').map((project, index) => (
-                <Link
-                  key={index}
-                  href={project.link}
+        {/* Unified Grid with Layout Animations */}
+        <div className="relative" style={{ backgroundColor: '#F2F2F2', minHeight: '50vh' }}>
+          <motion.div layout className="grid grid-cols-1 lg:grid-cols-3 relative z-10 squiggly-grid">
+            <AnimatePresence mode="popLayout">
+              {/* Stranger Texts Club Cell - shows in digital and all tabs */}
+              {(activeTab === 'digital' || activeTab === 'all') && (
+                <motion.div
+                  key="stranger-texts-club"
+                  layout
+                  layoutId="stranger-texts-club"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.3, layout: { duration: 0.4 } }}
                 >
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.4, delay: index * 0.1 }}
-                    className="group aspect-[4/5] flex items-center justify-center p-6 cursor-pointer bg-[#F2F2F2] hover:bg-white transition-colors duration-150 ease-out relative overflow-hidden"
-                  >
-                    {project.hasCover === "hat" && (
-                      <div className="absolute inset-0">
-                        <div className="absolute inset-0 flex items-end justify-center">
-                          <div className="relative" style={{ width: '85%', height: '85%' }}>
-                            <img src="/assets/COTM/coverreal.webp" alt="Condition of the Month Hat" className="absolute inset-0 w-full h-full object-contain" />
+                  <Link href="/stranger-texts">
+                    <div className="group aspect-[4/5] flex items-center justify-center cursor-pointer bg-[#F2F2F2] hover:bg-white transition-colors duration-150 ease-out relative overflow-hidden">
+                      {/* Phone mockup with animation */}
+                      <div className="absolute inset-0 flex items-center justify-center p-4 pt-16">
+                        <div className="rounded-[1.5rem] shadow-lg w-full max-w-[336px] h-full max-h-[456px] overflow-hidden">
+                          <div className="bg-[#f5f5f5] rounded-[1.5rem] h-full flex flex-col">
+                            <div className="flex justify-between items-center px-3 py-2">
+                              <div className="flex items-center gap-1">
+                                <svg width="10" height="16" viewBox="0 0 12 20" fill="none">
+                                  <path d="M10 2L2 10L10 18" stroke="#0A7CFF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                </svg>
+                                <span className="bg-[#0A7CFF] text-white px-1.5 py-0.5 rounded-full text-[9px] font-semibold">24</span>
+                              </div>
+                              <div className="w-[36px] h-[36px] rounded-full overflow-hidden border-2 border-[#F8330D]">
+                                <img src="/assets/logo.png" alt="RIAF!" className="w-full h-full object-cover" />
+                              </div>
+                              <svg width="22" height="16" viewBox="0 0 28 20" fill="none">
+                                <rect x="1" y="2" width="18" height="16" rx="4" stroke="#0A7CFF" strokeWidth="2" fill="none"/>
+                                <path d="M19 7L26 3V17L19 13" stroke="#0A7CFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                              </svg>
+                            </div>
+                            <div className="text-center py-1 border-b border-black/10">
+                              <div className="flex items-center justify-center gap-1">
+                                <p className="font-semibold text-[10px] text-black">Rithika is a Fool!</p>
+                                <svg width="6" height="10" viewBox="0 0 8 12" fill="none">
+                                  <path d="M2 2L6 6L2 10" stroke="#C7C7CC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                </svg>
+                              </div>
+                            </div>
+                            <div className="flex-1 overflow-hidden" style={{ transform: 'scale(0.8)', transformOrigin: 'top left' }}>
+                              <AnimatedMessages />
+                            </div>
                           </div>
                         </div>
-                        <img src="/assets/shop/Shop Logo.png" alt="Shop Logo" className="absolute top-4 right-4 w-18 h-18 md:w-22 md:h-22 object-contain" />
                       </div>
-                    )}
-                    {project.hasCover === true && (
-                      <div className="absolute inset-0">
-                        <BouncingBallPoster imageScale={85} showLogo={true} />
+                      <div className="absolute inset-x-0 top-0 flex justify-start pointer-events-none pt-4 px-4 z-10">
+                        <span className="text-[1rem] sm:text-[1.3rem] md:text-[1.5rem] lg:text-[1.1rem] xl:text-[1.1rem] font-normal group-hover:font-bold text-black text-left max-w-[70%] font-[family-name:var(--font-inter)] tracking-tighter bg-white px-3 py-2 rounded-lg leading-tight shadow-md transition-[font-weight] duration-100 ease-out" style={{ fontStretch: 'condensed' }}>
+                          Trade art and stories with someone new every week.
+                        </span>
                       </div>
-                    )}
-                    {project.hasCover === "lmsy" && (
-                      <div className="absolute inset-0">
-                        <div className="absolute inset-0 flex items-end justify-center px-6 pt-6 pb-0">
-                          <img src="/assets/CCP/68.webp" alt="Let Me Show You" className="absolute w-[80%] h-[80%] object-contain object-bottom" />
-                        </div>
-                        <img src="/assets/shop/Shop Logo.png" alt="Shop Logo" className="absolute top-4 right-4 w-18 h-18 md:w-22 md:h-22 object-contain" />
-                      </div>
-                    )}
-                    <div className="absolute inset-x-0 top-0 flex justify-start pointer-events-none pt-8 px-6">
-                      <span className="text-[1rem] sm:text-[1.3rem] md:text-[1.5rem] lg:text-[1.1rem] xl:text-[1.1rem] font-normal group-hover:font-bold text-black text-left max-w-[70%] font-[family-name:var(--font-inter)] tracking-tighter bg-white px-3 py-2 rounded-lg leading-tight shadow-md transition-[font-weight] duration-100 ease-out group-hover-dance" style={{ fontStretch: 'condensed' }}>
-                        {project.title}
-                      </span>
+                      <img src="/assets/shop/Shop Logo.png" alt="Shop Logo" className="absolute top-4 right-4 w-18 h-18 md:w-22 md:h-22 object-contain z-10" />
                     </div>
+                  </Link>
+                </motion.div>
+              )}
+
+              {/* All projects filtered by active tab */}
+              {projects
+                .filter(p => activeTab === 'all' || p.category === activeTab)
+                .map((project) => (
+                  <motion.div
+                    key={project.link}
+                    layout
+                    layoutId={project.link}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    transition={{ duration: 0.3, layout: { duration: 0.4 } }}
+                  >
+                    <Link href={project.link}>
+                      <div className="group aspect-[4/5] flex items-center justify-center p-6 cursor-pointer bg-[#F2F2F2] hover:bg-white transition-colors duration-150 ease-out relative overflow-hidden">
+                        {project.hasCover === "sthm" && (
+                          <div className="absolute inset-0">
+                            <img
+                              src="/assets/SongsThatHoldMemories/democover-poster.webp"
+                              alt="Songs That Hold Memories"
+                              className="absolute inset-0 w-full h-full object-cover"
+                            />
+                          </div>
+                        )}
+                        {project.hasCover === "hat" && (
+                          <div className="absolute inset-0">
+                            <div className="absolute inset-0 flex items-end justify-center">
+                              <div className="relative" style={{ width: '85%', height: '85%' }}>
+                                <img src="/assets/COTM/coverreal.webp" alt="Condition of the Month Hat" className="absolute inset-0 w-full h-full object-contain" />
+                              </div>
+                            </div>
+                            <img src="/assets/shop/Shop Logo.png" alt="Shop Logo" className="absolute top-4 right-4 w-18 h-18 md:w-22 md:h-22 object-contain" />
+                          </div>
+                        )}
+                        {project.hasCover === true && (
+                          <div className="absolute inset-0">
+                            <BouncingBallPoster imageScale={85} showLogo={true} />
+                          </div>
+                        )}
+                        {project.hasCover === "museum" && (
+                          <div className="absolute inset-0">
+                            <video
+                              src="/assets/museum/wEmotions_tiny.mp4"
+                              autoPlay
+                              loop
+                              muted
+                              playsInline
+                              poster="/assets/museum/wEmotions-poster.webp"
+                              className="absolute inset-0 w-full h-full object-cover"
+                            />
+                          </div>
+                        )}
+                        <div className="absolute inset-x-0 top-0 flex justify-start pointer-events-none pt-8 px-6">
+                          <span className="text-[1rem] sm:text-[1.3rem] md:text-[1.5rem] lg:text-[1.1rem] xl:text-[1.1rem] font-normal group-hover:font-bold text-black text-left max-w-[70%] font-[family-name:var(--font-inter)] tracking-tighter bg-white px-3 py-2 rounded-lg leading-tight shadow-md transition-[font-weight] duration-100 ease-out" style={{ fontStretch: 'condensed' }}>
+                            {project.title}
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
                   </motion.div>
-                </Link>
-              ))}
-            </div>
+                ))}
+            </AnimatePresence>
+          </motion.div>
 
-            {/* Squiggly line divider */}
-            <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen py-8">
-              <svg width="100%" height="20" viewBox="0 0 1200 20" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 10 Q 15 0, 30 10 T 60 10 T 90 10 T 120 10 T 150 10 T 180 10 T 210 10 T 240 10 T 270 10 T 300 10 T 330 10 T 360 10 T 390 10 T 420 10 T 450 10 T 480 10 T 510 10 T 540 10 T 570 10 T 600 10 T 630 10 T 660 10 T 690 10 T 720 10 T 750 10 T 780 10 T 810 10 T 840 10 T 870 10 T 900 10 T 930 10 T 960 10 T 990 10 T 1020 10 T 1050 10 T 1080 10 T 1110 10 T 1140 10 T 1170 10 T 1200 10" stroke="white" strokeWidth="3" fill="none" strokeLinecap="round"/>
-              </svg>
-            </div>
-
-            {/* Digital Things CTA */}
-            <div className="pt-6 md:pt-8 pb-16 md:pb-24 px-6 text-center">
-              <div className="flex flex-col items-center">
-                <p className="text-xl sm:text-2xl font-[family-name:var(--font-inter)] text-black/80 mb-8 max-w-[600px] mx-auto italic">
-                  Woo! Look at you browsing all our physical products. We've got <b>digital stuff</b> too, <span className="bg-[#dcff73] px-1 rounded"><b>if you're curious</b></span>.
-                </p>
-                <button
-                  onClick={() => { setActiveTab('digital'); setTimeout(() => window.scrollTo({ top: heroHeight + 200, left: 0, behavior: 'smooth' }), 50); }}
-                  className="px-10 py-4 text-[17px] font-semibold rounded-full transition-all font-[family-name:var(--font-inter)] text-black bg-[#dcff73] hover:bg-black hover:text-white"
-                >
-                  I'm curious
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+        </div>
 
         </div>{/* End Scrolling Content Container */}
 
@@ -1824,6 +1248,42 @@ export default function Home() {
         }
         .animate-fade-in {
           animation: fadeIn 0.3s ease-out forwards;
+        }
+        /* Squiggly grid lines */
+        .squiggly-grid > div {
+          position: relative;
+        }
+        /* Horizontal squiggly line (bottom border) - matching top squiggly style */
+        .squiggly-grid > div::after {
+          content: '';
+          position: absolute;
+          bottom: -3px;
+          left: 0;
+          right: 0;
+          height: 10px;
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 10' preserveAspectRatio='none'%3E%3Cpath d='M0,5 C9,3 15,8 27,5.5 C39,3 48,9 63,6.5 C78,4 87,8 102,5.5 C108,4.5 114,6.5 120,5' stroke='white' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+          background-repeat: repeat-x;
+          background-size: 120px 10px;
+          z-index: 20;
+        }
+        /* Vertical squiggly line (right border) - desktop only */
+        @media (min-width: 1024px) {
+          .squiggly-grid > div::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: -3px;
+            width: 10px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 120' preserveAspectRatio='none'%3E%3Cpath d='M5,0 C3,9 8,15 5.5,27 C3,39 9,48 6.5,63 C4,78 8,87 5.5,102 C4.5,108 6.5,114 5,120' stroke='white' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: repeat-y;
+            background-size: 10px 120px;
+            z-index: 20;
+          }
+          /* Hide right border on last column (every 3rd item) */
+          .squiggly-grid > div:nth-child(3n)::before {
+            display: none;
+          }
         }
       `}</style>
     </>

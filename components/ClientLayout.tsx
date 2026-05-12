@@ -17,7 +17,7 @@ export default function ClientLayout({
   const pathname = usePathname();
 
   // Check if we're on a standalone project page
-  const isStandalonePage = pathname?.startsWith('/shop/let-me-show-you-sample') || pathname?.startsWith('/let-me-show-you') || pathname === '/theRIAFMuseumOfArt' || pathname === '/shop/stranger-archive' || pathname === '/songs-that-hold-memories-exhibit';
+  const isStandalonePage = pathname?.startsWith('/shop/let-me-show-you-sample') || pathname?.startsWith('/let-me-show-you') || pathname === '/theRIAFMuseumOfArt' || pathname === '/shop/stranger-archive' || pathname === '/songs-that-hold-memories-exhibit' || pathname === '/please-hold';
 
   // Scroll to top on route change
   useEffect(() => {
@@ -42,7 +42,7 @@ export default function ClientLayout({
         </>
       )}
       {children}
-      <FloatingSignupPopup />
+      {!isStandalonePage && <FloatingSignupPopup />}
     </CartProvider>
   );
 }

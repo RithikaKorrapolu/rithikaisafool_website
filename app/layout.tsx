@@ -4,12 +4,12 @@ import { Inter, Jaldi, Neuton, Archivo_Narrow, Noto_Serif_Ethiopic, Instrument_S
 import localFont from 'next/font/local';
 import type { Metadata } from 'next';
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
-const jaldi = Jaldi({ weight: ['400', '700'], subsets: ['latin'], variable: '--font-jaldi', display: 'swap' });
-const neuton = Neuton({ weight: ['400'], subsets: ['latin'], variable: '--font-neuton', display: 'swap' });
-const archivoNarrow = Archivo_Narrow({ weight: ['400', '700'], subsets: ['latin'], variable: '--font-archivo-narrow', display: 'swap' });
-const notoSerifEthiopic = Noto_Serif_Ethiopic({ weight: ['400'], subsets: ['latin'], variable: '--font-noto-serif-ethiopic', display: 'swap' });
-const instrumentSerif = Instrument_Serif({ weight: ['400'], subsets: ['latin'], variable: '--font-instrument-serif', display: 'swap' });
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap', preload: true });
+const instrumentSerif = Instrument_Serif({ weight: ['400'], subsets: ['latin'], variable: '--font-instrument-serif', display: 'swap', preload: true });
+const jaldi = Jaldi({ weight: ['400', '700'], subsets: ['latin'], variable: '--font-jaldi', display: 'swap', preload: false });
+const neuton = Neuton({ weight: ['400'], subsets: ['latin'], variable: '--font-neuton', display: 'swap', preload: false });
+const archivoNarrow = Archivo_Narrow({ weight: ['400', '700'], subsets: ['latin'], variable: '--font-archivo-narrow', display: 'swap', preload: false });
+const notoSerifEthiopic = Noto_Serif_Ethiopic({ weight: ['400'], subsets: ['latin'], variable: '--font-noto-serif-ethiopic', display: 'swap', preload: false });
 const abrilFatface = localFont({
   src: '../public/fonts/Abril_Fatface/AbrilFatface-Regular.ttf',
   variable: '--font-abril-fatface',

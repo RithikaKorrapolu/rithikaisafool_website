@@ -231,6 +231,9 @@ export default function About() {
             margin-top: -0.2em !important;
             font-size: clamp(1.76rem, 5.28vw, 3.96rem) !important;
           }
+          .new-interesting-text {
+            font-size: 0.7em !important;
+          }
           .and-good-annotation {
             left: auto !important;
             right: -12em;
@@ -350,7 +353,7 @@ export default function About() {
               className="art-tech-line"
               style={{
                 fontFamily: '"Iowan Old Style", "Palatino Linotype", Georgia, serif',
-                fontSize: 'clamp(0.9rem, 2vw, 1.25rem)',
+                fontSize: 'clamp(1rem, 2vw, 1.25rem)',
                 fontWeight: '400',
                 color: '#000',
                 letterSpacing: '0.15em',
@@ -364,14 +367,14 @@ export default function About() {
               className="main-headline"
               style={{
                 fontFamily: '"Iowan Old Style", "Palatino Linotype", Georgia, serif',
-                fontSize: 'clamp(2.2rem, 6vw, 5rem)',
+                fontSize: 'clamp(2.4rem, 6vw, 5rem)',
                 fontWeight: '700',
                 color: '#000',
                 letterSpacing: '-0.02em',
                 lineHeight: '1.0',
               }}
             >
-              <span style={{ fontWeight: '700', fontSize: '0.58em', fontStyle: 'italic' }}>NEW & INTERESTING WAYS</span>
+              <span className="new-interesting-text" style={{ fontWeight: '700', fontSize: '0.58em', fontStyle: 'italic' }}>NEW & INTERESTING WAYS</span>
               <br />
               <span className="people-connect-text" style={{ fontSize: '1.3em' }}>FOR PEOPLE TO<br />CONNECT.</span>
             </h1>
