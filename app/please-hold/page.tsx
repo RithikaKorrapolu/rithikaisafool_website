@@ -1,61 +1,6 @@
 'use client';
 
 import { useState, useMemo, useRef, useEffect } from 'react';
-
-// Web Speech API types
-interface SpeechRecognitionEvent extends Event {
-  results: SpeechRecognitionResultList;
-  resultIndex: number;
-}
-
-interface SpeechRecognitionResultList {
-  length: number;
-  item(index: number): SpeechRecognitionResult;
-  [index: number]: SpeechRecognitionResult;
-}
-
-interface SpeechRecognitionResult {
-  isFinal: boolean;
-  length: number;
-  item(index: number): SpeechRecognitionAlternative;
-  [index: number]: SpeechRecognitionAlternative;
-}
-
-interface SpeechRecognitionAlternative {
-  transcript: string;
-  confidence: number;
-}
-
-interface SpeechRecognitionErrorEvent extends Event {
-  error: string;
-  message?: string;
-}
-
-interface SpeechRecognitionInstance extends EventTarget {
-  continuous: boolean;
-  interimResults: boolean;
-  lang: string;
-  start(): void;
-  stop(): void;
-  abort(): void;
-  onresult: ((event: SpeechRecognitionEvent) => void) | null;
-  onerror: ((event: SpeechRecognitionErrorEvent) => void) | null;
-  onend: (() => void) | null;
-}
-
-interface SpeechRecognitionConstructor {
-  new (): SpeechRecognitionInstance;
-}
-
-// Type alias for use in component
-type SpeechRecognition = SpeechRecognitionInstance;
-
-declare global {
-  interface Window {
-    SpeechRecognition: SpeechRecognitionConstructor;
-    webkitSpeechRecognition: SpeechRecognitionConstructor;
-  }
-}
 import type { Strand as APIStrand, PleaseHoldData, StrandAnalytics } from '@/lib/please-hold/types';
 import { formatDuration as formatDurationFromLib, formatDurationLong, formatRelativeTime } from '@/lib/please-hold/data';
 
@@ -67,6 +12,7 @@ interface Moment {
   duration: number; // in seconds
   date: string;
   sentiment?: 'sweet' | 'nostalgic' | 'reflective' | 'sincere' | 'whimsical' | 'melancholy' | 'funny';
+  transcript?: string;
 }
 
 interface Strand {
@@ -2290,6 +2236,27 @@ function YourStrands({
         if (!response.ok) throw new Error('Failed to fetch data');
         const result = await response.json();
         setData(result);
+
+        // Populate recordedAudios from cloud data
+        if (result.strands) {
+          const cloudAudios: { strandId: number; messageId: number; url: string }[] = [];
+          result.strands.forEach((strand: { id: number; messages?: Array<{ id: number; audioUrl?: string }> }) => {
+            if (strand.messages) {
+              strand.messages.forEach((msg: { id: number; audioUrl?: string }) => {
+                if (msg.audioUrl) {
+                  cloudAudios.push({
+                    strandId: strand.id,
+                    messageId: msg.id,
+                    url: msg.audioUrl,
+                  });
+                }
+              });
+            }
+          });
+          if (cloudAudios.length > 0) {
+            setRecordedAudios(cloudAudios);
+          }
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load data');
       } finally {
@@ -2299,19 +2266,8 @@ function YourStrands({
     fetchData();
   }, []);
 
-  // Device simulation state
-  const [deviceState, setDeviceState] = useState<'idle' | 'recording' | 'playing'>('idle');
-  const [recordingTime, setRecordingTime] = useState(0);
-  const recordingInterval = useRef<NodeJS.Timeout | null>(null);
-
-  // Audio recording
-  const mediaRecorder = useRef<MediaRecorder | null>(null);
-  const audioChunks = useRef<Blob[]>([]);
-  const [micPermission, setMicPermission] = useState<'granted' | 'denied' | 'prompt'>('prompt');
-
-  // Web Speech API for real-time transcription
-  const speechRecognition = useRef<SpeechRecognition | null>(null);
-  const [liveTranscript, setLiveTranscript] = useState('');
+  // Playback state
+  const [deviceState, setDeviceState] = useState<'idle' | 'playing'>('idle');
 
   // Refresh data from API
   const refreshData = async () => {
@@ -2320,157 +2276,29 @@ function YourStrands({
       if (response.ok) {
         const result = await response.json();
         setData(result);
+
+        // Sync recordedAudios from cloud data
+        if (result.strands) {
+          const cloudAudios: { strandId: number; messageId: number; url: string }[] = [];
+          result.strands.forEach((strand: { id: number; messages?: Array<{ id: number; audioUrl?: string }> }) => {
+            if (strand.messages) {
+              strand.messages.forEach((msg: { id: number; audioUrl?: string }) => {
+                if (msg.audioUrl) {
+                  cloudAudios.push({
+                    strandId: strand.id,
+                    messageId: msg.id,
+                    url: msg.audioUrl,
+                  });
+                }
+              });
+            }
+          });
+          setRecordedAudios(cloudAudios);
+        }
       }
     } catch (err) {
       console.error('Failed to refresh data:', err);
     }
-  };
-
-  // Simulate NEW STRAND button (K3Minus on device)
-  const handleNewStrand = async () => {
-    try {
-      const response = await fetch('/api/please-hold', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'new-strand' }),
-      });
-      if (response.ok) {
-        await refreshData();
-      }
-    } catch (err) {
-      console.error('Failed to create strand:', err);
-    }
-  };
-
-  // RECORD button (K1Plus on device) - hold to record actual audio
-  const handleRecordStart = async () => {
-    // Auto-create first strand if none exists
-    if (!currentStrand) {
-      try {
-        await fetch('/api/please-hold', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'new-strand' }),
-        });
-        await refreshData();
-      } catch (err) {
-        console.error('Failed to create initial strand:', err);
-        return;
-      }
-    }
-
-    // Request microphone permission
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      setMicPermission('granted');
-
-      // Start recording
-      mediaRecorder.current = new MediaRecorder(stream);
-      audioChunks.current = [];
-
-      mediaRecorder.current.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          audioChunks.current.push(event.data);
-        }
-      };
-
-      mediaRecorder.current.start(100); // Collect data every 100ms
-      setDeviceState('recording');
-      setRecordingTime(0);
-      setLiveTranscript('');
-      recordingInterval.current = setInterval(() => {
-        setRecordingTime(t => t + 1);
-      }, 1000);
-
-      // Start Web Speech API for real-time transcription
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (SpeechRecognition) {
-        speechRecognition.current = new SpeechRecognition();
-        speechRecognition.current.continuous = true;
-        speechRecognition.current.interimResults = true;
-        speechRecognition.current.lang = 'en-US';
-
-        speechRecognition.current.onresult = (event) => {
-          let transcript = '';
-          for (let i = 0; i < event.results.length; i++) {
-            transcript += event.results[i][0].transcript;
-          }
-          setLiveTranscript(transcript);
-        };
-
-        speechRecognition.current.onerror = (event) => {
-          console.error('Speech recognition error:', event.error);
-        };
-
-        speechRecognition.current.start();
-      }
-    } catch (err) {
-      console.error('Microphone access denied:', err);
-      setMicPermission('denied');
-    }
-  };
-
-  const handleRecordStop = async () => {
-    if (recordingInterval.current) {
-      clearInterval(recordingInterval.current);
-      recordingInterval.current = null;
-    }
-
-    // Stop speech recognition and get final transcript
-    let transcript = liveTranscript;
-    if (speechRecognition.current) {
-      speechRecognition.current.stop();
-      speechRecognition.current = null;
-    }
-
-    const duration = recordingTime;
-
-    if (mediaRecorder.current && mediaRecorder.current.state !== 'inactive') {
-      mediaRecorder.current.stop();
-
-      // Stop all tracks
-      mediaRecorder.current.stream.getTracks().forEach(track => track.stop());
-
-      // Wait for final data
-      await new Promise<void>(resolve => {
-        if (mediaRecorder.current) {
-          mediaRecorder.current.onstop = () => resolve();
-        } else {
-          resolve();
-        }
-      });
-
-      // Create audio blob and URL
-      if (audioChunks.current.length > 0 && duration > 0) {
-        const audioBlob = new Blob(audioChunks.current, { type: 'audio/webm' });
-        const audioUrl = URL.createObjectURL(audioBlob);
-
-        // Save to API with transcript from Web Speech API
-        try {
-          const response = await fetch('/api/please-hold', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ action: 'record', duration, transcript }),
-          });
-          if (response.ok) {
-            const result = await response.json();
-            // Store the audio URL with strand/message info
-            setRecordedAudios(prev => [...prev, {
-              strandId: result.message.threadId,
-              messageId: result.message.id,
-              url: audioUrl,
-            }]);
-            await refreshData();
-          }
-        } catch (err) {
-          console.error('Failed to save recording:', err);
-        }
-      }
-    }
-
-    setDeviceState('idle');
-    setRecordingTime(0);
-    setLiveTranscript('');
   };
 
   // Audio playback
@@ -2479,6 +2307,34 @@ function YourStrands({
 
   // Transcript view
   const [showTranscript, setShowTranscript] = useState(false);
+  const [isTranscribing, setIsTranscribing] = useState(false);
+
+  // Transcribe all messages in current strand
+  const handleTranscribe = async () => {
+    if (!currentStrand || isTranscribing) return;
+
+    setIsTranscribing(true);
+    try {
+      const response = await fetch('/api/please-hold/transcribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ threadId: currentStrand.id }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log(`Transcribed ${result.transcribed}/${result.total} messages`);
+        // Refresh data to show transcripts
+        window.location.reload();
+      } else {
+        console.error('Transcription failed');
+      }
+    } catch (error) {
+      console.error('Transcription error:', error);
+    } finally {
+      setIsTranscribing(false);
+    }
+  };
 
   // Store current playlist in ref to avoid closure issues
   const currentPlaylist = useRef<typeof recordedAudios>([]);
@@ -2606,13 +2462,14 @@ function YourStrands({
     createdAt: formatRelativeTime(apiStrand.createdAt),
     keywords: [],
     insight: `${apiStrand.voiceCount} different voices contributed`,
-    moments: apiStrand.messages.map(msg => ({
+    moments: apiStrand.messages.map((msg, index) => ({
       id: msg.id,
-      title: `Message ${msg.id}`,
+      title: `Message ${index + 1}`,
       speaker: msg.speaker || 'Anonymous',
       duration: msg.duration,
       date: formatRelativeTime(msg.recordedAt),
       sentiment: undefined,
+      transcript: msg.transcript,
     })),
   });
 
@@ -2798,19 +2655,6 @@ function YourStrands({
           <span className="text-[10px] md:text-[11px] tracking-[2px] uppercase text-white/40">Current Strand</span>
           <div className="flex gap-2">
             <button
-              onClick={() => setShowTranscript(!showTranscript)}
-              className={`px-3 md:px-4 py-1.5 md:py-2 rounded-full text-[12px] md:text-[13px] border transition-all flex items-center gap-1 md:gap-2 ${
-                showTranscript
-                  ? 'text-white bg-white/10 border-white/30'
-                  : 'text-white/70 border-white/20 hover:bg-white/5'
-              }`}
-            >
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M2 3h10M2 7h7M2 11h10" />
-              </svg>
-              <span className="hidden sm:inline">Transcript</span>
-            </button>
-            <button
               onClick={() => currentStrand && onSelectStrand(toLocalStrand(currentStrand))}
               className="px-3 md:px-4 py-1.5 md:py-2 rounded-full text-[12px] md:text-[13px] text-white/70 border border-white/20 hover:bg-white/5 transition-all flex items-center gap-1 md:gap-2"
             >
@@ -2855,6 +2699,17 @@ function YourStrands({
                 <span className="px-2 md:px-3 py-1 md:py-1.5 rounded-full text-[11px] md:text-[12px] border border-white/15 text-white/60">
                   {currentStrand?.voiceCount || '—'} voices
                 </span>
+                <button
+                  onClick={() => setShowTranscript(!showTranscript)}
+                  className="px-2 md:px-3 py-1 md:py-1.5 rounded-full text-[11px] md:text-[12px] transition-all"
+                  style={{
+                    background: showTranscript ? '#dcff73' : 'transparent',
+                    border: showTranscript ? '1px solid #dcff73' : '1px solid rgba(255,255,255,0.15)',
+                    color: showTranscript ? '#000' : 'rgba(255,255,255,0.6)',
+                  }}
+                >
+                  Transcript
+                </button>
               </div>
               <p className="text-[13px] md:text-[15px] text-white/60 leading-relaxed mb-4 md:mb-5">
                 {currentStrand?.description || 'Loading strand description...'}
@@ -2961,9 +2816,24 @@ function YourStrands({
             <h2 className="text-[10px] md:text-[11px] tracking-[2px] uppercase font-medium text-white/40">
               Full Transcript · Strand #{currentStrand.id}
             </h2>
-            <span className="text-[12px] text-white/30">
-              {currentStrand.messages.filter(m => m.transcript).length} / {currentStrand.messageCount} transcribed
-            </span>
+            <div className="flex items-center gap-3">
+              <span className="text-[12px] text-white/30">
+                {currentStrand.messages.filter(m => m.transcript).length} / {currentStrand.messageCount} transcribed
+              </span>
+              {currentStrand.messages.some(m => !m.transcript) && (
+                <button
+                  onClick={handleTranscribe}
+                  disabled={isTranscribing}
+                  className="px-3 py-1.5 rounded-full text-[11px] font-medium transition-all"
+                  style={{
+                    background: isTranscribing ? 'rgba(220, 255, 115, 0.2)' : '#dcff73',
+                    color: isTranscribing ? '#dcff73' : '#000',
+                  }}
+                >
+                  {isTranscribing ? 'Transcribing...' : 'Transcribe All'}
+                </button>
+              )}
+            </div>
           </div>
 
           {currentStrand.messages.length === 0 ? (
@@ -3148,127 +3018,6 @@ function YourStrands({
         </div>
       </section>
 
-      {/* Device Simulator Panel */}
-      <section
-        className="fixed bottom-0 left-0 right-0 p-4 md:p-6 z-50"
-        style={{
-          background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.8) 100%)',
-          backdropFilter: 'blur(20px)',
-          borderTop: '1px solid rgba(255,255,255,0.1)',
-        }}
-      >
-        <div className="max-w-[600px] mx-auto">
-          {/* Status indicator */}
-          <div className="flex flex-col items-center gap-2 mb-4">
-            <div className="flex items-center gap-2">
-              <span
-                className={`w-2 h-2 rounded-full ${deviceState !== 'idle' ? 'animate-pulse' : ''}`}
-                style={{
-                  background: deviceState === 'recording' ? '#ef4444' : deviceState === 'playing' ? '#22c55e' : '#6b7280',
-                }}
-              />
-              <span className="text-[11px] tracking-[2px] uppercase text-white/50">
-                {micPermission === 'denied'
-                  ? 'Microphone access denied'
-                  : deviceState === 'recording'
-                  ? `Recording ${recordingTime}s`
-                  : deviceState === 'playing'
-                  ? `Playing ${currentPlayingIndex + 1}/${currentStrandRecordings}`
-                  : currentStrand
-                  ? `Strand #${currentStrand.id} · ${currentStrandRecordings} recording${currentStrandRecordings !== 1 ? 's' : ''}`
-                  : 'Device Simulator · No strand yet'}
-              </span>
-            </div>
-            {/* Live transcript while recording */}
-            {deviceState === 'recording' && liveTranscript && (
-              <p className="text-[12px] text-white/40 italic max-w-[400px] text-center line-clamp-2">
-                "{liveTranscript}"
-              </p>
-            )}
-          </div>
-
-          {/* Device buttons - mimics hardware layout */}
-          <div className="flex items-center justify-center gap-6 md:gap-10">
-            {/* Play/Listen button */}
-            <div className="flex flex-col items-center gap-2">
-              <button
-                onClick={handlePlay}
-                disabled={!currentStrand}
-                className={`w-14 h-14 md:w-16 md:h-16 rounded-full transition-all ${
-                  deviceState === 'playing'
-                    ? 'bg-white scale-95'
-                    : 'bg-white/90 hover:bg-white hover:scale-105'
-                } ${!currentStrand ? 'opacity-30 cursor-not-allowed' : ''}`}
-                style={{ boxShadow: '0 4px 20px rgba(255,255,255,0.3)' }}
-              >
-                {deviceState === 'playing' ? (
-                  <svg className="w-6 h-6 mx-auto text-black" viewBox="0 0 24 24" fill="currentColor">
-                    <rect x="6" y="4" width="4" height="16" rx="1" />
-                    <rect x="14" y="4" width="4" height="16" rx="1" />
-                  </svg>
-                ) : (
-                  <svg className="w-6 h-6 mx-auto text-black" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                )}
-              </button>
-              <span className="text-[10px] md:text-[11px] text-white/40 tracking-wide">listen</span>
-            </div>
-
-            {/* Record button */}
-            <div className="flex flex-col items-center gap-2">
-              <button
-                onMouseDown={handleRecordStart}
-                onMouseUp={handleRecordStop}
-                onMouseLeave={handleRecordStop}
-                onTouchStart={handleRecordStart}
-                onTouchEnd={handleRecordStop}
-                className={`w-14 h-14 md:w-16 md:h-16 rounded-full transition-all ${
-                  deviceState === 'recording'
-                    ? 'bg-red-600 scale-95'
-                    : 'bg-[#e05050] hover:bg-red-500 hover:scale-105'
-                }`}
-                style={{ boxShadow: '0 4px 20px rgba(224,80,80,0.4)' }}
-              >
-                <div
-                  className={`w-5 h-5 md:w-6 md:h-6 mx-auto rounded-full bg-white/90 ${
-                    deviceState === 'recording' ? 'animate-pulse' : ''
-                  }`}
-                />
-              </button>
-              <span className="text-[10px] md:text-[11px] text-white/40 tracking-wide">
-                {deviceState === 'recording' ? 'release to save' : 'hold to record'}
-              </span>
-            </div>
-
-            {/* New Strand button */}
-            <div className="flex flex-col items-center gap-2">
-              <button
-                onClick={handleNewStrand}
-                className="w-12 h-12 md:w-14 md:h-14 rounded-full border-2 border-white/30 hover:border-white/50 hover:bg-white/5 transition-all hover:scale-105"
-              >
-                <svg className="w-5 h-5 md:w-6 md:h-6 mx-auto text-white/60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M12 5v14M5 12h14" />
-                </svg>
-              </button>
-              <span className="text-[10px] md:text-[11px] text-white/40 tracking-wide">new strand</span>
-            </div>
-          </div>
-
-          {/* Reset button (small, subtle) */}
-          <div className="flex justify-center mt-4">
-            <button
-              onClick={handleReset}
-              className="text-[10px] text-white/30 hover:text-white/50 transition-colors"
-            >
-              Reset all data
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* Spacer for fixed bottom panel */}
-      <div className="h-40" />
     </div>
   );
 }
@@ -3288,6 +3037,7 @@ function StrandPlayer({
   const [momentProgress, setMomentProgress] = useState(0); // 0-1 within current moment
   const [showInsights, setShowInsights] = useState(false);
   const [analytics, setAnalytics] = useState<StrandAnalytics | null>(null);
+  const [transcripts, setTranscripts] = useState<Record<number, string>>({});
 
   // Audio playback
   const audioPlayer = useRef<HTMLAudioElement | null>(null);
@@ -3311,6 +3061,17 @@ function StrandPlayer({
     }
     fetchAnalytics();
   }, [strandId]);
+
+  // Load transcripts from moments into local state
+  useEffect(() => {
+    const existingTranscripts: Record<number, string> = {};
+    strand.moments.forEach(m => {
+      if (m.transcript) {
+        existingTranscripts[m.id] = m.transcript;
+      }
+    });
+    setTranscripts(existingTranscripts);
+  }, [strand.moments]);
 
   // Generate summary phrase based on analytics
   const getSummaryPhrase = () => {
@@ -3649,10 +3410,10 @@ function StrandPlayer({
 
       {/* Current moment display */}
       <div className="p-8 rounded-xl mb-8" style={{ background: '#0e0e0e', border: '1px solid rgba(245,241,232,0.1)' }}>
-        {/* Chapter indicator */}
+        {/* Message indicator */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3 text-[12px] tracking-[2px] uppercase" style={{ color: 'rgba(245,241,232,0.4)' }}>
-            <span>Chapter {currentMomentIndex + 1} of {strand.moments.length}</span>
+            <span>Message {currentMomentIndex + 1} of {strand.moments.length}</span>
             {currentMoment.sentiment && (
               <>
                 <span style={{ opacity: 0.4 }}>·</span>
@@ -3716,6 +3477,42 @@ function StrandPlayer({
             </svg>
           </button>
         </div>
+
+        {/* Transcript with word highlighting */}
+        <div className="mt-8 pt-6 border-t border-white/10">
+          <div className="text-[11px] tracking-[2px] uppercase text-white/40 mb-3">Transcript</div>
+          {(currentMoment.transcript || transcripts[currentMoment.id]) ? (
+            <p className="text-[16px] leading-relaxed text-white/60" style={{ fontFamily: 'Georgia, serif' }}>
+              {(() => {
+                const transcriptText = currentMoment.transcript || transcripts[currentMoment.id] || '';
+                const words = transcriptText.split(/(\s+)/);
+                const totalWords = words.filter(w => w.trim()).length;
+                const currentWordIndex = Math.floor(momentProgress * totalWords);
+                let wordCount = 0;
+                return words.map((word, i) => {
+                  if (!word.trim()) return word;
+                  const isCurrentWord = wordCount === currentWordIndex && isPlaying;
+                  const isPastWord = wordCount < currentWordIndex;
+                  wordCount++;
+                  return (
+                    <span
+                      key={i}
+                      className="transition-colors duration-150"
+                      style={{
+                        color: isCurrentWord ? '#dcff73' : isPastWord ? 'rgba(245,241,232,0.8)' : 'rgba(245,241,232,0.4)',
+                        fontWeight: isCurrentWord ? 600 : 400,
+                      }}
+                    >
+                      {word}
+                    </span>
+                  );
+                });
+              })()}
+            </p>
+          ) : (
+            <p className="text-[14px] text-white/30 italic">No transcript available - record a new message to see transcription</p>
+          )}
+        </div>
       </div>
 
       {/* TIMELINE WITH CHAPTER TICKS */}
@@ -3768,11 +3565,11 @@ function StrandPlayer({
         </div>
       </div>
 
-      {/* CHAPTER LIST */}
+      {/* MESSAGES LIST */}
       <div className="mb-10">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-[14px] tracking-[2px] uppercase font-medium" style={{ color: '#f5f1e8' }}>
-            Chapters
+            Messages
           </h3>
         </div>
         <div className="space-y-1">
@@ -3789,7 +3586,7 @@ function StrandPlayer({
                   borderLeft: isActive ? '2px solid #dcff73' : '2px solid transparent',
                 }}
               >
-                {/* Chapter number */}
+                {/* Message number */}
                 <div
                   className="w-8 h-8 rounded-full flex items-center justify-center text-[12px] font-medium"
                   style={{
@@ -4187,6 +3984,13 @@ function StrandPlayer({
 function Listen2View() {
   const [selectedStrand, setSelectedStrand] = useState<Strand | null>(null);
   const [recordedAudios, setRecordedAudios] = useState<{ strandId: number; messageId: number; url: string }[]>([]);
+
+  // Scroll to top when opening a strand
+  useEffect(() => {
+    if (selectedStrand) {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+  }, [selectedStrand]);
 
   if (selectedStrand) {
     return (

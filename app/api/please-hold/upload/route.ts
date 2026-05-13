@@ -1,5 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { put, list, del } from '@vercel/blob';
+import Groq from 'groq-sdk';
+
+// Initialize Groq client (free Whisper transcription)
+const groq = new Groq({
+  apiKey: process.env.GROQ_API_KEY,
+});
 
 // Metadata structure stored in Blob
 interface ThreadMetadata {
@@ -11,11 +17,40 @@ interface ThreadMetadata {
       duration: number;
       size: number;
       uploadedAt: string;
+      transcript?: string;
     }>;
     createdAt: string;
     updatedAt: string;
   }>;
   lastUpdated: string;
+}
+
+// Transcribe audio using Groq Whisper (free tier)
+async function transcribeAudio(audioUrl: string): Promise<string | null> {
+  try {
+    // Fetch the audio file from blob storage
+    const response = await fetch(audioUrl);
+    if (!response.ok) {
+      console.log('[Please Hold] Failed to fetch audio for transcription');
+      return null;
+    }
+
+    const audioBuffer = await response.arrayBuffer();
+    const audioFile = new File([audioBuffer], 'audio.wav', { type: 'audio/wav' });
+
+    // Transcribe using Groq's Whisper (faster and free)
+    const transcription = await groq.audio.transcriptions.create({
+      file: audioFile,
+      model: 'whisper-large-v3',
+      language: 'en',
+    });
+
+    console.log(`[Please Hold] Transcribed: "${transcription.text.substring(0, 50)}..."`);
+    return transcription.text;
+  } catch (error) {
+    console.error('[Please Hold] Transcription error:', error);
+    return null;
+  }
 }
 
 const METADATA_KEY = 'please-hold/metadata.json';
@@ -67,14 +102,43 @@ export async function POST(request: NextRequest) {
 
     console.log(`[Please Hold] Uploading: thread ${threadId}, message ${messageId}, ${duration}s`);
 
-    // Upload WAV file to Blob
+    // Upload WAV file to Blob (allow overwriting if re-recording same message)
     const blobPath = `please-hold/thread_${String(threadId).padStart(3, '0')}/${String(messageId).padStart(3, '0')}.wav`;
-    const blob = await put(blobPath, file, {
+
+    // Use a unique path with timestamp to avoid conflicts
+    const uniqueBlobPath = `please-hold/thread_${String(threadId).padStart(3, '0')}/${String(messageId).padStart(3, '0')}_${Date.now()}.wav`;
+
+    const blob = await put(uniqueBlobPath, file, {
       access: 'public',
       contentType: 'audio/wav',
     });
 
+    // Clean up old versions of this message
+    try {
+      const prefix = `please-hold/thread_${String(threadId).padStart(3, '0')}/${String(messageId).padStart(3, '0')}`;
+      const { blobs } = await list({ prefix });
+      for (const oldBlob of blobs) {
+        if (oldBlob.url !== blob.url) {
+          console.log(`[Please Hold] Cleaning up old blob: ${oldBlob.pathname}`);
+          await del(oldBlob.url);
+        }
+      }
+    } catch {
+      // Ignore cleanup errors
+    }
+
     console.log(`[Please Hold] Uploaded to: ${blob.url}`);
+
+    // Transcribe the audio using Groq Whisper (free)
+    let transcript: string | null = null;
+    console.log(`[Please Hold] GROQ_API_KEY present: ${!!process.env.GROQ_API_KEY}`);
+    if (process.env.GROQ_API_KEY) {
+      console.log('[Please Hold] Starting transcription...');
+      transcript = await transcribeAudio(blob.url);
+      console.log(`[Please Hold] Transcription result: ${transcript ? transcript.substring(0, 50) + '...' : 'null'}`);
+    } else {
+      console.log('[Please Hold] No GROQ_API_KEY, skipping transcription');
+    }
 
     // Update metadata
     const metadata = await getMetadata();
@@ -99,6 +163,7 @@ export async function POST(request: NextRequest) {
       duration,
       size: file.size,
       uploadedAt: new Date().toISOString(),
+      transcript: transcript || undefined,
     };
 
     if (existingMsgIndex >= 0) {
@@ -144,10 +209,11 @@ export async function GET() {
       messages: thread.messages.map(msg => ({
         id: msg.id,
         path: `/thread_${String(thread.id).padStart(3, '0')}/${String(msg.id).padStart(3, '0')}.wav`,
-        audioUrl: msg.blobUrl,
+        audioUrl: `${msg.blobUrl}?v=${new Date(msg.uploadedAt).getTime()}`,
         duration: msg.duration,
         size: msg.size,
         uploadedAt: msg.uploadedAt,
+        transcript: msg.transcript,
       })),
       createdAt: thread.createdAt,
       updatedAt: thread.updatedAt,
