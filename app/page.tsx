@@ -943,7 +943,7 @@ export default function Home() {
 
             {/* Subtitle */}
             <div className="text-left sm:text-center mb-4 sm:mb-3 -mt-2 py-2">
-              <h2 className="text-[22px] sm:text-3xl lg:text-[33px] font-bold text-black font-[family-name:var(--font-abril-fatface)]">some things we made</h2>
+              <h2 className="text-[22px] sm:text-3xl lg:text-[33px] font-bold text-black font-[family-name:var(--font-abril-fatface)]">some things I made</h2>
             </div>
 
           </div>
