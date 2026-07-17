@@ -474,7 +474,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
                   A Daily Offering
                 </h2>
                 <p className="text-black text-lg mb-4" style={{ fontFamily: 'Anek Bangla, sans-serif' }}>
-                  Something we're a fan of.<br className="md:hidden" /> Updated daily.
+                  Something I'm a fan of.<br className="md:hidden" /> Updated daily.
                 </p>
                 <a
                   href={dailyOffering.link}

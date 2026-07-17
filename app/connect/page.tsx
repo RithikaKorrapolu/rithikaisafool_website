@@ -262,10 +262,10 @@ export default function Connect() {
 
           {/* Left Column - Reach Out */}
           <div className="flex flex-col order-2 lg:order-1">
-            {/* Follow Us Around */}
+            {/* Follow Me Around */}
             <div className="mb-6 flex items-center gap-2 md:gap-4">
               <h3 className="text-black font-semibold" style={{ fontFamily: 'Anek Bangla, sans-serif', fontSize: 'clamp(1rem, 3vw, 1.44rem)', lineHeight: '1.8' }}>
-                FOLLOW US AROUND
+                FOLLOW ME AROUND
               </h3>
               <div className="flex gap-2 md:gap-4">
                 <a href="https://www.instagram.com/rithikaisafool" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity dancing-icon">
