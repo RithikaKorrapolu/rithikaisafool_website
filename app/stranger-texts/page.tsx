@@ -411,19 +411,8 @@ export default function StrangerTextsPage() {
               </div>
               <p className="text-base sm:text-xl text-black/70 italic font-[family-name:var(--font-inter)] mb-4 text-left">Try it for free · Cancel anytime</p>
               <p className="text-[18px] sm:text-[22px] md:text-[22px] lg:text-[27px] font-[family-name:var(--font-inter)] text-black/70 text-left mb-6" style={{ letterSpacing: '-0.5px' }}>
-                Every week, you're <b>paired with a stranger to share art, stories, and meaningful moments</b> from your lives. <span className="bg-[#dcff73] px-1 rounded"><b>Text us to join the waitlist.</b></span>
+                Every week, you're <b>paired with a stranger to share art, stories, and meaningful moments</b> from your lives. <span className="bg-[#dcff73] px-1 rounded"><b>Coming Soon.</b></span>
               </p>
-              <div className="flex flex-col gap-3">
-                <a
-                  href="sms:+13322604354?body=I%20want%20to%20meet%20new%20people"
-                  className="inline-flex items-center justify-center px-8 py-4 text-[16px] sm:text-[20px] font-semibold rounded-full transition-all font-[family-name:var(--font-inter)] text-black bg-[#dcff73] hover:bg-black hover:text-white"
-                >
-                  📲 Text us +1 (332) 260-4354
-                </a>
-                <p className="text-[12px] leading-[16px] text-black/60 italic">
-                  By texting, you agree to our <a href="/legal/mobile-terms" className="underline hover:text-black/80">Terms of Service</a> and <a href="/legal/privacy-policy" className="underline hover:text-black/80">Privacy Policy</a>.
-                </p>
-              </div>
             </div>
 
             {/* Right Column - Phone Mockup */}
