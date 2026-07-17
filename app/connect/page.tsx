@@ -412,7 +412,7 @@ export default function Connect() {
               </h2>
 
               <p className="text-center mb-4 md:mb-6 text-black" style={{ fontSize: 'clamp(0.95rem, 3vw, 1.3rem)', fontFamily: 'Anek Bangla, sans-serif' }}>
-                We host a <strong>virtual open mic</strong> to riff on new ideas and bits and art and such. A meeting of the minds. Everyone gets a penny. Come through.
+                I host a <strong>virtual open mic</strong> to riff on new ideas and bits and art and such. A meeting of the minds. Everyone gets a penny. Come through.
               </p>
 
               {/* Mobile: Stacked layout */}
