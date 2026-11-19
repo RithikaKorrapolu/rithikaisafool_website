@@ -671,14 +671,14 @@ export default function ProductDetailPage() {
               </span>
               <div className="flex w-full lg:w-auto gap-2 lg:gap-3">
                 <button
-                  onClick={handleAddToCart}
-                  className="flex-1 lg:flex-none px-6 py-3 lg:px-14 lg:py-3 text-sm lg:text-base bg-white border-2 border-black text-black font-bold font-[family-name:var(--font-inter)] rounded-full hover:bg-black hover:text-white transition-colors hover-wiggle"
+                  disabled
+                  className="flex-1 lg:flex-none px-6 py-3 lg:px-14 lg:py-3 text-sm lg:text-base bg-white border-2 border-black text-black font-bold font-[family-name:var(--font-inter)] rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Add to Cart
                 </button>
                 <button
-                  onClick={handleBuyNow}
-                  className="flex-1 lg:flex-none px-6 py-3 lg:px-14 lg:py-3 text-sm lg:text-base bg-[#dcff73] text-black font-bold font-[family-name:var(--font-inter)] rounded-full hover:bg-black hover:text-white transition-colors hover-wiggle"
+                  disabled
+                  className="flex-1 lg:flex-none px-6 py-3 lg:px-14 lg:py-3 text-sm lg:text-base bg-[#dcff73] text-black font-bold font-[family-name:var(--font-inter)] rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Buy Now
                 </button>
@@ -843,18 +843,15 @@ export default function ProductDetailPage() {
             {/* Left Column - Rotating Images */}
             <div className="flex flex-col">
               <div className="relative aspect-square" style={{ borderRadius: '16px', overflow: 'hidden' }}>
-                <AnimatePresence mode="sync">
-                  <motion.img
-                    key={ccpLayerIndex}
-                    src={`/assets/CCP/${(ccpLayerIndex % 5) + 68}.png`}
+                {[11, 15, 23, 27, 33].map((num, idx) => (
+                  <img
+                    key={num}
+                    src={`/assets/CCP/${num}.png`}
                     alt="Let Me Show You"
-                    className="absolute w-full h-full object-contain"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.8, ease: "easeInOut" }}
+                    className="absolute w-full h-full object-contain transition-opacity duration-700"
+                    style={{ opacity: ccpLayerIndex % 5 === idx ? 1 : 0 }}
                   />
-                </AnimatePresence>
+                ))}
               </div>
             </div>
 
@@ -2658,11 +2655,11 @@ export default function ProductDetailPage() {
             <div className="flex gap-3 mb-3">
               {/* Add to Cart Button */}
               <button
-                onClick={handleAddToCart}
-                disabled={!isAvailable}
+                onClick={isLMSYProduct ? undefined : handleAddToCart}
+                disabled={!isAvailable || isLMSYProduct}
                 className={`w-1/2 py-3.5 rounded-full text-[0.8rem] md:text-base font-bold transition-all font-[family-name:var(--font-inter)] border-2 ${
-                  !isAvailable
-                    ? 'bg-gray-200 text-gray-400 border-gray-300 cursor-not-allowed'
+                  !isAvailable || isLMSYProduct
+                    ? 'bg-gray-200 text-gray-400 border-gray-300 cursor-not-allowed opacity-50'
                     : 'bg-white text-black border-black hover:bg-black hover:text-white hover-wiggle'
                 }`}
               >
@@ -2671,12 +2668,12 @@ export default function ProductDetailPage() {
 
               {/* Buy Now / Subscribe Button OR Join Waitlist */}
               <button
-                onClick={isAvailable ? handleBuyNow : undefined}
-                disabled={!isAvailable}
+                onClick={isAvailable && !isLMSYProduct ? handleBuyNow : undefined}
+                disabled={!isAvailable || isLMSYProduct}
                 className={`w-1/2 py-3.5 rounded-full text-[0.8rem] md:text-base font-bold transition-all font-[family-name:var(--font-inter)] ${
-                  isAvailable
+                  isAvailable && !isLMSYProduct
                     ? 'bg-[#dcff73] text-black hover:bg-black hover:text-white hover-wiggle'
-                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                    : 'bg-gray-200 text-gray-400 cursor-not-allowed opacity-50'
                 }`}
               >
                 {selectedSellingPlan && !isLMSYProduct ? 'SUBSCRIBE NOW' : 'BUY NOW'}
@@ -2686,9 +2683,11 @@ export default function ProductDetailPage() {
             {/* More Payment Options */}
             <div className="text-center mb-6">
               <button
-                onClick={handleBuyNow}
-                disabled={!isAvailable}
-                className="text-sm font-bold text-black underline hover:text-gray-600 transition-colors font-[family-name:var(--font-inter)] disabled:cursor-not-allowed"
+                onClick={isLMSYProduct ? undefined : handleBuyNow}
+                disabled={!isAvailable || isLMSYProduct}
+                className={`text-sm font-bold underline transition-colors font-[family-name:var(--font-inter)] disabled:cursor-not-allowed ${
+                  isLMSYProduct ? 'text-gray-400 opacity-50' : 'text-black hover:text-gray-600'
+                }`}
               >
                 MORE PAYMENT OPTIONS
               </button>
@@ -3206,14 +3205,14 @@ export default function ProductDetailPage() {
           className="fixed bottom-6 right-6 z-50 flex flex-row lg:flex-col gap-2 lg:gap-3"
         >
           <button
-            onClick={handleAddToCart}
-            className="px-6 py-2 lg:px-10 lg:py-3 text-sm lg:text-base bg-white border-2 border-black text-black font-bold font-[family-name:var(--font-inter)] rounded-full hover:bg-black hover:text-white transition-colors hover-wiggle shadow-lg"
+            disabled
+            className="px-6 py-2 lg:px-10 lg:py-3 text-sm lg:text-base bg-white border-2 border-black text-black font-bold font-[family-name:var(--font-inter)] rounded-full shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Add to Cart
           </button>
           <button
-            onClick={handleBuyNow}
-            className="px-6 py-2 lg:px-10 lg:py-3 text-sm lg:text-base bg-[#dcff73] text-black font-bold font-[family-name:var(--font-inter)] rounded-full hover:bg-black hover:text-white transition-colors hover-wiggle shadow-lg"
+            disabled
+            className="px-6 py-2 lg:px-10 lg:py-3 text-sm lg:text-base bg-[#dcff73] text-black font-bold font-[family-name:var(--font-inter)] rounded-full shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Buy Now
           </button>

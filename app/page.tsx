@@ -10,9 +10,10 @@ import FooterSignup from "@/components/FooterSignup";
 // Project titles for each grid cell
 const projects = [
   { title: "Trust a stranger to design your sweatshirt.", link: "/shop/a-stranger-designed-my-sweatshirt", hasCover: true, category: "physical" },
-  { title: "Rep your conditions to find others like you.", link: "/shop/condition-of-the-month-hat-1", hasCover: "hat", category: "physical" },
+  { title: "Discover new art through other people's eyes.", link: "/shop/let-me-show-you", hasCover: "lmsy", category: "digital" },
   { title: "Discover the memories people carry with songs.", link: "/songs-that-hold-memories", hasCover: "sthm", category: "digital" },
   { title: "Explore art by vibe.", link: "/museum", hasCover: "museum", category: "digital" },
+  { title: "Rep your conditions to find others like you.", link: "/shop/condition-of-the-month-hat-1", hasCover: "hat", category: "physical" },
 ];
 
 // Animation scripts for the texting mockup (multiple sequences)
@@ -1058,7 +1059,7 @@ export default function Home() {
                       </div>
                       <div className="absolute inset-x-0 top-0 flex justify-start pointer-events-none pt-4 px-4 z-10">
                         <span className="text-[1rem] sm:text-[1.3rem] md:text-[1.5rem] lg:text-[1.1rem] xl:text-[1.1rem] font-normal group-hover:font-bold text-black text-left max-w-[70%] font-[family-name:var(--font-inter)] tracking-tighter bg-white px-3 py-2 rounded-lg leading-tight shadow-md transition-[font-weight] duration-100 ease-out" style={{ fontStretch: 'condensed' }}>
-                          Trade art and stories with someone new every week.
+                          Trade stories and recommendations with someone new every week.
                         </span>
                       </div>
                       <img src="/assets/shop/Shop Logo.png" alt="Shop Logo" className="absolute top-4 right-4 w-18 h-18 md:w-22 md:h-22 object-contain z-10" />
@@ -1117,6 +1118,26 @@ export default function Home() {
                               poster="/assets/museum/wEmotions-poster.webp"
                               className="absolute inset-0 w-full h-full object-cover"
                             />
+                          </div>
+                        )}
+                        {project.hasCover === "lmsy" && (
+                          <div className="absolute inset-0">
+                            {[
+                              "/assets/CCP/Sample_Month/Meeting_Varo.webp",
+                              "/assets/CCP/Sample_Month/archive/birthday.jpg",
+                              "/assets/CCP/Sample_Month/twilight_gregory.webp",
+                              "/assets/CCP/Sample_Month/archive/parents_david.jpg",
+                              "/assets/CCP/Sample_Month/April2026/peoplesun.webp",
+                            ].map((src, idx) => (
+                              <img
+                                key={src}
+                                src={src}
+                                alt="Let Me Show You"
+                                className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+                                style={{ opacity: lmsyImageIndex === idx ? 1 : 0 }}
+                              />
+                            ))}
+                            <img src="/assets/shop/Shop Logo.png" alt="Shop Logo" className="absolute top-4 right-4 w-18 h-18 md:w-22 md:h-22 object-contain" />
                           </div>
                         )}
                         <div className="absolute inset-x-0 top-0 flex justify-start pointer-events-none pt-8 px-6">
