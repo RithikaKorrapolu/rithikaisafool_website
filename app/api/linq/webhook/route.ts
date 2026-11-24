@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { routeIncomingMessage } from '@/lib/stranger-texts/message-router';
 import { markChatAsRead } from '@/lib/stranger-texts/linq-client';
-import { supabase } from '@/lib/supabase';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 
 export async function POST(request: NextRequest) {
+  if (!isSupabaseConfigured) {
+    return NextResponse.json({ success: true, message: 'Stranger Texts not configured' });
+  }
+
   try {
     const body = await request.json();
     console.log('Linq webhook received:', JSON.stringify(body, null, 2));

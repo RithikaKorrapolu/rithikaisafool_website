@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { formatPhoneNumber } from '@/lib/stranger-texts/linq-client';
 
 export async function POST(request: NextRequest) {
+  if (!isSupabaseConfigured) {
+    return NextResponse.json({ error: 'Stranger Texts not configured' }, { status: 503 });
+  }
+
   try {
     const { phoneNumber } = await request.json();
 

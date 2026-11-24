@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { isSupabaseConfigured } from '@/lib/supabase';
 import { getContactsWithReadyPendingMessages, getAndClearPendingMessages } from '@/lib/stranger-texts/pending-messages';
 import { handleOnboardingV2 } from '@/lib/stranger-texts/onboarding-v2';
 import { Contact } from '@/lib/stranger-texts/types';
@@ -14,6 +14,9 @@ export const dynamic = 'force-dynamic';
  * allowing users to send multiple messages that get aggregated.
  */
 export async function GET(request: NextRequest) {
+  if (!isSupabaseConfigured) {
+    return NextResponse.json({ success: true, processed: 0, message: 'Stranger Texts not configured' });
+  }
   // Verify cron secret (if configured)
   const authHeader = request.headers.get('authorization');
   const cronSecret = process.env.CRON_SECRET;

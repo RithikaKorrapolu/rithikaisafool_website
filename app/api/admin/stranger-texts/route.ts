@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { createTrialPairing, sendPromptToPairing, askConnectConsent } from '@/lib/stranger-texts/pairing-handler';
 
 // Simple admin auth - in production, use proper auth
@@ -19,6 +19,10 @@ function checkAuth(request: NextRequest): boolean {
 }
 
 export async function GET(request: NextRequest) {
+  if (!isSupabaseConfigured) {
+    return NextResponse.json({ error: 'Stranger Texts is not configured' }, { status: 503 });
+  }
+
   if (!checkAuth(request)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }

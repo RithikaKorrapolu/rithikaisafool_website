@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { askConnectConsent } from '@/lib/stranger-texts/pairing-handler';
 
 // Verify cron secret to prevent unauthorized access
@@ -19,6 +19,10 @@ function verifyCronSecret(request: NextRequest): boolean {
 }
 
 export async function GET(request: NextRequest) {
+  if (!isSupabaseConfigured) {
+    return NextResponse.json({ success: true, message: 'Stranger Texts not configured', consentAsked: 0 });
+  }
+
   if (!verifyCronSecret(request)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
